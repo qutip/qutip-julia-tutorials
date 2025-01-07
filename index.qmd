@@ -1,0 +1,13 @@
+---
+title: "QuantumToolbox.jl and HierarchicalEOM.jl Tutorials"
+# subtitle: ""
+author: Alberto Mercurio
+
+engine: julia
+---
+
+```{julia}
+using InteractiveUtils
+
+versioninfo()
+```

@@ -1,0 +1,38 @@
+project:
+  type: website
+  output-dir: _output
+  title: "QuantumToolbox.jl and HierarchicalEOM.jl Tutorials"
+
+website:
+  title: "QuantumToolbox.jl and HierarchicalEOM.jl Tutorials"
+  navbar:
+    search: true
+    left:
+      - href: index.qmd
+        text: Home
+      - text: "QuantumToolbox.jl"
+        menu:
+          - text: Jaynes-Cummings Model
+            href: QuantumToolbox.jl/jaynes_cummings.qmd
+          # - text: Comparison with other packages
+          #   href: QuantumToolbox.jl/package_comparison.qmd
+      - about.qmd
+    tools:
+      - icon: github
+        href:  https://github.com/qutip/qutip-julia-tutorials
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+    code-line-numbers: true
+    colorlinks: true
+    footnotes-hover: true
+    fig-align: center
+    fig-responsive: true
+
+execute:
+  eval: true
+  cache: true
+  freeze: auto

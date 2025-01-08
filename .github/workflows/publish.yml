@@ -1,0 +1,36 @@
+name: Quarto Publish
+
+on: # either one of the following three cases  
+  workflow_dispatch: # manually trigger
+
+  schedule:
+    - cron: '0 0 * * 0' # weekly (every Sunday)
+
+  push:
+    branches: main
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write  # needed to allow julia-actions/cache to delete old caches that it has created
+      contents: write # needed for Quarto render
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+      - uses: julia-actions/setup-julia@v2
+        with:
+          version: '1'
+      - uses: julia-actions/cache@v2
+      - uses: julia-actions/julia-buildpkg@v1
+      - uses: cardinalby/export-env-action@v1
+        with:
+          envFile: '_environment'    
+          expand: 'true'
+      - name: Render and Publish
+        uses: quarto-dev/quarto-actions/publish@v2
+        with:
+          target: gh-pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

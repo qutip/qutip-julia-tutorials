@@ -1,9 +1,10 @@
 QUARTO:=quarto
 
+include _environment
+
 default: help
 
 render:
-  source _environment
 	${QUARTO} render
 
 preview:

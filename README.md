@@ -11,9 +11,9 @@ This repositories collects tutorials of different complexity for using quantum t
 
 The tutorials are built upon [Quarto](https://quarto.org).
 
-After installing [`Julia`](https://julialang.org/) and [Quarto](https://quarto.org), the steps to build the tutorials are:
+After installing both [`Julia`](https://julialang.org/) and [Quarto](https://quarto.org), the steps to build the tutorials are:
 
-First, render the files:
+### First, render the files:
 
 ```shell
 make render
@@ -24,7 +24,7 @@ source _environment
 quarto render
 ```
 
-Second, preview it on a local site:
+### Second, preview it on a local site:
 
 ```shell
 make preview

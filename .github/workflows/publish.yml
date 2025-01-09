@@ -29,6 +29,8 @@ jobs:
           version: '1'
       - uses: julia-actions/cache@v2
       - uses: julia-actions/julia-buildpkg@v1
+        with:
+          precompile: true
       - uses: cardinalby/export-env-action@v1
         with:
           envFile: '_environment'    

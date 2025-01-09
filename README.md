@@ -14,6 +14,9 @@ The tutorials are built upon [Quarto](https://quarto.org).
 
 After installing both [`Julia`](https://julialang.org/) and [Quarto](https://quarto.org), the steps to build the tutorials are:
 
+> [!NOTE]
+> All the following commands should be run under the root folder of this repository: `/path/to/qutip-julia-tutorials/`
+
 ### First, render the files:
 
 ```shell
@@ -22,6 +25,8 @@ make render
 or
 ```shell
 source _environment
+julia --project=@. -e 'import Pkg; Pkg.instantiate(); Pkg.resolve(); Pkg.precompile()'
+julia --project=@. -e 'using QuantumToolbox, HierarchicalEOM;'
 quarto render
 ```
 

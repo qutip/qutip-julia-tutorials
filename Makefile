@@ -1,3 +1,4 @@
+JULIA:=julia
 QUARTO:=quarto
 
 include _environment
@@ -5,6 +6,8 @@ include _environment
 default: help
 
 render:
+	${JULIA} --project=@. -e 'import Pkg; Pkg.instantiate(); Pkg.resolve(); Pkg.precompile(); using QuantumToolbox, HierarchicalEOM;'
+	${JULIA} --project=@. -e 'using QuantumToolbox, HierarchicalEOM;'
 	${QUARTO} render
 
 preview:

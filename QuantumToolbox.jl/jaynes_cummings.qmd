@@ -1,0 +1,13 @@
+---
+title: "Jaynes Cummings Model"
+# subtitle: ""
+author: Alberto Mercurio
+
+engine: julia
+---
+
+```{julia}
+using QuantumToolbox
+
+QuantumToolbox.versioninfo()
+```

@@ -4,6 +4,7 @@
 *.jl.cov
 *.jl.*.cov
 *.jl.mem
+
 Manifest.toml
 
 .vscode
@@ -25,3 +26,5 @@ pyenv/
 /index_files/
 /_site/
 /_output/
+*.html
+/site_libs/

@@ -11,3 +11,15 @@ using InteractiveUtils
 
 versioninfo()
 ```
+
+```{julia}
+using QuantumToolbox
+
+QuantumToolbox.versioninfo()
+```
+
+```{julia}
+using HierarchicalEOM
+
+HierarchicalEOM.versioninfo()
+```

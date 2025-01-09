@@ -1,13 +1,14 @@
 # Tutorials for Quantum Toolbox in `Julia`
 
-[![tutorials](https://img.shields.io/badge/build-tutorials-blue.svg)](https://qutip.org/qutip-julia-tutorials/)
+[![tutorials](https://img.shields.io/badge/tutorials-stable-blue.svg)](https://qutip.org/qutip-julia-tutorials/)
+[![Quarto Build](https://github.com/qutip/qutip-julia-tutorials/actions/workflows/publish.yml/badge.svg)](https://github.com/qutip/qutip-julia-tutorials/actions/workflows/publish.yml)
 
 This repositories collects tutorials of different complexity for using quantum toolbox in [`Julia`](https://julialang.org/). The tutorials of the following packages are included:
 
 - [`QuantumToolbox.jl`](https://github.com/qutip/QuantumToolbox.jl)
 - [`HierarchicalEOM.jl`](https://github.com/qutip/HierarchicalEOM.jl)
 
-## How to build the tutorials locally
+## How to build the tutorials locally ?
 
 The tutorials are built upon [Quarto](https://quarto.org).
 

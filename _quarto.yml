@@ -1,10 +1,15 @@
 project:
   type: website
   output-dir: _output
-  title: "QuantumToolbox.jl and HierarchicalEOM.jl Tutorials"
+  title: "Tutorials for Quantum Toolbox in Julia"
+  render:
+    - "*.qmd"
+    - "*.md"
+    - "!README.md"          # ignore
+    - "!CODE_OF_CONDUCT.md" # ignore
 
 website:
-  title: "QuantumToolbox.jl and HierarchicalEOM.jl Tutorials"
+  title: "Tutorials for Quantum Toolbox in Julia"
   navbar:
     search: true
     left:
@@ -35,4 +40,4 @@ format:
 execute:
   eval: true
   cache: true
-  freeze: auto
+  freeze: false

@@ -8,7 +8,7 @@
 
 <meta name="author" content="Alberto Mercurio">
 
-<title>QuantumToolbox.jl and HierarchicalEOM.jl Tutorials</title>
+<title>Tutorials for QuantumToolbox in Julia – Tutorials for Quantum Toolbox in Julia</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -73,7 +73,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-6bd9cfa162949bde0a231f530c97869d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-c75bcb89907db7808f0349b764a1a524.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -114,7 +114,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">QuantumToolbox.jl and HierarchicalEOM.jl Tutorials</span>
+    <span class="navbar-title">Tutorials for Quantum Toolbox in Julia</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -163,7 +163,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">QuantumToolbox.jl and HierarchicalEOM.jl Tutorials</h1>
+<h1 class="title">Tutorials for QuantumToolbox in Julia</h1>
 </div>
 
 
@@ -196,16 +196,94 @@ Commit 5e9a32e7af2 (2024-12-01 20:02 UTC)
 Build Info:
   Official https://julialang.org/ release
 Platform Info:
-  OS: macOS (arm64-apple-darwin24.0.0)
-  CPU: 8 × Apple M3
+  OS: Linux (x86_64-linux-gnu)
+  CPU: 4 × AMD EPYC 7763 64-Core Processor
   WORD_SIZE: 64
-  LLVM: libLLVM-16.0.6 (ORCJIT, apple-m2)
+  LLVM: libLLVM-16.0.6 (ORCJIT, znver3)
 Threads: 16 default, 0 interactive, 4 GC (on 4 virtual cores)
 Environment:
-  JULIA_PYTHONCALL_EXE = pyenv/bin/python
+  JULIA_PKG_SERVER_REGISTRY_PREFERENCE = eager
   JULIA_NUM_THREADS = 16
-  JULIA_CONDAPKG_BACKEND = Null
   JULIA_LOAD_PATH = @:@stdlib</code></pre>
+</div>
+</div>
+<div id="4" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1"></a><span class="im">using</span> <span class="bu">QuantumToolbox</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a></span>
+<span id="cb3-3"><a href="#cb3-3"></a>QuantumToolbox.<span class="fu">versioninfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ QuantumToolbox.jl: Quantum Toolbox in Julia
+≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
+Copyright © QuTiP team 2022 and later.
+Current admin team:
+    Alberto Mercurio and Yi-Te Huang
+
+Package information:
+====================================
+Julia              Ver. 1.11.2
+QuantumToolbox     Ver. 0.24.0
+SciMLOperators     Ver. 0.3.12
+LinearSolve        Ver. 2.38.0
+OrdinaryDiffEqCore Ver. 1.14.1
+
+System information:
+====================================
+OS       : Linux (x86_64-linux-gnu)
+CPU      : 4 × AMD EPYC 7763 64-Core Processor
+Memory   : 15.615 GB
+WORD_SIZE: 64
+LIBM     : libopenlibm
+LLVM     : libLLVM-16.0.6 (ORCJIT, znver3)
+BLAS     : libopenblas64_.so (ilp64)
+Threads  : 16 (on 4 virtual cores)
+</code></pre>
+</div>
+</div>
+<div id="6" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1"></a><span class="im">using</span> <span class="bu">HierarchicalEOM</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a></span>
+<span id="cb5-3"><a href="#cb5-3"></a>HierarchicalEOM.<span class="fu">versioninfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+                                   __
+                                  /  \
+ __     __                     __ \__/ __
+|  |   |  |                   /  \    /  \
+|  |   |  | ______   ______   \__/_  _\__/
+|  |___|  |/  __  \ /  __  \ / '   \/     \
+|   ___   |  |__)  |  /  \  |    _     _   |
+|  |   |  |   ____/| (    ) |   / \   / \  |
+|  |   |  |  |____ |  \__/  |  |   | |   | |
+|__|   |__|\______) \______/|__|   |_|   |_|
+
+Julia framework for Hierarchical Equations of Motion
+≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
+Copyright © QuTiP team 2023 and later.
+Lead  developer : Yi-Te Huang
+Other developers:
+    Simon Cross, Neill Lambert, Po-Chen Kuo and Shen-Liang Yang
+
+Package information:
+====================================
+Julia              Ver. 1.11.2
+HierarchicalEOM    Ver. 2.3.3
+QuantumToolbox     Ver. 0.24.0
+SciMLOperators     Ver. 0.3.12
+LinearSolve        Ver. 2.38.0
+OrdinaryDiffEqCore Ver. 1.14.1
+
+System information:
+====================================
+OS       : Linux (x86_64-linux-gnu)
+CPU      : 4 × AMD EPYC 7763 64-Core Processor
+Memory   : 15.615 GB
+WORD_SIZE: 64
+LIBM     : libopenlibm
+LLVM     : libLLVM-16.0.6 (ORCJIT, znver3)
+BLAS     : libopenblas64_.so (ilp64)
+Threads  : 16 (on 4 virtual cores)
+</code></pre>
 </div>
 </div>
 
@@ -302,7 +380,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp("https:\/\/qutip\.github\.io\/qutip-julia-tutorials\/");
+      var filterRegex = new RegExp('/' + window.location.host + '/');
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }

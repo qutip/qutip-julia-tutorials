@@ -23,8 +23,8 @@ deps/src/
 pyenv/
 /.quarto/
 /_freeze/
-/index_files/
 /_site/
 /_output/
 *.html
+*.json
 /site_libs/

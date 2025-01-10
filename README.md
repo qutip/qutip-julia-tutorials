@@ -1,7 +1,7 @@
 # Tutorials for Quantum Toolbox in `Julia`
 
 [![tutorials](https://img.shields.io/badge/tutorials-stable-blue.svg)](https://qutip.org/qutip-julia-tutorials/)
-[![Quarto Build](https://github.com/qutip/qutip-julia-tutorials/actions/workflows/publish.yml/badge.svg)](https://github.com/qutip/qutip-julia-tutorials/actions/workflows/publish.yml)
+[![Quarto Build](https://github.com/qutip/qutip-julia-tutorials/actions/workflows/publish.yml/badge.svg?branch=main)](https://github.com/qutip/qutip-julia-tutorials/actions/workflows/publish.yml)
 
 This repositories collects tutorials of different complexity for using quantum toolbox in [`Julia`](https://julialang.org/). The tutorials of the following packages are included:
 

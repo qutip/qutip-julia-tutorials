@@ -19,7 +19,7 @@ on: # either one of the following four cases
       - ready_for_review
 
 jobs:
-  build-deploy:
+  build:
     runs-on: ubuntu-latest
     permissions:
       actions: write  # needed to allow julia-actions/cache to delete old caches that it has created

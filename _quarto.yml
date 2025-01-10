@@ -3,32 +3,33 @@ project:
   output-dir: _output
   title: "Tutorials for Quantum Toolbox in Julia"
   render:
-    - "*.qmd"
     - "*.md"
-    - "!README.md"          # ignore
-    - "!CODE_OF_CONDUCT.md" # ignore
+    - "*.qmd"
+    - "!README.md"             # ignore
+    - "!CODE_OF_CONDUCT.md"    # ignore
+    - "!tutorial_template.qmd" # ignore
 
 website:
   title: "Tutorials for Quantum Toolbox in Julia"
   navbar:
     search: true
     left:
-      - href: index.qmd
+      - href: index.md
         text: Home
-      - text: "QuantumToolbox.jl"
-        menu:
-          - text: Jaynes-Cummings Model
-            href: QuantumToolbox.jl/jaynes_cummings.qmd
-          # - text: Comparison with other packages
-          #   href: QuantumToolbox.jl/package_comparison.qmd
-      - about.qmd
+      - href: QuantumToolbox.jl/toc.md
+        text: QuantumToolbox.jl
+      - href: HierarchicalEOM.jl/toc.md
+        text: HierarchicalEOM.jl
     tools:
       - icon: github
         href:  https://github.com/qutip/qutip-julia-tutorials
 
 format:
   html:
-    theme: cosmo
+    theme:
+      light: flatly
+      dark: darkly
+    highlight-style: atom-one
     css: styles.css
     toc: true
     code-line-numbers: true

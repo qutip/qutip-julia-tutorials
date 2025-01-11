@@ -24,6 +24,8 @@ website:
       - icon: github
         href:  https://github.com/qutip/qutip-julia-tutorials
 
+bibliography: bibliography.bib  
+
 format:
   html:
     theme:

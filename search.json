@@ -39,14 +39,14 @@
     "href": "HierarchicalEOM.jl/toc.html",
     "title": "Tutorials for HierarchicalEOM.jl",
     "section": "",
-    "text": "The following tutorials demonstrate and introduce specific functionality of HierarchicalEOM.jl.\n\n\n    \n      \n      \n    \n\n\n\n\n\nDate\n\n\nTitle\n\n\nAuthor\n\n\n\n\n\n\n2025-01-11\n\n\nCavity QED system\n\n\nShen-Liang Yang, Yi-Te Huang\n\n\n\n\n\nNo matching items"
+    "text": "The following tutorials demonstrate and introduce specific functionality of HierarchicalEOM.jl.\n\n\n    \n      \n      \n    \n\n\n\n\n\nDate\n\n\nTitle\n\n\nAuthor\n\n\n\n\n\n\n2025-01-12\n\n\nCavity QED system\n\n\nShen-Liang Yang, Yi-Te Huang\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "QuantumToolbox.jl/toc.html",
     "href": "QuantumToolbox.jl/toc.html",
     "title": "Tutorials for QuantumToolbox.jl",
     "section": "",
-    "text": "The following tutorials demonstrate and introduce specific functionality of QuantumToolbox.jl.\n\n\n    \n      \n      \n    \n\n\n\n\n\nDate\n\n\nTitle\n\n\nAuthor\n\n\n\n\n\n\n2025-01-11\n\n\nLow rank master equation\n\n\nLuca Gravina\n\n\n\n\n\nNo matching items"
+    "text": "The following tutorials demonstrate and introduce specific functionality of QuantumToolbox.jl.\n\n\n    \n      \n      \n    \n\n\n\n\n\nDate\n\n\nTitle\n\n\nAuthor\n\n\n\n\n\n\n2025-01-12\n\n\nLow rank master equation\n\n\nLuca Gravina\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "HierarchicalEOM.jl/cavityQED.html",
@@ -88,7 +88,7 @@
     "href": "HierarchicalEOM.jl/cavityQED.html#solve-time-evolution-of-ados",
     "title": "Cavity QED system",
     "section": "Solve time evolution of ADOs",
-    "text": "Solve time evolution of ADOs\n\nt_list = 0:1:500\nsol_H = HEOMsolve(M_Heom, ψ0, t_list; e_ops = [σz, a' * a])\n\nSolving time evolution for ADOs by Ordinary Differential Equations method...\nProgress: [                              ]   0.2% --- Elapsed Time: 0h 00m 02s (ETA: 0h 16m 40s)Progress: [====================          ]  66.7% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 01s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 00s)\n\n\nSolution of hierarchical EOM\n(return code: Success)\n----------------------------\nBtier = 2\nFtier = 0\nnum_states = 1\nnum_expect = 2\nODE alg.: OrdinaryDiffEqLowOrderRK.DP5{typeof(OrdinaryDiffEqCore.trivial_limiter!), typeof(OrdinaryDiffEqCore.trivial_limiter!), Static.False}(OrdinaryDiffEqCore.trivial_limiter!, OrdinaryDiffEqCore.trivial_limiter!, static(false))\nabstol = 1.0e-8\nreltol = 1.0e-6"
+    "text": "Solve time evolution of ADOs\n\nt_list = 0:1:500\nsol_H = HEOMsolve(M_Heom, ψ0, t_list; e_ops = [σz, a' * a])\n\nSolving time evolution for ADOs by Ordinary Differential Equations method...\nProgress: [                              ]   0.2% --- Elapsed Time: 0h 00m 02s (ETA: 0h 16m 40s)Progress: [===================           ]  66.1% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 01s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 00s)\n\n\nSolution of hierarchical EOM\n(return code: Success)\n----------------------------\nBtier = 2\nFtier = 0\nnum_states = 1\nnum_expect = 2\nODE alg.: OrdinaryDiffEqLowOrderRK.DP5{typeof(OrdinaryDiffEqCore.trivial_limiter!), typeof(OrdinaryDiffEqCore.trivial_limiter!), Static.False}(OrdinaryDiffEqCore.trivial_limiter!, OrdinaryDiffEqCore.trivial_limiter!, static(false))\nabstol = 1.0e-8\nreltol = 1.0e-6"
   },
   {
     "objectID": "HierarchicalEOM.jl/cavityQED.html#solve-stationary-state-of-ados",
@@ -109,7 +109,7 @@
     "href": "HierarchicalEOM.jl/cavityQED.html#power-spectrum",
     "title": "Cavity QED system",
     "section": "Power spectrum",
-    "text": "Power spectrum\n\nω_list = 1:0.01:3\npsd_H = PowerSpectrum(M_Heom, steady_H, a, ω_list)\n\n# plot\nfig = Figure(size = (500, 350))\nax = Axis(fig[1, 1], xlabel = L\"\\omega\")\nlines!(ax, ω_list, psd_H)\n\nfig\n\nCalculating power spectrum in frequency domain...\nProgress: [=========                     ]  30.3% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 02s)Progress: [==================            ]  60.7% --- Elapsed Time: 0h 00m 02s (ETA: 0h 00m 01s)Progress: [===========================   ]  91.0% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 00s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 00s)\n[DONE]"
+    "text": "Power spectrum\n\nω_list = 1:0.01:3\npsd_H = PowerSpectrum(M_Heom, steady_H, a, ω_list)\n\n# plot\nfig = Figure(size = (500, 350))\nax = Axis(fig[1, 1], xlabel = L\"\\omega\")\nlines!(ax, ω_list, psd_H)\n\nfig\n\nCalculating power spectrum in frequency domain...\nProgress: [========                      ]  29.4% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 02s)Progress: [=================             ]  59.7% --- Elapsed Time: 0h 00m 02s (ETA: 0h 00m 01s)Progress: [===========================   ]  90.5% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 00s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 00s)\n[DONE]"
   },
   {
     "objectID": "HierarchicalEOM.jl/cavityQED.html#compare-with-master-eq.-approach",

@@ -1,7 +1,7 @@
 ---
 title: "Tutorial Template"
 author: Author(s) Name
-date: YYYY-MM-DD  # last update
+date: YYYY-MM-DD  # last update (keep this comment as a reminder)
 
 engine: julia
 ---

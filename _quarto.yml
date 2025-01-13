@@ -45,6 +45,7 @@ website:
 
 bibliography: bibliography.bib  
 
+# default format for all files
 format:
   html:
     theme:
@@ -53,6 +54,8 @@ format:
     highlight-style: atom-one
     css: styles.css
     toc: true
+    published-title: Last Update
+    date-format: iso
     code-line-numbers: true
     colorlinks: true
     footnotes-hover: true

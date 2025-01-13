@@ -1,17 +1,21 @@
 ---
 title: "Tutorials for `QuantumToolbox.jl`"
 listing:
-  id: QuantumToolbox-listings
-  type: table
-  date-format: iso
-  sort: false
-  sort-ui: false
-  fields: [date, title, author]
-  contents:
-    - "lowrank.qmd"
+  - id: time-evolution
+    type: table
+    sort: false
+    sort-ui: false
+    filter-ui: false
+    fields: [date, title, author]
+    field-display-names:
+      date: "Last Update"
+    contents:
+      - "time_evolution/*.qmd"
 ---
 
 The following tutorials demonstrate and introduce specific functionality of `QuantumToolbox.jl`.
 
-::: {#QuantumToolbox-listings}
+### Time Evolution
+
+::: {#time-evolution}
 :::

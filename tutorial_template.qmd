@@ -1,8 +1,7 @@
 ---
 title: "Tutorial Template"
 author: Author(s) Name
-date: last-modified
-date-format: iso
+date: YYYY-MM-DD  # last update
 
 engine: julia
 ---

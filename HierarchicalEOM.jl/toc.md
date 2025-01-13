@@ -1,17 +1,21 @@
 ---
 title: "Tutorials for `HierarchicalEOM.jl`"
 listing:
-  id: HierarchicalEOM-listings
-  type: table
-  date-format: iso
-  sort: false
-  sort-ui: false
-  fields: [date, title, author]
-  contents:
-    - "cavityQED.qmd"
+  - id: examples
+    type: table
+    sort: false
+    sort-ui: false
+    filter-ui: false
+    fields: [date, title, author]
+    field-display-names:
+      date: "Last Update"
+    contents:
+      - "*.qmd"
 ---
 
 The following tutorials demonstrate and introduce specific functionality of `HierarchicalEOM.jl`.
 
-::: {#HierarchicalEOM-listings}
+### Examples
+
+::: {#examples}
 :::

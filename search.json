@@ -1,28 +1,28 @@
 [
   {
-    "objectID": "QuantumToolbox.jl/lowrank.html",
-    "href": "QuantumToolbox.jl/lowrank.html",
+    "objectID": "QuantumToolbox.jl/time_evolution/lowrank.html",
+    "href": "QuantumToolbox.jl/time_evolution/lowrank.html",
     "title": "Low rank master equation",
     "section": "",
     "text": "In this tutorial, we will show how to solve the master equation using the low-rank method. For a detailed explanation of the method, we recommend to read the Ref. (Gravina and Savona 2024).\nAs a test, we will consider the dissipative Ising model with a transverse field. The Hamiltonian is given by\n\\[\n\\hat{H} = \\frac{J_x}{2} \\sum_{\\langle i,j\\rangle} \\sigma_i^x \\sigma_j^x + \\frac{J_y}{2} \\sum_{\\langle i,j\\rangle} \\sigma_i^y \\sigma_j^y + \\frac{J_z}{2} \\sum_{\\langle i,j\\rangle} \\sigma_i^z \\sigma_j^z - \\sum_i h_i \\sigma_i^z + h_x \\sum_i \\sigma_i^x + h_y \\sum_i \\sigma_i^y + h_z \\sum_i \\sigma_i^z\n\\] K where the sums are over nearest neighbors, and the collapse operators are given by\n\\[\nc_i = \\sqrt{\\gamma} \\sigma_i^{-}\n\\]\nWe start by importing the packages\nusing QuantumToolbox\nusing CairoMakie\nDefine lattice\nNx, Ny = 2, 3\nlatt = Lattice(Nx = Nx, Ny = Ny)\n\nLattice{Int64, LinearIndices{2, Tuple{Base.OneTo{Int64}, Base.OneTo{Int64}}}, CartesianIndices{2, Tuple{Base.OneTo{Int64}, Base.OneTo{Int64}}}}(2, 3, 6, [1 3 5; 2 4 6], CartesianIndices((2, 3)))\nDefine lr-space dimensions\nN_cut = 2\nN_modes = latt.N\nN = N_cut^N_modes\nM = latt.N + 1\n\n7\nDefine lr states. Take as initial state all spins up. All other N states are taken as those with minimum Hamming distance to the initial state.\nϕ = Vector{QuantumObject{Vector{ComplexF64},KetQuantumObject,M-1}}(undef, M)\nϕ[1] = kron(fill(basis(2, 1), N_modes)...)\n\ni = 1\nfor j in 1:N_modes\n    global i += 1\n    i &lt;= M && (ϕ[i] = MultiSiteOperator(latt, j=&gt;sigmap()) * ϕ[1])\nend\nfor k in 1:N_modes-1\n    for l in k+1:N_modes\n        global i += 1\n        i &lt;= M && (ϕ[i] = MultiSiteOperator(latt, k=&gt;sigmap(), l=&gt;sigmap()) * ϕ[1])\n    end\nend\nfor i in i+1:M\n    ϕ[i] = QuantumObject(rand(ComplexF64, size(ϕ[1])[1]), dims = ϕ[1].dims)\n    normalize!(ϕ[i])\nend\nDefine the initial state\nz = hcat(get_data.(ϕ)...)\nB = Matrix(Diagonal([1 + 0im; zeros(M - 1)]))\nS = z' * z # Overlap matrix\nB = B / tr(S * B) # Normalize B\n\nρ = QuantumObject(z * B * z', dims = ntuple(i-&gt;N_cut, Val(N_modes))); # Full density matrix\nDefine the Hamiltonian and collapse operators\n# Define Hamiltonian and collapse operators\nJx = 0.9\nJy = 1.04\nJz = 1.0\nhx = 0.0\nhy = 0.0\nhz = 0.0\nγ = 1\n\nSx = mapreduce(i-&gt;MultiSiteOperator(latt, i=&gt;sigmax()), +, 1:latt.N)\nSy = mapreduce(i-&gt;MultiSiteOperator(latt, i=&gt;sigmay()), +, 1:latt.N)\nSz = mapreduce(i-&gt;MultiSiteOperator(latt, i=&gt;sigmaz()), +, 1:latt.N)\n\nH, c_ops = DissipativeIsing(Jx, Jy, Jz, hx, hy, hz, γ, latt; boundary_condition = Val(:periodic_bc), order = 1)\ne_ops = (Sx, Sy, Sz)\n\ntl = range(0, 10, 100)\n\n0.0:0.10101010101010101:10.0"
   },
   {
-    "objectID": "QuantumToolbox.jl/lowrank.html#full-evolution",
-    "href": "QuantumToolbox.jl/lowrank.html#full-evolution",
+    "objectID": "QuantumToolbox.jl/time_evolution/lowrank.html#full-evolution",
+    "href": "QuantumToolbox.jl/time_evolution/lowrank.html#full-evolution",
     "title": "Low rank master equation",
     "section": "Full evolution",
     "text": "Full evolution\n\nsol_me = mesolve(H, ρ, tl, c_ops; e_ops = [e_ops...]);\nStrue = entropy_vn(sol_me.states[end], base=2) / latt.N\n\nProgress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)\n\n\n0.29324728062546046"
   },
   {
-    "objectID": "QuantumToolbox.jl/lowrank.html#low-rank-evolution",
-    "href": "QuantumToolbox.jl/lowrank.html#low-rank-evolution",
+    "objectID": "QuantumToolbox.jl/time_evolution/lowrank.html#low-rank-evolution",
+    "href": "QuantumToolbox.jl/time_evolution/lowrank.html#low-rank-evolution",
     "title": "Low rank master equation",
     "section": "Low Rank Evolution",
     "text": "Low Rank Evolution\nDefine functions to be evaluated during the low-rank evolution\n\nfunction f_purity(p, z, B)\n    N = p.N\n    M = p.M\n    S = p.S\n    T = p.temp_MM\n\n    mul!(T, S, B)\n    return tr(T^2)\nend\n\nfunction f_trace(p, z, B)\n    N = p.N\n    M = p.M\n    S = p.S\n    T = p.temp_MM\n\n    mul!(T, S, B)\n    return tr(T)\nend\n\nfunction f_entropy(p, z, B)\n    C = p.A0\n    σ = p.Bi\n\n    mul!(C, z, sqrt(B))\n    mul!(σ, C', C)\n    return entropy_vn(Qobj(Hermitian(σ), type=Operator), base=2)\nend\n\nf_entropy (generic function with 1 method)\n\n\nDefine the options for the low-rank evolution\n\nopt = (err_max = 1e-3, p0 = 0.0, atol_inv = 1e-6, adj_condition = \"variational\", Δt = 0.0);\n\nsol_lr = lr_mesolve(H, z, B, tl, c_ops; e_ops = e_ops, f_ops = (f_purity, f_entropy, f_trace), opt = opt);\n\nProgress: 2%Progress: 3%Progress: 4%Progress: 5%Progress: 6%Progress: 7%Progress: 8%Progress: 9%Progress: 10%Progress: 11%Progress: 12%Progress: 13%Progress: 14%Progress: 15%Progress: 16%Progress: 17%Progress: 18%Progress: 19%Progress: 20%Progress: 21%Progress: 22%Progress: 23%Progress: 24%Progress: 25%Progress: 26%Progress: 27%Progress: 28%Progress: 29%Progress: 30%Progress: 31%Progress: 32%Progress: 33%Progress: 34%Progress: 35%Progress: 36%Progress: 37%Progress: 38%Progress: 39%Progress: 40%Progress: 41%Progress: 42%Progress: 43%Progress: 44%Progress: 45%Progress: 46%Progress: 47%Progress: 48%Progress: 49%Progress: 50%Progress: 51%Progress: 52%Progress: 53%Progress: 54%Progress: 55%Progress: 56%Progress: 57%Progress: 58%Progress: 59%Progress: 60%Progress: 61%Progress: 62%Progress: 63%Progress: 64%Progress: 65%Progress: 66%Progress: 67%Progress: 68%Progress: 69%Progress: 70%Progress: 71%Progress: 72%Progress: 73%Progress: 74%Progress: 75%Progress: 76%Progress: 77%Progress: 78%Progress: 79%Progress: 80%Progress: 81%Progress: 82%Progress: 83%Progress: 84%Progress: 85%Progress: 86%Progress: 87%Progress: 88%Progress: 89%Progress: 90%Progress: 91%Progress: 92%Progress: 93%Progress: 94%Progress: 95%Progress: 96%Progress: 97%Progress: 98%Progress: 99%Progress: 100%\n\n\nPlot the results\n\nm_me = real(sol_me.expect[3, :]) / Nx / Ny\nm_lr = real(sol_lr.expect[3, :]) / Nx / Ny\n\nfig = Figure(size = (500, 350), fontsize = 15)\nax = Axis(fig[1, 1], xlabel = L\"\\gamma t\", ylabel = L\"M_{z}\", xlabelsize = 20, ylabelsize = 20)\nlines!(ax, tl, m_lr, label = L\"LR $[M=M(t)]$\", linewidth = 2)\nlines!(ax, tl, m_me, label = \"Fock\", linewidth = 2, linestyle = :dash)\naxislegend(ax, position = :rb)\n\nax2 = Axis(fig[1, 2], xlabel = L\"\\gamma t\", ylabel = \"Value\", xlabelsize = 20, ylabelsize = 20)\nlines!(ax2, tl, 1 .- real(sol_lr.fexpect[1, :]), label = L\"$1-P$\", linewidth = 2)\nlines!(\n    ax2,\n    tl,\n    1 .- real(sol_lr.fexpect[3, :]),\n    label = L\"$1-\\mathrm{Tr}(\\rho)$\",\n    linewidth = 2,\n    linestyle = :dash,\n    color = :orange,\n)\nlines!(ax2, tl, real(sol_lr.fexpect[2, :]) / Nx / Ny, color = :blue, label = L\"S\", linewidth = 2)\nhlines!(ax2, [Strue], color = :blue, linestyle = :dash, linewidth = 2, label = L\"S^{\\,\\mathrm{true}}_{\\mathrm{ss}}\")\naxislegend(ax2, position = :rb)\n\nfig"
   },
   {
-    "objectID": "QuantumToolbox.jl/lowrank.html#version-information",
-    "href": "QuantumToolbox.jl/lowrank.html#version-information",
+    "objectID": "QuantumToolbox.jl/time_evolution/lowrank.html#version-information",
+    "href": "QuantumToolbox.jl/time_evolution/lowrank.html#version-information",
     "title": "Low rank master equation",
     "section": "Version Information",
     "text": "Version Information\n\nQuantumToolbox.versioninfo()\n\n\n QuantumToolbox.jl: Quantum Toolbox in Julia\n≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡\nCopyright © QuTiP team 2022 and later.\nCurrent admin team:\n    Alberto Mercurio and Yi-Te Huang\n\nPackage information:\n====================================\nJulia              Ver. 1.11.2\nQuantumToolbox     Ver. 0.24.0\nSciMLOperators     Ver. 0.3.12\nLinearSolve        Ver. 2.38.0\nOrdinaryDiffEqCore Ver. 1.14.1\n\nSystem information:\n====================================\nOS       : Linux (x86_64-linux-gnu)\nCPU      : 4 × AMD EPYC 7763 64-Core Processor\nMemory   : 15.615 GB\nWORD_SIZE: 64\nLIBM     : libopenlibm\nLLVM     : libLLVM-16.0.6 (ORCJIT, znver3)\nBLAS     : libopenblas64_.so (ilp64)\nThreads  : 4 (on 4 virtual cores)"
@@ -39,14 +39,14 @@
     "href": "HierarchicalEOM.jl/toc.html",
     "title": "Tutorials for HierarchicalEOM.jl",
     "section": "",
-    "text": "The following tutorials demonstrate and introduce specific functionality of HierarchicalEOM.jl.\n\n\n    \n      \n      \n    \n\n\n\n\n\nDate\n\n\nTitle\n\n\nAuthor\n\n\n\n\n\n\n2025-01-13\n\n\nCavity QED system\n\n\nShen-Liang Yang, Yi-Te Huang\n\n\n\n\n\nNo matching items"
+    "text": "The following tutorials demonstrate and introduce specific functionality of HierarchicalEOM.jl.\n\nExamples\n\n\n\n\n\nLast Update\n\n\nTitle\n\n\nAuthor\n\n\n\n\n\n\n2025-01-13\n\n\nCavity QED system\n\n\nShen-Liang Yang, Yi-Te Huang\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "QuantumToolbox.jl/toc.html",
     "href": "QuantumToolbox.jl/toc.html",
     "title": "Tutorials for QuantumToolbox.jl",
     "section": "",
-    "text": "The following tutorials demonstrate and introduce specific functionality of QuantumToolbox.jl.\n\n\n    \n      \n      \n    \n\n\n\n\n\nDate\n\n\nTitle\n\n\nAuthor\n\n\n\n\n\n\n2025-01-13\n\n\nLow rank master equation\n\n\nLuca Gravina\n\n\n\n\n\nNo matching items"
+    "text": "The following tutorials demonstrate and introduce specific functionality of QuantumToolbox.jl.\n\nTime Evolution\n\n\n\n\n\nLast Update\n\n\nTitle\n\n\nAuthor\n\n\n\n\n\n\n2025-01-13\n\n\nLow rank master equation\n\n\nLuca Gravina\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "HierarchicalEOM.jl/cavityQED.html",
@@ -81,14 +81,14 @@
     "href": "HierarchicalEOM.jl/cavityQED.html#construct-heomls-matrix",
     "title": "Cavity QED system",
     "section": "Construct HEOMLS matrix",
-    "text": "Construct HEOMLS matrix\nHere, we consider an incoherent pumping to the atom, which can be described by an Lindblad dissipator (see here for more details).\nFurthermore, we set the important threshold to be 1e-6.\n\npump = 0.01\nJ_pump = sqrt(pump) * σm'\ntier = 2\nM_Heom = M_Boson(H_s, tier, threshold = 1e-6, Bath)\nM_Heom = addBosonDissipator(M_Heom, J_pump)\n\nChecking the importance value for each ADOs...[DONE]\nPreparing block matrices for HEOM Liouvillian superoperator (using 4 threads)...\nProgress: [                              ]   2.1% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 47s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 00s)\nConstructing matrix...[DONE]\n\n\nBoson type HEOMLS matrix acting on even-parity ADOs\nsystem dims = [3, 2]\nnumber of ADOs N = 97\ndata =\nMatrixOperator(3492 × 3492)"
+    "text": "Construct HEOMLS matrix\nHere, we consider an incoherent pumping to the atom, which can be described by an Lindblad dissipator (see here for more details).\nFurthermore, we set the important threshold to be 1e-6.\n\npump = 0.01\nJ_pump = sqrt(pump) * σm'\ntier = 2\nM_Heom = M_Boson(H_s, tier, threshold = 1e-6, Bath)\nM_Heom = addBosonDissipator(M_Heom, J_pump)\n\nChecking the importance value for each ADOs...[DONE]\nPreparing block matrices for HEOM Liouvillian superoperator (using 4 threads)...\nProgress: [                              ]   1.0% --- Elapsed Time: 0h 00m 01s (ETA: 0h 01m 36s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 00s)\nConstructing matrix...[DONE]\n\n\nBoson type HEOMLS matrix acting on even-parity ADOs\nsystem dims = [3, 2]\nnumber of ADOs N = 97\ndata =\nMatrixOperator(3492 × 3492)"
   },
   {
     "objectID": "HierarchicalEOM.jl/cavityQED.html#solve-time-evolution-of-ados",
     "href": "HierarchicalEOM.jl/cavityQED.html#solve-time-evolution-of-ados",
     "title": "Cavity QED system",
     "section": "Solve time evolution of ADOs",
-    "text": "Solve time evolution of ADOs\n\nt_list = 0:1:500\nsol_H = HEOMsolve(M_Heom, ψ0, t_list; e_ops = [σz, a' * a])\n\nSolving time evolution for ADOs by Ordinary Differential Equations method...\nProgress: [                              ]   0.2% --- Elapsed Time: 0h 00m 02s (ETA: 0h 16m 40s)Progress: [===================           ]  66.5% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 01s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 00s)\n\n\nSolution of hierarchical EOM\n(return code: Success)\n----------------------------\nBtier = 2\nFtier = 0\nnum_states = 1\nnum_expect = 2\nODE alg.: OrdinaryDiffEqLowOrderRK.DP5{typeof(OrdinaryDiffEqCore.trivial_limiter!), typeof(OrdinaryDiffEqCore.trivial_limiter!), Static.False}(OrdinaryDiffEqCore.trivial_limiter!, OrdinaryDiffEqCore.trivial_limiter!, static(false))\nabstol = 1.0e-8\nreltol = 1.0e-6"
+    "text": "Solve time evolution of ADOs\n\nt_list = 0:1:500\nsol_H = HEOMsolve(M_Heom, ψ0, t_list; e_ops = [σz, a' * a])\n\nSolving time evolution for ADOs by Ordinary Differential Equations method...\nProgress: [                              ]   0.2% --- Elapsed Time: 0h 00m 02s (ETA: 0h 16m 40s)Progress: [===================           ]  66.3% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 01s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 04s (ETA: 0h 00m 00s)\n\n\nSolution of hierarchical EOM\n(return code: Success)\n----------------------------\nBtier = 2\nFtier = 0\nnum_states = 1\nnum_expect = 2\nODE alg.: OrdinaryDiffEqLowOrderRK.DP5{typeof(OrdinaryDiffEqCore.trivial_limiter!), typeof(OrdinaryDiffEqCore.trivial_limiter!), Static.False}(OrdinaryDiffEqCore.trivial_limiter!, OrdinaryDiffEqCore.trivial_limiter!, static(false))\nabstol = 1.0e-8\nreltol = 1.0e-6"
   },
   {
     "objectID": "HierarchicalEOM.jl/cavityQED.html#solve-stationary-state-of-ados",
@@ -109,7 +109,7 @@
     "href": "HierarchicalEOM.jl/cavityQED.html#power-spectrum",
     "title": "Cavity QED system",
     "section": "Power spectrum",
-    "text": "Power spectrum\n\nω_list = 1:0.01:3\npsd_H = PowerSpectrum(M_Heom, steady_H, a, ω_list)\n\n# plot\nfig = Figure(size = (500, 350))\nax = Axis(fig[1, 1], xlabel = L\"\\omega\")\nlines!(ax, ω_list, psd_H)\n\nfig\n\nCalculating power spectrum in frequency domain...\nProgress: [========                      ]  29.4% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 02s)Progress: [=================             ]  59.2% --- Elapsed Time: 0h 00m 02s (ETA: 0h 00m 01s)Progress: [===========================   ]  90.0% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 00s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 00s)\n[DONE]"
+    "text": "Power spectrum\n\nω_list = 1:0.01:3\npsd_H = PowerSpectrum(M_Heom, steady_H, a, ω_list)\n\n# plot\nfig = Figure(size = (500, 350))\nax = Axis(fig[1, 1], xlabel = L\"\\omega\")\nlines!(ax, ω_list, psd_H)\n\nfig\n\nCalculating power spectrum in frequency domain...\nProgress: [========                      ]  28.4% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 02s)Progress: [=================             ]  57.7% --- Elapsed Time: 0h 00m 02s (ETA: 0h 00m 01s)Progress: [==========================    ]  87.1% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 00s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 00s)\n[DONE]"
   },
   {
     "objectID": "HierarchicalEOM.jl/cavityQED.html#compare-with-master-eq.-approach",

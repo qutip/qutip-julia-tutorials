@@ -28,7 +28,7 @@ Now, we need to build the system Hamiltonian and initial state with the package 
 
 ```{julia}
 using HierarchicalEOM  # this automatically loads `QuantumToolbox`
-using CairoMakie
+using CairoMakie       # for plotting results
 ```
 
 ```{julia}

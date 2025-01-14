@@ -41,8 +41,8 @@ Here, $H_{\textrm{b}}$ describes a bosonic reservoir where $b_{k}$ $(b_{k}^{\dag
 Now, we need to build the system Hamiltonian and initial state with the package [`QuantumToolbox.jl`](https://github.com/qutip/QuantumToolbox.jl) to construct the operators.
 
 ```{julia}
-using HierarchicalEOM  # this loads `QuantumToolbox` automatically
-using CairoMakie
+using HierarchicalEOM  # this automatically loads `QuantumToolbox`
+using CairoMakie       # for plotting results
 ```
 
 ```{julia}

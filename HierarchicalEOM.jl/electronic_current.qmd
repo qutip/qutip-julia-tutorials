@@ -8,6 +8,8 @@ engine: julia
 
 Inspirations taken from [qutip documentation](https://qutip.org/documentation.html).
 
+## Introduction
+
 In this example, we demonstrate how to compute an environmental observable: the electronic current. For further detailed discussions of calculating the electronic current using [`HierarchicalEOM.jl`](https://github.com/qutip/HierarchicalEOM.jl), we recommend to read the article [@HierarchicalEOM-jl2023].
 
 ## Hamiltonian

@@ -33,13 +33,13 @@ using CairoMakie       # for plotting results
 ```
 
 ```{julia}
-d = destroy(2) ## annihilation operator of the system electron
+d = destroy(2) # annihilation operator of the system electron
 
-## The system Hamiltonian
+# The system Hamiltonian
 ϵ = 1.0 # site energy
 Hsys = ϵ * d' * d
 
-## System initial state
+# System initial state
 ψ0 = basis(2, 0);
 ```
 
@@ -101,23 +101,23 @@ Given an ADOs, we provide a function which calculates the current from the $\alp
 # - 1 means 1st bath (bath_L)
 # - 2 means 2nd bath (bath_R)
 function Ic(ados, M::M_Fermion, bathIdx::Int)
-    ## the hierarchy dictionary
+    # the hierarchy dictionary
     HDict = M.hierarchy
 
-    ## we need all the indices of ADOs for the first level
+    # we need all the indices of ADOs for the first level
     idx_list = HDict.lvl2idx[1]
     I = 0.0im
     for idx in idx_list
-        ρ1 = ados[idx]  ## 1st-level ADO
+        ρ1 = ados[idx]  # 1st-level ADO
 
-        ## find the corresponding bath index (α) and exponent term index (k)
+        # find the corresponding bath index (α) and exponent term index (k)
         nvec = HDict.idx2nvec[idx]
         for (α, k, _) in getIndexEnsemble(nvec, HDict.bathPtr)
             if α == bathIdx
                 exponent = M.bath[α][k]
-                if exponent.types == "fA"     ## fermion-absorption
+                if exponent.types == "fA"     # fermion-absorption
                     I += tr(exponent.op' * ρ1)
-                elseif exponent.types == "fE" ## fermion-emission
+                elseif exponent.types == "fE" # fermion-emission
                     I -= tr(exponent.op' * ρ1)
                 end
                 break
@@ -127,7 +127,7 @@ function Ic(ados, M::M_Fermion, bathIdx::Int)
 
     eV_to_Joule = 1.60218E-19  # unit conversion
 
-    ## (e / ħ) * I  [change unit to μA] 
+    # (e / ħ) * I  [change unit to μA] 
     return 1.519270639695384E15 * real(1im * I) * eV_to_Joule * 1E6
 end
 ```

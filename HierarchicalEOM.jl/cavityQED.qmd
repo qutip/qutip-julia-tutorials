@@ -46,7 +46,7 @@ using CairoMakie       # for plotting results
 ```
 
 ```{julia}
-N = 3 ## system cavity Hilbert space cutoff
+N = 3 # system cavity Hilbert space cutoff
 ωA = 2
 ωc = 2
 g = 0.1

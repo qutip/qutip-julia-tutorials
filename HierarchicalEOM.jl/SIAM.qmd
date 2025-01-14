@@ -34,9 +34,9 @@ using CairoMakie       # for plotting results
 ```{julia}
 ϵ = -5
 U = 10
-σm = sigmam() ## σ-
-σz = sigmaz() ## σz
-II = qeye(2)  ## identity matrix
+σm = sigmam() # σ-
+σz = sigmaz() # σz
+II = qeye(2)  # identity matrix
 
 # construct the annihilation operator for both spin-up and spin-down
 # (utilize Jordan–Wigner transformation)

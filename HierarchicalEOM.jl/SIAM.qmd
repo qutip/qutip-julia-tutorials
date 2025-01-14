@@ -96,3 +96,8 @@ lines!(ax, ωlist, dos)
 
 fig
 ```
+
+## Version Information
+```{julia}
+HierarchicalEOM.versioninfo()
+```

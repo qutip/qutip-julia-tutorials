@@ -1,0 +1,275 @@
+---
+title: "Vacuum Rabi oscillation"
+author: Li-Xun Cai
+date: 2025-01-14 # last update (keep this comment as a reminder)
+
+engine: julia
+---
+
+Inspirations taken from this [QuTiP tutorial](https://nbviewer.org/urls/qutip.org/qutip-tutorials/tutorials-v5/time-evolution/004_rabi-oscillations.ipynb) by J.R. Johansson, P.D. Nation, and C. Staufenbiel
+
+In this notebook, the usage of `QuantumToolbox.sesolve()` and `QuantumToolbox.mesolve()` will be demonstrated with Jaynes-Cummings model to observe Rabi Oscillation in the isolated case and the dissipative case. In dissipative case, a bosonic environment would interact with JC model's cavity and two-level atom.
+
+## `using` Packages 
+
+```{julia}
+using QuantumToolbox
+using CairoMakie     # For high-quality plotting
+```
+
+## Introduction to Jaynes-Cumming model
+Jaynes-Cummings (JC) model, simplest quantum mechanical model for light-matter interaction, describes an atom interacting with electromagnetic field. To simplify the interaction at the time of the model proposal, JC model considered a two-level atom interacting with a single bosonic mode (or you can consider it a single-mode cavity), i.e., a two-dimensional Hilbert space interacting with a Fock space. <!-- (with finite truncation $N$) -->
+
+The Hamiltonian of JC model is given by
+
+$$
+\hat{H}_\text{tot} = \hat{H}_{\text{a}} + \hat{H}_{\text{c}} + \hat{H}_{\text{int}}
+$$
+
+where 
+
+- $\hat{H}_{\text{a}} = \frac{\omega_\text{a}}{2} \hat{\sigma}_z$: Hamiltonian for atom alone
+- $\hat{H}_{\text{c}} = \omega_\text{c} \hat{a}^\dagger \hat{a}$: Hamiltonian for cavity alone
+- $\hat{H}_{\text{int}} = \Omega \left( \hat{\sigma}^\dagger + \hat{\sigma} \right) \cdot \left( \hat{a}^\dagger + \hat{a} \right)$: Interaction Hamiltonian for coherent interaction
+
+with
+
+- $\omega_\text{a}$: Frequency gap of the two-level atom
+- $\omega_\text{c}$: Frequency of the cavity's EM mode (This is not specified whether to be in resonance with atom or not.)
+- $\Omega$         : Coupling strength between the atom and the cavity
+- $\hat{\sigma}_z$ : Pauli's $z$ matrix. Equivalent to $|e\rangle\langle e| - |g\rangle\langle g|$
+- $\hat{a}$        : Annihilation operator in Fock space <!-- $N$-truncated -->
+- $\hat{\sigma}$   : Lowering operator of atom. Equivalent to $|g\rangle\langle e|$
+
+By applying rotating wave approximation (RWA), the counter rotating terms ($\hat{\sigma} \cdot \hat{a}$ and its hermition conjugate) which rotate considerably faster than the others in the interaction picture is ignored, yeilding
+
+$$
+\hat{H}_\text{tot} \approx \hat{H}_{\text{a}} + \hat{H}_{\text{c}} + \Omega \left( \hat{\sigma} \cdot \hat{a}^\dagger + \hat{\sigma}^\dagger \cdot \hat{a} \right)
+$$
+
+### Usage of `QuantumToolbox` for JC model in general
+
+Since the packages are already imported with `using` at the beginning, we hereby start by defining some parameters and system Hamiltonian.
+
+```{julia}
+N = 15 # Fock space truncated dimension
+
+ωa = 1
+ωc = 1 * ωa    # this frequency considers cavity and atom are IN resonance
+ωc_ = 0.8 * ωa # this frequency considers cavity and atom are OFF resonance
+σz = sigmaz() ⊗ qeye(N) # order of tensor product should be consistent throughout
+a  = qeye(2)  ⊗ destroy(N)  
+Ω  = 0.05
+σ  = sigmam() ⊗ qeye(N)
+
+Ha = ωa / 2 * σz
+Hc = ωc * a' * a # the symbol `'` after a `QuantumObject` act as †
+Hc_ = ωc_ * a' * a
+Hint = Ω * (σ * a' + σ' * a)
+
+Htot  = Ha + Hc  + Hint
+Htot_ = Ha + Hc_ + Hint
+
+print(Htot)
+println("\n####################\n")
+print(Htot_)
+```
+
+## Isolated case
+For the case of JC system being isolated, i.e., with no interaction with the surrounding environment, the system's time-evolution is governed solely by Schrödinger equation $\hat{H}|\psi\rangle = \partial_t|\psi(t)\rangle$. Using `QuantumToolbox.sesolve()` is ideal for pure state evolution.
+
+
+```{julia}
+# define initial state ψ0
+ψ0 = basis(2,0) ⊗ fock(N, 1) 
+ψ0 = ψ0 / norm(ψ0)
+
+tlist = 0:2:200 # a list of time points of interest
+
+# define a list of operators whose expectation value dynamics exhibit Rabi oscillation
+eop_ls = [
+    a' * a, # number operator of cavity Fock space
+    σ' * σ  # excited state population in atom
+]
+
+sol  = sesolve(Htot , ψ0, tlist; e_ops = eop_ls)
+sol_ = sesolve(Htot_, ψ0, tlist; e_ops = eop_ls)
+print(sol)
+println("\n####################\n")
+print(sol_)
+```
+
+```{julia}
+# Create the first figure for expectation value of photon number
+n  = real.(sol.expect[1, :])
+n_ = real.(sol_.expect[1, :])
+fign = Figure(size = (600, 350))
+axn = Axis(
+    fign[1, 1],
+    title = "⟨n⟩",
+    xlabel = "time [1/ωa]", 
+    ylabel = "expectation value", 
+    xlabelsize = 15, 
+    ylabelsize = 15,
+    width = 400,
+    height = 220
+)
+lines!(axn, tlist, n,  label = "resonant")
+lines!(axn, tlist, n_, label = "off resonant")
+axislegend(axn; position = :rt, labelsize = 12)
+display(fign);
+```
+
+```{julia}
+# Create the second figure for excited state population
+e  = real.(sol.expect[2, :])
+e_ = real.(sol_.expect[2, :]) 
+fige = Figure(size = (600, 350))
+axe = Axis(
+    fige[1, 1], 
+    title = "⟨e⟩",
+    xlabel = "time [1/ωa]", 
+    ylabel = "probability", 
+    xlabelsize = 15, 
+    ylabelsize = 15,
+    width = 400,
+    height = 220
+)
+ylims!(axe, 0, 1)
+lines!(axe, tlist, e,  label = "resonant")
+lines!(axe, tlist, e_, label = "off resonant")
+axislegend(axe; position = :rb, labelsize = 12)
+display(fige);
+```
+
+## Dissipative case
+
+In contrast to isolated evolution, a factual system interacts with its surrounding environments, resulting in energy/particle exchange. We are currently interested in observing JC model's Rabi oscillation with the addition of interaction with the external EM field. 
+
+We start by reviewing the interaction Hamiltonians between the EM environment and atom/cavity
+
+- Atom: $$
+        \hat{H}_{\text{a}}^\text{int} = \sum_l \alpha_l \left( \hat{b}_l + \hat{b}_l^\dagger \right) \left( \hat{\sigma} + \hat{\sigma}^\dagger \right)
+        $$
+- Cavity: $$
+        \hat{H}_{\text{c}}^\text{int} = \sum_l \beta_l \left( \hat{b}_l + \hat{b}_l^\dagger \right) \left( \hat{a} + \hat{a}^\dagger \right)
+        $$
+
+where for the $l$-th mode
+
+- $\alpha_l$ is the coupling strength with the atom
+- $\beta_l$ is the coupling strength with the cavity
+- $\hat{b}_l$ is the annihilation operator
+
+
+Following the RWA approach previously mentioned and the standard procedure of Born-Markovian master equation, we obtain $\kappa$, the cavity dissipation rate, and $\gamma$, the atom dissipation rate.
+
+Therefore, the time evolution of the dissipative JC model can be described by the master equation
+
+$$
+\dot{\hat{\rho}} = -\frac{i}{\hbar} [\hat{H}, \hat{\rho}] + \sum_{i = 1}^4 \mathcal{D}[\sqrt{\Gamma_i} \hat{S}_i]\left(\hat{\rho}\right)
+$$
+
+where the $(\Gamma_i, \hat{S}_i)$ pairs are
+
+1. $\kappa \cdot n(\omega_c, T), \hat{a}^\dagger$
+2. $\kappa \cdot (1 + n(\omega_c, T)), \hat{a}$
+3. $\gamma \cdot n(\omega_a, T), \hat{\sigma}^\dagger$
+4. $\gamma \cdot (1 + n(\omega_a, T)), \hat{\sigma}$
+
+with $n(\omega, T)$ being the Bose-Einstein distribution for the EM environment and $\mathcal{D}[\hat{\mathcal{O}}]\left(\cdot\right) = \hat{\mathcal{O}} \left(\cdot\right) \hat{\mathcal{O}}^\dagger - \frac{1}{2} \{ \hat{\mathcal{O}}^\dagger \hat{\mathcal{O}}, \cdot \}$ being the Lindblad dissipator.
+
+### Solve for evolutions in dissipative case
+
+We can now define variables in `julia` and solve the evolution of dissipative JC model 
+```{julia}
+# Bose-Einstein distribution
+function nb(_ω, _KT)
+    if _KT < 0
+        println("Temperatur should not go below absolute zero, returned 0")
+        _n = 0.0
+    else
+        _n = (_KT == 0) ? 0 : (1 / (exp(_ω / _KT) - 1))
+    end
+    return _n
+end
+
+# Collapse operators for interaction with the environment with variable 
+# dissipation rates, cavity frequency, and thermal energy of the environment
+cop_ls(_γ, _κ, _ωc, _KT) = (
+    √(_κ * nb(_ωc, _KT)) * a', 
+    √(_κ * (1 + nb(_ωc, _KT))) * a, 
+    √(_γ * nb(ωa, _KT)) * σ', 
+    √(_γ * (1 + nb(ωa, _KT))) * σ, 
+)
+```
+
+```{julia}
+# use the same ψ0, tlist, and eop_ls from isolated case
+γ = 4e-3
+κ = 0.005
+KT = 0 # for theoretical vacuum EM field
+
+# `mesolve()` only has one additional keyword argument `c_ops` from `sesolve()`
+sol_me  = mesolve(Htot,  ψ0, tlist, cop_ls(γ, κ, ωc,  KT), e_ops = eop_ls)
+sol_me_ = mesolve(Htot_, ψ0, tlist, cop_ls(γ, κ, ωc_, KT), e_ops = eop_ls)
+
+print(sol_me)
+println("\n####################\n")
+print(sol_me_)
+```
+
+```{julia}
+# Create the first figure for expectation value of photon number
+n_me  = real.(sol_me.expect[1, :])
+n_me_ = real.(sol_me_.expect[1, :])
+fign_me = Figure(size = (600, 350))
+axn_me = Axis(
+    fign_me[1, 1],
+    title = "⟨n⟩",
+    xlabel = "time [1/ωa]", 
+    ylabel = "expectation value", 
+    xlabelsize = 15, 
+    ylabelsize = 15,
+    width = 400,
+    height = 220
+    )
+lines!(axn_me, tlist, n_me,  label = "resonant")
+lines!(axn_me, tlist, n_me_, label = "off resonant")
+axislegend(axn_me; position = :rt, labelsize = 12)
+display(fign_me);
+```
+
+
+```{julia}
+# Create the second figure for atom excited state population
+e_me  = real.(sol_me.expect[2, :])
+e_me_ = real.(sol_me_.expect[2, :]) 
+fige_me = Figure(size = (600, 350))
+axe_me = Axis(
+    fige_me[1, 1], 
+    title = "⟨e⟩",
+    xlabel = "time [1/ωa]", 
+    ylabel = "probability", 
+    xlabelsize = 15, 
+    ylabelsize = 15,
+    width = 400,
+    height = 220
+    )
+ylims!(axe_me, 0, 1)
+lines!(axe_me, tlist, e_me,  label = "resonant")
+lines!(axe_me, tlist, e_me_, label = "off resonant")
+axislegend(axe_me; position = :rb, labelsize = 12)
+display(fige_me);
+```
+
+### Note for RWA
+
+Without applying RWA, things are more interesting in the \emph{Ultrastrong Coupling} (USC) regime, where $\Omega \sim \omega_c$. In that regime, the \emph{localized} master equation (the one we used for this tutorial) fails. As that phenomenon is worth itself an independent tutorial, we will pass that to [this tutorial for `liouvillian_generalized()`](). 
+
+
+
+## Version Information
+```{julia}
+QuantumToolbox.versioninfo()
+```

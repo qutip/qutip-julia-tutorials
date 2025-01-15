@@ -6,10 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Shen-Liang Yang, Yi-Te Huang">
-<meta name="dcterms.date" content="2025-01-13">
+<meta name="author" content="Yi-Te Huang">
+<meta name="dcterms.date" content="2025-01-14">
 
-<title>Cavity QED system – Tutorials for Quantum Toolbox in Julia</title>
+<title>Electronic Current – Tutorials for Quantum Toolbox in Julia</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -56,7 +56,27 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -195,19 +215,19 @@ window.Quarto = {
   <li><a href="#construct-heomls-matrix" id="toc-construct-heomls-matrix" class="nav-link" data-scroll-target="#construct-heomls-matrix">Construct HEOMLS matrix</a></li>
   <li><a href="#solve-time-evolution-of-ados" id="toc-solve-time-evolution-of-ados" class="nav-link" data-scroll-target="#solve-time-evolution-of-ados">Solve time evolution of ADOs</a></li>
   <li><a href="#solve-stationary-state-of-ados" id="toc-solve-stationary-state-of-ados" class="nav-link" data-scroll-target="#solve-stationary-state-of-ados">Solve stationary state of ADOs</a></li>
-  <li><a href="#expectation-values" id="toc-expectation-values" class="nav-link" data-scroll-target="#expectation-values">Expectation values</a></li>
-  <li><a href="#power-spectrum" id="toc-power-spectrum" class="nav-link" data-scroll-target="#power-spectrum">Power spectrum</a></li>
-  <li><a href="#compare-with-master-eq.-approach" id="toc-compare-with-master-eq.-approach" class="nav-link" data-scroll-target="#compare-with-master-eq.-approach">Compare with Master Eq. approach</a></li>
+  <li><a href="#calculate-current" id="toc-calculate-current" class="nav-link" data-scroll-target="#calculate-current">Calculate current</a></li>
+  <li><a href="#steady-current" id="toc-steady-current" class="nav-link" data-scroll-target="#steady-current">steady current</a></li>
+  <li><a href="#time-evolution-current" id="toc-time-evolution-current" class="nav-link" data-scroll-target="#time-evolution-current">time evolution current</a></li>
   <li><a href="#version-information" id="toc-version-information" class="nav-link" data-scroll-target="#version-information">Version Information</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/qutip/qutip-julia-tutorials/edit/main/HierarchicalEOM.jl/cavityQED.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/qutip/qutip-julia-tutorials/blob/main/HierarchicalEOM.jl/cavityQED.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/qutip/qutip-julia-tutorials/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/qutip/qutip-julia-tutorials/edit/main/HierarchicalEOM.jl/electronic_current.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/qutip/qutip-julia-tutorials/blob/main/HierarchicalEOM.jl/electronic_current.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/qutip/qutip-julia-tutorials/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Cavity QED system</h1>
+<h1 class="title">Electronic Current</h1>
 </div>
 
 
@@ -217,14 +237,14 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>Shen-Liang Yang, Yi-Te Huang </p>
+             <p>Yi-Te Huang </p>
           </div>
   </div>
     
     <div>
     <div class="quarto-title-meta-heading">Last Update</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2025-01-13</p>
+      <p class="date">2025-01-14</p>
     </div>
   </div>
   
@@ -236,330 +256,261 @@ window.Quarto = {
 </header>
 
 
+<p>Inspirations taken from <a href="https://qutip.org/documentation.html">qutip documentation</a>.</p>
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>Cavity quantum electrodynamics (cavity QED) is an important topic for studying the interaction between atoms (or other particles) and light confined in a reflective cavity, under conditions where the quantum nature of photons is significant.</p>
+<p>In this example, we demonstrate how to compute an environmental observable: the electronic current. For further detailed discussions of calculating the electronic current using <a href="https://github.com/qutip/HierarchicalEOM.jl"><code>HierarchicalEOM.jl</code></a>, we recommend to read the article <span class="citation" data-cites="HierarchicalEOM-jl2023">(<a href="#ref-HierarchicalEOM-jl2023" role="doc-biblioref">Huang et al. 2023</a>)</span>.</p>
 </section>
 <section id="hamiltonian" class="level2">
 <h2 class="anchored" data-anchor-id="hamiltonian">Hamiltonian</h2>
-<p>The Jaynes-Cummings model is a standard model in the realm of cavity QED. It illustrates the interaction between a two-level atom (<span class="math inline">\(\textrm{A}\)</span>) and a quantized single-mode within a cavity (<span class="math inline">\(\textrm{c}\)</span>).</p>
-<p>Now, we need to build the system Hamiltonian and initial state with the package <a href="https://github.com/qutip/QuantumToolbox.jl"><code>QuantumToolbox.jl</code></a> to construct the operators.</p>
+<p>We consider a single-level charge system coupled to two [left (L) and right (R)] fermionic reservoirs (<span class="math inline">\(\textrm{f}\)</span>). The total Hamiltonian is given by <span class="math inline">\(H_{\textrm{T}}=H_\textrm{s}+H_\textrm{f}+H_\textrm{sf}\)</span>, where each terms takes the form</p>
 <p><span class="math display">\[
 \begin{aligned}
-H_{\textrm{s}}&amp;=H_{\textrm{A}}+H_{\textrm{c}}+H_{\textrm{int}},\\
-H_{\textrm{A}}&amp;=\frac{\omega_A}{2}\sigma_z,\\
-H_{\textrm{c}}&amp;=\omega_{\textrm{c}} a^\dagger a,\\
-H_{\textrm{int}}&amp;=g (a^\dagger\sigma^-+a\sigma^+),
+H_{\textrm{s}}  &amp;= \epsilon d^\dagger d,\\
+H_{\textrm{f}}  &amp;=\sum_{\alpha=\textrm{L},\textrm{R}}\sum_{k}\epsilon_{\alpha,k}c_{\alpha,k}^{\dagger}c_{\alpha,k},\\
+H_{\textrm{sf}} &amp;=\sum_{\alpha=\textrm{L},\textrm{R}}\sum_{k}g_{\alpha,k}c_{\alpha,k}^{\dagger}d + g_{\alpha,k}^* d^{\dagger}c_{\alpha,k}.
 \end{aligned}
 \]</span></p>
-<p>where <span class="math inline">\(\sigma^-\)</span> (<span class="math inline">\(\sigma^+\)</span>) is the annihilation (creation) operator of the atom, and <span class="math inline">\(a\)</span> (<span class="math inline">\(a^\dagger\)</span>) is the annihilation (creation) operator of the cavity.</p>
-<p>Furthermore, we consider the system is coupled to a bosonic reservoir (<span class="math inline">\(\textrm{b}\)</span>). The total Hamiltonian is given by <span class="math inline">\(H_{\textrm{Total}}=H_\textrm{s}+H_\textrm{b}+H_\textrm{sb}\)</span>, where <span class="math inline">\(H_\textrm{b}\)</span> and <span class="math inline">\(H_\textrm{sb}\)</span> takes the form</p>
-<p><span class="math display">\[
-\begin{aligned}
-H_{\textrm{b}}    &amp;=\sum_{k}\omega_{k}b_{k}^{\dagger}b_{k},\\
-H_{\textrm{sb}}   &amp;=(a+a^\dagger)\sum_{k}g_{k}(b_k + b_k^{\dagger}).
-\end{aligned}
-\]</span></p>
-<p>Here, <span class="math inline">\(H_{\textrm{b}}\)</span> describes a bosonic reservoir where <span class="math inline">\(b_{k}\)</span> <span class="math inline">\((b_{k}^{\dagger})\)</span> is the bosonic annihilation (creation) operator associated to the <span class="math inline">\(k\)</span>th mode (with frequency <span class="math inline">\(\omega_{k}\)</span>). Also, <span class="math inline">\(H_{\textrm{sb}}\)</span> illustrates the interaction between the cavity and the bosonic reservoir.</p>
+<p>Here, <span class="math inline">\(d\)</span> <span class="math inline">\((d^\dagger)\)</span> annihilates (creates) an electron in the system and <span class="math inline">\(\epsilon\)</span> is the energy of the electron. Furthermore, <span class="math inline">\(c_{\alpha,k}\)</span> <span class="math inline">\((c_{\alpha,k}^{\dagger})\)</span> annihilates (creates) an electron in the state <span class="math inline">\(k\)</span> (with energy <span class="math inline">\(\epsilon_{\alpha,k}\)</span>) of the <span class="math inline">\(\alpha\)</span>-th reservoir.</p>
 <p>Now, we need to build the system Hamiltonian and initial state with the package <a href="https://github.com/qutip/QuantumToolbox.jl"><code>QuantumToolbox.jl</code></a> to construct the operators.</p>
 <div id="2" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">using</span> <span class="bu">HierarchicalEOM</span>  <span class="co"># this automatically loads `QuantumToolbox`</span></span>
 <span id="cb1-2"><a href="#cb1-2"></a><span class="im">using</span> <span class="bu">CairoMakie</span>       <span class="co"># for plotting results</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="4" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1"></a>N <span class="op">=</span> <span class="fl">3</span> <span class="co"># system cavity Hilbert space cutoff</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a>ωA <span class="op">=</span> <span class="fl">2</span></span>
-<span id="cb2-3"><a href="#cb2-3"></a>ωc <span class="op">=</span> <span class="fl">2</span></span>
-<span id="cb2-4"><a href="#cb2-4"></a>g <span class="op">=</span> <span class="fl">0.1</span></span>
-<span id="cb2-5"><a href="#cb2-5"></a></span>
-<span id="cb2-6"><a href="#cb2-6"></a><span class="co"># operators</span></span>
-<span id="cb2-7"><a href="#cb2-7"></a>a_c <span class="op">=</span> <span class="fu">destroy</span>(N)</span>
-<span id="cb2-8"><a href="#cb2-8"></a>I_c <span class="op">=</span> <span class="fu">qeye</span>(N)</span>
-<span id="cb2-9"><a href="#cb2-9"></a>σz_A <span class="op">=</span> <span class="fu">sigmaz</span>()</span>
-<span id="cb2-10"><a href="#cb2-10"></a>σm_A <span class="op">=</span> <span class="fu">sigmam</span>()</span>
-<span id="cb2-11"><a href="#cb2-11"></a>I_A <span class="op">=</span> <span class="fu">qeye</span>(<span class="fl">2</span>)</span>
-<span id="cb2-12"><a href="#cb2-12"></a></span>
-<span id="cb2-13"><a href="#cb2-13"></a><span class="co"># operators in tensor-space</span></span>
-<span id="cb2-14"><a href="#cb2-14"></a>a <span class="op">=</span> <span class="fu">tensor</span>(a_c, I_A)</span>
-<span id="cb2-15"><a href="#cb2-15"></a>σz <span class="op">=</span> <span class="fu">tensor</span>(I_c, σz_A)</span>
-<span id="cb2-16"><a href="#cb2-16"></a>σm <span class="op">=</span> <span class="fu">tensor</span>(I_c, σm_A)</span>
-<span id="cb2-17"><a href="#cb2-17"></a></span>
-<span id="cb2-18"><a href="#cb2-18"></a><span class="co"># Hamiltonian</span></span>
-<span id="cb2-19"><a href="#cb2-19"></a>H_A <span class="op">=</span> <span class="fl">0.5</span> <span class="op">*</span> ωA <span class="op">*</span> σz</span>
-<span id="cb2-20"><a href="#cb2-20"></a>H_c <span class="op">=</span> ωc <span class="op">*</span> a<span class="op">'</span> <span class="op">*</span> a</span>
-<span id="cb2-21"><a href="#cb2-21"></a>H_int <span class="op">=</span> g <span class="op">*</span> (a<span class="op">'</span> <span class="op">*</span> σm <span class="op">+</span> a <span class="op">*</span> σm<span class="op">'</span>)</span>
-<span id="cb2-22"><a href="#cb2-22"></a>H_s <span class="op">=</span> H_A <span class="op">+</span> H_c <span class="op">+</span> H_int</span>
-<span id="cb2-23"><a href="#cb2-23"></a></span>
-<span id="cb2-24"><a href="#cb2-24"></a><span class="co"># initial state</span></span>
-<span id="cb2-25"><a href="#cb2-25"></a>ψ<span class="fl">0</span> <span class="op">=</span> <span class="fu">tensor</span>(<span class="fu">basis</span>(N, <span class="fl">0</span>), <span class="fu">basis</span>(<span class="fl">2</span>, <span class="fl">0</span>));</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1"></a>d <span class="op">=</span> <span class="fu">destroy</span>(<span class="fl">2</span>) <span class="co"># annihilation operator of the system electron</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="co"># The system Hamiltonian</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a>ϵ <span class="op">=</span> <span class="fl">1.0</span> <span class="co"># site energy</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a>Hsys <span class="op">=</span> ϵ <span class="op">*</span> d<span class="op">'</span> <span class="op">*</span> d</span>
+<span id="cb2-6"><a href="#cb2-6"></a></span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="co"># System initial state</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a>ψ<span class="fl">0</span> <span class="op">=</span> <span class="fu">basis</span>(<span class="fl">2</span>, <span class="fl">0</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="construct-bath-objects" class="level2">
 <h2 class="anchored" data-anchor-id="construct-bath-objects">Construct bath objects</h2>
-<p>We assume the bosonic reservoir to have a <a href="https://qutip.org/HierarchicalEOM.jl/stable/bath_boson/Boson_Drude_Lorentz/#Boson-Drude-Lorentz">Drude-Lorentz Spectral Density</a>, and we utilize the Padé decomposition. Furthermore, the spectral densities depend on the following physical parameters:</p>
+<p>We assume the fermionic reservoir to have a <a href="https://qutip.org/HierarchicalEOM.jl/stable/bath_fermion/Fermion_Lorentz/#doc-Fermion-Lorentz">Lorentzian-shaped spectral density</a>, and we utilize the Padé decomposition. Furthermore, the spectral densities depend on the following physical parameters:</p>
 <ul>
-<li>the coupling strength <span class="math inline">\(\Gamma\)</span> between system and reservoir</li>
+<li>the coupling strength <span class="math inline">\(\Gamma\)</span> between system and reservoirs</li>
 <li>the band-width <span class="math inline">\(W\)</span></li>
 <li>the product of the Boltzmann constant <span class="math inline">\(k\)</span> and the absolute temperature <span class="math inline">\(T\)</span> : <span class="math inline">\(kT\)</span></li>
-<li>the total number of exponentials for the reservoir <span class="math inline">\((N + 1)\)</span></li>
+<li>the chemical potential <span class="math inline">\(\mu\)</span></li>
+<li>the total number of exponentials for the reservoir <span class="math inline">\(2(N + 1)\)</span></li>
 </ul>
 <div id="6" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1"></a>Γ <span class="op">=</span> <span class="fl">0.01</span></span>
 <span id="cb3-2"><a href="#cb3-2"></a>W <span class="op">=</span> <span class="fl">1</span></span>
-<span id="cb3-3"><a href="#cb3-3"></a>kT <span class="op">=</span> <span class="fl">0.025</span></span>
-<span id="cb3-4"><a href="#cb3-4"></a>N <span class="op">=</span> <span class="fl">20</span></span>
-<span id="cb3-5"><a href="#cb3-5"></a>Bath <span class="op">=</span> <span class="fu">Boson_DrudeLorentz_Pade</span>(a <span class="op">+</span> a<span class="op">'</span>, Γ, W, kT, N)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-3"><a href="#cb3-3"></a>kT <span class="op">=</span> <span class="fl">0.025851991</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a>μL <span class="op">=</span>  <span class="fl">1.0</span> <span class="co"># Left  bath</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a>μR <span class="op">=</span> <span class="op">-</span><span class="fl">1.0</span> <span class="co"># Right bath</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a>N <span class="op">=</span> <span class="fl">2</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a>bath_L <span class="op">=</span> <span class="fu">Fermion_Lorentz_Pade</span>(d, Γ, μL, W, kT, N)</span>
+<span id="cb3-8"><a href="#cb3-8"></a>bath_R <span class="op">=</span> <span class="fu">Fermion_Lorentz_Pade</span>(d, Γ, μR, W, kT, N)</span>
+<span id="cb3-9"><a href="#cb3-9"></a>baths <span class="op">=</span> [bath_L, bath_R]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>HierarchicalEOM.BosonBath object with 21 exponential-expansion terms</code></pre>
-</div>
-</div>
-<p>Before incorporating the correlation function into the HEOMLS matrix, it is essential to verify (by using <code>correlation_function</code>) if the total number of exponentials for the reservoir sufficiently describes the practical situation.</p>
-<div id="8" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1"></a>tlist_test <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">0.1</span><span class="op">:</span><span class="fl">10</span>;</span>
-<span id="cb5-2"><a href="#cb5-2"></a>Bath_test <span class="op">=</span> <span class="fu">Boson_DrudeLorentz_Pade</span>(a <span class="op">+</span> a<span class="op">'</span>, Γ, W, kT, <span class="fl">1000</span>);</span>
-<span id="cb5-3"><a href="#cb5-3"></a>Ct <span class="op">=</span> <span class="fu">correlation_function</span>(Bath, tlist_test);</span>
-<span id="cb5-4"><a href="#cb5-4"></a>Ct2 <span class="op">=</span> <span class="fu">correlation_function</span>(Bath_test, tlist_test)</span>
-<span id="cb5-5"><a href="#cb5-5"></a></span>
-<span id="cb5-6"><a href="#cb5-6"></a><span class="co"># plot</span></span>
-<span id="cb5-7"><a href="#cb5-7"></a>fig <span class="op">=</span> <span class="fu">Figure</span>(size <span class="op">=</span> (<span class="fl">500</span>, <span class="fl">350</span>))</span>
-<span id="cb5-8"><a href="#cb5-8"></a>ax <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">1</span>, <span class="fl">1</span>], xlabel <span class="op">=</span> L<span class="st">"t"</span>, ylabel <span class="op">=</span> L<span class="st">"C(t)"</span>)</span>
-<span id="cb5-9"><a href="#cb5-9"></a><span class="fu">lines!</span>(ax, tlist_test, <span class="fu">real</span>(Ct2), label <span class="op">=</span> L<span class="st">"</span><span class="sc">$</span>N<span class="st">=1000$ (real part)"</span>, linestyle <span class="op">=</span> <span class="op">:</span>solid)</span>
-<span id="cb5-10"><a href="#cb5-10"></a><span class="fu">lines!</span>(ax, tlist_test, <span class="fu">real</span>(Ct),  label <span class="op">=</span> L<span class="st">"</span><span class="sc">$</span>N<span class="st">=20$ (real part)"</span>, linestyle <span class="op">=</span> <span class="op">:</span>dash)</span>
-<span id="cb5-11"><a href="#cb5-11"></a><span class="fu">lines!</span>(ax, tlist_test, <span class="fu">imag</span>(Ct2), label <span class="op">=</span> L<span class="st">"</span><span class="sc">$</span>N<span class="st">=1000$ (imag part)"</span>, linestyle <span class="op">=</span> <span class="op">:</span>solid)</span>
-<span id="cb5-12"><a href="#cb5-12"></a><span class="fu">lines!</span>(ax, tlist_test, <span class="fu">imag</span>(Ct),  label <span class="op">=</span> L<span class="st">"</span><span class="sc">$</span>N<span class="st">=20$ (imag part)"</span>, linestyle <span class="op">=</span> <span class="op">:</span>dash)</span>
-<span id="cb5-13"><a href="#cb5-13"></a></span>
-<span id="cb5-14"><a href="#cb5-14"></a><span class="fu">axislegend</span>(ax, position <span class="op">=</span> <span class="op">:</span>rt)</span>
-<span id="cb5-15"><a href="#cb5-15"></a></span>
-<span id="cb5-16"><a href="#cb5-16"></a>fig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="1">
-<div>
-<figure class="figure">
-<p><img src="cavityQED_files/figure-html/cell-5-output-1.svg" class="img-fluid figure-img"></p>
-</figure>
-</div>
+<pre><code>2-element Vector{FermionBath}:
+ HierarchicalEOM.FermionBath object with 6 exponential-expansion terms
+
+ HierarchicalEOM.FermionBath object with 6 exponential-expansion terms</code></pre>
 </div>
 </div>
 </section>
 <section id="construct-heomls-matrix" class="level2">
 <h2 class="anchored" data-anchor-id="construct-heomls-matrix">Construct HEOMLS matrix</h2>
-<p>Here, we consider an incoherent pumping to the atom, which can be described by an Lindblad dissipator (see <a href="https://qutip.org/HierarchicalEOM.jl/stable/heom_matrix/master_eq/">here</a> for more details).</p>
-<p>Furthermore, we set the <a href="https://qutip.org/HierarchicalEOM.jl/stable/heom_matrix/HEOMLS_intro/#doc-Importance-Value-and-Threshold">important threshold</a> to be <code>1e-6</code>.</p>
-<div id="10" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1"></a>pump <span class="op">=</span> <span class="fl">0.01</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a>J_pump <span class="op">=</span> <span class="fu">sqrt</span>(pump) <span class="op">*</span> σm<span class="op">'</span></span>
-<span id="cb6-3"><a href="#cb6-3"></a>tier <span class="op">=</span> <span class="fl">2</span></span>
-<span id="cb6-4"><a href="#cb6-4"></a>M_Heom <span class="op">=</span> <span class="fu">M_Boson</span>(H_s, tier, threshold <span class="op">=</span> <span class="fl">1e-6</span>, Bath)</span>
-<span id="cb6-5"><a href="#cb6-5"></a>M_Heom <span class="op">=</span> <span class="fu">addBosonDissipator</span>(M_Heom, J_pump)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="8" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1"></a>tier <span class="op">=</span> <span class="fl">5</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>M <span class="op">=</span> <span class="fu">M_Fermion</span>(Hsys, tier, baths)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Checking the importance value for each ADOs...[DONE]
-Preparing block matrices for HEOM Liouvillian superoperator (using 4 threads)...
-Progress: [                              ]   2.1% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 47s)Progress: [                              ]   3.1% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 31s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 00s)
+<pre><code>Preparing block matrices for HEOM Liouvillian superoperator (using 4 threads)...
+Progress: [                              ]   0.1% --- Elapsed Time: 0h 00m 01s (ETA: 0h 26m 25s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 00s)
 Constructing matrix...[DONE]</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>Boson type HEOMLS matrix acting on even-parity ADOs
-system dims = [3, 2]
-number of ADOs N = 97
+<pre><code>Fermion type HEOMLS matrix acting on even-parity ADOs
+system dims = [2]
+number of ADOs N = 1586
 data =
-MatrixOperator(3492 × 3492)</code></pre>
+MatrixOperator(6344 × 6344)</code></pre>
 </div>
 </div>
 </section>
 <section id="solve-time-evolution-of-ados" class="level2">
 <h2 class="anchored" data-anchor-id="solve-time-evolution-of-ados">Solve time evolution of ADOs</h2>
-<div id="12" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1"></a>t_list <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">1</span><span class="op">:</span><span class="fl">500</span></span>
-<span id="cb9-2"><a href="#cb9-2"></a>sol_H <span class="op">=</span> <span class="fu">HEOMsolve</span>(M_Heom, ψ<span class="fl">0</span>, t_list; e_ops <span class="op">=</span> [σz, a<span class="op">'</span> <span class="op">*</span> a])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="10" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1"></a>tlist <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">0.5</span><span class="op">:</span><span class="fl">100</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a>ados_evolution <span class="op">=</span> <span class="fu">HEOMsolve</span>(M, ψ<span class="fl">0</span>, tlist).ados</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Solving time evolution for ADOs by Ordinary Differential Equations method...
-Progress: [                              ]   0.2% --- Elapsed Time: 0h 00m 02s (ETA: 0h 16m 40s)Progress: [===================           ]  65.7% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 01s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 00s)</code></pre>
+Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>Solution of hierarchical EOM
-(return code: Success)
-----------------------------
-Btier = 2
-Ftier = 0
-num_states = 1
-num_expect = 2
-ODE alg.: OrdinaryDiffEqLowOrderRK.DP5{typeof(OrdinaryDiffEqCore.trivial_limiter!), typeof(OrdinaryDiffEqCore.trivial_limiter!), Static.False}(OrdinaryDiffEqCore.trivial_limiter!, OrdinaryDiffEqCore.trivial_limiter!, static(false))
-abstol = 1.0e-8
-reltol = 1.0e-6</code></pre>
+<pre><code>201-element Vector{ADOs}:
+ 1586 Auxiliary Density Operators with even-parity and (system) dims = [2]
+
+ 1586 Auxiliary Density Operators with even-parity and (system) dims = [2]
+
+ 1586 Auxiliary Density Operators with even-parity and (system) dims = [2]
+
+ 1586 Auxiliary Density Operators with even-parity and (system) dims = [2]
+
+ 1586 Auxiliary Density Operators with even-parity and (system) dims = [2]
+
+ 1586 Auxiliary Density Operators with even-parity and (system) dims = [2]
+
+ 1586 Auxiliary Density Operators with even-parity and (system) dims = [2]
+
+ 1586 Auxiliary Density Operators with even-parity and (system) dims = [2]
+
+ 1586 Auxiliary Density Operators with even-parity and (system) dims = [2]
+
+ 1586 Auxiliary Density Operators with even-parity and (system) dims = [2]
+
+ ⋮
+ 1586 Auxiliary Density Operators with even-parity and (system) dims = [2]
+
+ 1586 Auxiliary Density Operators with even-parity and (system) dims = [2]
+
+ 1586 Auxiliary Density Operators with even-parity and (system) dims = [2]
+
+ 1586 Auxiliary Density Operators with even-parity and (system) dims = [2]
+
+ 1586 Auxiliary Density Operators with even-parity and (system) dims = [2]
+
+ 1586 Auxiliary Density Operators with even-parity and (system) dims = [2]
+
+ 1586 Auxiliary Density Operators with even-parity and (system) dims = [2]
+
+ 1586 Auxiliary Density Operators with even-parity and (system) dims = [2]
+
+ 1586 Auxiliary Density Operators with even-parity and (system) dims = [2]</code></pre>
 </div>
 </div>
 </section>
 <section id="solve-stationary-state-of-ados" class="level2">
 <h2 class="anchored" data-anchor-id="solve-stationary-state-of-ados">Solve stationary state of ADOs</h2>
-<div id="14" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1"></a>steady_H <span class="op">=</span> <span class="fu">steadystate</span>(M_Heom);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="12" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1"></a>ados_steady <span class="op">=</span> <span class="fu">steadystate</span>(M)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Solving steady state for ADOs by linear-solve method...[DONE]</code></pre>
 </div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>1586 Auxiliary Density Operators with even-parity and (system) dims = [2]</code></pre>
+</div>
 </div>
 </section>
-<section id="expectation-values" class="level2">
-<h2 class="anchored" data-anchor-id="expectation-values">Expectation values</h2>
-<p>observable of atom: <span class="math inline">\(\sigma_z\)</span></p>
+<section id="calculate-current" class="level2">
+<h2 class="anchored" data-anchor-id="calculate-current">Calculate current</h2>
+<p>Within the influence functional approach, the expectation value of the electronic current from the <span class="math inline">\(\alpha\)</span>-fermionic bath into the system can be written in terms of the first-level-fermionic (<span class="math inline">\(n=1\)</span>) auxiliary density operators, namely</p>
+<p><span class="math display">\[
+\langle I_\alpha(t) \rangle =(-e) \frac{d\langle \mathcal{N}_\alpha\rangle}{dt}=i e \sum_{q\in\textbf{q}}(-1)^{\delta_{\nu,-}} ~\textrm{Tr}\left[d^{\bar{\nu}}\rho^{(0,1,+)}_{\vert \textbf{q}}(t)\right],
+\]</span></p>
+<p>where <span class="math inline">\(e\)</span> represents the value of the elementary charge, and <span class="math inline">\(\mathcal{N}_\alpha=\sum_k c^\dagger_{\alpha,k}c_{\alpha,k}\)</span> is the occupation number operator for the <span class="math inline">\(\alpha\)</span>-fermionic bath.</p>
+<p>Given an ADOs, we provide a function which calculates the current from the <span class="math inline">\(\alpha\)</span>-fermionic bath into the system with the help of <a href="https://qutip.org/HierarchicalEOM.jl/stable/hierarchy_dictionary/#doc-Hierarchy-Dictionary">Hierarchy Dictionary</a>.</p>
+<div id="14" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1"></a><span class="co"># `bathIdx`:  </span></span>
+<span id="cb14-2"><a href="#cb14-2"></a><span class="co"># - 1 means 1st bath (bath_L)</span></span>
+<span id="cb14-3"><a href="#cb14-3"></a><span class="co"># - 2 means 2nd bath (bath_R)</span></span>
+<span id="cb14-4"><a href="#cb14-4"></a><span class="kw">function</span> <span class="fu">Ic</span>(ados, M<span class="op">::</span><span class="dt">M_Fermion</span>, bathIdx<span class="op">::</span><span class="dt">Int</span>)</span>
+<span id="cb14-5"><a href="#cb14-5"></a>    <span class="co"># the hierarchy dictionary</span></span>
+<span id="cb14-6"><a href="#cb14-6"></a>    HDict <span class="op">=</span> M.hierarchy</span>
+<span id="cb14-7"><a href="#cb14-7"></a></span>
+<span id="cb14-8"><a href="#cb14-8"></a>    <span class="co"># we need all the indices of ADOs for the first level</span></span>
+<span id="cb14-9"><a href="#cb14-9"></a>    idx_list <span class="op">=</span> HDict.lvl2idx[<span class="fl">1</span>]</span>
+<span id="cb14-10"><a href="#cb14-10"></a>    I <span class="op">=</span> <span class="fl">0.0im</span></span>
+<span id="cb14-11"><a href="#cb14-11"></a>    <span class="cf">for</span> idx <span class="kw">in</span> idx_list</span>
+<span id="cb14-12"><a href="#cb14-12"></a>        ρ<span class="fl">1</span> <span class="op">=</span> ados[idx]  <span class="co"># 1st-level ADO</span></span>
+<span id="cb14-13"><a href="#cb14-13"></a></span>
+<span id="cb14-14"><a href="#cb14-14"></a>        <span class="co"># find the corresponding bath index (α) and exponent term index (k)</span></span>
+<span id="cb14-15"><a href="#cb14-15"></a>        nvec <span class="op">=</span> HDict.idx2nvec[idx]</span>
+<span id="cb14-16"><a href="#cb14-16"></a>        <span class="cf">for</span> (α, k, _) <span class="kw">in</span> <span class="fu">getIndexEnsemble</span>(nvec, HDict.bathPtr)</span>
+<span id="cb14-17"><a href="#cb14-17"></a>            <span class="cf">if</span> α <span class="op">==</span> bathIdx</span>
+<span id="cb14-18"><a href="#cb14-18"></a>                exponent <span class="op">=</span> M.bath[α][k]</span>
+<span id="cb14-19"><a href="#cb14-19"></a>                <span class="cf">if</span> exponent.types <span class="op">==</span> <span class="st">"fA"</span>     <span class="co"># fermion-absorption</span></span>
+<span id="cb14-20"><a href="#cb14-20"></a>                    I <span class="op">+=</span> <span class="fu">tr</span>(exponent.op<span class="op">'</span> <span class="op">*</span> ρ<span class="fl">1</span>)</span>
+<span id="cb14-21"><a href="#cb14-21"></a>                <span class="cf">elseif</span> exponent.types <span class="op">==</span> <span class="st">"fE"</span> <span class="co"># fermion-emission</span></span>
+<span id="cb14-22"><a href="#cb14-22"></a>                    I <span class="op">-=</span> <span class="fu">tr</span>(exponent.op<span class="op">'</span> <span class="op">*</span> ρ<span class="fl">1</span>)</span>
+<span id="cb14-23"><a href="#cb14-23"></a>                <span class="cf">end</span></span>
+<span id="cb14-24"><a href="#cb14-24"></a>                <span class="cf">break</span></span>
+<span id="cb14-25"><a href="#cb14-25"></a>            <span class="cf">end</span></span>
+<span id="cb14-26"><a href="#cb14-26"></a>        <span class="cf">end</span></span>
+<span id="cb14-27"><a href="#cb14-27"></a>    <span class="cf">end</span></span>
+<span id="cb14-28"><a href="#cb14-28"></a></span>
+<span id="cb14-29"><a href="#cb14-29"></a>    eV_to_Joule <span class="op">=</span> <span class="fl">1.60218E-19</span>  <span class="co"># unit conversion</span></span>
+<span id="cb14-30"><a href="#cb14-30"></a></span>
+<span id="cb14-31"><a href="#cb14-31"></a>    <span class="co"># (e / ħ) * I  [change unit to μA] </span></span>
+<span id="cb14-32"><a href="#cb14-32"></a>    <span class="cf">return</span> <span class="fl">1.519270639695384E15</span> <span class="op">*</span> <span class="fu">real</span>(<span class="fl">1im</span> <span class="op">*</span> I) <span class="op">*</span> eV_to_Joule <span class="op">*</span> <span class="fl">1E6</span></span>
+<span id="cb14-33"><a href="#cb14-33"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>Ic (generic function with 1 method)</code></pre>
+</div>
+</div>
+</section>
+<section id="steady-current" class="level2">
+<h2 class="anchored" data-anchor-id="steady-current">steady current</h2>
 <div id="16" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1"></a>σz_evo_H <span class="op">=</span> <span class="fu">real</span>(sol_H.expect[<span class="fl">1</span>, <span class="op">:</span>])</span>
-<span id="cb14-2"><a href="#cb14-2"></a>σz_steady_H <span class="op">=</span> <span class="fu">expect</span>(σz, steady_H)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1"></a>Is_L <span class="op">=</span> <span class="fu">ones</span>(<span class="fu">length</span>(tlist)) <span class="op">.*</span> <span class="fu">Ic</span>(ados_steady, M, <span class="fl">1</span>)</span>
+<span id="cb16-2"><a href="#cb16-2"></a>Is_R <span class="op">=</span> <span class="fu">ones</span>(<span class="fu">length</span>(tlist)) <span class="op">.*</span> <span class="fu">Ic</span>(ados_steady, M, <span class="fl">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>-0.3731173931282959</code></pre>
+<pre><code>201-element Vector{Float64}:
+ -0.04632854331413624
+ -0.04632854331413624
+ -0.04632854331413624
+ -0.04632854331413624
+ -0.04632854331413624
+ -0.04632854331413624
+ -0.04632854331413624
+ -0.04632854331413624
+ -0.04632854331413624
+ -0.04632854331413624
+  ⋮
+ -0.04632854331413624
+ -0.04632854331413624
+ -0.04632854331413624
+ -0.04632854331413624
+ -0.04632854331413624
+ -0.04632854331413624
+ -0.04632854331413624
+ -0.04632854331413624
+ -0.04632854331413624</code></pre>
 </div>
 </div>
-<p>observable of cavity: <span class="math inline">\(a^\dagger a\)</span> (average photon number)</p>
+</section>
+<section id="time-evolution-current" class="level2">
+<h2 class="anchored" data-anchor-id="time-evolution-current">time evolution current</h2>
 <div id="18" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1"></a>np_evo_H <span class="op">=</span> <span class="fu">real</span>(sol_H.expect[<span class="fl">2</span>, <span class="op">:</span>])</span>
-<span id="cb16-2"><a href="#cb16-2"></a>np_steady_H <span class="op">=</span> <span class="fu">expect</span>(a<span class="op">'</span> <span class="op">*</span> a, steady_H)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>0.4312130158260074</code></pre>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1"></a>Ie_L <span class="op">=</span> []</span>
+<span id="cb18-2"><a href="#cb18-2"></a>Ie_R <span class="op">=</span> []</span>
+<span id="cb18-3"><a href="#cb18-3"></a><span class="cf">for</span> ados <span class="kw">in</span> ados_evolution</span>
+<span id="cb18-4"><a href="#cb18-4"></a>    <span class="fu">push!</span>(Ie_L, <span class="fu">Ic</span>(ados, M, <span class="fl">1</span>))</span>
+<span id="cb18-5"><a href="#cb18-5"></a>    <span class="fu">push!</span>(Ie_R, <span class="fu">Ic</span>(ados, M, <span class="fl">2</span>))</span>
+<span id="cb18-6"><a href="#cb18-6"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
-<p>plot results</p>
+<p>plot the result</p>
 <div id="20" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1"></a>fig <span class="op">=</span> <span class="fu">Figure</span>(size <span class="op">=</span> (<span class="fl">600</span>, <span class="fl">350</span>))</span>
-<span id="cb18-2"><a href="#cb18-2"></a></span>
-<span id="cb18-3"><a href="#cb18-3"></a>ax1 <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">1</span>, <span class="fl">1</span>], xlabel <span class="op">=</span> L<span class="st">"t"</span>)</span>
-<span id="cb18-4"><a href="#cb18-4"></a><span class="fu">lines!</span>(ax1, t_list, σz_evo_H, label <span class="op">=</span> L<span class="st">"\langle \sigma_z </span><span class="sc">\r</span><span class="st">angle"</span>, linestyle <span class="op">=</span> <span class="op">:</span>solid)</span>
-<span id="cb18-5"><a href="#cb18-5"></a><span class="fu">lines!</span>(ax1, t_list, <span class="fu">ones</span>(<span class="fu">length</span>(t_list)) <span class="op">.*</span> σz_steady_H, label <span class="op">=</span> L<span class="st">"\langle \sigma_z </span><span class="sc">\r</span><span class="st">angle ~~(</span><span class="sc">\t</span><span class="st">extrm{steady})"</span>, linestyle <span class="op">=</span> <span class="op">:</span>dash)</span>
-<span id="cb18-6"><a href="#cb18-6"></a><span class="fu">axislegend</span>(ax1, position <span class="op">=</span> <span class="op">:</span>rt)</span>
-<span id="cb18-7"><a href="#cb18-7"></a></span>
-<span id="cb18-8"><a href="#cb18-8"></a>ax2 <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">2</span>, <span class="fl">1</span>], xlabel <span class="op">=</span> L<span class="st">"t"</span>)</span>
-<span id="cb18-9"><a href="#cb18-9"></a><span class="fu">lines!</span>(ax2, t_list, np_evo_H, label <span class="op">=</span> L<span class="st">"\langle a^\dagger a </span><span class="sc">\r</span><span class="st">angle"</span>, linestyle <span class="op">=</span> <span class="op">:</span>solid)</span>
-<span id="cb18-10"><a href="#cb18-10"></a><span class="fu">lines!</span>(ax2, t_list, <span class="fu">ones</span>(<span class="fu">length</span>(t_list)) <span class="op">.*</span> np_steady_H, label <span class="op">=</span> L<span class="st">"\langle a^\dagger a </span><span class="sc">\r</span><span class="st">angle ~~(</span><span class="sc">\t</span><span class="st">extrm{steady})"</span>, linestyle <span class="op">=</span> <span class="op">:</span>dash)</span>
-<span id="cb18-11"><a href="#cb18-11"></a><span class="fu">axislegend</span>(ax2, position <span class="op">=</span> <span class="op">:</span>rt)</span>
-<span id="cb18-12"><a href="#cb18-12"></a></span>
-<span id="cb18-13"><a href="#cb18-13"></a>fig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb19-1"><a href="#cb19-1"></a>fig <span class="op">=</span> <span class="fu">Figure</span>(size <span class="op">=</span> (<span class="fl">500</span>, <span class="fl">350</span>))</span>
+<span id="cb19-2"><a href="#cb19-2"></a>ax <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">1</span>, <span class="fl">1</span>], xlabel <span class="op">=</span> <span class="st">"time"</span>, ylabel <span class="op">=</span> <span class="st">"Current"</span>)</span>
+<span id="cb19-3"><a href="#cb19-3"></a><span class="fu">lines!</span>(ax, tlist, Ie_L, label <span class="op">=</span> <span class="st">"Bath L"</span>, color <span class="op">=</span> <span class="op">:</span>blue, linestyle <span class="op">=</span> <span class="op">:</span>solid)</span>
+<span id="cb19-4"><a href="#cb19-4"></a><span class="fu">lines!</span>(ax, tlist, Ie_R, label <span class="op">=</span> <span class="st">"Bath R"</span>, color <span class="op">=</span> <span class="op">:</span>red, linestyle <span class="op">=</span> <span class="op">:</span>solid)</span>
+<span id="cb19-5"><a href="#cb19-5"></a><span class="fu">lines!</span>(ax, tlist, Is_L, label <span class="op">=</span> <span class="st">"Bath L (Steady State)"</span>, color <span class="op">=</span> <span class="op">:</span>blue, linestyle <span class="op">=</span> <span class="op">:</span>dash)</span>
+<span id="cb19-6"><a href="#cb19-6"></a><span class="fu">lines!</span>(ax, tlist, Is_R, label <span class="op">=</span> <span class="st">"Bath R (Steady State)"</span>, color <span class="op">=</span> <span class="op">:</span>red, linestyle <span class="op">=</span> <span class="op">:</span>dash)</span>
+<span id="cb19-7"><a href="#cb19-7"></a></span>
+<span id="cb19-8"><a href="#cb19-8"></a><span class="fu">axislegend</span>(ax, position <span class="op">=</span> <span class="op">:</span>rt)</span>
+<span id="cb19-9"><a href="#cb19-9"></a></span>
+<span id="cb19-10"><a href="#cb19-10"></a>fig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div>
 <figure class="figure">
-<p><img src="cavityQED_files/figure-html/cell-11-output-1.svg" class="img-fluid figure-img"></p>
+<p><img src="electronic_current_files/figure-html/cell-11-output-1.svg" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
-</section>
-<section id="power-spectrum" class="level2">
-<h2 class="anchored" data-anchor-id="power-spectrum">Power spectrum</h2>
-<div id="22" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb19-1"><a href="#cb19-1"></a>ω_list <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">0.01</span><span class="op">:</span><span class="fl">3</span></span>
-<span id="cb19-2"><a href="#cb19-2"></a>psd_H <span class="op">=</span> <span class="fu">PowerSpectrum</span>(M_Heom, steady_H, a, ω_list)</span>
-<span id="cb19-3"><a href="#cb19-3"></a></span>
-<span id="cb19-4"><a href="#cb19-4"></a><span class="co"># plot</span></span>
-<span id="cb19-5"><a href="#cb19-5"></a>fig <span class="op">=</span> <span class="fu">Figure</span>(size <span class="op">=</span> (<span class="fl">500</span>, <span class="fl">350</span>))</span>
-<span id="cb19-6"><a href="#cb19-6"></a>ax <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">1</span>, <span class="fl">1</span>], xlabel <span class="op">=</span> L<span class="st">"\omega"</span>)</span>
-<span id="cb19-7"><a href="#cb19-7"></a><span class="fu">lines!</span>(ax, ω_list, psd_H)</span>
-<span id="cb19-8"><a href="#cb19-8"></a></span>
-<span id="cb19-9"><a href="#cb19-9"></a>fig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Calculating power spectrum in frequency domain...
-Progress: [========                      ]  28.9% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 02s)Progress: [=================             ]  58.2% --- Elapsed Time: 0h 00m 02s (ETA: 0h 00m 01s)Progress: [==========================    ]  87.6% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 00s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 00s)
-[DONE]</code></pre>
-</div>
-<div class="cell-output cell-output-display" data-execution_count="1">
-<div>
-<figure class="figure">
-<p><img src="cavityQED_files/figure-html/cell-12-output-2.svg" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="compare-with-master-eq.-approach" class="level2">
-<h2 class="anchored" data-anchor-id="compare-with-master-eq.-approach">Compare with Master Eq. approach</h2>
-<p>The Lindblad master equations which describes the cavity couples to an extra bosonic reservoir with <a href="https://qutip.org/HierarchicalEOM.jl/stable/bath_boson/Boson_Drude_Lorentz/#Boson-Drude-Lorentz">Drude-Lorentzian spectral density</a> is given by</p>
-<div id="24" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb21-1"><a href="#cb21-1"></a><span class="co"># Drude_Lorentzian spectral density</span></span>
-<span id="cb21-2"><a href="#cb21-2"></a><span class="fu">Drude_Lorentz</span>(ω, Γ, W) <span class="op">=</span> <span class="fl">4</span> <span class="op">*</span> Γ <span class="op">*</span> W <span class="op">*</span> ω <span class="op">/</span> ((ω)<span class="op">^</span><span class="fl">2</span> <span class="op">+</span> (W)<span class="op">^</span><span class="fl">2</span>)</span>
-<span id="cb21-3"><a href="#cb21-3"></a></span>
-<span id="cb21-4"><a href="#cb21-4"></a><span class="co"># Bose-Einstein distribution</span></span>
-<span id="cb21-5"><a href="#cb21-5"></a><span class="fu">n_b</span>(ω, kT) <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> (<span class="fu">exp</span>(ω <span class="op">/</span> kT) <span class="op">-</span> <span class="fl">1</span>)</span>
-<span id="cb21-6"><a href="#cb21-6"></a></span>
-<span id="cb21-7"><a href="#cb21-7"></a><span class="co"># build the jump operators</span></span>
-<span id="cb21-8"><a href="#cb21-8"></a>jump_op <span class="op">=</span> [</span>
-<span id="cb21-9"><a href="#cb21-9"></a>    <span class="fu">sqrt</span>(<span class="fu">Drude_Lorentz</span>(ωc, Γ, W) <span class="op">*</span> (<span class="fu">n_b</span>(ωc, kT) <span class="op">+</span> <span class="fl">1</span>)) <span class="op">*</span> a,</span>
-<span id="cb21-10"><a href="#cb21-10"></a>    <span class="fu">sqrt</span>(<span class="fu">Drude_Lorentz</span>(ωc, Γ, W) <span class="op">*</span> (<span class="fu">n_b</span>(ωc, kT)))     <span class="op">*</span> a<span class="op">'</span>,</span>
-<span id="cb21-11"><a href="#cb21-11"></a>    J_pump</span>
-<span id="cb21-12"><a href="#cb21-12"></a>];</span>
-<span id="cb21-13"><a href="#cb21-13"></a></span>
-<span id="cb21-14"><a href="#cb21-14"></a><span class="co"># construct the HEOMLS matrix for master equation</span></span>
-<span id="cb21-15"><a href="#cb21-15"></a>M_master <span class="op">=</span> <span class="fu">M_S</span>(H_s)</span>
-<span id="cb21-16"><a href="#cb21-16"></a>M_master <span class="op">=</span> <span class="fu">addBosonDissipator</span>(M_master, jump_op)</span>
-<span id="cb21-17"><a href="#cb21-17"></a></span>
-<span id="cb21-18"><a href="#cb21-18"></a><span class="co"># time evolution</span></span>
-<span id="cb21-19"><a href="#cb21-19"></a>sol_M <span class="op">=</span> <span class="fu">HEOMsolve</span>(M_master, ψ<span class="fl">0</span>, t_list; e_ops <span class="op">=</span> [σz, a<span class="op">'</span> <span class="op">*</span> a]);</span>
-<span id="cb21-20"><a href="#cb21-20"></a></span>
-<span id="cb21-21"><a href="#cb21-21"></a><span class="co"># steady state</span></span>
-<span id="cb21-22"><a href="#cb21-22"></a>steady_M <span class="op">=</span> <span class="fu">steadystate</span>(M_master);</span>
-<span id="cb21-23"><a href="#cb21-23"></a></span>
-<span id="cb21-24"><a href="#cb21-24"></a><span class="co"># expectation value of σz</span></span>
-<span id="cb21-25"><a href="#cb21-25"></a>σz_evo_M <span class="op">=</span> <span class="fu">real</span>(sol_M.expect[<span class="fl">1</span>, <span class="op">:</span>])</span>
-<span id="cb21-26"><a href="#cb21-26"></a>σz_steady_M <span class="op">=</span> <span class="fu">expect</span>(σz, steady_M)</span>
-<span id="cb21-27"><a href="#cb21-27"></a></span>
-<span id="cb21-28"><a href="#cb21-28"></a><span class="co"># average photon number</span></span>
-<span id="cb21-29"><a href="#cb21-29"></a>np_evo_M <span class="op">=</span> <span class="fu">real</span>(sol_M.expect[<span class="fl">2</span>, <span class="op">:</span>])</span>
-<span id="cb21-30"><a href="#cb21-30"></a>np_steady_M <span class="op">=</span> <span class="fu">expect</span>(a<span class="op">'</span> <span class="op">*</span> a, steady_M);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Constructing Liouville-von Neumann superoperator...
-[DONE]
-Solving time evolution for ADOs by Ordinary Differential Equations method...
-Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)
-Solving steady state for ADOs by linear-solve method...[DONE]</code></pre>
-</div>
-</div>
-<p>plot results</p>
-<div id="26" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb23-1"><a href="#cb23-1"></a>fig <span class="op">=</span> <span class="fu">Figure</span>(size <span class="op">=</span> (<span class="fl">600</span>, <span class="fl">350</span>))</span>
-<span id="cb23-2"><a href="#cb23-2"></a></span>
-<span id="cb23-3"><a href="#cb23-3"></a>ax1 <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">1</span>, <span class="fl">1</span>], xlabel <span class="op">=</span> L<span class="st">"t"</span>)</span>
-<span id="cb23-4"><a href="#cb23-4"></a><span class="fu">lines!</span>(ax1, t_list, σz_evo_M, label <span class="op">=</span> L<span class="st">"\langle \sigma_z </span><span class="sc">\r</span><span class="st">angle"</span>, linestyle <span class="op">=</span> <span class="op">:</span>solid)</span>
-<span id="cb23-5"><a href="#cb23-5"></a><span class="fu">lines!</span>(ax1, t_list, <span class="fu">ones</span>(<span class="fu">length</span>(t_list)) <span class="op">.*</span> σz_steady_M, label <span class="op">=</span> L<span class="st">"\langle \sigma_z </span><span class="sc">\r</span><span class="st">angle ~~(</span><span class="sc">\t</span><span class="st">extrm{steady})"</span>, linestyle <span class="op">=</span> <span class="op">:</span>dash)</span>
-<span id="cb23-6"><a href="#cb23-6"></a><span class="fu">axislegend</span>(ax1, position <span class="op">=</span> <span class="op">:</span>rt)</span>
-<span id="cb23-7"><a href="#cb23-7"></a></span>
-<span id="cb23-8"><a href="#cb23-8"></a>ax2 <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">2</span>, <span class="fl">1</span>], xlabel <span class="op">=</span> L<span class="st">"t"</span>)</span>
-<span id="cb23-9"><a href="#cb23-9"></a><span class="fu">lines!</span>(ax2, t_list, np_evo_M, label <span class="op">=</span> L<span class="st">"\langle a^\dagger a </span><span class="sc">\r</span><span class="st">angle"</span>, linestyle <span class="op">=</span> <span class="op">:</span>solid)</span>
-<span id="cb23-10"><a href="#cb23-10"></a><span class="fu">lines!</span>(ax2, t_list, <span class="fu">ones</span>(<span class="fu">length</span>(t_list)) <span class="op">.*</span> np_steady_M, label <span class="op">=</span> L<span class="st">"\langle a^\dagger a </span><span class="sc">\r</span><span class="st">angle ~~(</span><span class="sc">\t</span><span class="st">extrm{steady})"</span>, linestyle <span class="op">=</span> <span class="op">:</span>dash)</span>
-<span id="cb23-11"><a href="#cb23-11"></a><span class="fu">axislegend</span>(ax2, position <span class="op">=</span> <span class="op">:</span>rt)</span>
-<span id="cb23-12"><a href="#cb23-12"></a></span>
-<span id="cb23-13"><a href="#cb23-13"></a>fig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="1">
-<div>
-<figure class="figure">
-<p><img src="cavityQED_files/figure-html/cell-14-output-1.svg" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>We can also calculate the power spectrum</p>
-<div id="28" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb24-1"><a href="#cb24-1"></a>ω_list <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">0.01</span><span class="op">:</span><span class="fl">3</span></span>
-<span id="cb24-2"><a href="#cb24-2"></a>psd_M <span class="op">=</span> <span class="fu">PowerSpectrum</span>(M_master, steady_M, a, ω_list)</span>
-<span id="cb24-3"><a href="#cb24-3"></a></span>
-<span id="cb24-4"><a href="#cb24-4"></a><span class="co"># plot</span></span>
-<span id="cb24-5"><a href="#cb24-5"></a>fig <span class="op">=</span> <span class="fu">Figure</span>(size <span class="op">=</span> (<span class="fl">500</span>, <span class="fl">350</span>))</span>
-<span id="cb24-6"><a href="#cb24-6"></a>ax <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">1</span>, <span class="fl">1</span>], xlabel <span class="op">=</span> L<span class="st">"\omega"</span>)</span>
-<span id="cb24-7"><a href="#cb24-7"></a><span class="fu">lines!</span>(ax, ω_list, psd_M)</span>
-<span id="cb24-8"><a href="#cb24-8"></a></span>
-<span id="cb24-9"><a href="#cb24-9"></a>fig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Calculating power spectrum in frequency domain...
-Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)
-[DONE]</code></pre>
-</div>
-<div class="cell-output cell-output-display" data-execution_count="1">
-<div>
-<figure class="figure">
-<p><img src="cavityQED_files/figure-html/cell-15-output-2.svg" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>Due to the weak coupling between the system and an extra bosonic environment, the Master equation’s outcome is expected to be similar to the results obtained from the HEOM method.</p>
 </section>
 <section id="version-information" class="level2">
 <h2 class="anchored" data-anchor-id="version-information">Version Information</h2>
-<div id="30" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb26-1"><a href="#cb26-1"></a>HierarchicalEOM.<span class="fu">versioninfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="22" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb20-1"><a href="#cb20-1"></a>HierarchicalEOM.<span class="fu">versioninfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
                                    __
@@ -604,9 +555,14 @@ Threads  : 4 (on 4 virtual cores)
 </div>
 
 
+
 </section>
 
-</main> <!-- /main -->
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-HierarchicalEOM-jl2023" class="csl-entry" role="listitem">
+Huang, Yi-Te, Po-Chen Kuo, Neill Lambert, Mauro Cirio, Simon Cross, Shen-Liang Yang, Franco Nori, and Yueh-Nan Chen. 2023. <span>“An Efficient <span>J</span>ulia Framework for Hierarchical Equations of Motion in Open Quantum Systems.”</span> <em>Communications Physics</em> 6 (1): 313. <a href="https://doi.org/10.1038/s42005-023-01427-2">https://doi.org/10.1038/s42005-023-01427-2</a>.
+</div>
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -1176,7 +1132,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>   
     <div class="nav-footer-center">
 <p>Copyright © 2025 <a href="https://qutip.org/" target="_blank"><strong>QuTiP.org</strong></a>.</p>
-<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/qutip/qutip-julia-tutorials/edit/main/HierarchicalEOM.jl/cavityQED.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/qutip/qutip-julia-tutorials/blob/main/HierarchicalEOM.jl/cavityQED.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/qutip/qutip-julia-tutorials/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/qutip/qutip-julia-tutorials/edit/main/HierarchicalEOM.jl/electronic_current.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/qutip/qutip-julia-tutorials/blob/main/HierarchicalEOM.jl/electronic_current.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/qutip/qutip-julia-tutorials/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       &nbsp;
     </div>

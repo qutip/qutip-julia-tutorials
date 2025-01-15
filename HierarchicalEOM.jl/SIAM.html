@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Yi-Te Huang">
+<meta name="dcterms.date" content="2025-01-14">
 
-<title>Tutorials for QuantumToolbox.jl – Tutorials for Quantum Toolbox in Julia</title>
+<title>Single-impurity Anderson model – Tutorials for Quantum Toolbox in Julia</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,7 +22,61 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -31,8 +87,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
 <link href="../assets/favicon.ico" rel="icon">
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -71,35 +125,6 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-time-evolution .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-author',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-title-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-time-evolution'] = new List('listing-time-evolution', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -159,7 +184,7 @@ window.Quarto = {
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../QuantumToolbox.jl/toc.html" aria-current="page"> 
+    <a class="nav-link" href="../QuantumToolbox.jl/toc.html"> 
 <span class="menu-text">QuantumToolbox.jl</span></a>
   </li>  
   <li class="nav-item">
@@ -184,23 +209,41 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#time-evolution" id="toc-time-evolution" class="nav-link active" data-scroll-target="#time-evolution">Time Evolution</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#hamiltonian" id="toc-hamiltonian" class="nav-link" data-scroll-target="#hamiltonian">Hamiltonian</a></li>
+  <li><a href="#construct-bath-objects" id="toc-construct-bath-objects" class="nav-link" data-scroll-target="#construct-bath-objects">Construct bath objects</a></li>
+  <li><a href="#construct-heomls-matrix" id="toc-construct-heomls-matrix" class="nav-link" data-scroll-target="#construct-heomls-matrix">Construct HEOMLS matrix</a></li>
+  <li><a href="#solve-stationary-state-of-ados" id="toc-solve-stationary-state-of-ados" class="nav-link" data-scroll-target="#solve-stationary-state-of-ados">Solve stationary state of ADOs</a></li>
+  <li><a href="#calculate-density-of-states-dos" id="toc-calculate-density-of-states-dos" class="nav-link" data-scroll-target="#calculate-density-of-states-dos">Calculate density of states (DOS)</a></li>
+  <li><a href="#version-information" id="toc-version-information" class="nav-link" data-scroll-target="#version-information">Version Information</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/qutip/qutip-julia-tutorials/edit/main/QuantumToolbox.jl/toc.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/qutip/qutip-julia-tutorials/blob/main/QuantumToolbox.jl/toc.md" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/qutip/qutip-julia-tutorials/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/qutip/qutip-julia-tutorials/edit/main/HierarchicalEOM.jl/SIAM.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/qutip/qutip-julia-tutorials/blob/main/HierarchicalEOM.jl/SIAM.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/qutip/qutip-julia-tutorials/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Tutorials for <code>QuantumToolbox.jl</code></h1>
+<h1 class="title">Single-impurity Anderson model</h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Yi-Te Huang </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Last Update</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">2025-01-14</p>
+    </div>
+  </div>
   
     
   </div>
@@ -210,40 +253,204 @@ window.Quarto = {
 </header>
 
 
-<p>The following tutorials demonstrate and introduce specific functionality of <code>QuantumToolbox.jl</code>.</p>
-<section id="time-evolution" class="level3">
-<h3 class="anchored" data-anchor-id="time-evolution">Time Evolution</h3>
-<div id="listing-time-evolution" class="quarto-listing quarto-listing-container-table">
-<table class="quarto-listing-table table">
-<thead>
-<tr>
-<th>
-Last Update
-</th>
-<th>
-Title
-</th>
-<th>
-Author
-</th>
-</tr>
-</thead>
-<tbody class="list">
-<tr data-index="0" data-listing-date-sort="1736726400000" data-listing-file-modified-sort="1736948623646" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="684" data-listing-title-sort="Low rank master equation" data-listing-filename-sort="lowrank.qmd">
-<td>
-<span class="listing-date">2025-01-13</span>
-</td>
-<td>
-<a href="../QuantumToolbox.jl/time_evolution/lowrank.html" class="title listing-title">Low rank master equation</a>
-</td>
-<td>
-<span class="listing-author">Luca Gravina</span>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="listing-no-matching d-none">
-No matching items
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>The investigation of the Kondo effect in single-impurity Anderson model is crucial as it serves both as a valuable testing ground for the theories of the Kondo effect and has the potential to lead to a better understanding of this intrinsic many-body phenomena. For further detailed discussions of this model (under different parameters) using <a href="https://github.com/qutip/HierarchicalEOM.jl"><code>HierarchicalEOM.jl</code></a>, we recommend to read the article <span class="citation" data-cites="HierarchicalEOM-jl2023">(<a href="#ref-HierarchicalEOM-jl2023" role="doc-biblioref">Huang et al. 2023</a>)</span>.</p>
+</section>
+<section id="hamiltonian" class="level2">
+<h2 class="anchored" data-anchor-id="hamiltonian">Hamiltonian</h2>
+<p>We consider a single-level electronic system [which can be populated by a spin-up (<span class="math inline">\(\uparrow\)</span>) or spin-down (<span class="math inline">\(\downarrow\)</span>) electron] coupled to a fermionic reservoir (<span class="math inline">\(\textrm{f}\)</span>). The total Hamiltonian is given by <span class="math inline">\(H_{\textrm{T}}=H_\textrm{s}+H_\textrm{f}+H_\textrm{sf}\)</span>, where each terms takes the form</p>
+<p><span class="math display">\[
+\begin{aligned}
+H_{\textrm{s}}  &amp;= \epsilon \left(d^\dagger_\uparrow d_\uparrow + d^\dagger_\downarrow d_\downarrow \right) + U\left(d^\dagger_\uparrow d_\uparrow d^\dagger_\downarrow d_\downarrow\right),\\
+H_{\textrm{f}}  &amp;=\sum_{\sigma=\uparrow,\downarrow}\sum_{k}\epsilon_{\sigma,k}c_{\sigma,k}^{\dagger}c_{\sigma,k},\\
+H_{\textrm{sf}} &amp;=\sum_{\sigma=\uparrow,\downarrow}\sum_{k}g_{k}c_{\sigma,k}^{\dagger}d_{\sigma} + g_{k}^*d_{\sigma}^{\dagger}c_{\sigma,k}.
+\end{aligned}
+\]</span></p>
+<p>Here, <span class="math inline">\(d_\uparrow\)</span> <span class="math inline">\((d_\downarrow)\)</span> annihilates a spin-up (spin-down) electron in the system, <span class="math inline">\(\epsilon\)</span> is the energy of the electron, and <span class="math inline">\(U\)</span> is the Coulomb repulsion energy for double occupation. Furthermore, <span class="math inline">\(c_{\sigma,k}\)</span> <span class="math inline">\((c_{\sigma,k}^{\dagger})\)</span> annihilates (creates) an electron in the state <span class="math inline">\(k\)</span> (with energy <span class="math inline">\(\epsilon_{\sigma,k}\)</span>) of the reservoir.</p>
+<p>Now, we need to build the system Hamiltonian and initial state with the package <a href="https://github.com/qutip/QuantumToolbox.jl"><code>QuantumToolbox.jl</code></a> to construct the operators.</p>
+<div id="2" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">using</span> <span class="bu">HierarchicalEOM</span>  <span class="co"># this automatically loads `QuantumToolbox`</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="im">using</span> <span class="bu">CairoMakie</span>       <span class="co"># for plotting results</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="4" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1"></a>ϵ <span class="op">=</span> <span class="op">-</span><span class="fl">5</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>U <span class="op">=</span> <span class="fl">10</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a>σm <span class="op">=</span> <span class="fu">sigmam</span>() <span class="co"># σ-</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a>σz <span class="op">=</span> <span class="fu">sigmaz</span>() <span class="co"># σz</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a>II <span class="op">=</span> <span class="fu">qeye</span>(<span class="fl">2</span>)  <span class="co"># identity matrix</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a></span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="co"># construct the annihilation operator for both spin-up and spin-down</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a><span class="co"># (utilize Jordan–Wigner transformation)</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a>d_up <span class="op">=</span> <span class="fu">tensor</span>(σm, II)</span>
+<span id="cb2-10"><a href="#cb2-10"></a>d_dn <span class="op">=</span> <span class="fu">tensor</span>(<span class="op">-</span><span class="fl">1</span> <span class="op">*</span> σz, σm)</span>
+<span id="cb2-11"><a href="#cb2-11"></a>Hsys <span class="op">=</span> ϵ <span class="op">*</span> (d_up<span class="op">'</span> <span class="op">*</span> d_up <span class="op">+</span> d_dn<span class="op">'</span> <span class="op">*</span> d_dn) <span class="op">+</span> U <span class="op">*</span> (d_up<span class="op">'</span> <span class="op">*</span> d_up <span class="op">*</span> d_dn<span class="op">'</span> <span class="op">*</span> d_dn)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>Quantum Object:   type=Operator   dims=[2, 2]   size=(4, 4)   ishermitian=true
+4×4 SparseMatrixCSC{ComplexF64, Int64} with 2 stored entries:
+     ⋅           ⋅           ⋅          ⋅    
+     ⋅      -5.0+0.0im       ⋅          ⋅    
+     ⋅           ⋅      -5.0+0.0im      ⋅    
+     ⋅           ⋅           ⋅          ⋅    </code></pre>
+</div>
+</div>
+</section>
+<section id="construct-bath-objects" class="level2">
+<h2 class="anchored" data-anchor-id="construct-bath-objects">Construct bath objects</h2>
+<p>We assume the fermionic reservoir to have a <a href="https://qutip.org/HierarchicalEOM.jl/stable/bath_fermion/Fermion_Lorentz/#doc-Fermion-Lorentz">Lorentzian-shaped spectral density</a>, and we utilize the Padé decomposition. Furthermore, the spectral densities depend on the following physical parameters:</p>
+<ul>
+<li>the coupling strength <span class="math inline">\(\Gamma\)</span> between system and reservoirs</li>
+<li>the band-width <span class="math inline">\(W\)</span></li>
+<li>the product of the Boltzmann constant <span class="math inline">\(k\)</span> and the absolute temperature <span class="math inline">\(T\)</span> : <span class="math inline">\(kT\)</span></li>
+<li>the chemical potential <span class="math inline">\(\mu\)</span></li>
+<li>the total number of exponentials for the reservoir <span class="math inline">\(2(N + 1)\)</span></li>
+</ul>
+<div id="6" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1"></a>Γ <span class="op">=</span> <span class="fl">2</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a>μ <span class="op">=</span> <span class="fl">0</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a>W <span class="op">=</span> <span class="fl">10</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a>kT <span class="op">=</span> <span class="fl">0.5</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a>N <span class="op">=</span> <span class="fl">5</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a>bath_up <span class="op">=</span> <span class="fu">Fermion_Lorentz_Pade</span>(d_up, Γ, μ, W, kT, N)</span>
+<span id="cb4-7"><a href="#cb4-7"></a>bath_dn <span class="op">=</span> <span class="fu">Fermion_Lorentz_Pade</span>(d_dn, Γ, μ, W, kT, N)</span>
+<span id="cb4-8"><a href="#cb4-8"></a>bath_list <span class="op">=</span> [bath_up, bath_dn]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>2-element Vector{FermionBath}:
+ HierarchicalEOM.FermionBath object with 12 exponential-expansion terms
+
+ HierarchicalEOM.FermionBath object with 12 exponential-expansion terms</code></pre>
+</div>
+</div>
+</section>
+<section id="construct-heomls-matrix" class="level2">
+<h2 class="anchored" data-anchor-id="construct-heomls-matrix">Construct HEOMLS matrix</h2>
+<div id="8" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1"></a>tier <span class="op">=</span> <span class="fl">3</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a>M_even <span class="op">=</span> <span class="fu">M_Fermion</span>(Hsys, tier, bath_list)</span>
+<span id="cb6-3"><a href="#cb6-3"></a>M_odd <span class="op">=</span> <span class="fu">M_Fermion</span>(Hsys, tier, bath_list, ODD)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Preparing block matrices for HEOM Liouvillian superoperator (using 4 threads)...
+Progress: [                              ]   0.0% --- Elapsed Time: 0h 00m 01s (ETA: 0h 38m 44s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 00s)
+Constructing matrix...[DONE]
+Preparing block matrices for HEOM Liouvillian superoperator (using 4 threads)...
+Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)
+Constructing matrix...[DONE]</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>Fermion type HEOMLS matrix acting on odd-parity ADOs
+system dims = [2, 2]
+number of ADOs N = 2325
+data =
+MatrixOperator(37200 × 37200)</code></pre>
+</div>
+</div>
+</section>
+<section id="solve-stationary-state-of-ados" class="level2">
+<h2 class="anchored" data-anchor-id="solve-stationary-state-of-ados">Solve stationary state of ADOs</h2>
+<div id="10" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1"></a>ados_s <span class="op">=</span> <span class="fu">steadystate</span>(M_even)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Solving steady state for ADOs by linear-solve method...[DONE]</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>2325 Auxiliary Density Operators with even-parity and (system) dims = [2, 2]</code></pre>
+</div>
+</div>
+</section>
+<section id="calculate-density-of-states-dos" class="level2">
+<h2 class="anchored" data-anchor-id="calculate-density-of-states-dos">Calculate density of states (DOS)</h2>
+<div id="12" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1"></a>ωlist <span class="op">=</span> <span class="op">-</span><span class="fl">10</span><span class="op">:</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a>dos <span class="op">=</span> <span class="fu">DensityOfStates</span>(M_odd, ados_s, d_up, ωlist)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Calculating density of states in frequency domain...
+Progress: [=====                         ]  19.0% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 04s)Progress: [============                  ]  42.9% --- Elapsed Time: 0h 00m 02s (ETA: 0h 00m 02s)Progress: [==================            ]  61.9% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 01s)Progress: [=========================     ]  85.7% --- Elapsed Time: 0h 00m 04s (ETA: 0h 00m 00s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 04s (ETA: 0h 00m 00s)
+[DONE]</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>21-element Vector{Float64}:
+ 0.024341620652868125
+ 0.04465552042384671
+ 0.09077144051561165
+ 0.1929888055674428
+ 0.29351536894471525
+ 0.23367107985909338
+ 0.15864674406917825
+ 0.1237987795050877
+ 0.11772111509217494
+ 0.14524303704733388
+ ⋮
+ 0.11772111509217663
+ 0.12379877950508988
+ 0.15864674406918147
+ 0.2336710798590986
+ 0.2935153689447211
+ 0.1929888055674464
+ 0.090771440515613
+ 0.044655520423847135
+ 0.024341620652868233</code></pre>
+</div>
+</div>
+<p>plot the results</p>
+<div id="14" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1"></a>fig <span class="op">=</span> <span class="fu">Figure</span>(size <span class="op">=</span> (<span class="fl">500</span>, <span class="fl">350</span>))</span>
+<span id="cb15-2"><a href="#cb15-2"></a>ax <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">1</span>, <span class="fl">1</span>], xlabel <span class="op">=</span> L<span class="st">"\omega"</span>)</span>
+<span id="cb15-3"><a href="#cb15-3"></a><span class="fu">lines!</span>(ax, ωlist, dos)</span>
+<span id="cb15-4"><a href="#cb15-4"></a></span>
+<span id="cb15-5"><a href="#cb15-5"></a>fig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<div>
+<figure class="figure">
+<p><img src="SIAM_files/figure-html/cell-8-output-1.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="version-information" class="level2">
+<h2 class="anchored" data-anchor-id="version-information">Version Information</h2>
+<div id="16" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1"></a>HierarchicalEOM.<span class="fu">versioninfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+                                   __
+                                  /  \
+ __     __                     __ \__/ __
+|  |   |  |                   /  \    /  \
+|  |   |  | ______   ______   \__/_  _\__/
+|  |___|  |/  __  \ /  __  \ / '   \/     \
+|   ___   |  |__)  |  /  \  |    _     _   |
+|  |   |  |   ____/| (    ) |   / \   / \  |
+|  |   |  |  |____ |  \__/  |  |   | |   | |
+|__|   |__|\______) \______/|__|   |_|   |_|
+
+Julia framework for Hierarchical Equations of Motion
+≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
+Copyright © QuTiP team 2023 and later.
+Lead  developer : Yi-Te Huang
+Other developers:
+    Simon Cross, Neill Lambert, Po-Chen Kuo and Shen-Liang Yang
+
+Package information:
+====================================
+Julia              Ver. 1.11.2
+HierarchicalEOM    Ver. 2.3.3
+QuantumToolbox     Ver. 0.24.0
+SciMLOperators     Ver. 0.3.12
+LinearSolve        Ver. 2.38.0
+OrdinaryDiffEqCore Ver. 1.14.1
+
+System information:
+====================================
+OS       : Linux (x86_64-linux-gnu)
+CPU      : 4 × AMD EPYC 7763 64-Core Processor
+Memory   : 15.615 GB
+WORD_SIZE: 64
+LIBM     : libopenlibm
+LLVM     : libLLVM-16.0.6 (ORCJIT, znver3)
+BLAS     : libopenblas64_.so (ilp64)
+Threads  : 4 (on 4 virtual cores)
+</code></pre>
 </div>
 </div>
 
@@ -251,7 +458,11 @@ No matching items
 
 </section>
 
-</main> <!-- /main -->
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-HierarchicalEOM-jl2023" class="csl-entry" role="listitem">
+Huang, Yi-Te, Po-Chen Kuo, Neill Lambert, Mauro Cirio, Simon Cross, Shen-Liang Yang, Franco Nori, and Yueh-Nan Chen. 2023. <span>“An Efficient <span>J</span>ulia Framework for Hierarchical Equations of Motion in Open Quantum Systems.”</span> <em>Communications Physics</em> 6 (1): 313. <a href="https://doi.org/10.1038/s42005-023-01427-2">https://doi.org/10.1038/s42005-023-01427-2</a>.
+</div>
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -821,7 +1032,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>   
     <div class="nav-footer-center">
 <p>Copyright © 2025 <a href="https://qutip.org/" target="_blank"><strong>QuTiP.org</strong></a>.</p>
-<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/qutip/qutip-julia-tutorials/edit/main/QuantumToolbox.jl/toc.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/qutip/qutip-julia-tutorials/blob/main/QuantumToolbox.jl/toc.md" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/qutip/qutip-julia-tutorials/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/qutip/qutip-julia-tutorials/edit/main/HierarchicalEOM.jl/SIAM.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/qutip/qutip-julia-tutorials/blob/main/HierarchicalEOM.jl/SIAM.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/qutip/qutip-julia-tutorials/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       &nbsp;
     </div>

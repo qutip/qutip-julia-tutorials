@@ -291,7 +291,8 @@ H_{\textrm{sb}}   &amp;=\sigma_z\sum_{k}g_{\alpha,k}(b_k + b_k^{\dagger}).
 <span id="cb2-8"><a href="#cb2-8"></a></span>
 <span id="cb2-9"><a href="#cb2-9"></a>ψ<span class="fl">0</span> <span class="op">=</span> (<span class="fu">basis</span>(<span class="fl">2</span>, <span class="fl">0</span>) <span class="op">+</span> <span class="fu">basis</span>(<span class="fl">2</span>, <span class="fl">1</span>)) <span class="op">/</span> √<span class="fl">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>Quantum Object:   type=Ket   dims=[2]   size=(2,)
+<pre><code>
+Quantum Object:   type=Ket   dims=[2]   size=(2,)
 2-element Vector{ComplexF64}:
  0.7071067811865475 + 0.0im
  0.7071067811865475 + 0.0im</code></pre>
@@ -417,7 +418,8 @@ Progress: [                              ]   0.1% --- Elapsed Time: 0h 00m 02s (
 <div id="14" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1"></a>H_D <span class="op">=</span> <span class="fu">QobjEvo</span>(σx, pulse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>Quantum Object Evo.:   type=Operator   dims=[2]   size=(2, 2)   ishermitian=true   isconstant=false
+<pre><code>
+Quantum Object Evo.:   type=Operator   dims=[2]   size=(2, 2)   ishermitian=true   isconstant=false
 ScalarOperator(0.0 + 0.0im) * MatrixOperator(2 × 2)</code></pre>
 </div>
 </div>
@@ -493,8 +495,8 @@ Other developers:
 Package information:
 ====================================
 Julia              Ver. 1.11.2
-HierarchicalEOM    Ver. 2.3.3
-QuantumToolbox     Ver. 0.24.0
+HierarchicalEOM    Ver. 2.4.0
+QuantumToolbox     Ver. 0.25.0
 SciMLOperators     Ver. 0.3.12
 LinearSolve        Ver. 2.38.0
 OrdinaryDiffEqCore Ver. 1.15.0

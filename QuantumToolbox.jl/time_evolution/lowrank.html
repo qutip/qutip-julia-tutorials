@@ -282,7 +282,7 @@ c_i = \sqrt{\gamma} \sigma_i^{-}
 </div>
 <p>Define <code>lr</code> states. Take as initial state all spins up. All other <code>N</code> states are taken as those with minimum Hamming distance to the initial state.</p>
 <div id="8" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1"></a>ϕ <span class="op">=</span> <span class="fu">Vector</span><span class="dt">{QuantumObject{Vector{ComplexF64},KetQuantumObject,M-1}}</span>(<span class="cn">undef</span>, M)</span>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1"></a>ϕ <span class="op">=</span> <span class="fu">Vector</span><span class="dt">{QuantumObject{KetQuantumObject,Dimensions{M - 1,NTuple{M - 1,Space}},Vector{ComplexF64}}}</span>(<span class="cn">undef</span>, M)</span>
 <span id="cb6-2"><a href="#cb6-2"></a>ϕ[<span class="fl">1</span>] <span class="op">=</span> <span class="fu">kron</span>(<span class="fu">fill</span>(<span class="fu">basis</span>(<span class="fl">2</span>, <span class="fl">1</span>), N_modes)<span class="op">...</span>)</span>
 <span id="cb6-3"><a href="#cb6-3"></a></span>
 <span id="cb6-4"><a href="#cb6-4"></a>i <span class="op">=</span> <span class="fl">1</span></span>
@@ -442,7 +442,7 @@ Current admin team:
 Package information:
 ====================================
 Julia              Ver. 1.11.2
-QuantumToolbox     Ver. 0.24.0
+QuantumToolbox     Ver. 0.25.0
 SciMLOperators     Ver. 0.3.12
 LinearSolve        Ver. 2.38.0
 OrdinaryDiffEqCore Ver. 1.15.0

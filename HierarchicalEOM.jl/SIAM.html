@@ -286,7 +286,8 @@ H_{\textrm{sf}} &amp;=\sum_{\sigma=\uparrow,\downarrow}\sum_{k}g_{k}c_{\sigma,k}
 <span id="cb2-10"><a href="#cb2-10"></a>d_dn <span class="op">=</span> <span class="fu">tensor</span>(<span class="op">-</span><span class="fl">1</span> <span class="op">*</span> σz, σm)</span>
 <span id="cb2-11"><a href="#cb2-11"></a>Hsys <span class="op">=</span> ϵ <span class="op">*</span> (d_up<span class="op">'</span> <span class="op">*</span> d_up <span class="op">+</span> d_dn<span class="op">'</span> <span class="op">*</span> d_dn) <span class="op">+</span> U <span class="op">*</span> (d_up<span class="op">'</span> <span class="op">*</span> d_up <span class="op">*</span> d_dn<span class="op">'</span> <span class="op">*</span> d_dn)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>Quantum Object:   type=Operator   dims=[2, 2]   size=(4, 4)   ishermitian=true
+<pre><code>
+Quantum Object:   type=Operator   dims=[2, 2]   size=(4, 4)   ishermitian=true
 4×4 SparseMatrixCSC{ComplexF64, Int64} with 2 stored entries:
      ⋅           ⋅           ⋅          ⋅    
      ⋅      -5.0+0.0im       ⋅          ⋅    
@@ -364,7 +365,7 @@ MatrixOperator(37200 × 37200)</code></pre>
 <span id="cb12-2"><a href="#cb12-2"></a>dos <span class="op">=</span> <span class="fu">DensityOfStates</span>(M_odd, ados_s, d_up, ωlist)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Calculating density of states in frequency domain...
-Progress: [=====                         ]  19.0% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 04s)Progress: [============                  ]  42.9% --- Elapsed Time: 0h 00m 02s (ETA: 0h 00m 02s)Progress: [====================          ]  66.7% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 01s)Progress: [============================  ]  95.2% --- Elapsed Time: 0h 00m 04s (ETA: 0h 00m 00s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 04s (ETA: 0h 00m 00s)
+Progress: [=====                         ]  19.0% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 04s)Progress: [==============                ]  47.6% --- Elapsed Time: 0h 00m 02s (ETA: 0h 00m 02s)Progress: [====================          ]  66.7% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 01s)Progress: [=========================     ]  85.7% --- Elapsed Time: 0h 00m 04s (ETA: 0h 00m 00s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 04s (ETA: 0h 00m 00s)
 [DONE]</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
@@ -434,8 +435,8 @@ Other developers:
 Package information:
 ====================================
 Julia              Ver. 1.11.2
-HierarchicalEOM    Ver. 2.3.3
-QuantumToolbox     Ver. 0.24.0
+HierarchicalEOM    Ver. 2.4.0
+QuantumToolbox     Ver. 0.25.0
 SciMLOperators     Ver. 0.3.12
 LinearSolve        Ver. 2.38.0
 OrdinaryDiffEqCore Ver. 1.15.0

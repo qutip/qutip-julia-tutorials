@@ -1,248 +1,38 @@
 [
   {
-    "objectID": "QuantumToolbox.jl/time_evolution/lowrank.html",
-    "href": "QuantumToolbox.jl/time_evolution/lowrank.html",
-    "title": "Low rank master equation",
+    "objectID": "QuantumToolbox.jl/time_evolution/rabi.html",
+    "href": "QuantumToolbox.jl/time_evolution/rabi.html",
+    "title": "Vacuum Rabi oscillation",
     "section": "",
-    "text": "In this tutorial, we will show how to solve the master equation using the low-rank method. For a detailed explanation of the method, we recommend to read the Ref. (Gravina and Savona 2024).\nAs a test, we will consider the dissipative Ising model with a transverse field. The Hamiltonian is given by\n\\[\n\\hat{H} = \\frac{J_x}{2} \\sum_{\\langle i,j\\rangle} \\sigma_i^x \\sigma_j^x + \\frac{J_y}{2} \\sum_{\\langle i,j\\rangle} \\sigma_i^y \\sigma_j^y + \\frac{J_z}{2} \\sum_{\\langle i,j\\rangle} \\sigma_i^z \\sigma_j^z - \\sum_i h_i \\sigma_i^z + h_x \\sum_i \\sigma_i^x + h_y \\sum_i \\sigma_i^y + h_z \\sum_i \\sigma_i^z\n\\] K where the sums are over nearest neighbors, and the collapse operators are given by\n\\[\nc_i = \\sqrt{\\gamma} \\sigma_i^{-}\n\\]\nWe start by importing the packages\nusing QuantumToolbox\nusing CairoMakie\nDefine lattice\nNx, Ny = 2, 3\nlatt = Lattice(Nx = Nx, Ny = Ny)\n\nLattice{Int64, LinearIndices{2, Tuple{Base.OneTo{Int64}, Base.OneTo{Int64}}}, CartesianIndices{2, Tuple{Base.OneTo{Int64}, Base.OneTo{Int64}}}}(2, 3, 6, [1 3 5; 2 4 6], CartesianIndices((2, 3)))\nDefine lr-space dimensions\nN_cut = 2\nN_modes = latt.N\nN = N_cut^N_modes\nM = latt.N + 1\n\n7\nDefine lr states. Take as initial state all spins up. All other N states are taken as those with minimum Hamming distance to the initial state.\nϕ = Vector{QuantumObject{Vector{ComplexF64},KetQuantumObject,M-1}}(undef, M)\nϕ[1] = kron(fill(basis(2, 1), N_modes)...)\n\ni = 1\nfor j in 1:N_modes\n    global i += 1\n    i &lt;= M && (ϕ[i] = MultiSiteOperator(latt, j=&gt;sigmap()) * ϕ[1])\nend\nfor k in 1:N_modes-1\n    for l in k+1:N_modes\n        global i += 1\n        i &lt;= M && (ϕ[i] = MultiSiteOperator(latt, k=&gt;sigmap(), l=&gt;sigmap()) * ϕ[1])\n    end\nend\nfor i in i+1:M\n    ϕ[i] = QuantumObject(rand(ComplexF64, size(ϕ[1])[1]), dims = ϕ[1].dims)\n    normalize!(ϕ[i])\nend\nDefine the initial state\nz = hcat(get_data.(ϕ)...)\nB = Matrix(Diagonal([1 + 0im; zeros(M - 1)]))\nS = z' * z # Overlap matrix\nB = B / tr(S * B) # Normalize B\n\nρ = QuantumObject(z * B * z', dims = ntuple(i-&gt;N_cut, Val(N_modes))); # Full density matrix\nDefine the Hamiltonian and collapse operators\n# Define Hamiltonian and collapse operators\nJx = 0.9\nJy = 1.04\nJz = 1.0\nhx = 0.0\nhy = 0.0\nhz = 0.0\nγ = 1\n\nSx = mapreduce(i-&gt;MultiSiteOperator(latt, i=&gt;sigmax()), +, 1:latt.N)\nSy = mapreduce(i-&gt;MultiSiteOperator(latt, i=&gt;sigmay()), +, 1:latt.N)\nSz = mapreduce(i-&gt;MultiSiteOperator(latt, i=&gt;sigmaz()), +, 1:latt.N)\n\nH, c_ops = DissipativeIsing(Jx, Jy, Jz, hx, hy, hz, γ, latt; boundary_condition = Val(:periodic_bc), order = 1)\ne_ops = (Sx, Sy, Sz)\n\ntl = range(0, 10, 100)\n\n0.0:0.10101010101010101:10.0"
+    "text": "Inspirations taken from this QuTiP tutorial by J.R. Johansson, P.D. Nation, and C. Staufenbiel\nIn this notebook, the usage of QuantumToolbox.sesolve and QuantumToolbox.mesolve will be demonstrated with Jaynes-Cummings model (JC model) to observe Rabi oscillations in the isolated case and the dissipative case. In the dissipative case, a bosonic interacts with the cavity and the two-level atom in the JC model."
   },
   {
-    "objectID": "QuantumToolbox.jl/time_evolution/lowrank.html#full-evolution",
-    "href": "QuantumToolbox.jl/time_evolution/lowrank.html#full-evolution",
-    "title": "Low rank master equation",
-    "section": "Full evolution",
-    "text": "Full evolution\n\nsol_me = mesolve(H, ρ, tl, c_ops; e_ops = [e_ops...]);\nStrue = entropy_vn(sol_me.states[end], base=2) / latt.N\n\nProgress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)\n\n\n0.29324728062546046"
+    "objectID": "QuantumToolbox.jl/time_evolution/rabi.html#introduction-to-jaynes-cumming-model",
+    "href": "QuantumToolbox.jl/time_evolution/rabi.html#introduction-to-jaynes-cumming-model",
+    "title": "Vacuum Rabi oscillation",
+    "section": "Introduction to Jaynes-Cumming model",
+    "text": "Introduction to Jaynes-Cumming model\nThe JC model is a simplest quantum mechanical model for light-matter interaction, describing an atom interacting with an external electromagnetic field. To simplify the interaction, the JC model considers a two-level atom interacting with a single bosonic mode, which can also be thought of as a single-mode cavity.\nThe Hamiltonian of JC model is given by\n\\[\n\\hat{H}_\\text{tot} = \\hat{H}_{\\text{a}} + \\hat{H}_{\\text{c}} + \\hat{H}_{\\text{int}}\n\\]\nwhere\n\n\\(\\hat{H}_{\\text{a}} = \\frac{\\omega_\\text{a}}{2} \\hat{\\sigma}_z\\): Hamiltonian for atom alone\n\\(\\hat{H}_{\\text{c}} = \\omega_\\text{c} \\hat{a}^\\dagger \\hat{a}\\): Hamiltonian for cavity alone\n\\(\\hat{H}_{\\text{int}} = \\Omega \\left( \\hat{\\sigma}^\\dagger + \\hat{\\sigma} \\right) \\cdot \\left( \\hat{a}^\\dagger + \\hat{a} \\right)\\): Interaction Hamiltonian for coherent interaction\n\nwith\n\n\\(\\omega_\\text{a}\\): Frequency of the two-level atom\n\\(\\omega_\\text{c}\\): Frequency of the cavity’s electromagnetic mode\n\\(\\Omega\\) : Coupling strength between the atom and the cavity\n\\(\\hat{\\sigma}_z\\) : Pauli-\\(Z\\) matrix. Equivalent to \\(|e\\rangle\\langle e| - |g\\rangle\\langle g|\\)\n\\(\\hat{a}\\) : Annihilation operator of single-mode cavity \n\\(\\hat{\\sigma}\\) : Lowering operator of atom. Equivalent to \\(|g\\rangle\\langle e|\\)\n\nBy applying the rotating wave approximation (RWA), the counter rotating terms (\\(\\hat{\\sigma} \\cdot \\hat{a}\\) and its Hermitian conjugate) are ignored, yielding\n\\[\n\\hat{H}_\\text{tot} \\approx \\hat{H}_{\\text{a}} + \\hat{H}_{\\text{c}} + \\Omega \\left( \\hat{\\sigma} \\cdot \\hat{a}^\\dagger + \\hat{\\sigma}^\\dagger \\cdot \\hat{a} \\right)\n\\]\n\nUsage of QuantumToolbox for JC model in general\n\nimport:\n\nimport QuantumToolbox: sigmaz, sigmam, destroy, qeye, basis, fock, \n    ⊗, n_thermal, sesolve, mesolve\nimport CairoMakie: Figure, Axis, lines!, axislegend, xlims!, display, @L_str\n\n\nN = 2 # Fock space truncated dimension\n\nωa = 1\nωc = 1 * ωa    # considering cavity and atom are in resonance\nσz = sigmaz() ⊗ qeye(N) # order of tensor product should be consistent throughout\na  = qeye(2)  ⊗ destroy(N)  \nΩ  = 0.05\nσ  = sigmam() ⊗ qeye(N)\n\nHa = ωa / 2 * σz\nHc = ωc * a' * a # the symbol `'` after a `QuantumObject` act as adjoint\nHint = Ω * (σ * a' + σ' * a)\n\nHtot  = Ha + Hc + Hint\n\nprint(Htot)\n\nQuantum Object:   type=Operator   dims=[2, 2]   size=(4, 4)   ishermitian=true\n4×4 SparseArrays.SparseMatrixCSC{ComplexF64, Int64} with 6 stored entries:\n  0.5+0.0im      ⋅           ⋅      0.05+0.0im\n      ⋅      1.5+0.0im       ⋅           ⋅    \n      ⋅          ⋅      -0.5+0.0im       ⋅    \n 0.05+0.0im      ⋅           ⋅       0.5+0.0im"
   },
   {
-    "objectID": "QuantumToolbox.jl/time_evolution/lowrank.html#low-rank-evolution",
-    "href": "QuantumToolbox.jl/time_evolution/lowrank.html#low-rank-evolution",
-    "title": "Low rank master equation",
-    "section": "Low Rank Evolution",
-    "text": "Low Rank Evolution\nDefine functions to be evaluated during the low-rank evolution\n\nfunction f_purity(p, z, B)\n    N = p.N\n    M = p.M\n    S = p.S\n    T = p.temp_MM\n\n    mul!(T, S, B)\n    return tr(T^2)\nend\n\nfunction f_trace(p, z, B)\n    N = p.N\n    M = p.M\n    S = p.S\n    T = p.temp_MM\n\n    mul!(T, S, B)\n    return tr(T)\nend\n\nfunction f_entropy(p, z, B)\n    C = p.A0\n    σ = p.Bi\n\n    mul!(C, z, sqrt(B))\n    mul!(σ, C', C)\n    return entropy_vn(Qobj(Hermitian(σ), type=Operator), base=2)\nend\n\nf_entropy (generic function with 1 method)\n\n\nDefine the options for the low-rank evolution\n\nopt = (err_max = 1e-3, p0 = 0.0, atol_inv = 1e-6, adj_condition = \"variational\", Δt = 0.0);\n\nsol_lr = lr_mesolve(H, z, B, tl, c_ops; e_ops = e_ops, f_ops = (f_purity, f_entropy, f_trace), opt = opt);\n\nProgress: 2%Progress: 3%Progress: 4%Progress: 5%Progress: 6%Progress: 7%Progress: 8%Progress: 9%Progress: 10%Progress: 11%Progress: 12%Progress: 13%Progress: 14%Progress: 15%Progress: 16%Progress: 17%Progress: 18%Progress: 19%Progress: 20%Progress: 21%Progress: 22%Progress: 23%Progress: 24%Progress: 25%Progress: 26%Progress: 27%Progress: 28%Progress: 29%Progress: 30%Progress: 31%Progress: 32%Progress: 33%Progress: 34%Progress: 35%Progress: 36%Progress: 37%Progress: 38%Progress: 39%Progress: 40%Progress: 41%Progress: 42%Progress: 43%Progress: 44%Progress: 45%Progress: 46%Progress: 47%Progress: 48%Progress: 49%Progress: 50%Progress: 51%Progress: 52%Progress: 53%Progress: 54%Progress: 55%Progress: 56%Progress: 57%Progress: 58%Progress: 59%Progress: 60%Progress: 61%Progress: 62%Progress: 63%Progress: 64%Progress: 65%Progress: 66%Progress: 67%Progress: 68%Progress: 69%Progress: 70%Progress: 71%Progress: 72%Progress: 73%Progress: 74%Progress: 75%Progress: 76%Progress: 77%Progress: 78%Progress: 79%Progress: 80%Progress: 81%Progress: 82%Progress: 83%Progress: 84%Progress: 85%Progress: 86%Progress: 87%Progress: 88%Progress: 89%Progress: 90%Progress: 91%Progress: 92%Progress: 93%Progress: 94%Progress: 95%Progress: 96%Progress: 97%Progress: 98%Progress: 99%Progress: 100%\n\n\nPlot the results\n\nm_me = real(sol_me.expect[3, :]) / Nx / Ny\nm_lr = real(sol_lr.expect[3, :]) / Nx / Ny\n\nfig = Figure(size = (500, 350), fontsize = 15)\nax = Axis(fig[1, 1], xlabel = L\"\\gamma t\", ylabel = L\"M_{z}\", xlabelsize = 20, ylabelsize = 20)\nlines!(ax, tl, m_lr, label = L\"LR $[M=M(t)]$\", linewidth = 2)\nlines!(ax, tl, m_me, label = \"Fock\", linewidth = 2, linestyle = :dash)\naxislegend(ax, position = :rb)\n\nax2 = Axis(fig[1, 2], xlabel = L\"\\gamma t\", ylabel = \"Value\", xlabelsize = 20, ylabelsize = 20)\nlines!(ax2, tl, 1 .- real(sol_lr.fexpect[1, :]), label = L\"$1-P$\", linewidth = 2)\nlines!(\n    ax2,\n    tl,\n    1 .- real(sol_lr.fexpect[3, :]),\n    label = L\"$1-\\mathrm{Tr}(\\rho)$\",\n    linewidth = 2,\n    linestyle = :dash,\n    color = :orange,\n)\nlines!(ax2, tl, real(sol_lr.fexpect[2, :]) / Nx / Ny, color = :blue, label = L\"S\", linewidth = 2)\nhlines!(ax2, [Strue], color = :blue, linestyle = :dash, linewidth = 2, label = L\"S^{\\,\\mathrm{true}}_{\\mathrm{ss}}\")\naxislegend(ax2, position = :rb)\n\nfig"
+    "objectID": "QuantumToolbox.jl/time_evolution/rabi.html#isolated-case",
+    "href": "QuantumToolbox.jl/time_evolution/rabi.html#isolated-case",
+    "title": "Vacuum Rabi oscillation",
+    "section": "Isolated case",
+    "text": "Isolated case\nFor the case of the JC model being isolated, i.e., with no interaction with the surrounding environment, the time evolution is governed solely by the Schrödinger equation, \\(\\hat{H}|\\psi(t)\\rangle = \\partial_t|\\psi(t)\\rangle\\). The QuantumToolbox.sesolve function is ideal for simulating such pure state evolution.\nFor the context of Rabi problem, we set the initial state as \\(\\psi_0 = |e\\rangle \\otimes |0\\rangle\\), where \\(|e\\rangle\\) is the excited state of the atom and \\(|0\\rangle\\) is the vacuum state of the cavity.\n\ne_ket = basis(2,0) \nψ0 = e_ket ⊗ fock(N, 0)\n\ntlist = 0:2.5:1000 # a list of time points of interest\n\n# define a list of operators whose expectation value dynamics exhibit Rabi oscillation\neop_ls = [\n    a' * a,                      # number operator of cavity\n    (e_ket * e_ket') ⊗ qeye(N), # excited state population in atom\n]\n\nsol = sesolve(Htot , ψ0, tlist; e_ops = eop_ls)\nprint(sol)\n\nProgress: [                              ]   0.2% --- Elapsed Time: 0h 00m 02s (ETA: 0h 13m 20s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 02s (ETA: 0h 00m 00s)\nSolution of time evolution\n(return code: Success)\n--------------------------\nnum_states = 1\nnum_expect = 2\nODE alg.: OrdinaryDiffEqTsit5.Tsit5{typeof(OrdinaryDiffEqCore.trivial_limiter!), typeof(OrdinaryDiffEqCore.trivial_limiter!), Static.False}(OrdinaryDiffEqCore.trivial_limiter!, OrdinaryDiffEqCore.trivial_limiter!, static(false))\nabstol = 1.0e-8\nreltol = 1.0e-6\n\n\nCompare the dynamics of \\(| e \\rangle\\langle e|\\) alongside \\(a^\\dagger a\\)\n\nn = real.(sol.expect[1, :])\ne = real.(sol.expect[2, :])\nfig_se = Figure(size = (600, 350))\nax_se = Axis(\n    fig_se[1, 1],\n    xlabel = L\"time $[1/\\omega_a]$\", \n    ylabel = \"expectation value\", \n    xlabelsize = 15, \n    ylabelsize = 15,\n    width = 400,\n    height = 220\n)\nxlims!(ax_se, 0, 400)\nlines!(ax_se, tlist, n, label = L\"$\\langle a^\\dagger a \\rangle$\")\nlines!(ax_se, tlist, e, label = L\"$P_e$\")\naxislegend(ax_se; position = :rt, labelsize = 15)\ndisplay(fig_se);\n\n\n\n\n\n\n\n\nIn the above plot, the behaviour of the energy exchange between the atom and the cavity is clearly visible, addressing the Rabi problem."
   },
   {
-    "objectID": "QuantumToolbox.jl/time_evolution/lowrank.html#version-information",
-    "href": "QuantumToolbox.jl/time_evolution/lowrank.html#version-information",
-    "title": "Low rank master equation",
+    "objectID": "QuantumToolbox.jl/time_evolution/rabi.html#dissipative-case",
+    "href": "QuantumToolbox.jl/time_evolution/rabi.html#dissipative-case",
+    "title": "Vacuum Rabi oscillation",
+    "section": "Dissipative case",
+    "text": "Dissipative case\nIn contrast to isolated evolution, a realistic system interacts with its surrounding environment, leading to energy or particle exchange. Here, we focus on observing the Rabi oscillations of the JC model with the inclusion of interactions with an external environment at some finite temperature.\nWe start by reviewing the interaction Hamiltonians between the thermal field and atom/cavity\n\nAtom: \\[\n      \\hat{H}_{\\text{a}}^\\text{int} = \\sum_l \\alpha_l \\left( \\hat{b}_l + \\hat{b}_l^\\dagger \\right) \\left( \\hat{\\sigma} + \\hat{\\sigma}^\\dagger \\right)\n      \\]\nCavity: \\[\n      \\hat{H}_{\\text{c}}^\\text{int} = \\sum_l \\beta_l \\left( \\hat{b}_l + \\hat{b}_l^\\dagger \\right) \\left( \\hat{a} + \\hat{a}^\\dagger \\right)\n      \\]\n\nwhere for the \\(l\\)-th mode\n\n\\(\\alpha_l\\) is the coupling strength with the atom\n\\(\\beta_l\\) is the coupling strength with the cavity\n\\(\\hat{b}_l\\) is the annihilation operator\n\nBy applying the aforementioned RWA and following the standard procedure of the Born-Markovian approximation, we obtain \\(\\kappa\\), the cavity dissipation rate, and \\(\\gamma\\), the atom dissipation rate. Consequently, the time evolution of the dissipative JC model is described by the Lindblad master equation.\n\\[\n\\dot{\\hat{\\rho}} = -\\frac{i}{\\hbar} [\\hat{H}, \\hat{\\rho}] + \\sum_{i = 1}^4 \\mathcal{D}[\\sqrt{\\Gamma_i} \\hat{S}_i]\\left(\\hat{\\rho}\\right)\n\\]\nwhere \\(\\sqrt{\\Gamma_i} \\hat{S}_i\\) are the collapse operators, given by\n\n\n\n\\(i\\)\n\\(\\Gamma_i\\)\n\\(\\hat{S}_i\\)\n\n\n\n\n1\n\\(\\kappa \\cdot n(\\omega_c, T)\\)\n\\(\\hat{a}^\\dagger\\)\n\n\n2\n\\(\\kappa \\cdot [1 + n(\\omega_c, T)]\\)\n\\(\\hat{a}\\)\n\n\n3\n\\(\\gamma \\cdot n(\\omega_a, T)\\)\n\\(\\hat{\\sigma}^\\dagger\\)\n\n\n4\n\\(\\gamma \\cdot [1 + n(\\omega_a, T)]\\)\n\\(\\hat{\\sigma}\\)\n\n\n\nwith \\(n(\\omega, T)\\) being the Bose-Einstein distribution of the thermal field and \\[\n\\mathcal{D}[\\hat{\\mathcal{O}}]\\left(\\cdot\\right) = \\hat{\\mathcal{O}} \\left(\\cdot\\right) \\hat{\\mathcal{O}}^\\dagger - \\frac{1}{2} \\{ \\hat{\\mathcal{O}}^\\dagger \\hat{\\mathcal{O}}, \\cdot \\}\n\\] being the Lindblad dissipator.\n\nSolve for evolutions in dissipative case\nWe can now define variables in julia and solve the evolution of dissipative JC model\n\n# Collapse operators for interaction with the environment with variable dissipation rates \n# and thermal energy of the environment. `n_thermal()` gives Bose-Einstein distribution\ncop_ls(_γ, _κ, _KT) = (\n    √(_κ * n_thermal(ωc, _KT)) * a', \n    √(_κ * (1 + n_thermal(ωc, _KT))) * a, \n    √(_γ * n_thermal(ωa, _KT)) * σ', \n    √(_γ * (1 + n_thermal(ωa, _KT))) * σ, \n)\n\ncop_ls (generic function with 1 method)\n\n\n\n# use the same ψ0, tlist, and eop_ls from isolated case\nγ = 4e-3\nκ = 7e-3\nKT = 0 # thermal field at zero temperature\n\n# `mesolve()` only has one additional keyword argument `c_ops` from `sesolve()`\nsol_me  = mesolve(Htot,  ψ0, tlist, cop_ls(γ, κ, KT), e_ops = eop_ls)\n\nprint(sol_me)\n\nProgress: [                              ]   0.2% --- Elapsed Time: 0h 00m 01s (ETA: 0h 06m 40s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 00s)\nSolution of time evolution\n(return code: Success)\n--------------------------\nnum_states = 1\nnum_expect = 2\nODE alg.: OrdinaryDiffEqTsit5.Tsit5{typeof(OrdinaryDiffEqCore.trivial_limiter!), typeof(OrdinaryDiffEqCore.trivial_limiter!), Static.False}(OrdinaryDiffEqCore.trivial_limiter!, OrdinaryDiffEqCore.trivial_limiter!, static(false))\nabstol = 1.0e-8\nreltol = 1.0e-6\n\n\n\nn_me = real.(sol_me.expect[1, :])\ne_me = real.(sol_me.expect[2, :])\n\nfig_me = Figure(size = (600, 350))\nax_me = Axis(\n    fig_me[1, 1],\n    xlabel = L\"time $[1/\\omega_a]$\", \n    ylabel = \"expectation value\", \n    xlabelsize = 15, \n    ylabelsize = 15,\n    width = 400,\n    height = 220\n)\nlines!(ax_me, tlist, n_me, label = L\"\\langle a^\\dagger a \\rangle\")\nlines!(ax_me, tlist, e_me, label = L\"$P_e$\")\naxislegend(ax_me; position = :rt, labelsize = 15)\ndisplay(fig_me);\n\n\n\n\n\n\n\n\nFrom the above example, one can see that the dissipative system is losing energy over time and asymptoting to zero. We can further consider the thermal field with finite temperature.\n\nsol_me_  = mesolve(Htot,  ψ0, tlist, cop_ls(γ, κ, 0.3 * ωa), e_ops = eop_ls) # replace KT with finite temperature\n\nn_me_ = real.(sol_me_.expect[1, :])\ne_me_ = real.(sol_me_.expect[2, :])\nfig_me_ = Figure(size = (600, 350))\nax_me_ = Axis(\n    fig_me_[1, 1],\n    xlabel = L\"time $[1/\\omega_a]$\", \n    ylabel = \"expectation value\", \n    xlabelsize = 15, \n    ylabelsize = 15,\n    width = 400,\n    height = 220\n)\nlines!(ax_me_, tlist, n_me_, label = L\"\\langle a^\\dagger a \\rangle\")\nlines!(ax_me_, tlist, e_me_, label = L\"$P_e$\")\naxislegend(ax_me_; position = :rt, labelsize = 15)\ndisplay(fig_me_);\n\nProgress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)\n\n\n\n\n\n\n\n\n\nDespite the persistence of the asymptotic behaviour, the system no longer approaches zero but instead reaches a steady-state above zero. This indicates that the system has been thermalized by the environment."
+  },
+  {
+    "objectID": "QuantumToolbox.jl/time_evolution/rabi.html#version-information",
+    "href": "QuantumToolbox.jl/time_evolution/rabi.html#version-information",
+    "title": "Vacuum Rabi oscillation",
     "section": "Version Information",
-    "text": "Version Information\n\nQuantumToolbox.versioninfo()\n\n\n QuantumToolbox.jl: Quantum Toolbox in Julia\n≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡\nCopyright © QuTiP team 2022 and later.\nCurrent admin team:\n    Alberto Mercurio and Yi-Te Huang\n\nPackage information:\n====================================\nJulia              Ver. 1.11.2\nQuantumToolbox     Ver. 0.24.0\nSciMLOperators     Ver. 0.3.12\nLinearSolve        Ver. 2.38.0\nOrdinaryDiffEqCore Ver. 1.15.0\n\nSystem information:\n====================================\nOS       : Linux (x86_64-linux-gnu)\nCPU      : 4 × AMD EPYC 7763 64-Core Processor\nMemory   : 15.615 GB\nWORD_SIZE: 64\nLIBM     : libopenlibm\nLLVM     : libLLVM-16.0.6 (ORCJIT, znver3)\nBLAS     : libopenblas64_.so (ilp64)\nThreads  : 4 (on 4 virtual cores)"
-  },
-  {
-    "objectID": "HierarchicalEOM.jl/dynamical_decoupling.html",
-    "href": "HierarchicalEOM.jl/dynamical_decoupling.html",
-    "title": "Driven systems and dynamical decoupling",
-    "section": "",
-    "text": "Inspirations taken from an example in QuTiP-BoFiN article (Lambert et al. 2023)."
-  },
-  {
-    "objectID": "HierarchicalEOM.jl/dynamical_decoupling.html#introduction",
-    "href": "HierarchicalEOM.jl/dynamical_decoupling.html#introduction",
-    "title": "Driven systems and dynamical decoupling",
-    "section": "Introduction",
-    "text": "Introduction\nIn this example, we show how to solve the time evolution with time-dependent Hamiltonian problems in hierarchical equations of motion approach.\nHere, we study dynamical decoupling which is a common tool used to undo the dephasing effect from the environment even for finite pulse duration."
-  },
-  {
-    "objectID": "HierarchicalEOM.jl/dynamical_decoupling.html#hamiltonian",
-    "href": "HierarchicalEOM.jl/dynamical_decoupling.html#hamiltonian",
-    "title": "Driven systems and dynamical decoupling",
-    "section": "Hamiltonian",
-    "text": "Hamiltonian\nWe consider a two-level system coupled to a bosonic reservoir (\\(\\textrm{b}\\)). The total Hamiltonian is given by \\(H_{\\textrm{T}}=H_\\textrm{s}+H_\\textrm{b}+H_\\textrm{sb}\\), where each terms takes the form\n\\[\n\\begin{aligned}\nH_{\\textrm{s}}(t) &= H_0 + H_{\\textrm{D}}(t),\\\\\nH_0               &= \\frac{\\omega_0}{2} \\sigma_z,\\\\\nH_{\\textrm{b}}    &=\\sum_{k}\\omega_{k}b_{k}^{\\dagger}b_{k},\\\\\nH_{\\textrm{sb}}   &=\\sigma_z\\sum_{k}g_{\\alpha,k}(b_k + b_k^{\\dagger}).\n\\end{aligned}\n\\]\nHere, \\(H_{\\textrm{b}}\\) describes a bosonic reservoir where \\(b_{k}\\) \\((b_{k}^{\\dagger})\\) is the bosonic annihilation (creation) operator associated to the \\(k\\)th mode (with frequency \\(\\omega_{k}\\)).\nFurthermore, to observe the time evolution of the coherence, we consider the initial state to be \\[\nψ(t=0)=\\frac{1}{\\sqrt{2}}\\left(|0\\rangle+|1\\rangle\\right)\n\\]\nNow, we need to build the system Hamiltonian and initial state with the package QuantumToolbox.jl to construct the operators.\n\nusing HierarchicalEOM  # this automatically loads `QuantumToolbox`\nusing CairoMakie       # for plotting results\n\n\nω0 = 0.0\nσz = sigmaz()\nσx = sigmax()\nH0 = 0.5 * ω0 * σz\n\n# Define the operator that measures the 0, 1 element of density matrix\nρ01 = Qobj([0 1; 0 0])\n\nψ0 = (basis(2, 0) + basis(2, 1)) / √2\n\nQuantum Object:   type=Ket   dims=[2]   size=(2,)\n2-element Vector{ComplexF64}:\n 0.7071067811865475 + 0.0im\n 0.7071067811865475 + 0.0im\n\n\nThe time-dependent driving term \\(H_{\\textrm{D}}(t)\\) has the form\n\\[\nH_{\\textrm{D}}(t) = \\sum_{n=1}^N f_n(t) \\sigma_x\n\\]\nwhere the pulse is chosen to have duration \\(\\tau\\) together with a delay \\(\\Delta\\) between each pulses, namely\n\\[\nf_n(t)\n= \\begin{cases}\n  V & \\textrm{if}~~(n-1)\\tau + n\\Delta \\leq t \\leq n (\\tau + \\Delta),\\\\\n  0 & \\textrm{otherwise}.\n  \\end{cases}\n\\]\nHere, we set the period of the pulses to be \\(\\tau V = \\pi/2\\). Therefore, we consider two scenarios with fast and slow pulses:\n\n# a function which returns the amplitude of the pulse at time t\nfunction pulse(p, t)\n    τ = 0.5 * π / p.V\n    period = τ + p.Δ\n\n    if (t % period) &lt; τ\n        return p.V\n    else\n        return 0\n    end\nend\n\ntlist = 0:0.4:400\namp_fast = 0.50\namp_slow = 0.01\ndelay = 20\n\nfastTuple = (V = amp_fast, Δ = delay)\nslowTuple = (V = amp_slow, Δ = delay)\n\n# plot\nfig = Figure(size = (600, 350))\nax = Axis(fig[1, 1], xlabel = L\"t\")\nlines!(ax, tlist, [pulse(fastTuple, t) for t in tlist], label = \"Fast Pulse\", linestyle = :solid)\nlines!(ax, tlist, [pulse(slowTuple, t) for t in tlist], label = \"Slow Pulse\", linestyle = :dash)\n\naxislegend(ax, position = :rt)\n\nfig"
-  },
-  {
-    "objectID": "HierarchicalEOM.jl/dynamical_decoupling.html#construct-bath-objects",
-    "href": "HierarchicalEOM.jl/dynamical_decoupling.html#construct-bath-objects",
-    "title": "Driven systems and dynamical decoupling",
-    "section": "Construct bath objects",
-    "text": "Construct bath objects\nWe assume the bosonic reservoir to have a Drude-Lorentz Spectral Density, and we utilize the Padé decomposition. Furthermore, the spectral densities depend on the following physical parameters:\n\nthe coupling strength \\(\\Gamma\\) between system and reservoir\nthe band-width \\(W\\)\nthe product of the Boltzmann constant \\(k\\) and the absolute temperature \\(T\\) : \\(kT\\)\nthe total number of exponentials for the reservoir \\((N + 1)\\)\n\n\nΓ = 0.0005\nW = 0.005\nkT = 0.05\nN = 3\nbath = Boson_DrudeLorentz_Pade(σz, Γ, W, kT, N)\n\nHierarchicalEOM.BosonBath object with 4 exponential-expansion terms"
-  },
-  {
-    "objectID": "HierarchicalEOM.jl/dynamical_decoupling.html#construct-heomls-matrix",
-    "href": "HierarchicalEOM.jl/dynamical_decoupling.html#construct-heomls-matrix",
-    "title": "Driven systems and dynamical decoupling",
-    "section": "Construct HEOMLS matrix",
-    "text": "Construct HEOMLS matrix\n\n\n\n\n\n\nWarning\n\n\n\nOnly provide the time-independent part of system Hamiltonian when constructing HEOMLS matrices (the time-dependent part H_t should be given when solving the time evolution).\n\n\n\ntier = 6\nM = M_Boson(H0, tier, bath)\n\nPreparing block matrices for HEOM Liouvillian superoperator (using 4 threads)...\nProgress: [                              ]   0.5% --- Elapsed Time: 0h 00m 01s (ETA: 0h 03m 29s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 00s)\nConstructing matrix...[DONE]\n\n\nBoson type HEOMLS matrix acting on even-parity ADOs\nsystem dims = [2]\nnumber of ADOs N = 210\ndata =\nMatrixOperator(840 × 840)"
-  },
-  {
-    "objectID": "HierarchicalEOM.jl/dynamical_decoupling.html#time-evolution-with-time-independent-hamiltonian",
-    "href": "HierarchicalEOM.jl/dynamical_decoupling.html#time-evolution-with-time-independent-hamiltonian",
-    "title": "Driven systems and dynamical decoupling",
-    "section": "time evolution with time-independent Hamiltonian",
-    "text": "time evolution with time-independent Hamiltonian\n\nnoPulseSol = HEOMsolve(M, ψ0, tlist; e_ops = [ρ01]);\n\nSolving time evolution for ADOs by Ordinary Differential Equations method...\nProgress: [                              ]   0.1% --- Elapsed Time: 0h 00m 02s (ETA: 0h 33m 20s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 02s (ETA: 0h 00m 00s)"
-  },
-  {
-    "objectID": "HierarchicalEOM.jl/dynamical_decoupling.html#solve-time-evolution-with-time-dependent-hamiltonian",
-    "href": "HierarchicalEOM.jl/dynamical_decoupling.html#solve-time-evolution-with-time-dependent-hamiltonian",
-    "title": "Driven systems and dynamical decoupling",
-    "section": "Solve time evolution with time-dependent Hamiltonian",
-    "text": "Solve time evolution with time-dependent Hamiltonian\nWe need to provide a QuantumToolbox.QuantumObjectEvolution (named as H_D in this case)\n\nH_D = QobjEvo(σx, pulse)\n\nQuantum Object Evo.:   type=Operator   dims=[2]   size=(2, 2)   ishermitian=true   isconstant=false\nScalarOperator(0.0 + 0.0im) * MatrixOperator(2 × 2)\n\n\nThe keyword argument params in HEOMsolve will be passed to the argument p in user-defined function (pulse in this case) directly:\n\nfastPulseSol = HEOMsolve(M, ψ0, tlist; e_ops = [ρ01], H_t = H_D, params = fastTuple)\nslowPulseSol = HEOMsolve(M, ψ0, tlist; e_ops = [ρ01], H_t = H_D, params = slowTuple)\n\nSolving time evolution for ADOs by Ordinary Differential Equations method...\nProgress: [                              ]   0.1% --- Elapsed Time: 0h 00m 01s (ETA: 0h 16m 40s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 00s)\nSolving time evolution for ADOs by Ordinary Differential Equations method...\nProgress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)\n\n\nSolution of hierarchical EOM\n(return code: Success)\n----------------------------\nBtier = 6\nFtier = 0\nnum_states = 1\nnum_expect = 1\nODE alg.: OrdinaryDiffEqLowOrderRK.DP5{typeof(OrdinaryDiffEqCore.trivial_limiter!), typeof(OrdinaryDiffEqCore.trivial_limiter!), Static.False}(OrdinaryDiffEqCore.trivial_limiter!, OrdinaryDiffEqCore.trivial_limiter!, static(false))\nabstol = 1.0e-8\nreltol = 1.0e-6"
-  },
-  {
-    "objectID": "HierarchicalEOM.jl/dynamical_decoupling.html#plot-the-coherence",
-    "href": "HierarchicalEOM.jl/dynamical_decoupling.html#plot-the-coherence",
-    "title": "Driven systems and dynamical decoupling",
-    "section": "Plot the coherence",
-    "text": "Plot the coherence\n\nfig = Figure(size = (600, 350))\nax = Axis(fig[1, 1], xlabel = L\"t\", ylabel = L\"\\rho_{01}\")\nlines!(ax, tlist, real(fastPulseSol.expect[1, :]), label = \"Fast Pulse\", linestyle = :solid)\nlines!(ax, tlist, real(slowPulseSol.expect[1, :]), label = \"Slow Pulse\", linestyle = :dot)\nlines!(ax, tlist, real(noPulseSol.expect[1, :]),   label = \"no Pulse\",   linestyle = :dash)\n\naxislegend(ax, position = :lb)\n\nfig"
-  },
-  {
-    "objectID": "HierarchicalEOM.jl/dynamical_decoupling.html#version-information",
-    "href": "HierarchicalEOM.jl/dynamical_decoupling.html#version-information",
-    "title": "Driven systems and dynamical decoupling",
-    "section": "Version Information",
-    "text": "Version Information\n\nHierarchicalEOM.versioninfo()\n\n\n                                   __\n                                  /  \\\n __     __                     __ \\__/ __\n|  |   |  |                   /  \\    /  \\\n|  |   |  | ______   ______   \\__/_  _\\__/\n|  |___|  |/  __  \\ /  __  \\ / '   \\/     \\\n|   ___   |  |__)  |  /  \\  |    _     _   |\n|  |   |  |   ____/| (    ) |   / \\   / \\  |\n|  |   |  |  |____ |  \\__/  |  |   | |   | |\n|__|   |__|\\______) \\______/|__|   |_|   |_|\n\nJulia framework for Hierarchical Equations of Motion\n≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡\nCopyright © QuTiP team 2023 and later.\nLead  developer : Yi-Te Huang\nOther developers:\n    Simon Cross, Neill Lambert, Po-Chen Kuo and Shen-Liang Yang\n\nPackage information:\n====================================\nJulia              Ver. 1.11.2\nHierarchicalEOM    Ver. 2.3.3\nQuantumToolbox     Ver. 0.24.0\nSciMLOperators     Ver. 0.3.12\nLinearSolve        Ver. 2.38.0\nOrdinaryDiffEqCore Ver. 1.15.0\n\nSystem information:\n====================================\nOS       : Linux (x86_64-linux-gnu)\nCPU      : 4 × AMD EPYC 7763 64-Core Processor\nMemory   : 15.615 GB\nWORD_SIZE: 64\nLIBM     : libopenlibm\nLLVM     : libLLVM-16.0.6 (ORCJIT, znver3)\nBLAS     : libopenblas64_.so (ilp64)\nThreads  : 4 (on 4 virtual cores)"
-  },
-  {
-    "objectID": "HierarchicalEOM.jl/SIAM.html",
-    "href": "HierarchicalEOM.jl/SIAM.html",
-    "title": "Single-impurity Anderson model",
-    "section": "",
-    "text": "The investigation of the Kondo effect in single-impurity Anderson model is crucial as it serves both as a valuable testing ground for the theories of the Kondo effect and has the potential to lead to a better understanding of this intrinsic many-body phenomena. For further detailed discussions of this model (under different parameters) using HierarchicalEOM.jl, we recommend to read the article (Huang et al. 2023)."
-  },
-  {
-    "objectID": "HierarchicalEOM.jl/SIAM.html#introduction",
-    "href": "HierarchicalEOM.jl/SIAM.html#introduction",
-    "title": "Single-impurity Anderson model",
-    "section": "",
-    "text": "The investigation of the Kondo effect in single-impurity Anderson model is crucial as it serves both as a valuable testing ground for the theories of the Kondo effect and has the potential to lead to a better understanding of this intrinsic many-body phenomena. For further detailed discussions of this model (under different parameters) using HierarchicalEOM.jl, we recommend to read the article (Huang et al. 2023)."
-  },
-  {
-    "objectID": "HierarchicalEOM.jl/SIAM.html#hamiltonian",
-    "href": "HierarchicalEOM.jl/SIAM.html#hamiltonian",
-    "title": "Single-impurity Anderson model",
-    "section": "Hamiltonian",
-    "text": "Hamiltonian\nWe consider a single-level electronic system [which can be populated by a spin-up (\\(\\uparrow\\)) or spin-down (\\(\\downarrow\\)) electron] coupled to a fermionic reservoir (\\(\\textrm{f}\\)). The total Hamiltonian is given by \\(H_{\\textrm{T}}=H_\\textrm{s}+H_\\textrm{f}+H_\\textrm{sf}\\), where each terms takes the form\n\\[\n\\begin{aligned}\nH_{\\textrm{s}}  &= \\epsilon \\left(d^\\dagger_\\uparrow d_\\uparrow + d^\\dagger_\\downarrow d_\\downarrow \\right) + U\\left(d^\\dagger_\\uparrow d_\\uparrow d^\\dagger_\\downarrow d_\\downarrow\\right),\\\\\nH_{\\textrm{f}}  &=\\sum_{\\sigma=\\uparrow,\\downarrow}\\sum_{k}\\epsilon_{\\sigma,k}c_{\\sigma,k}^{\\dagger}c_{\\sigma,k},\\\\\nH_{\\textrm{sf}} &=\\sum_{\\sigma=\\uparrow,\\downarrow}\\sum_{k}g_{k}c_{\\sigma,k}^{\\dagger}d_{\\sigma} + g_{k}^*d_{\\sigma}^{\\dagger}c_{\\sigma,k}.\n\\end{aligned}\n\\]\nHere, \\(d_\\uparrow\\) \\((d_\\downarrow)\\) annihilates a spin-up (spin-down) electron in the system, \\(\\epsilon\\) is the energy of the electron, and \\(U\\) is the Coulomb repulsion energy for double occupation. Furthermore, \\(c_{\\sigma,k}\\) \\((c_{\\sigma,k}^{\\dagger})\\) annihilates (creates) an electron in the state \\(k\\) (with energy \\(\\epsilon_{\\sigma,k}\\)) of the reservoir.\nNow, we need to build the system Hamiltonian and initial state with the package QuantumToolbox.jl to construct the operators.\n\nusing HierarchicalEOM  # this automatically loads `QuantumToolbox`\nusing CairoMakie       # for plotting results\n\n\nϵ = -5\nU = 10\nσm = sigmam() # σ-\nσz = sigmaz() # σz\nII = qeye(2)  # identity matrix\n\n# construct the annihilation operator for both spin-up and spin-down\n# (utilize Jordan–Wigner transformation)\nd_up = tensor(σm, II)\nd_dn = tensor(-1 * σz, σm)\nHsys = ϵ * (d_up' * d_up + d_dn' * d_dn) + U * (d_up' * d_up * d_dn' * d_dn)\n\nQuantum Object:   type=Operator   dims=[2, 2]   size=(4, 4)   ishermitian=true\n4×4 SparseMatrixCSC{ComplexF64, Int64} with 2 stored entries:\n     ⋅           ⋅           ⋅          ⋅    \n     ⋅      -5.0+0.0im       ⋅          ⋅    \n     ⋅           ⋅      -5.0+0.0im      ⋅    \n     ⋅           ⋅           ⋅          ⋅"
-  },
-  {
-    "objectID": "HierarchicalEOM.jl/SIAM.html#construct-bath-objects",
-    "href": "HierarchicalEOM.jl/SIAM.html#construct-bath-objects",
-    "title": "Single-impurity Anderson model",
-    "section": "Construct bath objects",
-    "text": "Construct bath objects\nWe assume the fermionic reservoir to have a Lorentzian-shaped spectral density, and we utilize the Padé decomposition. Furthermore, the spectral densities depend on the following physical parameters:\n\nthe coupling strength \\(\\Gamma\\) between system and reservoirs\nthe band-width \\(W\\)\nthe product of the Boltzmann constant \\(k\\) and the absolute temperature \\(T\\) : \\(kT\\)\nthe chemical potential \\(\\mu\\)\nthe total number of exponentials for the reservoir \\(2(N + 1)\\)\n\n\nΓ = 2\nμ = 0\nW = 10\nkT = 0.5\nN = 5\nbath_up = Fermion_Lorentz_Pade(d_up, Γ, μ, W, kT, N)\nbath_dn = Fermion_Lorentz_Pade(d_dn, Γ, μ, W, kT, N)\nbath_list = [bath_up, bath_dn]\n\n2-element Vector{FermionBath}:\n HierarchicalEOM.FermionBath object with 12 exponential-expansion terms\n\n HierarchicalEOM.FermionBath object with 12 exponential-expansion terms"
-  },
-  {
-    "objectID": "HierarchicalEOM.jl/SIAM.html#construct-heomls-matrix",
-    "href": "HierarchicalEOM.jl/SIAM.html#construct-heomls-matrix",
-    "title": "Single-impurity Anderson model",
-    "section": "Construct HEOMLS matrix",
-    "text": "Construct HEOMLS matrix\n\ntier = 3\nM_even = M_Fermion(Hsys, tier, bath_list)\nM_odd = M_Fermion(Hsys, tier, bath_list, ODD)\n\nPreparing block matrices for HEOM Liouvillian superoperator (using 4 threads)...\nProgress: [                              ]   0.0% --- Elapsed Time: 0h 00m 01s (ETA: 0h 38m 44s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 00s)\nConstructing matrix...[DONE]\nPreparing block matrices for HEOM Liouvillian superoperator (using 4 threads)...\nProgress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)\nConstructing matrix...[DONE]\n\n\nFermion type HEOMLS matrix acting on odd-parity ADOs\nsystem dims = [2, 2]\nnumber of ADOs N = 2325\ndata =\nMatrixOperator(37200 × 37200)"
-  },
-  {
-    "objectID": "HierarchicalEOM.jl/SIAM.html#solve-stationary-state-of-ados",
-    "href": "HierarchicalEOM.jl/SIAM.html#solve-stationary-state-of-ados",
-    "title": "Single-impurity Anderson model",
-    "section": "Solve stationary state of ADOs",
-    "text": "Solve stationary state of ADOs\n\nados_s = steadystate(M_even)\n\nSolving steady state for ADOs by linear-solve method...[DONE]\n\n\n2325 Auxiliary Density Operators with even-parity and (system) dims = [2, 2]"
-  },
-  {
-    "objectID": "HierarchicalEOM.jl/SIAM.html#calculate-density-of-states-dos",
-    "href": "HierarchicalEOM.jl/SIAM.html#calculate-density-of-states-dos",
-    "title": "Single-impurity Anderson model",
-    "section": "Calculate density of states (DOS)",
-    "text": "Calculate density of states (DOS)\n\nωlist = -10:1:10\ndos = DensityOfStates(M_odd, ados_s, d_up, ωlist)\n\nCalculating density of states in frequency domain...\nProgress: [=======                       ]  23.8% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 03s)Progress: [==============                ]  47.6% --- Elapsed Time: 0h 00m 02s (ETA: 0h 00m 02s)Progress: [=====================         ]  71.4% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 01s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 04s (ETA: 0h 00m 00s)\n[DONE]\n\n\n21-element Vector{Float64}:\n 0.024341620652868125\n 0.04465552042384671\n 0.09077144051561165\n 0.1929888055674428\n 0.29351536894471525\n 0.23367107985909338\n 0.15864674406917825\n 0.1237987795050877\n 0.11772111509217494\n 0.14524303704733388\n ⋮\n 0.11772111509217663\n 0.12379877950508988\n 0.15864674406918147\n 0.2336710798590986\n 0.2935153689447211\n 0.1929888055674464\n 0.090771440515613\n 0.044655520423847135\n 0.024341620652868233\n\n\nplot the results\n\nfig = Figure(size = (500, 350))\nax = Axis(fig[1, 1], xlabel = L\"\\omega\")\nlines!(ax, ωlist, dos)\n\nfig"
-  },
-  {
-    "objectID": "HierarchicalEOM.jl/SIAM.html#version-information",
-    "href": "HierarchicalEOM.jl/SIAM.html#version-information",
-    "title": "Single-impurity Anderson model",
-    "section": "Version Information",
-    "text": "Version Information\n\nHierarchicalEOM.versioninfo()\n\n\n                                   __\n                                  /  \\\n __     __                     __ \\__/ __\n|  |   |  |                   /  \\    /  \\\n|  |   |  | ______   ______   \\__/_  _\\__/\n|  |___|  |/  __  \\ /  __  \\ / '   \\/     \\\n|   ___   |  |__)  |  /  \\  |    _     _   |\n|  |   |  |   ____/| (    ) |   / \\   / \\  |\n|  |   |  |  |____ |  \\__/  |  |   | |   | |\n|__|   |__|\\______) \\______/|__|   |_|   |_|\n\nJulia framework for Hierarchical Equations of Motion\n≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡\nCopyright © QuTiP team 2023 and later.\nLead  developer : Yi-Te Huang\nOther developers:\n    Simon Cross, Neill Lambert, Po-Chen Kuo and Shen-Liang Yang\n\nPackage information:\n====================================\nJulia              Ver. 1.11.2\nHierarchicalEOM    Ver. 2.3.3\nQuantumToolbox     Ver. 0.24.0\nSciMLOperators     Ver. 0.3.12\nLinearSolve        Ver. 2.38.0\nOrdinaryDiffEqCore Ver. 1.15.0\n\nSystem information:\n====================================\nOS       : Linux (x86_64-linux-gnu)\nCPU      : 4 × AMD EPYC 7763 64-Core Processor\nMemory   : 15.615 GB\nWORD_SIZE: 64\nLIBM     : libopenlibm\nLLVM     : libLLVM-16.0.6 (ORCJIT, znver3)\nBLAS     : libopenblas64_.so (ilp64)\nThreads  : 4 (on 4 virtual cores)"
-  },
-  {
-    "objectID": "QuantumToolbox.jl/toc.html",
-    "href": "QuantumToolbox.jl/toc.html",
-    "title": "Tutorials for QuantumToolbox.jl",
-    "section": "",
-    "text": "The following tutorials demonstrate and introduce specific functionality of QuantumToolbox.jl.\n\nTime Evolution\n\n\n\n\n\nLast Update\n\n\nTitle\n\n\nAuthor\n\n\n\n\n\n\n2025-01-13\n\n\nLow rank master equation\n\n\nLuca Gravina\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "HierarchicalEOM.jl/toc.html",
-    "href": "HierarchicalEOM.jl/toc.html",
-    "title": "Tutorials for HierarchicalEOM.jl",
-    "section": "",
-    "text": "The following tutorials demonstrate and introduce specific functionality of HierarchicalEOM.jl.\n\nExamples\n\n\n\n\n\nLast Update\n\n\nTitle\n\n\nAuthor\n\n\n\n\n\n\n2025-01-14\n\n\nSingle-impurity Anderson model\n\n\nYi-Te Huang\n\n\n\n\n2025-01-13\n\n\nCavity QED system\n\n\nShen-Liang Yang, Yi-Te Huang\n\n\n\n\n2025-01-14\n\n\nDriven systems and dynamical decoupling\n\n\nYi-Te Huang\n\n\n\n\n2025-01-14\n\n\nElectronic Current\n\n\nYi-Te Huang\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Tutorials for Quantum Toolbox in Julia",
-    "section": "",
-    "text": "This website contains our collection of tutorials for introducing and demonstrating features of Quantum Toolbox in Julia. Going through these tutorials should be a good way to get familiarized with the software. If you are new to scientific computing with Julia, you might also find it useful to have a look at the Julia tutorials website.\nYou can find the tutorials of our packages from the navbar on top, or the following links:\n\n\n\nPackage\nTutorials\nGitHub Repository\nDocumentation\n\n\n\n\nQuantumToolbox.jl\nlink\nlink\nlink\n\n\nHierarchicalEOM.jl\nlink\nlink\nlink"
-  },
-  {
-    "objectID": "HierarchicalEOM.jl/cavityQED.html",
-    "href": "HierarchicalEOM.jl/cavityQED.html",
-    "title": "Cavity QED system",
-    "section": "",
-    "text": "Cavity quantum electrodynamics (cavity QED) is an important topic for studying the interaction between atoms (or other particles) and light confined in a reflective cavity, under conditions where the quantum nature of photons is significant."
-  },
-  {
-    "objectID": "HierarchicalEOM.jl/cavityQED.html#introduction",
-    "href": "HierarchicalEOM.jl/cavityQED.html#introduction",
-    "title": "Cavity QED system",
-    "section": "",
-    "text": "Cavity quantum electrodynamics (cavity QED) is an important topic for studying the interaction between atoms (or other particles) and light confined in a reflective cavity, under conditions where the quantum nature of photons is significant."
-  },
-  {
-    "objectID": "HierarchicalEOM.jl/cavityQED.html#hamiltonian",
-    "href": "HierarchicalEOM.jl/cavityQED.html#hamiltonian",
-    "title": "Cavity QED system",
-    "section": "Hamiltonian",
-    "text": "Hamiltonian\nThe Jaynes-Cummings model is a standard model in the realm of cavity QED. It illustrates the interaction between a two-level atom (\\(\\textrm{A}\\)) and a quantized single-mode within a cavity (\\(\\textrm{c}\\)).\nNow, we need to build the system Hamiltonian and initial state with the package QuantumToolbox.jl to construct the operators.\n\\[\n\\begin{aligned}\nH_{\\textrm{s}}&=H_{\\textrm{A}}+H_{\\textrm{c}}+H_{\\textrm{int}},\\\\\nH_{\\textrm{A}}&=\\frac{\\omega_A}{2}\\sigma_z,\\\\\nH_{\\textrm{c}}&=\\omega_{\\textrm{c}} a^\\dagger a,\\\\\nH_{\\textrm{int}}&=g (a^\\dagger\\sigma^-+a\\sigma^+),\n\\end{aligned}\n\\]\nwhere \\(\\sigma^-\\) (\\(\\sigma^+\\)) is the annihilation (creation) operator of the atom, and \\(a\\) (\\(a^\\dagger\\)) is the annihilation (creation) operator of the cavity.\nFurthermore, we consider the system is coupled to a bosonic reservoir (\\(\\textrm{b}\\)). The total Hamiltonian is given by \\(H_{\\textrm{Total}}=H_\\textrm{s}+H_\\textrm{b}+H_\\textrm{sb}\\), where \\(H_\\textrm{b}\\) and \\(H_\\textrm{sb}\\) takes the form\n\\[\n\\begin{aligned}\nH_{\\textrm{b}}    &=\\sum_{k}\\omega_{k}b_{k}^{\\dagger}b_{k},\\\\\nH_{\\textrm{sb}}   &=(a+a^\\dagger)\\sum_{k}g_{k}(b_k + b_k^{\\dagger}).\n\\end{aligned}\n\\]\nHere, \\(H_{\\textrm{b}}\\) describes a bosonic reservoir where \\(b_{k}\\) \\((b_{k}^{\\dagger})\\) is the bosonic annihilation (creation) operator associated to the \\(k\\)th mode (with frequency \\(\\omega_{k}\\)). Also, \\(H_{\\textrm{sb}}\\) illustrates the interaction between the cavity and the bosonic reservoir.\nNow, we need to build the system Hamiltonian and initial state with the package QuantumToolbox.jl to construct the operators.\n\nusing HierarchicalEOM  # this automatically loads `QuantumToolbox`\nusing CairoMakie       # for plotting results\n\n\nN = 3 # system cavity Hilbert space cutoff\nωA = 2\nωc = 2\ng = 0.1\n\n# operators\na_c = destroy(N)\nI_c = qeye(N)\nσz_A = sigmaz()\nσm_A = sigmam()\nI_A = qeye(2)\n\n# operators in tensor-space\na = tensor(a_c, I_A)\nσz = tensor(I_c, σz_A)\nσm = tensor(I_c, σm_A)\n\n# Hamiltonian\nH_A = 0.5 * ωA * σz\nH_c = ωc * a' * a\nH_int = g * (a' * σm + a * σm')\nH_s = H_A + H_c + H_int\n\n# initial state\nψ0 = tensor(basis(N, 0), basis(2, 0));"
-  },
-  {
-    "objectID": "HierarchicalEOM.jl/cavityQED.html#construct-bath-objects",
-    "href": "HierarchicalEOM.jl/cavityQED.html#construct-bath-objects",
-    "title": "Cavity QED system",
-    "section": "Construct bath objects",
-    "text": "Construct bath objects\nWe assume the bosonic reservoir to have a Drude-Lorentz Spectral Density, and we utilize the Padé decomposition. Furthermore, the spectral densities depend on the following physical parameters:\n\nthe coupling strength \\(\\Gamma\\) between system and reservoir\nthe band-width \\(W\\)\nthe product of the Boltzmann constant \\(k\\) and the absolute temperature \\(T\\) : \\(kT\\)\nthe total number of exponentials for the reservoir \\((N + 1)\\)\n\n\nΓ = 0.01\nW = 1\nkT = 0.025\nN = 20\nBath = Boson_DrudeLorentz_Pade(a + a', Γ, W, kT, N)\n\nHierarchicalEOM.BosonBath object with 21 exponential-expansion terms\n\n\nBefore incorporating the correlation function into the HEOMLS matrix, it is essential to verify (by using correlation_function) if the total number of exponentials for the reservoir sufficiently describes the practical situation.\n\ntlist_test = 0:0.1:10;\nBath_test = Boson_DrudeLorentz_Pade(a + a', Γ, W, kT, 1000);\nCt = correlation_function(Bath, tlist_test);\nCt2 = correlation_function(Bath_test, tlist_test)\n\n# plot\nfig = Figure(size = (500, 350))\nax = Axis(fig[1, 1], xlabel = L\"t\", ylabel = L\"C(t)\")\nlines!(ax, tlist_test, real(Ct2), label = L\"$N=1000$ (real part)\", linestyle = :solid)\nlines!(ax, tlist_test, real(Ct),  label = L\"$N=20$ (real part)\", linestyle = :dash)\nlines!(ax, tlist_test, imag(Ct2), label = L\"$N=1000$ (imag part)\", linestyle = :solid)\nlines!(ax, tlist_test, imag(Ct),  label = L\"$N=20$ (imag part)\", linestyle = :dash)\n\naxislegend(ax, position = :rt)\n\nfig"
-  },
-  {
-    "objectID": "HierarchicalEOM.jl/cavityQED.html#construct-heomls-matrix",
-    "href": "HierarchicalEOM.jl/cavityQED.html#construct-heomls-matrix",
-    "title": "Cavity QED system",
-    "section": "Construct HEOMLS matrix",
-    "text": "Construct HEOMLS matrix\nHere, we consider an incoherent pumping to the atom, which can be described by an Lindblad dissipator (see here for more details).\nFurthermore, we set the important threshold to be 1e-6.\n\npump = 0.01\nJ_pump = sqrt(pump) * σm'\ntier = 2\nM_Heom = M_Boson(H_s, tier, threshold = 1e-6, Bath)\nM_Heom = addBosonDissipator(M_Heom, J_pump)\n\nChecking the importance value for each ADOs...[DONE]\nPreparing block matrices for HEOM Liouvillian superoperator (using 4 threads)...\nProgress: [                              ]   2.1% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 47s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 00s)\nConstructing matrix...[DONE]\n\n\nBoson type HEOMLS matrix acting on even-parity ADOs\nsystem dims = [3, 2]\nnumber of ADOs N = 97\ndata =\nMatrixOperator(3492 × 3492)"
-  },
-  {
-    "objectID": "HierarchicalEOM.jl/cavityQED.html#solve-time-evolution-of-ados",
-    "href": "HierarchicalEOM.jl/cavityQED.html#solve-time-evolution-of-ados",
-    "title": "Cavity QED system",
-    "section": "Solve time evolution of ADOs",
-    "text": "Solve time evolution of ADOs\n\nt_list = 0:1:500\nsol_H = HEOMsolve(M_Heom, ψ0, t_list; e_ops = [σz, a' * a])\n\nSolving time evolution for ADOs by Ordinary Differential Equations method...\nProgress: [                              ]   0.2% --- Elapsed Time: 0h 00m 02s (ETA: 0h 16m 40s)Progress: [====================          ]  67.7% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 01s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 00s)\n\n\nSolution of hierarchical EOM\n(return code: Success)\n----------------------------\nBtier = 2\nFtier = 0\nnum_states = 1\nnum_expect = 2\nODE alg.: OrdinaryDiffEqLowOrderRK.DP5{typeof(OrdinaryDiffEqCore.trivial_limiter!), typeof(OrdinaryDiffEqCore.trivial_limiter!), Static.False}(OrdinaryDiffEqCore.trivial_limiter!, OrdinaryDiffEqCore.trivial_limiter!, static(false))\nabstol = 1.0e-8\nreltol = 1.0e-6"
-  },
-  {
-    "objectID": "HierarchicalEOM.jl/cavityQED.html#solve-stationary-state-of-ados",
-    "href": "HierarchicalEOM.jl/cavityQED.html#solve-stationary-state-of-ados",
-    "title": "Cavity QED system",
-    "section": "Solve stationary state of ADOs",
-    "text": "Solve stationary state of ADOs\n\nsteady_H = steadystate(M_Heom);\n\nSolving steady state for ADOs by linear-solve method...[DONE]"
-  },
-  {
-    "objectID": "HierarchicalEOM.jl/cavityQED.html#expectation-values",
-    "href": "HierarchicalEOM.jl/cavityQED.html#expectation-values",
-    "title": "Cavity QED system",
-    "section": "Expectation values",
-    "text": "Expectation values\nobservable of atom: \\(\\sigma_z\\)\n\nσz_evo_H = real(sol_H.expect[1, :])\nσz_steady_H = expect(σz, steady_H)\n\n-0.3731173931282959\n\n\nobservable of cavity: \\(a^\\dagger a\\) (average photon number)\n\nnp_evo_H = real(sol_H.expect[2, :])\nnp_steady_H = expect(a' * a, steady_H)\n\n0.4312130158260074\n\n\nplot results\n\nfig = Figure(size = (600, 350))\n\nax1 = Axis(fig[1, 1], xlabel = L\"t\")\nlines!(ax1, t_list, σz_evo_H, label = L\"\\langle \\sigma_z \\rangle\", linestyle = :solid)\nlines!(ax1, t_list, ones(length(t_list)) .* σz_steady_H, label = L\"\\langle \\sigma_z \\rangle ~~(\\textrm{steady})\", linestyle = :dash)\naxislegend(ax1, position = :rt)\n\nax2 = Axis(fig[2, 1], xlabel = L\"t\")\nlines!(ax2, t_list, np_evo_H, label = L\"\\langle a^\\dagger a \\rangle\", linestyle = :solid)\nlines!(ax2, t_list, ones(length(t_list)) .* np_steady_H, label = L\"\\langle a^\\dagger a \\rangle ~~(\\textrm{steady})\", linestyle = :dash)\naxislegend(ax2, position = :rt)\n\nfig"
-  },
-  {
-    "objectID": "HierarchicalEOM.jl/cavityQED.html#power-spectrum",
-    "href": "HierarchicalEOM.jl/cavityQED.html#power-spectrum",
-    "title": "Cavity QED system",
-    "section": "Power spectrum",
-    "text": "Power spectrum\n\nω_list = 1:0.01:3\npsd_H = PowerSpectrum(M_Heom, steady_H, a, ω_list)\n\n# plot\nfig = Figure(size = (500, 350))\nax = Axis(fig[1, 1], xlabel = L\"\\omega\")\nlines!(ax, ω_list, psd_H)\n\nfig\n\nCalculating power spectrum in frequency domain...\nProgress: [=========                     ]  31.3% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 02s)Progress: [==================            ]  63.2% --- Elapsed Time: 0h 00m 02s (ETA: 0h 00m 01s)Progress: [============================  ]  96.5% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 00s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 00s)\n[DONE]"
-  },
-  {
-    "objectID": "HierarchicalEOM.jl/cavityQED.html#compare-with-master-eq.-approach",
-    "href": "HierarchicalEOM.jl/cavityQED.html#compare-with-master-eq.-approach",
-    "title": "Cavity QED system",
-    "section": "Compare with Master Eq. approach",
-    "text": "Compare with Master Eq. approach\nThe Lindblad master equations which describes the cavity couples to an extra bosonic reservoir with Drude-Lorentzian spectral density is given by\n\n# Drude_Lorentzian spectral density\nDrude_Lorentz(ω, Γ, W) = 4 * Γ * W * ω / ((ω)^2 + (W)^2)\n\n# Bose-Einstein distribution\nn_b(ω, kT) = 1 / (exp(ω / kT) - 1)\n\n# build the jump operators\njump_op = [\n    sqrt(Drude_Lorentz(ωc, Γ, W) * (n_b(ωc, kT) + 1)) * a,\n    sqrt(Drude_Lorentz(ωc, Γ, W) * (n_b(ωc, kT)))     * a',\n    J_pump\n];\n\n# construct the HEOMLS matrix for master equation\nM_master = M_S(H_s)\nM_master = addBosonDissipator(M_master, jump_op)\n\n# time evolution\nsol_M = HEOMsolve(M_master, ψ0, t_list; e_ops = [σz, a' * a]);\n\n# steady state\nsteady_M = steadystate(M_master);\n\n# expectation value of σz\nσz_evo_M = real(sol_M.expect[1, :])\nσz_steady_M = expect(σz, steady_M)\n\n# average photon number\nnp_evo_M = real(sol_M.expect[2, :])\nnp_steady_M = expect(a' * a, steady_M);\n\nConstructing Liouville-von Neumann superoperator...\n[DONE]\nSolving time evolution for ADOs by Ordinary Differential Equations method...\nProgress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)\nSolving steady state for ADOs by linear-solve method...[DONE]\n\n\nplot results\n\nfig = Figure(size = (600, 350))\n\nax1 = Axis(fig[1, 1], xlabel = L\"t\")\nlines!(ax1, t_list, σz_evo_M, label = L\"\\langle \\sigma_z \\rangle\", linestyle = :solid)\nlines!(ax1, t_list, ones(length(t_list)) .* σz_steady_M, label = L\"\\langle \\sigma_z \\rangle ~~(\\textrm{steady})\", linestyle = :dash)\naxislegend(ax1, position = :rt)\n\nax2 = Axis(fig[2, 1], xlabel = L\"t\")\nlines!(ax2, t_list, np_evo_M, label = L\"\\langle a^\\dagger a \\rangle\", linestyle = :solid)\nlines!(ax2, t_list, ones(length(t_list)) .* np_steady_M, label = L\"\\langle a^\\dagger a \\rangle ~~(\\textrm{steady})\", linestyle = :dash)\naxislegend(ax2, position = :rt)\n\nfig\n\n\n\n\n\n\n\n\nWe can also calculate the power spectrum\n\nω_list = 1:0.01:3\npsd_M = PowerSpectrum(M_master, steady_M, a, ω_list)\n\n# plot\nfig = Figure(size = (500, 350))\nax = Axis(fig[1, 1], xlabel = L\"\\omega\")\nlines!(ax, ω_list, psd_M)\n\nfig\n\nCalculating power spectrum in frequency domain...\nProgress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)\n[DONE]\n\n\n\n\n\n\n\n\n\nDue to the weak coupling between the system and an extra bosonic environment, the Master equation’s outcome is expected to be similar to the results obtained from the HEOM method."
-  },
-  {
-    "objectID": "HierarchicalEOM.jl/cavityQED.html#version-information",
-    "href": "HierarchicalEOM.jl/cavityQED.html#version-information",
-    "title": "Cavity QED system",
-    "section": "Version Information",
-    "text": "Version Information\n\nHierarchicalEOM.versioninfo()\n\n\n                                   __\n                                  /  \\\n __     __                     __ \\__/ __\n|  |   |  |                   /  \\    /  \\\n|  |   |  | ______   ______   \\__/_  _\\__/\n|  |___|  |/  __  \\ /  __  \\ / '   \\/     \\\n|   ___   |  |__)  |  /  \\  |    _     _   |\n|  |   |  |   ____/| (    ) |   / \\   / \\  |\n|  |   |  |  |____ |  \\__/  |  |   | |   | |\n|__|   |__|\\______) \\______/|__|   |_|   |_|\n\nJulia framework for Hierarchical Equations of Motion\n≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡\nCopyright © QuTiP team 2023 and later.\nLead  developer : Yi-Te Huang\nOther developers:\n    Simon Cross, Neill Lambert, Po-Chen Kuo and Shen-Liang Yang\n\nPackage information:\n====================================\nJulia              Ver. 1.11.2\nHierarchicalEOM    Ver. 2.3.3\nQuantumToolbox     Ver. 0.24.0\nSciMLOperators     Ver. 0.3.12\nLinearSolve        Ver. 2.38.0\nOrdinaryDiffEqCore Ver. 1.15.0\n\nSystem information:\n====================================\nOS       : Linux (x86_64-linux-gnu)\nCPU      : 4 × AMD EPYC 7763 64-Core Processor\nMemory   : 15.615 GB\nWORD_SIZE: 64\nLIBM     : libopenlibm\nLLVM     : libLLVM-16.0.6 (ORCJIT, znver3)\nBLAS     : libopenblas64_.so (ilp64)\nThreads  : 4 (on 4 virtual cores)"
+    "text": "Version Information\n\nimport QuantumToolbox\nQuantumToolbox.versioninfo()\n\n\n QuantumToolbox.jl: Quantum Toolbox in Julia\n≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡\nCopyright © QuTiP team 2022 and later.\nCurrent admin team:\n    Alberto Mercurio and Yi-Te Huang\n\nPackage information:\n====================================\nJulia              Ver. 1.11.2\nQuantumToolbox     Ver. 0.24.0\nSciMLOperators     Ver. 0.3.12\nLinearSolve        Ver. 2.38.0\nOrdinaryDiffEqCore Ver. 1.15.0\n\nSystem information:\n====================================\nOS       : Linux (x86_64-linux-gnu)\nCPU      : 4 × AMD EPYC 7763 64-Core Processor\nMemory   : 15.615 GB\nWORD_SIZE: 64\nLIBM     : libopenlibm\nLLVM     : libLLVM-16.0.6 (ORCJIT, znver3)\nBLAS     : libopenblas64_.so (ilp64)\nThreads  : 4 (on 4 virtual cores)"
   },
   {
     "objectID": "HierarchicalEOM.jl/electronic_current.html",
@@ -320,5 +110,250 @@
     "title": "Electronic Current",
     "section": "Version Information",
     "text": "Version Information\n\nHierarchicalEOM.versioninfo()\n\n\n                                   __\n                                  /  \\\n __     __                     __ \\__/ __\n|  |   |  |                   /  \\    /  \\\n|  |   |  | ______   ______   \\__/_  _\\__/\n|  |___|  |/  __  \\ /  __  \\ / '   \\/     \\\n|   ___   |  |__)  |  /  \\  |    _     _   |\n|  |   |  |   ____/| (    ) |   / \\   / \\  |\n|  |   |  |  |____ |  \\__/  |  |   | |   | |\n|__|   |__|\\______) \\______/|__|   |_|   |_|\n\nJulia framework for Hierarchical Equations of Motion\n≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡\nCopyright © QuTiP team 2023 and later.\nLead  developer : Yi-Te Huang\nOther developers:\n    Simon Cross, Neill Lambert, Po-Chen Kuo and Shen-Liang Yang\n\nPackage information:\n====================================\nJulia              Ver. 1.11.2\nHierarchicalEOM    Ver. 2.3.3\nQuantumToolbox     Ver. 0.24.0\nSciMLOperators     Ver. 0.3.12\nLinearSolve        Ver. 2.38.0\nOrdinaryDiffEqCore Ver. 1.15.0\n\nSystem information:\n====================================\nOS       : Linux (x86_64-linux-gnu)\nCPU      : 4 × AMD EPYC 7763 64-Core Processor\nMemory   : 15.615 GB\nWORD_SIZE: 64\nLIBM     : libopenlibm\nLLVM     : libLLVM-16.0.6 (ORCJIT, znver3)\nBLAS     : libopenblas64_.so (ilp64)\nThreads  : 4 (on 4 virtual cores)"
+  },
+  {
+    "objectID": "HierarchicalEOM.jl/cavityQED.html",
+    "href": "HierarchicalEOM.jl/cavityQED.html",
+    "title": "Cavity QED system",
+    "section": "",
+    "text": "Cavity quantum electrodynamics (cavity QED) is an important topic for studying the interaction between atoms (or other particles) and light confined in a reflective cavity, under conditions where the quantum nature of photons is significant."
+  },
+  {
+    "objectID": "HierarchicalEOM.jl/cavityQED.html#introduction",
+    "href": "HierarchicalEOM.jl/cavityQED.html#introduction",
+    "title": "Cavity QED system",
+    "section": "",
+    "text": "Cavity quantum electrodynamics (cavity QED) is an important topic for studying the interaction between atoms (or other particles) and light confined in a reflective cavity, under conditions where the quantum nature of photons is significant."
+  },
+  {
+    "objectID": "HierarchicalEOM.jl/cavityQED.html#hamiltonian",
+    "href": "HierarchicalEOM.jl/cavityQED.html#hamiltonian",
+    "title": "Cavity QED system",
+    "section": "Hamiltonian",
+    "text": "Hamiltonian\nThe Jaynes-Cummings model is a standard model in the realm of cavity QED. It illustrates the interaction between a two-level atom (\\(\\textrm{A}\\)) and a quantized single-mode within a cavity (\\(\\textrm{c}\\)).\nNow, we need to build the system Hamiltonian and initial state with the package QuantumToolbox.jl to construct the operators.\n\\[\n\\begin{aligned}\nH_{\\textrm{s}}&=H_{\\textrm{A}}+H_{\\textrm{c}}+H_{\\textrm{int}},\\\\\nH_{\\textrm{A}}&=\\frac{\\omega_A}{2}\\sigma_z,\\\\\nH_{\\textrm{c}}&=\\omega_{\\textrm{c}} a^\\dagger a,\\\\\nH_{\\textrm{int}}&=g (a^\\dagger\\sigma^-+a\\sigma^+),\n\\end{aligned}\n\\]\nwhere \\(\\sigma^-\\) (\\(\\sigma^+\\)) is the annihilation (creation) operator of the atom, and \\(a\\) (\\(a^\\dagger\\)) is the annihilation (creation) operator of the cavity.\nFurthermore, we consider the system is coupled to a bosonic reservoir (\\(\\textrm{b}\\)). The total Hamiltonian is given by \\(H_{\\textrm{Total}}=H_\\textrm{s}+H_\\textrm{b}+H_\\textrm{sb}\\), where \\(H_\\textrm{b}\\) and \\(H_\\textrm{sb}\\) takes the form\n\\[\n\\begin{aligned}\nH_{\\textrm{b}}    &=\\sum_{k}\\omega_{k}b_{k}^{\\dagger}b_{k},\\\\\nH_{\\textrm{sb}}   &=(a+a^\\dagger)\\sum_{k}g_{k}(b_k + b_k^{\\dagger}).\n\\end{aligned}\n\\]\nHere, \\(H_{\\textrm{b}}\\) describes a bosonic reservoir where \\(b_{k}\\) \\((b_{k}^{\\dagger})\\) is the bosonic annihilation (creation) operator associated to the \\(k\\)th mode (with frequency \\(\\omega_{k}\\)). Also, \\(H_{\\textrm{sb}}\\) illustrates the interaction between the cavity and the bosonic reservoir.\nNow, we need to build the system Hamiltonian and initial state with the package QuantumToolbox.jl to construct the operators.\n\nusing HierarchicalEOM  # this automatically loads `QuantumToolbox`\nusing CairoMakie       # for plotting results\n\n\nN = 3 # system cavity Hilbert space cutoff\nωA = 2\nωc = 2\ng = 0.1\n\n# operators\na_c = destroy(N)\nI_c = qeye(N)\nσz_A = sigmaz()\nσm_A = sigmam()\nI_A = qeye(2)\n\n# operators in tensor-space\na = tensor(a_c, I_A)\nσz = tensor(I_c, σz_A)\nσm = tensor(I_c, σm_A)\n\n# Hamiltonian\nH_A = 0.5 * ωA * σz\nH_c = ωc * a' * a\nH_int = g * (a' * σm + a * σm')\nH_s = H_A + H_c + H_int\n\n# initial state\nψ0 = tensor(basis(N, 0), basis(2, 0));"
+  },
+  {
+    "objectID": "HierarchicalEOM.jl/cavityQED.html#construct-bath-objects",
+    "href": "HierarchicalEOM.jl/cavityQED.html#construct-bath-objects",
+    "title": "Cavity QED system",
+    "section": "Construct bath objects",
+    "text": "Construct bath objects\nWe assume the bosonic reservoir to have a Drude-Lorentz Spectral Density, and we utilize the Padé decomposition. Furthermore, the spectral densities depend on the following physical parameters:\n\nthe coupling strength \\(\\Gamma\\) between system and reservoir\nthe band-width \\(W\\)\nthe product of the Boltzmann constant \\(k\\) and the absolute temperature \\(T\\) : \\(kT\\)\nthe total number of exponentials for the reservoir \\((N + 1)\\)\n\n\nΓ = 0.01\nW = 1\nkT = 0.025\nN = 20\nBath = Boson_DrudeLorentz_Pade(a + a', Γ, W, kT, N)\n\nHierarchicalEOM.BosonBath object with 21 exponential-expansion terms\n\n\nBefore incorporating the correlation function into the HEOMLS matrix, it is essential to verify (by using correlation_function) if the total number of exponentials for the reservoir sufficiently describes the practical situation.\n\ntlist_test = 0:0.1:10;\nBath_test = Boson_DrudeLorentz_Pade(a + a', Γ, W, kT, 1000);\nCt = correlation_function(Bath, tlist_test);\nCt2 = correlation_function(Bath_test, tlist_test)\n\n# plot\nfig = Figure(size = (500, 350))\nax = Axis(fig[1, 1], xlabel = L\"t\", ylabel = L\"C(t)\")\nlines!(ax, tlist_test, real(Ct2), label = L\"$N=1000$ (real part)\", linestyle = :solid)\nlines!(ax, tlist_test, real(Ct),  label = L\"$N=20$ (real part)\", linestyle = :dash)\nlines!(ax, tlist_test, imag(Ct2), label = L\"$N=1000$ (imag part)\", linestyle = :solid)\nlines!(ax, tlist_test, imag(Ct),  label = L\"$N=20$ (imag part)\", linestyle = :dash)\n\naxislegend(ax, position = :rt)\n\nfig"
+  },
+  {
+    "objectID": "HierarchicalEOM.jl/cavityQED.html#construct-heomls-matrix",
+    "href": "HierarchicalEOM.jl/cavityQED.html#construct-heomls-matrix",
+    "title": "Cavity QED system",
+    "section": "Construct HEOMLS matrix",
+    "text": "Construct HEOMLS matrix\nHere, we consider an incoherent pumping to the atom, which can be described by an Lindblad dissipator (see here for more details).\nFurthermore, we set the important threshold to be 1e-6.\n\npump = 0.01\nJ_pump = sqrt(pump) * σm'\ntier = 2\nM_Heom = M_Boson(H_s, tier, threshold = 1e-6, Bath)\nM_Heom = addBosonDissipator(M_Heom, J_pump)\n\nChecking the importance value for each ADOs...[DONE]\nPreparing block matrices for HEOM Liouvillian superoperator (using 4 threads)...\nProgress: [                              ]   2.1% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 47s)Progress: [                              ]   3.1% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 31s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 00s)\nConstructing matrix...[DONE]\n\n\nBoson type HEOMLS matrix acting on even-parity ADOs\nsystem dims = [3, 2]\nnumber of ADOs N = 97\ndata =\nMatrixOperator(3492 × 3492)"
+  },
+  {
+    "objectID": "HierarchicalEOM.jl/cavityQED.html#solve-time-evolution-of-ados",
+    "href": "HierarchicalEOM.jl/cavityQED.html#solve-time-evolution-of-ados",
+    "title": "Cavity QED system",
+    "section": "Solve time evolution of ADOs",
+    "text": "Solve time evolution of ADOs\n\nt_list = 0:1:500\nsol_H = HEOMsolve(M_Heom, ψ0, t_list; e_ops = [σz, a' * a])\n\nSolving time evolution for ADOs by Ordinary Differential Equations method...\nProgress: [                              ]   0.2% --- Elapsed Time: 0h 00m 02s (ETA: 0h 16m 40s)Progress: [====================          ]  66.7% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 01s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 00s)\n\n\nSolution of hierarchical EOM\n(return code: Success)\n----------------------------\nBtier = 2\nFtier = 0\nnum_states = 1\nnum_expect = 2\nODE alg.: OrdinaryDiffEqLowOrderRK.DP5{typeof(OrdinaryDiffEqCore.trivial_limiter!), typeof(OrdinaryDiffEqCore.trivial_limiter!), Static.False}(OrdinaryDiffEqCore.trivial_limiter!, OrdinaryDiffEqCore.trivial_limiter!, static(false))\nabstol = 1.0e-8\nreltol = 1.0e-6"
+  },
+  {
+    "objectID": "HierarchicalEOM.jl/cavityQED.html#solve-stationary-state-of-ados",
+    "href": "HierarchicalEOM.jl/cavityQED.html#solve-stationary-state-of-ados",
+    "title": "Cavity QED system",
+    "section": "Solve stationary state of ADOs",
+    "text": "Solve stationary state of ADOs\n\nsteady_H = steadystate(M_Heom);\n\nSolving steady state for ADOs by linear-solve method...[DONE]"
+  },
+  {
+    "objectID": "HierarchicalEOM.jl/cavityQED.html#expectation-values",
+    "href": "HierarchicalEOM.jl/cavityQED.html#expectation-values",
+    "title": "Cavity QED system",
+    "section": "Expectation values",
+    "text": "Expectation values\nobservable of atom: \\(\\sigma_z\\)\n\nσz_evo_H = real(sol_H.expect[1, :])\nσz_steady_H = expect(σz, steady_H)\n\n-0.3731173931282959\n\n\nobservable of cavity: \\(a^\\dagger a\\) (average photon number)\n\nnp_evo_H = real(sol_H.expect[2, :])\nnp_steady_H = expect(a' * a, steady_H)\n\n0.4312130158260074\n\n\nplot results\n\nfig = Figure(size = (600, 350))\n\nax1 = Axis(fig[1, 1], xlabel = L\"t\")\nlines!(ax1, t_list, σz_evo_H, label = L\"\\langle \\sigma_z \\rangle\", linestyle = :solid)\nlines!(ax1, t_list, ones(length(t_list)) .* σz_steady_H, label = L\"\\langle \\sigma_z \\rangle ~~(\\textrm{steady})\", linestyle = :dash)\naxislegend(ax1, position = :rt)\n\nax2 = Axis(fig[2, 1], xlabel = L\"t\")\nlines!(ax2, t_list, np_evo_H, label = L\"\\langle a^\\dagger a \\rangle\", linestyle = :solid)\nlines!(ax2, t_list, ones(length(t_list)) .* np_steady_H, label = L\"\\langle a^\\dagger a \\rangle ~~(\\textrm{steady})\", linestyle = :dash)\naxislegend(ax2, position = :rt)\n\nfig"
+  },
+  {
+    "objectID": "HierarchicalEOM.jl/cavityQED.html#power-spectrum",
+    "href": "HierarchicalEOM.jl/cavityQED.html#power-spectrum",
+    "title": "Cavity QED system",
+    "section": "Power spectrum",
+    "text": "Power spectrum\n\nω_list = 1:0.01:3\npsd_H = PowerSpectrum(M_Heom, steady_H, a, ω_list)\n\n# plot\nfig = Figure(size = (500, 350))\nax = Axis(fig[1, 1], xlabel = L\"\\omega\")\nlines!(ax, ω_list, psd_H)\n\nfig\n\nCalculating power spectrum in frequency domain...\nProgress: [=========                     ]  30.3% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 02s)Progress: [==================            ]  61.7% --- Elapsed Time: 0h 00m 02s (ETA: 0h 00m 01s)Progress: [===========================   ]  93.0% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 00s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 00s)\n[DONE]"
+  },
+  {
+    "objectID": "HierarchicalEOM.jl/cavityQED.html#compare-with-master-eq.-approach",
+    "href": "HierarchicalEOM.jl/cavityQED.html#compare-with-master-eq.-approach",
+    "title": "Cavity QED system",
+    "section": "Compare with Master Eq. approach",
+    "text": "Compare with Master Eq. approach\nThe Lindblad master equations which describes the cavity couples to an extra bosonic reservoir with Drude-Lorentzian spectral density is given by\n\n# Drude_Lorentzian spectral density\nDrude_Lorentz(ω, Γ, W) = 4 * Γ * W * ω / ((ω)^2 + (W)^2)\n\n# Bose-Einstein distribution\nn_b(ω, kT) = 1 / (exp(ω / kT) - 1)\n\n# build the jump operators\njump_op = [\n    sqrt(Drude_Lorentz(ωc, Γ, W) * (n_b(ωc, kT) + 1)) * a,\n    sqrt(Drude_Lorentz(ωc, Γ, W) * (n_b(ωc, kT)))     * a',\n    J_pump\n];\n\n# construct the HEOMLS matrix for master equation\nM_master = M_S(H_s)\nM_master = addBosonDissipator(M_master, jump_op)\n\n# time evolution\nsol_M = HEOMsolve(M_master, ψ0, t_list; e_ops = [σz, a' * a]);\n\n# steady state\nsteady_M = steadystate(M_master);\n\n# expectation value of σz\nσz_evo_M = real(sol_M.expect[1, :])\nσz_steady_M = expect(σz, steady_M)\n\n# average photon number\nnp_evo_M = real(sol_M.expect[2, :])\nnp_steady_M = expect(a' * a, steady_M);\n\nConstructing Liouville-von Neumann superoperator...\n[DONE]\nSolving time evolution for ADOs by Ordinary Differential Equations method...\nProgress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)\nSolving steady state for ADOs by linear-solve method...[DONE]\n\n\nplot results\n\nfig = Figure(size = (600, 350))\n\nax1 = Axis(fig[1, 1], xlabel = L\"t\")\nlines!(ax1, t_list, σz_evo_M, label = L\"\\langle \\sigma_z \\rangle\", linestyle = :solid)\nlines!(ax1, t_list, ones(length(t_list)) .* σz_steady_M, label = L\"\\langle \\sigma_z \\rangle ~~(\\textrm{steady})\", linestyle = :dash)\naxislegend(ax1, position = :rt)\n\nax2 = Axis(fig[2, 1], xlabel = L\"t\")\nlines!(ax2, t_list, np_evo_M, label = L\"\\langle a^\\dagger a \\rangle\", linestyle = :solid)\nlines!(ax2, t_list, ones(length(t_list)) .* np_steady_M, label = L\"\\langle a^\\dagger a \\rangle ~~(\\textrm{steady})\", linestyle = :dash)\naxislegend(ax2, position = :rt)\n\nfig\n\n\n\n\n\n\n\n\nWe can also calculate the power spectrum\n\nω_list = 1:0.01:3\npsd_M = PowerSpectrum(M_master, steady_M, a, ω_list)\n\n# plot\nfig = Figure(size = (500, 350))\nax = Axis(fig[1, 1], xlabel = L\"\\omega\")\nlines!(ax, ω_list, psd_M)\n\nfig\n\nCalculating power spectrum in frequency domain...\nProgress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)\n[DONE]\n\n\n\n\n\n\n\n\n\nDue to the weak coupling between the system and an extra bosonic environment, the Master equation’s outcome is expected to be similar to the results obtained from the HEOM method."
+  },
+  {
+    "objectID": "HierarchicalEOM.jl/cavityQED.html#version-information",
+    "href": "HierarchicalEOM.jl/cavityQED.html#version-information",
+    "title": "Cavity QED system",
+    "section": "Version Information",
+    "text": "Version Information\n\nHierarchicalEOM.versioninfo()\n\n\n                                   __\n                                  /  \\\n __     __                     __ \\__/ __\n|  |   |  |                   /  \\    /  \\\n|  |   |  | ______   ______   \\__/_  _\\__/\n|  |___|  |/  __  \\ /  __  \\ / '   \\/     \\\n|   ___   |  |__)  |  /  \\  |    _     _   |\n|  |   |  |   ____/| (    ) |   / \\   / \\  |\n|  |   |  |  |____ |  \\__/  |  |   | |   | |\n|__|   |__|\\______) \\______/|__|   |_|   |_|\n\nJulia framework for Hierarchical Equations of Motion\n≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡\nCopyright © QuTiP team 2023 and later.\nLead  developer : Yi-Te Huang\nOther developers:\n    Simon Cross, Neill Lambert, Po-Chen Kuo and Shen-Liang Yang\n\nPackage information:\n====================================\nJulia              Ver. 1.11.2\nHierarchicalEOM    Ver. 2.3.3\nQuantumToolbox     Ver. 0.24.0\nSciMLOperators     Ver. 0.3.12\nLinearSolve        Ver. 2.38.0\nOrdinaryDiffEqCore Ver. 1.15.0\n\nSystem information:\n====================================\nOS       : Linux (x86_64-linux-gnu)\nCPU      : 4 × AMD EPYC 7763 64-Core Processor\nMemory   : 15.615 GB\nWORD_SIZE: 64\nLIBM     : libopenlibm\nLLVM     : libLLVM-16.0.6 (ORCJIT, znver3)\nBLAS     : libopenblas64_.so (ilp64)\nThreads  : 4 (on 4 virtual cores)"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Tutorials for Quantum Toolbox in Julia",
+    "section": "",
+    "text": "This website contains our collection of tutorials for introducing and demonstrating features of Quantum Toolbox in Julia. Going through these tutorials should be a good way to get familiarized with the software. If you are new to scientific computing with Julia, you might also find it useful to have a look at the Julia tutorials website.\nYou can find the tutorials of our packages from the navbar on top, or the following links:\n\n\n\nPackage\nTutorials\nGitHub Repository\nDocumentation\n\n\n\n\nQuantumToolbox.jl\nlink\nlink\nlink\n\n\nHierarchicalEOM.jl\nlink\nlink\nlink"
+  },
+  {
+    "objectID": "HierarchicalEOM.jl/toc.html",
+    "href": "HierarchicalEOM.jl/toc.html",
+    "title": "Tutorials for HierarchicalEOM.jl",
+    "section": "",
+    "text": "The following tutorials demonstrate and introduce specific functionality of HierarchicalEOM.jl.\n\nExamples\n\n\n\n\n\nLast Update\n\n\nTitle\n\n\nAuthor\n\n\n\n\n\n\n2025-01-14\n\n\nSingle-impurity Anderson model\n\n\nYi-Te Huang\n\n\n\n\n2025-01-13\n\n\nCavity QED system\n\n\nShen-Liang Yang, Yi-Te Huang\n\n\n\n\n2025-01-14\n\n\nDriven systems and dynamical decoupling\n\n\nYi-Te Huang\n\n\n\n\n2025-01-14\n\n\nElectronic Current\n\n\nYi-Te Huang\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "QuantumToolbox.jl/toc.html",
+    "href": "QuantumToolbox.jl/toc.html",
+    "title": "Tutorials for QuantumToolbox.jl",
+    "section": "",
+    "text": "The following tutorials demonstrate and introduce specific functionality of QuantumToolbox.jl.\n\nTime Evolution\n\n\n\n\n\nLast Update\n\n\nTitle\n\n\nAuthor\n\n\n\n\n\n\n2025-01-13\n\n\nLow rank master equation\n\n\nLuca Gravina\n\n\n\n\n2025-01-17\n\n\nVacuum Rabi oscillation\n\n\nLi-Xun Cai\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "HierarchicalEOM.jl/SIAM.html",
+    "href": "HierarchicalEOM.jl/SIAM.html",
+    "title": "Single-impurity Anderson model",
+    "section": "",
+    "text": "The investigation of the Kondo effect in single-impurity Anderson model is crucial as it serves both as a valuable testing ground for the theories of the Kondo effect and has the potential to lead to a better understanding of this intrinsic many-body phenomena. For further detailed discussions of this model (under different parameters) using HierarchicalEOM.jl, we recommend to read the article (Huang et al. 2023)."
+  },
+  {
+    "objectID": "HierarchicalEOM.jl/SIAM.html#introduction",
+    "href": "HierarchicalEOM.jl/SIAM.html#introduction",
+    "title": "Single-impurity Anderson model",
+    "section": "",
+    "text": "The investigation of the Kondo effect in single-impurity Anderson model is crucial as it serves both as a valuable testing ground for the theories of the Kondo effect and has the potential to lead to a better understanding of this intrinsic many-body phenomena. For further detailed discussions of this model (under different parameters) using HierarchicalEOM.jl, we recommend to read the article (Huang et al. 2023)."
+  },
+  {
+    "objectID": "HierarchicalEOM.jl/SIAM.html#hamiltonian",
+    "href": "HierarchicalEOM.jl/SIAM.html#hamiltonian",
+    "title": "Single-impurity Anderson model",
+    "section": "Hamiltonian",
+    "text": "Hamiltonian\nWe consider a single-level electronic system [which can be populated by a spin-up (\\(\\uparrow\\)) or spin-down (\\(\\downarrow\\)) electron] coupled to a fermionic reservoir (\\(\\textrm{f}\\)). The total Hamiltonian is given by \\(H_{\\textrm{T}}=H_\\textrm{s}+H_\\textrm{f}+H_\\textrm{sf}\\), where each terms takes the form\n\\[\n\\begin{aligned}\nH_{\\textrm{s}}  &= \\epsilon \\left(d^\\dagger_\\uparrow d_\\uparrow + d^\\dagger_\\downarrow d_\\downarrow \\right) + U\\left(d^\\dagger_\\uparrow d_\\uparrow d^\\dagger_\\downarrow d_\\downarrow\\right),\\\\\nH_{\\textrm{f}}  &=\\sum_{\\sigma=\\uparrow,\\downarrow}\\sum_{k}\\epsilon_{\\sigma,k}c_{\\sigma,k}^{\\dagger}c_{\\sigma,k},\\\\\nH_{\\textrm{sf}} &=\\sum_{\\sigma=\\uparrow,\\downarrow}\\sum_{k}g_{k}c_{\\sigma,k}^{\\dagger}d_{\\sigma} + g_{k}^*d_{\\sigma}^{\\dagger}c_{\\sigma,k}.\n\\end{aligned}\n\\]\nHere, \\(d_\\uparrow\\) \\((d_\\downarrow)\\) annihilates a spin-up (spin-down) electron in the system, \\(\\epsilon\\) is the energy of the electron, and \\(U\\) is the Coulomb repulsion energy for double occupation. Furthermore, \\(c_{\\sigma,k}\\) \\((c_{\\sigma,k}^{\\dagger})\\) annihilates (creates) an electron in the state \\(k\\) (with energy \\(\\epsilon_{\\sigma,k}\\)) of the reservoir.\nNow, we need to build the system Hamiltonian and initial state with the package QuantumToolbox.jl to construct the operators.\n\nusing HierarchicalEOM  # this automatically loads `QuantumToolbox`\nusing CairoMakie       # for plotting results\n\n\nϵ = -5\nU = 10\nσm = sigmam() # σ-\nσz = sigmaz() # σz\nII = qeye(2)  # identity matrix\n\n# construct the annihilation operator for both spin-up and spin-down\n# (utilize Jordan–Wigner transformation)\nd_up = tensor(σm, II)\nd_dn = tensor(-1 * σz, σm)\nHsys = ϵ * (d_up' * d_up + d_dn' * d_dn) + U * (d_up' * d_up * d_dn' * d_dn)\n\nQuantum Object:   type=Operator   dims=[2, 2]   size=(4, 4)   ishermitian=true\n4×4 SparseMatrixCSC{ComplexF64, Int64} with 2 stored entries:\n     ⋅           ⋅           ⋅          ⋅    \n     ⋅      -5.0+0.0im       ⋅          ⋅    \n     ⋅           ⋅      -5.0+0.0im      ⋅    \n     ⋅           ⋅           ⋅          ⋅"
+  },
+  {
+    "objectID": "HierarchicalEOM.jl/SIAM.html#construct-bath-objects",
+    "href": "HierarchicalEOM.jl/SIAM.html#construct-bath-objects",
+    "title": "Single-impurity Anderson model",
+    "section": "Construct bath objects",
+    "text": "Construct bath objects\nWe assume the fermionic reservoir to have a Lorentzian-shaped spectral density, and we utilize the Padé decomposition. Furthermore, the spectral densities depend on the following physical parameters:\n\nthe coupling strength \\(\\Gamma\\) between system and reservoirs\nthe band-width \\(W\\)\nthe product of the Boltzmann constant \\(k\\) and the absolute temperature \\(T\\) : \\(kT\\)\nthe chemical potential \\(\\mu\\)\nthe total number of exponentials for the reservoir \\(2(N + 1)\\)\n\n\nΓ = 2\nμ = 0\nW = 10\nkT = 0.5\nN = 5\nbath_up = Fermion_Lorentz_Pade(d_up, Γ, μ, W, kT, N)\nbath_dn = Fermion_Lorentz_Pade(d_dn, Γ, μ, W, kT, N)\nbath_list = [bath_up, bath_dn]\n\n2-element Vector{FermionBath}:\n HierarchicalEOM.FermionBath object with 12 exponential-expansion terms\n\n HierarchicalEOM.FermionBath object with 12 exponential-expansion terms"
+  },
+  {
+    "objectID": "HierarchicalEOM.jl/SIAM.html#construct-heomls-matrix",
+    "href": "HierarchicalEOM.jl/SIAM.html#construct-heomls-matrix",
+    "title": "Single-impurity Anderson model",
+    "section": "Construct HEOMLS matrix",
+    "text": "Construct HEOMLS matrix\n\ntier = 3\nM_even = M_Fermion(Hsys, tier, bath_list)\nM_odd = M_Fermion(Hsys, tier, bath_list, ODD)\n\nPreparing block matrices for HEOM Liouvillian superoperator (using 4 threads)...\nProgress: [                              ]   0.0% --- Elapsed Time: 0h 00m 01s (ETA: 0h 38m 44s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 00s)\nConstructing matrix...[DONE]\nPreparing block matrices for HEOM Liouvillian superoperator (using 4 threads)...\nProgress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)\nConstructing matrix...[DONE]\n\n\nFermion type HEOMLS matrix acting on odd-parity ADOs\nsystem dims = [2, 2]\nnumber of ADOs N = 2325\ndata =\nMatrixOperator(37200 × 37200)"
+  },
+  {
+    "objectID": "HierarchicalEOM.jl/SIAM.html#solve-stationary-state-of-ados",
+    "href": "HierarchicalEOM.jl/SIAM.html#solve-stationary-state-of-ados",
+    "title": "Single-impurity Anderson model",
+    "section": "Solve stationary state of ADOs",
+    "text": "Solve stationary state of ADOs\n\nados_s = steadystate(M_even)\n\nSolving steady state for ADOs by linear-solve method...[DONE]\n\n\n2325 Auxiliary Density Operators with even-parity and (system) dims = [2, 2]"
+  },
+  {
+    "objectID": "HierarchicalEOM.jl/SIAM.html#calculate-density-of-states-dos",
+    "href": "HierarchicalEOM.jl/SIAM.html#calculate-density-of-states-dos",
+    "title": "Single-impurity Anderson model",
+    "section": "Calculate density of states (DOS)",
+    "text": "Calculate density of states (DOS)\n\nωlist = -10:1:10\ndos = DensityOfStates(M_odd, ados_s, d_up, ωlist)\n\nCalculating density of states in frequency domain...\nProgress: [=====                         ]  19.0% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 04s)Progress: [============                  ]  42.9% --- Elapsed Time: 0h 00m 02s (ETA: 0h 00m 02s)Progress: [====================          ]  66.7% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 01s)Progress: [============================  ]  95.2% --- Elapsed Time: 0h 00m 04s (ETA: 0h 00m 00s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 04s (ETA: 0h 00m 00s)\n[DONE]\n\n\n21-element Vector{Float64}:\n 0.024341620652868125\n 0.04465552042384671\n 0.09077144051561165\n 0.1929888055674428\n 0.29351536894471525\n 0.23367107985909338\n 0.15864674406917825\n 0.1237987795050877\n 0.11772111509217494\n 0.14524303704733388\n ⋮\n 0.11772111509217663\n 0.12379877950508988\n 0.15864674406918147\n 0.2336710798590986\n 0.2935153689447211\n 0.1929888055674464\n 0.090771440515613\n 0.044655520423847135\n 0.024341620652868233\n\n\nplot the results\n\nfig = Figure(size = (500, 350))\nax = Axis(fig[1, 1], xlabel = L\"\\omega\")\nlines!(ax, ωlist, dos)\n\nfig"
+  },
+  {
+    "objectID": "HierarchicalEOM.jl/SIAM.html#version-information",
+    "href": "HierarchicalEOM.jl/SIAM.html#version-information",
+    "title": "Single-impurity Anderson model",
+    "section": "Version Information",
+    "text": "Version Information\n\nHierarchicalEOM.versioninfo()\n\n\n                                   __\n                                  /  \\\n __     __                     __ \\__/ __\n|  |   |  |                   /  \\    /  \\\n|  |   |  | ______   ______   \\__/_  _\\__/\n|  |___|  |/  __  \\ /  __  \\ / '   \\/     \\\n|   ___   |  |__)  |  /  \\  |    _     _   |\n|  |   |  |   ____/| (    ) |   / \\   / \\  |\n|  |   |  |  |____ |  \\__/  |  |   | |   | |\n|__|   |__|\\______) \\______/|__|   |_|   |_|\n\nJulia framework for Hierarchical Equations of Motion\n≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡\nCopyright © QuTiP team 2023 and later.\nLead  developer : Yi-Te Huang\nOther developers:\n    Simon Cross, Neill Lambert, Po-Chen Kuo and Shen-Liang Yang\n\nPackage information:\n====================================\nJulia              Ver. 1.11.2\nHierarchicalEOM    Ver. 2.3.3\nQuantumToolbox     Ver. 0.24.0\nSciMLOperators     Ver. 0.3.12\nLinearSolve        Ver. 2.38.0\nOrdinaryDiffEqCore Ver. 1.15.0\n\nSystem information:\n====================================\nOS       : Linux (x86_64-linux-gnu)\nCPU      : 4 × AMD EPYC 7763 64-Core Processor\nMemory   : 15.615 GB\nWORD_SIZE: 64\nLIBM     : libopenlibm\nLLVM     : libLLVM-16.0.6 (ORCJIT, znver3)\nBLAS     : libopenblas64_.so (ilp64)\nThreads  : 4 (on 4 virtual cores)"
+  },
+  {
+    "objectID": "HierarchicalEOM.jl/dynamical_decoupling.html",
+    "href": "HierarchicalEOM.jl/dynamical_decoupling.html",
+    "title": "Driven systems and dynamical decoupling",
+    "section": "",
+    "text": "Inspirations taken from an example in QuTiP-BoFiN article (Lambert et al. 2023)."
+  },
+  {
+    "objectID": "HierarchicalEOM.jl/dynamical_decoupling.html#introduction",
+    "href": "HierarchicalEOM.jl/dynamical_decoupling.html#introduction",
+    "title": "Driven systems and dynamical decoupling",
+    "section": "Introduction",
+    "text": "Introduction\nIn this example, we show how to solve the time evolution with time-dependent Hamiltonian problems in hierarchical equations of motion approach.\nHere, we study dynamical decoupling which is a common tool used to undo the dephasing effect from the environment even for finite pulse duration."
+  },
+  {
+    "objectID": "HierarchicalEOM.jl/dynamical_decoupling.html#hamiltonian",
+    "href": "HierarchicalEOM.jl/dynamical_decoupling.html#hamiltonian",
+    "title": "Driven systems and dynamical decoupling",
+    "section": "Hamiltonian",
+    "text": "Hamiltonian\nWe consider a two-level system coupled to a bosonic reservoir (\\(\\textrm{b}\\)). The total Hamiltonian is given by \\(H_{\\textrm{T}}=H_\\textrm{s}+H_\\textrm{b}+H_\\textrm{sb}\\), where each terms takes the form\n\\[\n\\begin{aligned}\nH_{\\textrm{s}}(t) &= H_0 + H_{\\textrm{D}}(t),\\\\\nH_0               &= \\frac{\\omega_0}{2} \\sigma_z,\\\\\nH_{\\textrm{b}}    &=\\sum_{k}\\omega_{k}b_{k}^{\\dagger}b_{k},\\\\\nH_{\\textrm{sb}}   &=\\sigma_z\\sum_{k}g_{\\alpha,k}(b_k + b_k^{\\dagger}).\n\\end{aligned}\n\\]\nHere, \\(H_{\\textrm{b}}\\) describes a bosonic reservoir where \\(b_{k}\\) \\((b_{k}^{\\dagger})\\) is the bosonic annihilation (creation) operator associated to the \\(k\\)th mode (with frequency \\(\\omega_{k}\\)).\nFurthermore, to observe the time evolution of the coherence, we consider the initial state to be \\[\nψ(t=0)=\\frac{1}{\\sqrt{2}}\\left(|0\\rangle+|1\\rangle\\right)\n\\]\nNow, we need to build the system Hamiltonian and initial state with the package QuantumToolbox.jl to construct the operators.\n\nusing HierarchicalEOM  # this automatically loads `QuantumToolbox`\nusing CairoMakie       # for plotting results\n\n\nω0 = 0.0\nσz = sigmaz()\nσx = sigmax()\nH0 = 0.5 * ω0 * σz\n\n# Define the operator that measures the 0, 1 element of density matrix\nρ01 = Qobj([0 1; 0 0])\n\nψ0 = (basis(2, 0) + basis(2, 1)) / √2\n\nQuantum Object:   type=Ket   dims=[2]   size=(2,)\n2-element Vector{ComplexF64}:\n 0.7071067811865475 + 0.0im\n 0.7071067811865475 + 0.0im\n\n\nThe time-dependent driving term \\(H_{\\textrm{D}}(t)\\) has the form\n\\[\nH_{\\textrm{D}}(t) = \\sum_{n=1}^N f_n(t) \\sigma_x\n\\]\nwhere the pulse is chosen to have duration \\(\\tau\\) together with a delay \\(\\Delta\\) between each pulses, namely\n\\[\nf_n(t)\n= \\begin{cases}\n  V & \\textrm{if}~~(n-1)\\tau + n\\Delta \\leq t \\leq n (\\tau + \\Delta),\\\\\n  0 & \\textrm{otherwise}.\n  \\end{cases}\n\\]\nHere, we set the period of the pulses to be \\(\\tau V = \\pi/2\\). Therefore, we consider two scenarios with fast and slow pulses:\n\n# a function which returns the amplitude of the pulse at time t\nfunction pulse(p, t)\n    τ = 0.5 * π / p.V\n    period = τ + p.Δ\n\n    if (t % period) &lt; τ\n        return p.V\n    else\n        return 0\n    end\nend\n\ntlist = 0:0.4:400\namp_fast = 0.50\namp_slow = 0.01\ndelay = 20\n\nfastTuple = (V = amp_fast, Δ = delay)\nslowTuple = (V = amp_slow, Δ = delay)\n\n# plot\nfig = Figure(size = (600, 350))\nax = Axis(fig[1, 1], xlabel = L\"t\")\nlines!(ax, tlist, [pulse(fastTuple, t) for t in tlist], label = \"Fast Pulse\", linestyle = :solid)\nlines!(ax, tlist, [pulse(slowTuple, t) for t in tlist], label = \"Slow Pulse\", linestyle = :dash)\n\naxislegend(ax, position = :rt)\n\nfig"
+  },
+  {
+    "objectID": "HierarchicalEOM.jl/dynamical_decoupling.html#construct-bath-objects",
+    "href": "HierarchicalEOM.jl/dynamical_decoupling.html#construct-bath-objects",
+    "title": "Driven systems and dynamical decoupling",
+    "section": "Construct bath objects",
+    "text": "Construct bath objects\nWe assume the bosonic reservoir to have a Drude-Lorentz Spectral Density, and we utilize the Padé decomposition. Furthermore, the spectral densities depend on the following physical parameters:\n\nthe coupling strength \\(\\Gamma\\) between system and reservoir\nthe band-width \\(W\\)\nthe product of the Boltzmann constant \\(k\\) and the absolute temperature \\(T\\) : \\(kT\\)\nthe total number of exponentials for the reservoir \\((N + 1)\\)\n\n\nΓ = 0.0005\nW = 0.005\nkT = 0.05\nN = 3\nbath = Boson_DrudeLorentz_Pade(σz, Γ, W, kT, N)\n\nHierarchicalEOM.BosonBath object with 4 exponential-expansion terms"
+  },
+  {
+    "objectID": "HierarchicalEOM.jl/dynamical_decoupling.html#construct-heomls-matrix",
+    "href": "HierarchicalEOM.jl/dynamical_decoupling.html#construct-heomls-matrix",
+    "title": "Driven systems and dynamical decoupling",
+    "section": "Construct HEOMLS matrix",
+    "text": "Construct HEOMLS matrix\n\n\n\n\n\n\nWarning\n\n\n\nOnly provide the time-independent part of system Hamiltonian when constructing HEOMLS matrices (the time-dependent part H_t should be given when solving the time evolution).\n\n\n\ntier = 6\nM = M_Boson(H0, tier, bath)\n\nPreparing block matrices for HEOM Liouvillian superoperator (using 4 threads)...\nProgress: [                              ]   0.5% --- Elapsed Time: 0h 00m 01s (ETA: 0h 03m 29s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 00s)\nConstructing matrix...[DONE]\n\n\nBoson type HEOMLS matrix acting on even-parity ADOs\nsystem dims = [2]\nnumber of ADOs N = 210\ndata =\nMatrixOperator(840 × 840)"
+  },
+  {
+    "objectID": "HierarchicalEOM.jl/dynamical_decoupling.html#time-evolution-with-time-independent-hamiltonian",
+    "href": "HierarchicalEOM.jl/dynamical_decoupling.html#time-evolution-with-time-independent-hamiltonian",
+    "title": "Driven systems and dynamical decoupling",
+    "section": "time evolution with time-independent Hamiltonian",
+    "text": "time evolution with time-independent Hamiltonian\n\nnoPulseSol = HEOMsolve(M, ψ0, tlist; e_ops = [ρ01]);\n\nSolving time evolution for ADOs by Ordinary Differential Equations method...\nProgress: [                              ]   0.1% --- Elapsed Time: 0h 00m 02s (ETA: 0h 33m 20s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 02s (ETA: 0h 00m 00s)"
+  },
+  {
+    "objectID": "HierarchicalEOM.jl/dynamical_decoupling.html#solve-time-evolution-with-time-dependent-hamiltonian",
+    "href": "HierarchicalEOM.jl/dynamical_decoupling.html#solve-time-evolution-with-time-dependent-hamiltonian",
+    "title": "Driven systems and dynamical decoupling",
+    "section": "Solve time evolution with time-dependent Hamiltonian",
+    "text": "Solve time evolution with time-dependent Hamiltonian\nWe need to provide a QuantumToolbox.QuantumObjectEvolution (named as H_D in this case)\n\nH_D = QobjEvo(σx, pulse)\n\nQuantum Object Evo.:   type=Operator   dims=[2]   size=(2, 2)   ishermitian=true   isconstant=false\nScalarOperator(0.0 + 0.0im) * MatrixOperator(2 × 2)\n\n\nThe keyword argument params in HEOMsolve will be passed to the argument p in user-defined function (pulse in this case) directly:\n\nfastPulseSol = HEOMsolve(M, ψ0, tlist; e_ops = [ρ01], H_t = H_D, params = fastTuple)\nslowPulseSol = HEOMsolve(M, ψ0, tlist; e_ops = [ρ01], H_t = H_D, params = slowTuple)\n\nSolving time evolution for ADOs by Ordinary Differential Equations method...\nProgress: [                              ]   0.1% --- Elapsed Time: 0h 00m 01s (ETA: 0h 16m 40s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 00s)\nSolving time evolution for ADOs by Ordinary Differential Equations method...\nProgress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)\n\n\nSolution of hierarchical EOM\n(return code: Success)\n----------------------------\nBtier = 6\nFtier = 0\nnum_states = 1\nnum_expect = 1\nODE alg.: OrdinaryDiffEqLowOrderRK.DP5{typeof(OrdinaryDiffEqCore.trivial_limiter!), typeof(OrdinaryDiffEqCore.trivial_limiter!), Static.False}(OrdinaryDiffEqCore.trivial_limiter!, OrdinaryDiffEqCore.trivial_limiter!, static(false))\nabstol = 1.0e-8\nreltol = 1.0e-6"
+  },
+  {
+    "objectID": "HierarchicalEOM.jl/dynamical_decoupling.html#plot-the-coherence",
+    "href": "HierarchicalEOM.jl/dynamical_decoupling.html#plot-the-coherence",
+    "title": "Driven systems and dynamical decoupling",
+    "section": "Plot the coherence",
+    "text": "Plot the coherence\n\nfig = Figure(size = (600, 350))\nax = Axis(fig[1, 1], xlabel = L\"t\", ylabel = L\"\\rho_{01}\")\nlines!(ax, tlist, real(fastPulseSol.expect[1, :]), label = \"Fast Pulse\", linestyle = :solid)\nlines!(ax, tlist, real(slowPulseSol.expect[1, :]), label = \"Slow Pulse\", linestyle = :dot)\nlines!(ax, tlist, real(noPulseSol.expect[1, :]),   label = \"no Pulse\",   linestyle = :dash)\n\naxislegend(ax, position = :lb)\n\nfig"
+  },
+  {
+    "objectID": "HierarchicalEOM.jl/dynamical_decoupling.html#version-information",
+    "href": "HierarchicalEOM.jl/dynamical_decoupling.html#version-information",
+    "title": "Driven systems and dynamical decoupling",
+    "section": "Version Information",
+    "text": "Version Information\n\nHierarchicalEOM.versioninfo()\n\n\n                                   __\n                                  /  \\\n __     __                     __ \\__/ __\n|  |   |  |                   /  \\    /  \\\n|  |   |  | ______   ______   \\__/_  _\\__/\n|  |___|  |/  __  \\ /  __  \\ / '   \\/     \\\n|   ___   |  |__)  |  /  \\  |    _     _   |\n|  |   |  |   ____/| (    ) |   / \\   / \\  |\n|  |   |  |  |____ |  \\__/  |  |   | |   | |\n|__|   |__|\\______) \\______/|__|   |_|   |_|\n\nJulia framework for Hierarchical Equations of Motion\n≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡\nCopyright © QuTiP team 2023 and later.\nLead  developer : Yi-Te Huang\nOther developers:\n    Simon Cross, Neill Lambert, Po-Chen Kuo and Shen-Liang Yang\n\nPackage information:\n====================================\nJulia              Ver. 1.11.2\nHierarchicalEOM    Ver. 2.3.3\nQuantumToolbox     Ver. 0.24.0\nSciMLOperators     Ver. 0.3.12\nLinearSolve        Ver. 2.38.0\nOrdinaryDiffEqCore Ver. 1.15.0\n\nSystem information:\n====================================\nOS       : Linux (x86_64-linux-gnu)\nCPU      : 4 × AMD EPYC 7763 64-Core Processor\nMemory   : 15.615 GB\nWORD_SIZE: 64\nLIBM     : libopenlibm\nLLVM     : libLLVM-16.0.6 (ORCJIT, znver3)\nBLAS     : libopenblas64_.so (ilp64)\nThreads  : 4 (on 4 virtual cores)"
+  },
+  {
+    "objectID": "QuantumToolbox.jl/time_evolution/lowrank.html",
+    "href": "QuantumToolbox.jl/time_evolution/lowrank.html",
+    "title": "Low rank master equation",
+    "section": "",
+    "text": "In this tutorial, we will show how to solve the master equation using the low-rank method. For a detailed explanation of the method, we recommend to read the Ref. (Gravina and Savona 2024).\nAs a test, we will consider the dissipative Ising model with a transverse field. The Hamiltonian is given by\n\\[\n\\hat{H} = \\frac{J_x}{2} \\sum_{\\langle i,j\\rangle} \\sigma_i^x \\sigma_j^x + \\frac{J_y}{2} \\sum_{\\langle i,j\\rangle} \\sigma_i^y \\sigma_j^y + \\frac{J_z}{2} \\sum_{\\langle i,j\\rangle} \\sigma_i^z \\sigma_j^z - \\sum_i h_i \\sigma_i^z + h_x \\sum_i \\sigma_i^x + h_y \\sum_i \\sigma_i^y + h_z \\sum_i \\sigma_i^z\n\\] K where the sums are over nearest neighbors, and the collapse operators are given by\n\\[\nc_i = \\sqrt{\\gamma} \\sigma_i^{-}\n\\]\nWe start by importing the packages\nusing QuantumToolbox\nusing CairoMakie\nDefine lattice\nNx, Ny = 2, 3\nlatt = Lattice(Nx = Nx, Ny = Ny)\n\nLattice{Int64, LinearIndices{2, Tuple{Base.OneTo{Int64}, Base.OneTo{Int64}}}, CartesianIndices{2, Tuple{Base.OneTo{Int64}, Base.OneTo{Int64}}}}(2, 3, 6, [1 3 5; 2 4 6], CartesianIndices((2, 3)))\nDefine lr-space dimensions\nN_cut = 2\nN_modes = latt.N\nN = N_cut^N_modes\nM = latt.N + 1\n\n7\nDefine lr states. Take as initial state all spins up. All other N states are taken as those with minimum Hamming distance to the initial state.\nϕ = Vector{QuantumObject{Vector{ComplexF64},KetQuantumObject,M-1}}(undef, M)\nϕ[1] = kron(fill(basis(2, 1), N_modes)...)\n\ni = 1\nfor j in 1:N_modes\n    global i += 1\n    i &lt;= M && (ϕ[i] = MultiSiteOperator(latt, j=&gt;sigmap()) * ϕ[1])\nend\nfor k in 1:N_modes-1\n    for l in k+1:N_modes\n        global i += 1\n        i &lt;= M && (ϕ[i] = MultiSiteOperator(latt, k=&gt;sigmap(), l=&gt;sigmap()) * ϕ[1])\n    end\nend\nfor i in i+1:M\n    ϕ[i] = QuantumObject(rand(ComplexF64, size(ϕ[1])[1]), dims = ϕ[1].dims)\n    normalize!(ϕ[i])\nend\nDefine the initial state\nz = hcat(get_data.(ϕ)...)\nB = Matrix(Diagonal([1 + 0im; zeros(M - 1)]))\nS = z' * z # Overlap matrix\nB = B / tr(S * B) # Normalize B\n\nρ = QuantumObject(z * B * z', dims = ntuple(i-&gt;N_cut, Val(N_modes))); # Full density matrix\nDefine the Hamiltonian and collapse operators\n# Define Hamiltonian and collapse operators\nJx = 0.9\nJy = 1.04\nJz = 1.0\nhx = 0.0\nhy = 0.0\nhz = 0.0\nγ = 1\n\nSx = mapreduce(i-&gt;MultiSiteOperator(latt, i=&gt;sigmax()), +, 1:latt.N)\nSy = mapreduce(i-&gt;MultiSiteOperator(latt, i=&gt;sigmay()), +, 1:latt.N)\nSz = mapreduce(i-&gt;MultiSiteOperator(latt, i=&gt;sigmaz()), +, 1:latt.N)\n\nH, c_ops = DissipativeIsing(Jx, Jy, Jz, hx, hy, hz, γ, latt; boundary_condition = Val(:periodic_bc), order = 1)\ne_ops = (Sx, Sy, Sz)\n\ntl = range(0, 10, 100)\n\n0.0:0.10101010101010101:10.0"
+  },
+  {
+    "objectID": "QuantumToolbox.jl/time_evolution/lowrank.html#full-evolution",
+    "href": "QuantumToolbox.jl/time_evolution/lowrank.html#full-evolution",
+    "title": "Low rank master equation",
+    "section": "Full evolution",
+    "text": "Full evolution\n\nsol_me = mesolve(H, ρ, tl, c_ops; e_ops = [e_ops...]);\nStrue = entropy_vn(sol_me.states[end], base=2) / latt.N\n\nProgress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)\n\n\n0.29324728062546046"
+  },
+  {
+    "objectID": "QuantumToolbox.jl/time_evolution/lowrank.html#low-rank-evolution",
+    "href": "QuantumToolbox.jl/time_evolution/lowrank.html#low-rank-evolution",
+    "title": "Low rank master equation",
+    "section": "Low Rank Evolution",
+    "text": "Low Rank Evolution\nDefine functions to be evaluated during the low-rank evolution\n\nfunction f_purity(p, z, B)\n    N = p.N\n    M = p.M\n    S = p.S\n    T = p.temp_MM\n\n    mul!(T, S, B)\n    return tr(T^2)\nend\n\nfunction f_trace(p, z, B)\n    N = p.N\n    M = p.M\n    S = p.S\n    T = p.temp_MM\n\n    mul!(T, S, B)\n    return tr(T)\nend\n\nfunction f_entropy(p, z, B)\n    C = p.A0\n    σ = p.Bi\n\n    mul!(C, z, sqrt(B))\n    mul!(σ, C', C)\n    return entropy_vn(Qobj(Hermitian(σ), type=Operator), base=2)\nend\n\nf_entropy (generic function with 1 method)\n\n\nDefine the options for the low-rank evolution\n\nopt = (err_max = 1e-3, p0 = 0.0, atol_inv = 1e-6, adj_condition = \"variational\", Δt = 0.0);\n\nsol_lr = lr_mesolve(H, z, B, tl, c_ops; e_ops = e_ops, f_ops = (f_purity, f_entropy, f_trace), opt = opt);\n\nProgress: 2%Progress: 3%Progress: 4%Progress: 5%Progress: 6%Progress: 7%Progress: 8%Progress: 9%Progress: 10%Progress: 11%Progress: 12%Progress: 13%Progress: 14%Progress: 15%Progress: 16%Progress: 17%Progress: 18%Progress: 19%Progress: 20%Progress: 21%Progress: 22%Progress: 23%Progress: 24%Progress: 25%Progress: 26%Progress: 27%Progress: 28%Progress: 29%Progress: 30%Progress: 31%Progress: 32%Progress: 33%Progress: 34%Progress: 35%Progress: 36%Progress: 37%Progress: 38%Progress: 39%Progress: 40%Progress: 41%Progress: 42%Progress: 43%Progress: 44%Progress: 45%Progress: 46%Progress: 47%Progress: 48%Progress: 49%Progress: 50%Progress: 51%Progress: 52%Progress: 53%Progress: 54%Progress: 55%Progress: 56%Progress: 57%Progress: 58%Progress: 59%Progress: 60%Progress: 61%Progress: 62%Progress: 63%Progress: 64%Progress: 65%Progress: 66%Progress: 67%Progress: 68%Progress: 69%Progress: 70%Progress: 71%Progress: 72%Progress: 73%Progress: 74%Progress: 75%Progress: 76%Progress: 77%Progress: 78%Progress: 79%Progress: 80%Progress: 81%Progress: 82%Progress: 83%Progress: 84%Progress: 85%Progress: 86%Progress: 87%Progress: 88%Progress: 89%Progress: 90%Progress: 91%Progress: 92%Progress: 93%Progress: 94%Progress: 95%Progress: 96%Progress: 97%Progress: 98%Progress: 99%Progress: 100%\n\n\nPlot the results\n\nm_me = real(sol_me.expect[3, :]) / Nx / Ny\nm_lr = real(sol_lr.expect[3, :]) / Nx / Ny\n\nfig = Figure(size = (500, 350), fontsize = 15)\nax = Axis(fig[1, 1], xlabel = L\"\\gamma t\", ylabel = L\"M_{z}\", xlabelsize = 20, ylabelsize = 20)\nlines!(ax, tl, m_lr, label = L\"LR $[M=M(t)]$\", linewidth = 2)\nlines!(ax, tl, m_me, label = \"Fock\", linewidth = 2, linestyle = :dash)\naxislegend(ax, position = :rb)\n\nax2 = Axis(fig[1, 2], xlabel = L\"\\gamma t\", ylabel = \"Value\", xlabelsize = 20, ylabelsize = 20)\nlines!(ax2, tl, 1 .- real(sol_lr.fexpect[1, :]), label = L\"$1-P$\", linewidth = 2)\nlines!(\n    ax2,\n    tl,\n    1 .- real(sol_lr.fexpect[3, :]),\n    label = L\"$1-\\mathrm{Tr}(\\rho)$\",\n    linewidth = 2,\n    linestyle = :dash,\n    color = :orange,\n)\nlines!(ax2, tl, real(sol_lr.fexpect[2, :]) / Nx / Ny, color = :blue, label = L\"S\", linewidth = 2)\nhlines!(ax2, [Strue], color = :blue, linestyle = :dash, linewidth = 2, label = L\"S^{\\,\\mathrm{true}}_{\\mathrm{ss}}\")\naxislegend(ax2, position = :rb)\n\nfig"
+  },
+  {
+    "objectID": "QuantumToolbox.jl/time_evolution/lowrank.html#version-information",
+    "href": "QuantumToolbox.jl/time_evolution/lowrank.html#version-information",
+    "title": "Low rank master equation",
+    "section": "Version Information",
+    "text": "Version Information\n\nQuantumToolbox.versioninfo()\n\n\n QuantumToolbox.jl: Quantum Toolbox in Julia\n≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡\nCopyright © QuTiP team 2022 and later.\nCurrent admin team:\n    Alberto Mercurio and Yi-Te Huang\n\nPackage information:\n====================================\nJulia              Ver. 1.11.2\nQuantumToolbox     Ver. 0.24.0\nSciMLOperators     Ver. 0.3.12\nLinearSolve        Ver. 2.38.0\nOrdinaryDiffEqCore Ver. 1.15.0\n\nSystem information:\n====================================\nOS       : Linux (x86_64-linux-gnu)\nCPU      : 4 × AMD EPYC 7763 64-Core Processor\nMemory   : 15.615 GB\nWORD_SIZE: 64\nLIBM     : libopenlibm\nLLVM     : libLLVM-16.0.6 (ORCJIT, znver3)\nBLAS     : libopenblas64_.so (ilp64)\nThreads  : 4 (on 4 virtual cores)"
   }
 ]

@@ -1,0 +1,170 @@
+---
+title: "Resonance fluorescence"
+author: Li-Xun Cai
+date: YYYY-MM-DD  # last update (keep this comment as a reminder)
+
+engine: julia
+cache: true
+---
+
+Inspirations taken from [this QuTiP tutorial](https://nbviewer.org/urls/qutip.org/qutip-tutorials/tutorials-v5/lectures/Lecture-13-Resonance-flourescence.ipynb) by J. R. Johansson.
+
+## Introduction
+
+```{julia}
+import QuantumToolbox: n_thermal, liouvillian, sigmap, sigmam, sigmax, sigmay,
+    sigmaz, basis, mesolve, correlation_2op_1t, spectrum_correlation_fft
+import CairoMakie: Figure, Axis, @L_str, lines!, axislegend, display, ylims!, xlims!
+```
+
+```{julia}
+Ω = 1
+γ0 = 0.05
+KT = 0
+```
+
+```{julia}
+function system_spec(_Ω, _γ0, _KT)
+    H = -_Ω/2 * (sigmap() + sigmam())
+    c_ops = [
+        √(_γ0 * n_thermal(_Ω, _KT)) * sigmap(),
+        √(_γ0 * (1 + n_thermal(_Ω, _KT))) * sigmap(),
+    ]
+    return liouvillian(H, c_ops)
+end
+```
+
+```{julia}
+e_ket = basis(2,1)
+e_ops = [
+    sigmax(),
+    sigmay(),
+    sigmaz(),
+    sigmam(),
+    sigmap(),
+    e_ket * e_ket'
+]
+ψ0 = basis(2,0)
+tlist = 0:0.1:20
+# Since we are already passing a liouvillian to mesolve, no c_ops are needed hence the `nothing`
+sol = mesolve(system_spec(Ω, γ0, KT), ψ0, tlist, nothing, e_ops = e_ops)
+```
+
+```{julia}
+expect = real.(sol.expect)
+fig1 = Figure(size = (600,300))
+ax11 = Axis(
+    fig1[1,1]
+)
+lines!(ax11, tlist, expect[1,:], label = L"\langle \sigma_x \rangle")
+lines!(ax11, tlist, expect[2,:], label = L"\langle \sigma_y \rangle")
+lines!(ax11, tlist, expect[3,:], label = L"\langle \sigma_z \rangle")
+axislegend(ax11)
+ylims!(ax11, (-1,1))
+
+ax12 = Axis(
+    fig1[2,1],
+    xlabel = L"time $[1/\Omega]$"
+)
+lines!(ax12, tlist, expect[6,:], label = L"P_e")
+axislegend(ax12)
+ylims!(ax12, (0,1))
+
+display(fig1);
+```
+
+```{julia}
+results = []
+γ0s = Ω .* [0.1, 0.5, 1]
+for (idx, γ0) in enumerate(γ0s)
+    result = mesolve(system_spec(Ω, γ0, KT), ψ0, tlist, nothing, e_ops = e_ops)
+
+    push!(results, (γ0 = γ0, expect = result.expect))
+end
+```
+
+```{julia}
+fig2 = Figure(size = (600,300))
+ax2 = Axis(
+    fig2[1,1],
+    xlabel = L"time $[1/\Omega]$",
+    title = L"\langle\sigma_{+}\rangle"
+)
+
+for (γ0, expect) in results
+    lines!(ax2, tlist, imag(expect[5,:]), label = "γ0 = $γ0")
+end
+
+axislegend(ax2)
+display(fig2);
+```
+
+```{julia}
+fig3 = Figure(size = (600,300))
+ax3 = Axis(
+    fig3[1,1],
+    xlabel = L"time $[1/\Omega]$",
+    title = L"\langle\sigma_{-}\rangle"
+)
+
+for (γ0, expect) in results
+    lines!(ax3, tlist, imag(expect[4,:]), label = "γ0 = $γ0")
+end
+axislegend(ax3)
+display(fig3)
+```
+
+```{julia}
+fig4 = Figure(size = (600,300))
+ax41 = Axis(
+    fig4[1,1],
+    xlabel = L"\tau",
+    title = L"C(\tau)"
+)
+
+ax42 = Axis(
+    fig4[1,2],
+    xlabel = L"\omega",
+    ylabel = "fft amplitude"
+)
+τlist = 0:0.1:100
+for γ0 in γ0s
+    L = system_spec(Ω, γ0, KT)    
+    corr = correlation_2op_1t(L, ψ0, τlist, nothing, sigmap(), sigmam())
+
+    lines!(ax41, τlist, real(corr), label = "γ0 = $γ0")
+
+    fft_ωlist, fft_spect = spectrum_correlation_fft(τlist, corr)
+    lines!(ax42, fft_ωlist, fft_spect, label = "γ0 = $γ0")
+end
+xlims!(ax42, (-5,5))
+axislegend(ax41)
+axislegend(ax42)
+display(fig4)
+```
+
+<!-- ```{julia}
+ωlist = -5:0.05:5
+fig5 = Figure(size = (600,300))
+ax5 = Axis(
+    fig5[1,1],
+    xlabel = L"\omega",
+    ylabel = "spectrum amplitude"
+)
+
+
+for γ0 in γ0s
+    L = system_spec(Ω, γ0, KT)
+    spect = spectrum(L, ωlist, nothing, sigmap(), sigmam())
+    println(typeof(spect))
+    lines!(ax5, ωlist, real(spect), label = "γ0 = $γ0")
+end
+axislegend(ax5)
+display(fig5)
+``` -->
+
+## Version Information
+```{julia}
+import QuantumToolbox
+QuantumToolbox.versioninfo()
+```

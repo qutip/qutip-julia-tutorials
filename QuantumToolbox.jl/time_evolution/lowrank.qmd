@@ -26,7 +26,7 @@ The coefficients $B_{i,j}(t)$ are collected in the matrix $B(t)$, and the coeffi
 
 In [@gravina2024adaptive] all coefficients $B_{i,j}(t)$ and $z_{\alpha,k}(t)$ are taken to be variational parameters. The evolution equation for the density matrix is consequently mapped onto a set of differential equations for such parameters via the time-dependent variational principle (TDVP).
 
-The TDVP ensures a dynamical adjustment of the variational states, guaranteeing the optimal set of states is selected at all times to best approximate the dissipative evolution. This allows for a significant reduction in computational complexity as the number of states $M(t)$ necessary to accurately caputre the dynamics of the system is as small as can be, hopefully much smaller than the full Hilbert space dimension $N$.
+The TDVP ensures a dynamical adjustment of the variational states, guaranteeing the optimal set of states is selected at all times to best approximate the dissipative evolution. This allows for a significant reduction in computational complexity as the number of states $M(t)$ necessary to accurately capture the dynamics of the system is as small as can be, hopefully much smaller than the full Hilbert space dimension $N$.
 
 ## Low-rank dynamics of the transverse field Heisenberg model
 In this example we consider the dynamics of the transverse field Ising model (TFIM) on a 2x3 lattice. We start by importing the packages

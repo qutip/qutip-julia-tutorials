@@ -1,31 +1,88 @@
 ---
 title: "Resonance fluorescence"
 author: Li-Xun Cai
-date: YYYY-MM-DD  # last update (keep this comment as a reminder)
+date: 2050-01-21# last update (keep this comment as a reminder)
 
 engine: julia
-cache: true
+execute:
+  cache: true
 ---
 
 Inspirations taken from [this QuTiP tutorial](https://nbviewer.org/urls/qutip.org/qutip-tutorials/tutorials-v5/lectures/Lecture-13-Resonance-flourescence.ipynb) by J. R. Johansson.
 
+In this tutorial, the usages of `QuantumToolbox.correlation_2op_1t` and `QuantumToolbox.spectrum_correlation_fft` are mainly demonstrated with the example of resonance fluorescence in the weak field limit.
+
 ## Introduction
 
+Reconance fluorescence is the radiative behaviour towards the surrounding EM continuum of a two-level atom driven by a resonating light mode in coherent state (usually a monochromic laser beam). The Hamiltonian $H = H_a + H_{drv}$ has that
+
+- $H_a = \frac{\omega_a}{2} \sigma_z$
+- $H_{drv} = \Omega cos(\omega_L t) (\sigma^{+} + \sigma^{-})$
+  
+with 
+
+- $\omega_a$: Frequency of the two-level atom
+- $\omega_L$: Frequency of the light mode$
+- $\Omega$: Field strength of the EM mode
+- $\sigma^{+}, \sigma^{-}$: Raising and lowering operators
+- $\sigma_{x,y,z}$: Pauli's matrices, equivalent to $|e\rangle\langle g|$ and $|g\rangle\langle e|$ respectively
+
+Note that with $\cos(\omega_L t) = \frac{e^{i\omega_a t} + e^{-i\omega_a t}}{2}$, $H_{drv}$ can be expressed as 
+$$
+H_{drv} = \frac{\Omega}{2} \Big[(e^{i2\omega_a t} + 1) \sigma^{+} + ( 1 + e^{-i2\omega_a t}) \sigma^{-}\Big]
+$$
+
+In the weak field limit, which is the main scope of this tutorial, the ratio between field strength and frequency of the atom is very small ($\Omega/\omega_a \ll 1$). We can thereby apply the [rotating-wave approximation (RWA)](https://en.wikipedia.org/wiki/Rotating-wave_approximation) to drop dynamics whose frequency is to the order of $\omega_a$, including the bare atom Hamiltonian $H_a$ and time dependent part of $H_{drv}$, yielding
+$$
+H \sim \frac{\Omega}{2} \sigma_x 
+$$
+
+### dissipation dynamics with EM continuum
+
+From the standard interaction Hamiltonian with EM continuum $H_{int} = \sum_l \alpha_l b_l \sigma^{+} + \text{h.c.}$, we follow the Born-Markovian approximation to obtain dissipative-part of the dynamics
+$$
+\mathcal{L} = \gamma_0 n(\omega_a, T) \mathcal{D}[\sigma^{+}] + \gamma_0 [1 + n(\omega_a, T)] \mathcal{D}[\sigma^{-}]
+$$
+
+where
+
+- $\gamma_0$: Dissipation rate of the atom
+- $n(\omega, T)$: Bose-Einstein distribution of the thermal field at temperature $T$
+- $\mathcal{D}[\cdot]$ is the [Lindblad dissipator](https://en.wikipedia.org/wiki/Lindbladian)
+
+## Usage
+
+
 ```{julia}
-import QuantumToolbox: n_thermal, liouvillian, sigmap, sigmam, sigmax, sigmay,
+import QuantumToolbox: QuantumObjectEvolution, n_thermal, liouvillian, sigmap, sigmam, sigmax, sigmay,
     sigmaz, basis, mesolve, correlation_2op_1t, spectrum_correlation_fft
 import CairoMakie: Figure, Axis, @L_str, lines!, axislegend, display, ylims!, xlims!
 ```
 
 ```{julia}
 Ω = 1
+# we are being generous here to set Ω/ωa = 1e-3, realistically it sould be way smaller despite strong driving
+ωa, ωL = 1e3 * Ω, 1e3 * Ω 
 γ0 = 0.05
 KT = 0
 ```
 
 ```{julia}
-function system_spec(_Ω, _γ0, _KT)
-    H = -_Ω/2 * (sigmap() + sigmam())
+function liouvillian_H(_Ω, _γ0, _KT)
+    Ha = ωa/2 * sigmaz()
+    cos_evo(t) = _Ω * cos(ωL * t)
+    Hdrv = QuantumObjectEvolution((sigmap() + sigmam(), cos_evo))
+
+    c_ops = [
+        √(_γ0 * n_thermal(_Ω, _KT)) * sigmap(),
+        √(_γ0 * (1 + n_thermal(_Ω, _KT))) * sigmap(),
+    ]
+
+    return liouvillian(Ha + Hdrv, c_ops)
+end
+
+function liouvillian_I(_Ω, _γ0, _KT)
+    H = _Ω/2 * (sigmap() + sigmam())
     c_ops = [
         √(_γ0 * n_thermal(_Ω, _KT)) * sigmap(),
         √(_γ0 * (1 + n_thermal(_Ω, _KT))) * sigmap(),
@@ -47,7 +104,7 @@ e_ops = [
 ψ0 = basis(2,0)
 tlist = 0:0.1:20
 # Since we are already passing a liouvillian to mesolve, no c_ops are needed hence the `nothing`
-sol = mesolve(system_spec(Ω, γ0, KT), ψ0, tlist, nothing, e_ops = e_ops)
+sol = mesolve(liouvillian_I(Ω, γ0, KT), ψ0, tlist, nothing, e_ops = e_ops)
 ```
 
 ```{julia}
@@ -77,7 +134,7 @@ display(fig1);
 results = []
 γ0s = Ω .* [0.1, 0.5, 1]
 for (idx, γ0) in enumerate(γ0s)
-    result = mesolve(system_spec(Ω, γ0, KT), ψ0, tlist, nothing, e_ops = e_ops)
+    result = mesolve(liouvillian_I(Ω, γ0, KT), ψ0, tlist, nothing, e_ops = e_ops)
 
     push!(results, (γ0 = γ0, expect = result.expect))
 end
@@ -129,7 +186,7 @@ ax42 = Axis(
 )
 τlist = 0:0.1:100
 for γ0 in γ0s
-    L = system_spec(Ω, γ0, KT)    
+    L = liouvillian_I(Ω, γ0, KT)    
     corr = correlation_2op_1t(L, ψ0, τlist, nothing, sigmap(), sigmam())
 
     lines!(ax41, τlist, real(corr), label = "γ0 = $γ0")
@@ -154,7 +211,7 @@ ax5 = Axis(
 
 
 for γ0 in γ0s
-    L = system_spec(Ω, γ0, KT)
+    L = liouvillian_I(Ω, γ0, KT)
     spect = spectrum(L, ωlist, nothing, sigmap(), sigmam())
     println(typeof(spect))
     lines!(ax5, ωlist, real(spect), label = "γ0 = $γ0")

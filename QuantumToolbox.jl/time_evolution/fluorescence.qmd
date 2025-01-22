@@ -108,7 +108,7 @@ print(L)
 sol = mesolve(L, ψ0, tlist, nothing, e_ops = e_ops)
 ```
 
-Obeserving the expectation values dynamics of Pauli's matrices, we see that the Bloch vector $(\langle \sigma_x \rangle, \langle \sigma_y \rangle, \langle \sigma_z \rangle)$ shortens over time, which is consistent with the dissipative behaviour. Also, the population of excited state has oscillation amplitude decaying over time.
+Observing the expectation values dynamics of Pauli's matrices, we see that the Bloch vector $(\langle \sigma_x \rangle, \langle \sigma_y \rangle, \langle \sigma_z \rangle)$ shortens over time, which is consistent with the dissipative behaviour. Also, the population of excited state has oscillation amplitude decaying over time.
 ```{julia}
 expect = real.(sol.expect)
 fig1 = Figure(size = (600,300))
@@ -175,7 +175,7 @@ axislegend(ax3)
 display(fig3);
 ```
 
-We now move to the analysis of the correlation function $C(\tau) = \langle \sigma^{+}(\tau) \sigma^{-}(0)\rangle$, which describes the radiative behaviour of the atom towrds its surrounding environment. Using `QuantumToolbox.correlation_2op_1t`, we can obtain the correlation function as a function of $\tau$ and use `QuantumToolbox.spectrum_correlation_fft` to obtain the corresponding Fourier transform.
+We now move to the analysis of the correlation function $C(\tau) = \langle \sigma^{+}(\tau) \sigma^{-}(0)\rangle$, which describes the radiative behaviour of the atom towards its surrounding environment. Using `QuantumToolbox.correlation_2op_1t`, we can obtain the correlation function as a function of $\tau$ and use `QuantumToolbox.spectrum_correlation_fft` to obtain the corresponding Fourier transform.
 ```{julia}
 fig4 = Figure(size = (600,300))
 ax41 = Axis(

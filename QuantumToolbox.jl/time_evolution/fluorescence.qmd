@@ -57,9 +57,9 @@ where $\Delta \equiv \omega_a - \omega_L$ is the detuning between the two-level 
 
 ### Dissipation dynamics
 
-From the standard interaction Hamiltonian of spin-boson model $H_\text{int} = \sum_l \alpha_l b_l \sigma^{+} + \text{h.c.}$, we follow the Born-Markovian approximation to obtain the dissipative part of the dynamics, alone with von Neumann equation
+The Born-Markov-approximation approach describing the bosonic dissipation of a two-level system has the following form
 $$
-\mathcal{L} = -i\left[H^\text{rot}, \rho^\text{rot}\right] + \gamma_0 n(\omega_a, T) \mathcal{D}[\sigma^{+}] + \gamma_0 [1 + n(\omega_a, T)] \mathcal{D}[\sigma^{-}]
+\mathcal{L} = \gamma_0 n(\omega_a, T) \mathcal{D}[\sigma^{+}] + \gamma_0 [1 + n(\omega_a, T)] \mathcal{D}[\sigma^{-}]
 $$
 
 where

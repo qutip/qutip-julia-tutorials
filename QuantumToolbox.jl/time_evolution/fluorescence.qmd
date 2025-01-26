@@ -1,25 +1,25 @@
 ---
 title: "Resonance fluorescence"
 author: Li-Xun Cai
-date: 2050-01-22 # last update (keep this comment as a reminder)
+date: 2050-01-26 # last update (keep this comment as a reminder)
 
 engine: julia
 ---
 
 Inspirations taken from [this QuTiP tutorial](https://nbviewer.org/urls/qutip.org/qutip-tutorials/tutorials-v5/lectures/Lecture-13-Resonance-flourescence.ipynb) by J. R. Johansson.
 
-In this tutorial, the usages of 
+In this tutorial, we demonstrate the following functionality:  
 
-- `QuantumToolbox.liouvillian`,
-- `QuantumToolbox.mesolve`,
-- `QuantumToolbox.correlation_2op_1t` and 
+- `QuantumToolbox.liouvillian`,  
+- `QuantumToolbox.mesolve`,  
+- `QuantumToolbox.correlation_2op_1t`  
 - `QuantumToolbox.spectrum_correlation_fft` 
 
-are demonstrated with the example of resonance fluorescence in the weak field limit. Note that we set $\hbar = 1$ throughout.
+with the example of resonance fluorescence in the weak field limit. Note that we set $\hbar = 1$ throughout.  
 
 ## Introduction
 
-Resonance fluorescence is the radiative behaviour of a two-level atom driven by a resonating light mode in coherent state (usually a monochromic laser beam). The Hamiltonian $H = H_\text{a} + H_\text{drv}$ has that
+Resonance fluorescence is the radiative behaviour of a two-level atom driven by a resonating light mode in coherent state (usually a monochromic laser beam). The Hamiltonian $H$ is given by  
 
 - $H_\text{a} = \frac{\omega_a}{2} \sigma_z$
 - $H_\text{drv} = \Omega cos(\omega_L t) (\sigma^{+} + \sigma^{-})$
@@ -29,28 +29,33 @@ with
 - $\omega_a$: Frequency of the two-level atom
 - $\omega_L$: Frequency of the light field
 - $\Omega$: Field strength of the light field
-- $\sigma_{x,y,z}$: Pauli's matrices
+- $\sigma_{x,y,z}$: Pauli matrices
 - $\sigma^{+}, \sigma^{-}$: Raising and lowering operators, equivalent to $|e\rangle\langle g|$ and $|g\rangle\langle e|$ respectively
 
-To simplify the problem, we move from the lab frame to the rotating frame by the unitary $U = e^{-i \omega_L t \cdot \sigma_z}$ to the total Hamiltonian with $H^\text{rot} = U^\dagger H U -i U^\dagger \frac{d}{dt} U$. The later term is simply $-\frac{\omega_L}{2}\sigma_z$, with each component transformed to
+To simplify the problem, we consider the total Hamiltonian (in the rotating frame)  
+$$  
+H^\text{rot} = U^\dagger H_\text{a} U + U^\dagger H_\text{drv} U -i U^\dagger \frac{d}{dt} U,  
+$$  
+where the unitary operator is given by $U = e^{-i \omega_L t \cdot \sigma_z}$. The third term of $H^\text{rot}$ is simply $-\frac{\omega_L}{2}\sigma_z$, and the first and second terms are evaluated as:  
+
 $$
 U^\dagger H_\text{a} U = \frac{\omega_a}{2}\sigma_z,
 $$
 $$
-U^\dagger H_\text{drv} U = \Omega cos(\omega_L t) \Big[e^{i\omega_L t}\sigma^{+} + e^{-i\omega_L t}\sigma^{-}\Big].
+U^\dagger H_\text{drv} U = \Omega \cos(\omega_L t) \Big[e^{i\omega_L t}\sigma^{+} + e^{-i\omega_L t}\sigma^{-}\Big].
 $$
 
 In the weak field limit, where $\Omega/\omega_L \ll 1$, we can drop the time-dependent part in the rotating frame through [rotating-wave approximation (RWA)](https://en.wikipedia.org/wiki/Rotating-wave_approximation). First, we expand $\cos(\omega_L t)$ to its exponential form,
 $$
-\Omega cos(\omega_L t) \Big[e^{i\omega_L t}\sigma^{+} + e^{-i\omega_L t}\sigma^{-}\Big] = \frac{\Omega}{2}\Big[(1 + e^{2i\omega_L t})\sigma^{+} + (1 + e^{-2i\omega_L t})\sigma^{-}\Big]
+\Omega \cos(\omega_L t) \Big[e^{i\omega_L t}\sigma^{+} + e^{-i\omega_L t}\sigma^{-}\Big] = \frac{\Omega}{2}\Big[(1 + e^{2i\omega_L t})\sigma^{+} + (1 + e^{-2i\omega_L t})\sigma^{-}\Big]
 $$
-The time-dependent parts evolving with frequency $2\omega_L$ are dropped, yielding
+The time-dependent parts with frequency $2\omega_L$ are dropped, yielding
 $$
 H^\text{rot} \simeq \frac{\omega_a}{2} \sigma_z + \frac{\Omega}{2} \sigma_x - \frac{\omega_L}{2} \sigma_z = \frac{\Delta}{2} \sigma_z + \frac{\Omega}{2} \sigma_x
 $$
-where $\Delta = \omega_a - \omega_L$ is the detuning between the two-level atom and the driving light. In the realistic near-resonance situation where $\Delta \simeq 0$, characteristic of the radiative behaviour remains, thus we only consider exact resonance $\Delta = 0$ for the following usage.
+where $\Delta \equiv \omega_a - \omega_L$ is the detuning between the two-level atom and the driving light. In the realistic near-resonance case $\Delta \simeq 0$, characteristic of the radiative behaviour remains. Thus, for the following demonstration, we only consider the exact resonance $\Delta = 0$. 
 
-### Dissipation dynamics with EM continuum
+### Dissipation dynamics
 
 From the standard interaction Hamiltonian of spin-boson model $H_\text{int} = \sum_l \alpha_l b_l \sigma^{+} + \text{h.c.}$, we follow the Born-Markovian approximation to obtain the dissipative part of the dynamics, alone with von Neumann equation
 $$
@@ -63,7 +68,7 @@ where
 - $n(\omega, T)$: Bose-Einstein distribution of the thermal field at temperature $T$
 - $\mathcal{D}[\cdot]$: The [Lindblad dissipator](https://en.wikipedia.org/wiki/Lindbladian) (has exactly the same expresseion in the lab frame and the rotating frame)
 
-## Usage
+## Code Demonstration 
 
 ```{julia}
 import QuantumToolbox: QuantumObjectEvolution, n_thermal, liouvillian, sigmap, sigmam, sigmax, 
@@ -74,10 +79,11 @@ import CairoMakie: Figure, Axis, @L_str, lines!, axislegend, display, ylims!, xl
 ```{julia}
 Ω = 1
 γ0 = 0.05 * Ω
-KT = 0 # treating thermal field at vacuum avoids energy input from the environment
+KT = 0 # thermal field at zero temperature  
+
 ```
 
-We define a function that returns the liouvillian of the system, which is a `QuantumObject` of `HOpType` for `QuantumToolbox` and is accepted by some functions in their `H` field.
+We define a function that returns the Liouvillian `SuperOperator` of the system.  
 ```{julia}
 function liouvillian_spec(_Ω, _γ0, _KT)
     H = _Ω/2 * sigmax()
@@ -89,9 +95,9 @@ function liouvillian_spec(_Ω, _γ0, _KT)
 end
 ```
 
-We first use `QuantumObject.mesolve` to solve the master equation to observe the dynamics
+We first use `QuantumObject.mesolve` to solve the master equation with several observables given in `e_ops`.  
 ```{julia}
-e_ket = basis(2,1)
+e_ket = basis(2,0)
 e_ops = [
     sigmax(),
     sigmay(),
@@ -100,15 +106,19 @@ e_ops = [
     sigmap(),
     e_ket * e_ket'
 ]
-ψ0 = basis(2,0) # set initial state being purely excited to better observe the radiative behaviour
+ψ0 = e_ket # set initial state being purely excited to better observe the radiative behaviour
 tlist = 0:0.1:20
-# Since we are already passing a liouvillian to mesolve, no c_ops are needed hence the `nothing`
 L = liouvillian_spec(Ω, γ0, KT)
 print(L)
+```  
+
+We already generate the Liouvillian with `c_ops` included above. We don't need to specify the `c_ops` again in `mesolve`:  
+```{julia}
+tlist = 0:0.1:20  
 sol = mesolve(L, ψ0, tlist, nothing, e_ops = e_ops)
 ```
 
-Observing the expectation values dynamics of Pauli's matrices, we see that the Bloch vector $(\langle \sigma_x \rangle, \langle \sigma_y \rangle, \langle \sigma_z \rangle)$ shortens over time, which is consistent with the dissipative behaviour. Also, the population of excited state has oscillation amplitude decaying over time.
+By observing the expectation values of Pauli operators, we see that the Bloch vector $(\langle \sigma_x \rangle, \langle \sigma_y \rangle, \langle \sigma_z \rangle)$ shortens over time, which is consistent with the dissipative behaviour. Also, the population of excited state `|e\rangle` has oscillation amplitude decaying over time.  
 ```{julia}
 expect = real.(sol.expect)
 fig1 = Figure(size = (600,300))

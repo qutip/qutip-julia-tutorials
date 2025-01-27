@@ -1,7 +1,7 @@
 ---
 title: "Resonance fluorescence"
 author: Li-Xun Cai
-date: 2050-01-26 # last update (keep this comment as a reminder)
+date: 2025-01-27 # last update (keep this comment as a reminder)
 
 engine: julia
 ---
@@ -22,7 +22,7 @@ with the example of resonance fluorescence in the weak field limit. Note that we
 Resonance fluorescence is the radiative behaviour of a two-level atom driven by a resonating light mode in coherent state (usually a monochromic laser beam). The Hamiltonian $H$ is given by  
 
 - $H_\text{a} = \frac{\omega_a}{2} \sigma_z$
-- $H_\text{drv} = \Omega cos(\omega_L t) (\sigma^{+} + \sigma^{-})$
+- $H_\text{drv} = \Omega \cos(\omega_L t) (\sigma^{+} + \sigma^{-})$
   
 with 
 
@@ -30,7 +30,7 @@ with
 - $\omega_L$: Frequency of the light field
 - $\Omega$: Field strength of the light field
 - $\sigma_{x,y,z}$: Pauli matrices
-- $\sigma^{+}, \sigma^{-}$: Raising and lowering operators, equivalent to $|e\rangle\langle g|$ and $|g\rangle\langle e|$ respectively
+- $\sigma^{\pm}$: Raising ($+$) and lowering ($-$) operators, equivalent to $|e\rangle\langle g|$ and $|g\rangle\langle e|$ respectively
 
 To simplify the problem, we consider the total Hamiltonian (in the rotating frame)  
 $$  
@@ -57,14 +57,22 @@ where $\Delta \equiv \omega_a - \omega_L$ is the detuning between the two-level 
 
 ### Dissipation dynamics
 
-The Born-Markov-approximation approach describing the bosonic dissipation of a two-level system has the following form
+We start by the interaction Hamiltonian between the thermal field and atom
+$$
+\hat{H}_{\text{a}}^\text{int} = \sum_l \alpha_l \left( \hat{b}_l + \hat{b}_l^\dagger \right) \left( \sigma^{-} + \sigma^{+} \right)
+$$
+where for the $l$-th mode
+
+- $\alpha_l$ is the coupling strength with the atom
+- $\hat{b}_l$ is the annihilation operator
+
+By applying [rotating wave approximation (RWA)](https://en.wikipedia.org/wiki/Rotating-wave_approximation) and following the standard procedure of the [Born-Markovian approximation](https://en.wikiversity.org/wiki/Open_Quantum_Systems/The_Quantum_Optical_Master_Equation), we obtain the atom dissipation rate $\gamma_0$. Consequently, the dynamics is described by the [Lindblad master equation](https://en.wikipedia.org/wiki/Lindbladian).
 $$
 \mathcal{L} = \gamma_0 n(\omega_a, T) \mathcal{D}[\sigma^{+}] + \gamma_0 [1 + n(\omega_a, T)] \mathcal{D}[\sigma^{-}]
 $$
 
 where
 
-- $\gamma_0$: Dissipation rate of the atom
 - $n(\omega, T)$: Bose-Einstein distribution of the thermal field at temperature $T$
 - $\mathcal{D}[\cdot]$: The [Lindblad dissipator](https://en.wikipedia.org/wiki/Lindbladian) (has exactly the same expresseion in the lab frame and the rotating frame)
 
@@ -107,7 +115,6 @@ e_ops = [
     e_ket * e_ket'
 ]
 ψ0 = e_ket # set initial state being purely excited to better observe the radiative behaviour
-tlist = 0:0.1:20
 L = liouvillian_spec(Ω, γ0, KT)
 print(L)
 ```  
@@ -118,7 +125,7 @@ tlist = 0:0.1:20
 sol = mesolve(L, ψ0, tlist, nothing, e_ops = e_ops)
 ```
 
-By observing the expectation values of Pauli operators, we see that the Bloch vector $(\langle \sigma_x \rangle, \langle \sigma_y \rangle, \langle \sigma_z \rangle)$ shortens over time, which is consistent with the dissipative behaviour. Also, the population of excited state `|e\rangle` has oscillation amplitude decaying over time.  
+By observing the expectation values of Pauli operators, we see that the Bloch vector $(\langle \sigma_x \rangle, \langle \sigma_y \rangle, \langle \sigma_z \rangle)$ shortens over time, which is consistent with the dissipative behaviour. Also, the population of excited state $|e\rangle$ has oscillation amplitude decaying over time.  
 ```{julia}
 expect = real.(sol.expect)
 fig1 = Figure(size = (600,300))

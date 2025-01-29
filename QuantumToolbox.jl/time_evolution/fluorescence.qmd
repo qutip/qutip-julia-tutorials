@@ -8,50 +8,50 @@ engine: julia
 
 Inspirations taken from [this QuTiP tutorial](https://nbviewer.org/urls/qutip.org/qutip-tutorials/tutorials-v5/lectures/Lecture-13-Resonance-flourescence.ipynb) by J. R. Johansson.
 
-In this tutorial, we demonstrate the following functionality:  
+In this tutorial, we demonstrate the following functionalities:
 
-- `QuantumToolbox.liouvillian`,  
-- `QuantumToolbox.mesolve`,  
-- `QuantumToolbox.correlation_2op_1t`  
-- `QuantumToolbox.spectrum_correlation_fft` 
+- [`liouvillian`](https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.liouvillian)
+- [`mesolve`](https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.mesolve)
+- [`correlation_2op_1t`](https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.correlation_2op_1t)  
+- [`spectrum_correlation_fft`](https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.spectrum_correlation_fft)
 
-with the example of resonance fluorescence in the weak field limit. Note that we set $\hbar = 1$ throughout.  
+with the example of resonance fluorescence in the weak field limit. We also adopt the convention $\hbar = 1$ throughout this tutorial.
 
 ## Introduction
 
-Resonance fluorescence is the radiative behaviour of a two-level atom driven by a resonating light mode in coherent state (usually a monochromic laser beam). The Hamiltonian $H$ is given by  
+Resonance fluorescence is the radiative behavior of a two-level atom driven by a resonant light mode in a coherent state (usually a monochromatic laser beam). The Hamiltonian $H$ is given by
 
-- $H_\text{a} = \frac{\omega_a}{2} \sigma_z$
-- $H_\text{drv} = \Omega \cos(\omega_L t) (\sigma^{+} + \sigma^{-})$
+- $H_\text{a} = \frac{\omega_a}{2} \hat{\sigma}_z$
+- $H_\text{drv} = \Omega \cos(\omega_L t) (\hat{\sigma}^{+} + \hat{\sigma}^{-})$
   
 with 
 
 - $\omega_a$: Frequency of the two-level atom
 - $\omega_L$: Frequency of the light field
 - $\Omega$: Field strength of the light field
-- $\sigma_{x,y,z}$: Pauli matrices
-- $\sigma^{\pm}$: Raising ($+$) and lowering ($-$) operators, equivalent to $|e\rangle\langle g|$ and $|g\rangle\langle e|$ respectively
+- $\hat{\sigma}_{x,y,z}$: Pauli matrices
+- $\hat{\sigma}^{\pm}$: Raising ($+$) and lowering ($-$) operators, equivalent to $|e\rangle\langle g|$ and $|g\rangle\langle e|$ respectively
 
 To simplify the problem, we consider the total Hamiltonian (in the rotating frame)  
 $$  
 H^\text{rot} = U^\dagger H_\text{a} U + U^\dagger H_\text{drv} U -i U^\dagger \frac{d}{dt} U,  
 $$  
-where the unitary operator is given by $U = e^{-i \omega_L t \cdot \sigma_z}$. The third term of $H^\text{rot}$ is simply $-\frac{\omega_L}{2}\sigma_z$, and the first and second terms are evaluated as:  
+where the unitary operator is given by $U = e^{-i \omega_L t \cdot \hat{\sigma}_z}$. The third term of $H^\text{rot}$ is simply $-\frac{\omega_L}{2}\hat{\sigma}_z$, and the first and second terms are evaluated as:  
 
 $$
-U^\dagger H_\text{a} U = \frac{\omega_a}{2}\sigma_z,
+U^\dagger H_\text{a} U = \frac{\omega_a}{2}\hat{\sigma}_z,
 $$
 $$
-U^\dagger H_\text{drv} U = \Omega \cos(\omega_L t) \Big[e^{i\omega_L t}\sigma^{+} + e^{-i\omega_L t}\sigma^{-}\Big].
+U^\dagger H_\text{drv} U = \Omega \cos(\omega_L t) \Big[e^{i\omega_L t}\hat{\sigma}^{+} + e^{-i\omega_L t}\hat{\sigma}^{-}\Big].
 $$
 
 In the weak field limit, where $\Omega/\omega_L \ll 1$, we can drop the time-dependent part in the rotating frame through [rotating-wave approximation (RWA)](https://en.wikipedia.org/wiki/Rotating-wave_approximation). First, we expand $\cos(\omega_L t)$ to its exponential form,
 $$
-\Omega \cos(\omega_L t) \Big[e^{i\omega_L t}\sigma^{+} + e^{-i\omega_L t}\sigma^{-}\Big] = \frac{\Omega}{2}\Big[(1 + e^{2i\omega_L t})\sigma^{+} + (1 + e^{-2i\omega_L t})\sigma^{-}\Big]
+\Omega \cos(\omega_L t) \Big[e^{i\omega_L t}\hat{\sigma}^{+} + e^{-i\omega_L t}\hat{\sigma}^{-}\Big] = \frac{\Omega}{2}\Big[(1 + e^{2i\omega_L t})\hat{\sigma}^{+} + (1 + e^{-2i\omega_L t})\hat{\sigma}^{-}\Big]
 $$
 The time-dependent parts with frequency $2\omega_L$ are dropped, yielding
 $$
-H^\text{rot} \simeq \frac{\omega_a}{2} \sigma_z + \frac{\Omega}{2} \sigma_x - \frac{\omega_L}{2} \sigma_z = \frac{\Delta}{2} \sigma_z + \frac{\Omega}{2} \sigma_x
+H^\text{rot} \simeq \frac{\omega_a}{2} \hat{\sigma}_z + \frac{\Omega}{2} \hat{\sigma}_x - \frac{\omega_L}{2} \hat{\sigma}_z = \frac{\Delta}{2} \hat{\sigma}_z + \frac{\Omega}{2} \hat{\sigma}_x
 $$
 where $\Delta \equiv \omega_a - \omega_L$ is the detuning between the two-level atom and the driving light. In the realistic near-resonance case $\Delta \simeq 0$, characteristic of the radiative behaviour remains. Thus, for the following demonstration, we only consider the exact resonance $\Delta = 0$. 
 
@@ -59,7 +59,7 @@ where $\Delta \equiv \omega_a - \omega_L$ is the detuning between the two-level 
 
 We start by the interaction Hamiltonian between the thermal field and atom
 $$
-\hat{H}_{\text{a}}^\text{int} = \sum_l \alpha_l \left( \hat{b}_l + \hat{b}_l^\dagger \right) \left( \sigma^{-} + \sigma^{+} \right)
+\hat{H}_{\text{a}}^\text{int} = \sum_l \alpha_l \left( \hat{b}_l + \hat{b}_l^\dagger \right) \left( \hat{\sigma}^{-} + \hat{\sigma}^{+} \right)
 $$
 where for the $l$-th mode
 
@@ -68,13 +68,13 @@ where for the $l$-th mode
 
 By applying [rotating wave approximation (RWA)](https://en.wikipedia.org/wiki/Rotating-wave_approximation) and following the standard procedure of the [Born-Markovian approximation](https://en.wikiversity.org/wiki/Open_Quantum_Systems/The_Quantum_Optical_Master_Equation), we obtain the atom dissipation rate $\gamma_0$. Consequently, the dynamics is described by the [Lindblad master equation](https://en.wikipedia.org/wiki/Lindbladian).
 $$
-\mathcal{L} = \gamma_0 n(\omega_a, T) \mathcal{D}[\sigma^{+}] + \gamma_0 [1 + n(\omega_a, T)] \mathcal{D}[\sigma^{-}]
+\mathcal{L} = \gamma_0 n(\omega_a, T) \mathcal{D}[\hat{\sigma}^{+}] + \gamma_0 [1 + n(\omega_a, T)] \mathcal{D}[\hat{\sigma}^{-}]
 $$
 
 where
 
 - $n(\omega, T)$: Bose-Einstein distribution of the thermal field at temperature $T$
-- $\mathcal{D}[\cdot]$: The [Lindblad dissipator](https://en.wikipedia.org/wiki/Lindbladian) (has exactly the same expresseion in the lab frame and the rotating frame)
+- $\mathcal{D}[\cdot]$: The [Lindblad dissipator](https://en.wikipedia.org/wiki/Lindbladian) (has exactly the same expression in the lab frame and the rotating frame)
 
 ## Code Demonstration 
 
@@ -103,7 +103,7 @@ function liouvillian_spec(_Ω, _γ0, _KT)
 end
 ```
 
-We first use `QuantumObject.mesolve` to solve the master equation with several observables given in `e_ops`.  
+We first use [`mesolve`](https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.mesolve) to solve the master equation with several observables given in `e_ops`.  
 ```{julia}
 e_ket = basis(2,0)
 e_ops = [
@@ -119,22 +119,22 @@ L = liouvillian_spec(Ω, γ0, KT)
 print(L)
 ```  
 
-We already generate the Liouvillian with `c_ops` included above. We don't need to specify the `c_ops` again in `mesolve`:  
+We already generate the Liouvillian with `c_ops` included above. We don't need to specify the `c_ops` again in [`mesolve`](https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.mesolve):  
 ```{julia}
 tlist = 0:0.1:20  
 sol = mesolve(L, ψ0, tlist, nothing, e_ops = e_ops)
 ```
 
-By observing the expectation values of Pauli operators, we see that the Bloch vector $(\langle \sigma_x \rangle, \langle \sigma_y \rangle, \langle \sigma_z \rangle)$ shortens over time, which is consistent with the dissipative behaviour. Also, the population of excited state $|e\rangle$ has oscillation amplitude decaying over time.  
+By observing the expectation values of the Pauli operators, we see that the Bloch vector $(\langle \hat{\sigma}_x \rangle, \langle \hat{\sigma}_y \rangle, \langle \hat{\sigma}_z \rangle)$ becomes shorter over time, which is consistent with the dissipative behaviour. Also, the population of the excited state $|e\rangle$ has an oscillation amplitude decaying over time.  
 ```{julia}
 expect = real.(sol.expect)
 fig1 = Figure(size = (600,300))
 ax11 = Axis(
     fig1[1,1]
 )
-lines!(ax11, tlist, expect[1,:], label = L"\langle \sigma_x \rangle")
-lines!(ax11, tlist, expect[2,:], label = L"\langle \sigma_y \rangle")
-lines!(ax11, tlist, expect[3,:], label = L"\langle \sigma_z \rangle")
+lines!(ax11, tlist, expect[1,:], label = L"\langle \hat{\sigma}_x \rangle")
+lines!(ax11, tlist, expect[2,:], label = L"\langle \hat{\sigma}_y \rangle")
+lines!(ax11, tlist, expect[3,:], label = L"\langle \hat{\sigma}_z \rangle")
 axislegend(ax11)
 ylims!(ax11, (-1,1))
 
@@ -160,13 +160,13 @@ for γ0 in γ0s
 end
 ```
 
-The expectation values dynamics of $\sigma^{+}$ and $\sigma^{-}$ shows the driving-field-induced dipole moment of the atom oscillates and persists.
+The expectation values dynamics of $\hat{\sigma}^{+}$ and $\hat{\sigma}^{-}$ shows the driving-field-induced dipole moment of the atom oscillates and persists.
 ```{julia}
 fig2 = Figure(size = (600,300))
 ax2 = Axis(
     fig2[1,1],
     xlabel = L"time $[1/\Omega]$",
-    title = L"\langle\sigma_{+}\rangle"
+    title = L"\langle\hat{\sigma}_{+}\rangle"
 )
 
 for (γ0, expect) in results
@@ -182,7 +182,7 @@ fig3 = Figure(size = (600,300))
 ax3 = Axis(
     fig3[1,1],
     xlabel = L"time $[1/\Omega]$",
-    title = L"\langle\sigma_{-}\rangle"
+    title = L"\langle\hat{\sigma}_{-}\rangle"
 )
 
 for (γ0, expect) in results
@@ -192,7 +192,7 @@ axislegend(ax3)
 display(fig3);
 ```
 
-We now move to the analysis of the correlation function $C(\tau) = \langle \sigma^{+}(\tau) \sigma^{-}(0)\rangle$, which describes the radiative behaviour of the atom towards its surrounding environment. Using `QuantumToolbox.correlation_2op_1t`, we can obtain the correlation function as a function of $\tau$ and use `QuantumToolbox.spectrum_correlation_fft` to obtain the corresponding Fourier transform.
+We now move to the analysis of the correlation function $C(\tau) = \langle \hat{\sigma}^{+}(\tau) \hat{\sigma}^{-}(0)\rangle$, which describes the radiative behaviour of the atom towards its surrounding environment. Using [`correlation_2op_1t`](https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.correlation_2op_1t), we can obtain the correlation function as a function of $\tau$ and use [`spectrum_correlation_fft`](https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.spectrum_correlation_fft) to obtain the corresponding Fourier transform.
 ```{julia}
 fig4 = Figure(size = (600,300))
 ax41 = Axis(

@@ -78,9 +78,11 @@ where
 
 ## Code Demonstration 
 
+<!-- import QuantumToolbox: QuantumObjectEvolution, n_thermal, liouvillian, sigmap, sigmam, sigmax, 
+    sigmay, sigmaz, basis, mesolve, correlation_2op_1t, spectrum_correlation_fft -->
+
 ```{julia}
-import QuantumToolbox: QuantumObjectEvolution, n_thermal, liouvillian, sigmap, sigmam, sigmax, 
-    sigmay, sigmaz, basis, mesolve, correlation_2op_1t, spectrum_correlation_fft
+using QuantumToolbox
 import CairoMakie: Figure, Axis, @L_str, lines!, axislegend, display, ylims!, xlims!
 ```
 

@@ -366,7 +366,7 @@ f_n(t)
 <span id="cb5-4"><a href="#cb5-4"></a>N <span class="op">=</span> <span class="fl">3</span></span>
 <span id="cb5-5"><a href="#cb5-5"></a>bath <span class="op">=</span> <span class="fu">Boson_DrudeLorentz_Pade</span>(σz, Γ, W, kT, N)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>HierarchicalEOM.BosonBath object with 4 exponential-expansion terms</code></pre>
+<pre><code>HierarchicalEOM.BosonBath object with 4 terms.</code></pre>
 </div>
 </div>
 </section>
@@ -439,7 +439,7 @@ Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (
 ----------------------------
 Btier = 6
 Ftier = 0
-num_states = 1
+num_ados   = 1
 num_expect = 1
 ODE alg.: OrdinaryDiffEqLowOrderRK.DP5{typeof(OrdinaryDiffEqCore.trivial_limiter!), typeof(OrdinaryDiffEqCore.trivial_limiter!), Static.False}(OrdinaryDiffEqCore.trivial_limiter!, OrdinaryDiffEqCore.trivial_limiter!, static(false))
 abstol = 1.0e-8
@@ -495,8 +495,8 @@ Other developers:
 Package information:
 ====================================
 Julia              Ver. 1.11.3
-HierarchicalEOM    Ver. 2.4.0
-QuantumToolbox     Ver. 0.25.0
+HierarchicalEOM    Ver. 2.4.2
+QuantumToolbox     Ver. 0.25.1
 SciMLOperators     Ver. 0.3.12
 LinearSolve        Ver. 2.38.0
 OrdinaryDiffEqCore Ver. 1.15.1

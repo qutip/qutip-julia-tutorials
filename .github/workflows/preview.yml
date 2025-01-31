@@ -16,6 +16,7 @@ jobs:
     permissions:
       actions: write  # needed to allow julia-actions/cache to delete old caches that it has created
       contents: write # needed for Quarto render
+      pull-requests: write # for GitHub action bot to write messages
     if: ${{ !github.event.pull_request.draft }}
     steps:
       - uses: actions/checkout@v4

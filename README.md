@@ -43,4 +43,4 @@ quarto preview
 
 You are most welcome to contribute to the tutorials development by forking this repository and sending pull requests (PRs) at the issues page. You can also help out with users' questions, or discuss proposed changes in the [QuTiP discussion group](https://groups.google.com/g/qutip).
 
-For more information about contribution, including technical advice, please see the [Contributing to QuantumToolbox.jl](https://qutip.org/QuantumToolbox.jl/stable/resources/contributing) section of the documentation.
+For more information about contribution, including technical advice, please see the [Contributing to Quantum Toolbox in Julia](https://qutip.org/QuantumToolbox.jl/stable/resources/contributing).

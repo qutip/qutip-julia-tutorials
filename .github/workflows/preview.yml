@@ -39,6 +39,6 @@ jobs:
       - name: Deploy PR Preview
         uses: rossjrw/pr-preview-action@v1.4.8
         with:
-          source-dir: ./_site/
+          source-dir: ./_output/
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

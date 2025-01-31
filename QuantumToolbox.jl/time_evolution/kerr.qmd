@@ -1,0 +1,146 @@
+---
+title: "Kerr nonlinearities"
+author: Li-Xun Cai
+date: 2025-01-31  # last update (keep this comment as a reminder)
+
+engine: julia
+execute: 
+    eval: false  
+---
+
+Inspirations taken from [this QuTiP tutorial](https://nbviewer.org/urls/qutip.org/qutip-tutorials/tutorials-v5/lectures/Lecture-14-Kerr-nonlinearities.ipynb) by J. R. Johansson.
+
+
+In this tutorial, we demonstrate the following functionalities
+
+- [`plot_wigner`](https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.plot_wigner)
+- [`wigner`](https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.wigner)
+
+with the example of Kerr nonlinearities.
+
+## Introduction
+
+Kerr nonlinearities arise from the interaction between the electromagnetic field and a nonlinear medium with a significant third-order susceptibility $\chi^{(3)}$. Since experiments often use monochromatic light sources, such as lasers, to generate such nonlinearities, we limit ourselves to the case of a single electromagnetic mode.
+
+The Hamiltonian describing such a system is given by
+
+$$
+H = \frac{\chi}{2} (\hat{a}^\dagger)^2 (\hat{a})^2.
+$$
+
+where $\chi$ is the effective susceptibility that is related to the third-order susceptibility $\chi^{(3)}$.
+
+## Code demonstration
+
+```{julia}
+using QuantumToolbox
+using CairoMakie
+```
+
+We first define some functions for later usages.
+
+The first function `plot_variance` plots the expectation value of input operator `op` and its variance over time. The second function `plot_fock_dist` plots the fock distribution of input state `states` over time.
+```{julia}
+function plot_variance(op, tlist, states)
+    e = real.(expect(op, states))
+    v = real.(variance(op, states))
+    
+    fig = Figure()
+    ax = Axis(fig[1,1])
+    lines!(ax, tlist, e)
+    band!(ax, tlist, e .- v, e .+ v, alpha = 0.3)
+    return fig, ax
+end
+```
+
+
+```{julia}
+function plot_fock_dist(tlist, states)
+    fig = Figure()
+    ax = Axis(
+        fig[1,1],
+        xlabel = L"N",
+        ylabel = L"t"
+    )
+
+    n_col = prod(states[1].dims)
+    n_row = length(tlist)
+
+    data = zeros(Float64, n_row, n_col)
+
+    for (idx, state) in enumerate(states)
+        data[idx, :] = real.(diag(state))
+    end
+
+    hm = heatmap!(
+        ax, 
+        0:(n_col-1), 
+        tlist, 
+        data', 
+        colormap = cgrad([:white, :magenta]),
+        colorrange = (0,1)
+    )
+    Colorbar(fig[1,2], hm, label = "Probability")
+
+    
+    return fig, ax
+end
+```
+
+
+Here we define the parameters and operators of the system.
+```{julia}
+N = 15
+χ = 1
+
+a = destroy(N)
+n = num(N)
+x =  a + a'
+p = -1 * im * (a - a')
+
+H = 0.5 * χ * a' * a' * a * a
+```
+
+```{julia}
+ψ0 = coherent(N, 2.0)
+tlist = 0:0.01:(2*π / χ)
+
+result = mesolve(H, ψ0, tlist)
+```
+
+Here, the dynamics of the expectation values of the number operator `n`, the quadrature operators `x` and `p` are plotted. 
+```{julia}
+titles = [L"N", L"x", L"p"]
+for (idx, op) in enumerate([n, x, p])
+    fig, ax = plot_variance(op, tlist, result.states)
+    ax.title = titles[idx]
+    display(fig)
+end
+```
+
+```{julia}
+fig, ax = plot_fock_dist(tlist, result.states)
+display(fig)
+```
+
+```{julia}
+FIG, ax, HM = plot_wigner(result.states[1])
+
+Colorbar(FIG[1,2], HM, label="Probability")
+
+record(FIG, "wigner_dyn.gif", 1:length(tlist); framerate=24) do t
+    wig = wigner(result.states[t], range(-7.5, 7.5, 200), range(-7.5, 7.5, 200))
+    HM[3] = transpose(wig)
+end
+```
+![](wigner_dyn.gif)
+
+```{julia}
+fig, _, _ = plot_wigner(result.states[cld(length(tlist), 2)])
+fig
+```
+
+## Version Information
+```{julia}
+QuantumToolbox.versioninfo()
+```

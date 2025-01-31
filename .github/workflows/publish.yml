@@ -1,6 +1,6 @@
 name: Quarto Build
 
-on: # either one of the following four cases  
+on: # either one of the following three cases  
   workflow_dispatch: # manually trigger
 
   schedule:
@@ -15,7 +15,6 @@ jobs:
     permissions:
       actions: write  # needed to allow julia-actions/cache to delete old caches that it has created
       contents: write # needed for Quarto render
-    if: ${{ !github.event.pull_request.draft }}
     steps:
       - uses: actions/checkout@v4
       - name: Set up Quarto
@@ -35,10 +34,11 @@ jobs:
         uses: quarto-dev/quarto-actions/render@v2
         with:
           to: html
-      - name: Quarto Publish
-        uses: quarto-dev/quarto-actions/publish@v2
+      - name: Deploy page
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          render: 'false'  # rendered in the previous step already
-          target: gh-pages
+          folder: _output/
+          clean-exclude: pr-preview/
+          force: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

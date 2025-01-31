@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.40">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Li-Xun Cai">
+<meta name="dcterms.date" content="2025-01-17">
+
+<title>Vacuum Rabi oscillation – Tutorials for Quantum Toolbox in Julia</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../assets/favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-57476271c5f0467c372e20ff5d25630e.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-391c4f7f0df7475a7487d1067a5e1fc7.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-8cddf1564d0ae74a4a5761cb3bc5d764.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-48c97925b0c5967516ef08ff0884cb9b.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../assets/logo.png" alt="QuantumToolbox logo." class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Tutorials for Quantum Toolbox in Julia</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../QuantumToolbox.jl/toc.html"> 
+<span class="menu-text">QuantumToolbox.jl</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../HierarchicalEOM.jl/toc.html"> 
+<span class="menu-text">HierarchicalEOM.jl</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+    <a href="https://github.com/qutip/qutip-julia-tutorials" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction-to-jaynes-cumming-model" id="toc-introduction-to-jaynes-cumming-model" class="nav-link active" data-scroll-target="#introduction-to-jaynes-cumming-model">Introduction to Jaynes-Cumming model</a>
+  <ul class="collapse">
+  <li><a href="#usage-of-quantumtoolbox-for-jc-model-in-general" id="toc-usage-of-quantumtoolbox-for-jc-model-in-general" class="nav-link" data-scroll-target="#usage-of-quantumtoolbox-for-jc-model-in-general">Usage of <code>QuantumToolbox</code> for JC model in general</a></li>
+  </ul></li>
+  <li><a href="#isolated-case" id="toc-isolated-case" class="nav-link" data-scroll-target="#isolated-case">Isolated case</a></li>
+  <li><a href="#dissipative-case" id="toc-dissipative-case" class="nav-link" data-scroll-target="#dissipative-case">Dissipative case</a>
+  <ul class="collapse">
+  <li><a href="#solve-for-evolutions-in-dissipative-case" id="toc-solve-for-evolutions-in-dissipative-case" class="nav-link" data-scroll-target="#solve-for-evolutions-in-dissipative-case">Solve for evolutions in dissipative case</a></li>
+  </ul></li>
+  <li><a href="#version-information" id="toc-version-information" class="nav-link" data-scroll-target="#version-information">Version Information</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/qutip/qutip-julia-tutorials/edit/main/QuantumToolbox.jl/time_evolution/rabi.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/qutip/qutip-julia-tutorials/blob/main/QuantumToolbox.jl/time_evolution/rabi.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/qutip/qutip-julia-tutorials/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Vacuum Rabi oscillation</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Li-Xun Cai </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Last Update</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">2025-01-17</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Inspirations taken from <a href="https://nbviewer.org/urls/qutip.org/qutip-tutorials/tutorials-v5/time-evolution/004_rabi-oscillations.ipynb">this QuTiP tutorial</a> by J.R. Johansson, P.D. Nation, and C. Staufenbiel</p>
+<p>In this notebook, the usage of <code>QuantumToolbox.sesolve</code> and <code>QuantumToolbox.mesolve</code> will be demonstrated with Jaynes-Cummings model (JC model) to observe Rabi oscillations in the isolated case and the dissipative case. In the dissipative case, a bosonic interacts with the cavity and the two-level atom in the JC model.</p>
+<section id="introduction-to-jaynes-cumming-model" class="level2">
+<h2 class="anchored" data-anchor-id="introduction-to-jaynes-cumming-model">Introduction to Jaynes-Cumming model</h2>
+<p>The JC model is a simplest quantum mechanical model for light-matter interaction, describing an atom interacting with an external electromagnetic field. To simplify the interaction, the JC model considers a two-level atom interacting with a single bosonic mode, which can also be thought of as a single-mode cavity.</p>
+<p>The Hamiltonian of JC model is given by</p>
+<p><span class="math display">\[
+\hat{H}_\text{tot} = \hat{H}_{\text{a}} + \hat{H}_{\text{c}} + \hat{H}_{\text{int}}
+\]</span></p>
+<p>where</p>
+<ul>
+<li><span class="math inline">\(\hat{H}_{\text{a}} = \frac{\omega_\text{a}}{2} \hat{\sigma}_z\)</span>: Hamiltonian for atom alone</li>
+<li><span class="math inline">\(\hat{H}_{\text{c}} = \omega_\text{c} \hat{a}^\dagger \hat{a}\)</span>: Hamiltonian for cavity alone</li>
+<li><span class="math inline">\(\hat{H}_{\text{int}} = \Omega \left( \hat{\sigma}^\dagger + \hat{\sigma} \right) \cdot \left( \hat{a}^\dagger + \hat{a} \right)\)</span>: Interaction Hamiltonian for coherent interaction</li>
+</ul>
+<p>with</p>
+<ul>
+<li><span class="math inline">\(\omega_\text{a}\)</span>: Frequency of the two-level atom</li>
+<li><span class="math inline">\(\omega_\text{c}\)</span>: Frequency of the cavity’s electromagnetic mode</li>
+<li><span class="math inline">\(\Omega\)</span> : Coupling strength between the atom and the cavity</li>
+<li><span class="math inline">\(\hat{\sigma}_z\)</span> : Pauli-<span class="math inline">\(Z\)</span> matrix. Equivalent to <span class="math inline">\(|e\rangle\langle e| - |g\rangle\langle g|\)</span></li>
+<li><span class="math inline">\(\hat{a}\)</span> : Annihilation operator of single-mode cavity <!-- $N$-truncated --></li>
+<li><span class="math inline">\(\hat{\sigma}\)</span> : Lowering operator of atom. Equivalent to <span class="math inline">\(|g\rangle\langle e|\)</span></li>
+</ul>
+<p>By applying the <a href="https://en.wikipedia.org/wiki/Rotating-wave_approximation">rotating wave approximation (RWA)</a>, the counter rotating terms (<span class="math inline">\(\hat{\sigma} \cdot \hat{a}\)</span> and its Hermitian conjugate) are ignored, yielding</p>
+<p><span class="math display">\[
+\hat{H}_\text{tot} \approx \hat{H}_{\text{a}} + \hat{H}_{\text{c}} + \Omega \left( \hat{\sigma} \cdot \hat{a}^\dagger + \hat{\sigma}^\dagger \cdot \hat{a} \right)
+\]</span></p>
+<section id="usage-of-quantumtoolbox-for-jc-model-in-general" class="level3">
+<h3 class="anchored" data-anchor-id="usage-of-quantumtoolbox-for-jc-model-in-general">Usage of <code>QuantumToolbox</code> for JC model in general</h3>
+<section id="import" class="level5">
+<h5 class="anchored" data-anchor-id="import">import:</h5>
+<div id="2" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">import</span> <span class="bu">QuantumToolbox</span>: sigmaz, sigmam, destroy, qeye, basis, fock, </span>
+<span id="cb1-2"><a href="#cb1-2"></a>    ⊗, n_thermal, sesolve, mesolve</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="im">import</span> <span class="bu">CairoMakie</span>: Figure, Axis, lines!, axislegend, xlims!, display, @L_str</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="4" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1"></a>N <span class="op">=</span> <span class="fl">2</span> <span class="co"># Fock space truncated dimension</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a></span>
+<span id="cb2-3"><a href="#cb2-3"></a>ωa <span class="op">=</span> <span class="fl">1</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a>ωc <span class="op">=</span> <span class="fl">1</span> <span class="op">*</span> ωa    <span class="co"># considering cavity and atom are in resonance</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a>σz <span class="op">=</span> <span class="fu">sigmaz</span>() <span class="op">⊗</span> <span class="fu">qeye</span>(N) <span class="co"># order of tensor product should be consistent throughout</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a>a  <span class="op">=</span> <span class="fu">qeye</span>(<span class="fl">2</span>)  <span class="op">⊗</span> <span class="fu">destroy</span>(N)  </span>
+<span id="cb2-7"><a href="#cb2-7"></a>Ω  <span class="op">=</span> <span class="fl">0.05</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a>σ  <span class="op">=</span> <span class="fu">sigmam</span>() <span class="op">⊗</span> <span class="fu">qeye</span>(N)</span>
+<span id="cb2-9"><a href="#cb2-9"></a></span>
+<span id="cb2-10"><a href="#cb2-10"></a>Ha <span class="op">=</span> ωa <span class="op">/</span> <span class="fl">2</span> <span class="op">*</span> σz</span>
+<span id="cb2-11"><a href="#cb2-11"></a>Hc <span class="op">=</span> ωc <span class="op">*</span> a<span class="op">'</span> <span class="op">*</span> a <span class="co"># the symbol `'` after a `QuantumObject` act as adjoint</span></span>
+<span id="cb2-12"><a href="#cb2-12"></a>Hint <span class="op">=</span> Ω <span class="op">*</span> (σ <span class="op">*</span> a<span class="op">'</span> <span class="op">+</span> σ<span class="ch">' * a)</span></span>
+<span id="cb2-13"><a href="#cb2-13"></a></span>
+<span id="cb2-14"><a href="#cb2-14"></a>Htot  <span class="op">=</span> Ha <span class="op">+</span> Hc <span class="op">+</span> Hint</span>
+<span id="cb2-15"><a href="#cb2-15"></a></span>
+<span id="cb2-16"><a href="#cb2-16"></a><span class="fu">print</span>(Htot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Quantum Object:   type=Operator   dims=[2, 2]   size=(4, 4)   ishermitian=true
+4×4 SparseArrays.SparseMatrixCSC{ComplexF64, Int64} with 6 stored entries:
+  0.5+0.0im      ⋅           ⋅      0.05+0.0im
+      ⋅      1.5+0.0im       ⋅           ⋅    
+      ⋅          ⋅      -0.5+0.0im       ⋅    
+ 0.05+0.0im      ⋅           ⋅       0.5+0.0im</code></pre>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="isolated-case" class="level2">
+<h2 class="anchored" data-anchor-id="isolated-case">Isolated case</h2>
+<p>For the case of the JC model being isolated, i.e., with no interaction with the surrounding environment, the time evolution is governed solely by the Schrödinger equation, <span class="math inline">\(\hat{H}|\psi(t)\rangle = \partial_t|\psi(t)\rangle\)</span>. The <code>QuantumToolbox.sesolve</code> function is ideal for simulating such pure state evolution.</p>
+<p>For the context of <a href="https://en.wikipedia.org/wiki/Rabi_problem">Rabi problem</a>, we set the initial state as <span class="math inline">\(\psi_0 = |e\rangle \otimes |0\rangle\)</span>, where <span class="math inline">\(|e\rangle\)</span> is the excited state of the atom and <span class="math inline">\(|0\rangle\)</span> is the vacuum state of the cavity.</p>
+<div id="6" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1"></a>e_ket <span class="op">=</span> <span class="fu">basis</span>(<span class="fl">2</span>,<span class="fl">0</span>) </span>
+<span id="cb4-2"><a href="#cb4-2"></a>ψ<span class="fl">0</span> <span class="op">=</span> e_ket <span class="op">⊗</span> <span class="fu">fock</span>(N, <span class="fl">0</span>)</span>
+<span id="cb4-3"><a href="#cb4-3"></a></span>
+<span id="cb4-4"><a href="#cb4-4"></a>tlist <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">2.5</span><span class="op">:</span><span class="fl">1000</span> <span class="co"># a list of time points of interest</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a></span>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="co"># define a list of operators whose expectation value dynamics exhibit Rabi oscillation</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a>eop_ls <span class="op">=</span> [</span>
+<span id="cb4-8"><a href="#cb4-8"></a>    a<span class="op">'</span> <span class="op">*</span> a,                      <span class="co"># number operator of cavity</span></span>
+<span id="cb4-9"><a href="#cb4-9"></a>    (e_ket <span class="op">*</span> e_ket<span class="op">'</span>) <span class="op">⊗</span> <span class="fu">qeye</span>(N), <span class="co"># excited state population in atom</span></span>
+<span id="cb4-10"><a href="#cb4-10"></a>]</span>
+<span id="cb4-11"><a href="#cb4-11"></a></span>
+<span id="cb4-12"><a href="#cb4-12"></a>sol <span class="op">=</span> <span class="fu">sesolve</span>(Htot , ψ<span class="fl">0</span>, tlist; e_ops <span class="op">=</span> eop_ls)</span>
+<span id="cb4-13"><a href="#cb4-13"></a><span class="fu">print</span>(sol)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Progress: [                              ]   0.2% --- Elapsed Time: 0h 00m 02s (ETA: 0h 13m 20s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 02s (ETA: 0h 00m 00s)
+Solution of time evolution
+(return code: Success)
+--------------------------
+num_states = 1
+num_expect = 2
+ODE alg.: OrdinaryDiffEqTsit5.Tsit5{typeof(OrdinaryDiffEqCore.trivial_limiter!), typeof(OrdinaryDiffEqCore.trivial_limiter!), Static.False}(OrdinaryDiffEqCore.trivial_limiter!, OrdinaryDiffEqCore.trivial_limiter!, static(false))
+abstol = 1.0e-8
+reltol = 1.0e-6</code></pre>
+</div>
+</div>
+<p>Compare the dynamics of <span class="math inline">\(| e \rangle\langle e|\)</span> alongside <span class="math inline">\(a^\dagger a\)</span></p>
+<div id="8" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1"></a>n <span class="op">=</span> <span class="fu">real</span>.(sol.expect[<span class="fl">1</span>, <span class="op">:</span>])</span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="cn">e</span> <span class="op">=</span> <span class="fu">real</span>.(sol.expect[<span class="fl">2</span>, <span class="op">:</span>])</span>
+<span id="cb6-3"><a href="#cb6-3"></a>fig_se <span class="op">=</span> <span class="fu">Figure</span>(size <span class="op">=</span> (<span class="fl">600</span>, <span class="fl">350</span>))</span>
+<span id="cb6-4"><a href="#cb6-4"></a>ax_se <span class="op">=</span> <span class="fu">Axis</span>(</span>
+<span id="cb6-5"><a href="#cb6-5"></a>    fig_se[<span class="fl">1</span>, <span class="fl">1</span>],</span>
+<span id="cb6-6"><a href="#cb6-6"></a>    xlabel <span class="op">=</span> L<span class="st">"time </span><span class="sc">$</span><span class="st">[1/\</span>omega_a<span class="st">]</span><span class="sc">$</span><span class="st">", </span></span>
+<span id="cb6-7"><a href="#cb6-7"></a><span class="st">    </span>ylabel<span class="st"> = "</span>expectation value<span class="st">", </span></span>
+<span id="cb6-8"><a href="#cb6-8"></a>    xlabelsize <span class="op">=</span> <span class="fl">15</span>, </span>
+<span id="cb6-9"><a href="#cb6-9"></a>    ylabelsize <span class="op">=</span> <span class="fl">15</span>,</span>
+<span id="cb6-10"><a href="#cb6-10"></a>    width <span class="op">=</span> <span class="fl">400</span>,</span>
+<span id="cb6-11"><a href="#cb6-11"></a>    height <span class="op">=</span> <span class="fl">220</span></span>
+<span id="cb6-12"><a href="#cb6-12"></a>)</span>
+<span id="cb6-13"><a href="#cb6-13"></a><span class="fu">xlims!</span>(ax_se, <span class="fl">0</span>, <span class="fl">400</span>)</span>
+<span id="cb6-14"><a href="#cb6-14"></a><span class="fu">lines!</span>(ax_se, tlist, n, label <span class="op">=</span> L<span class="st">"</span><span class="sc">$</span><span class="st">\</span>langle<span class="st"> a^\dagger a </span><span class="sc">\r</span><span class="st">angle</span><span class="sc">$</span><span class="st">")</span></span>
+<span id="cb6-15"><a href="#cb6-15"></a>lines<span class="st">!(ax_se, tlist, e, label = L"</span><span class="op">$</span>P_e<span class="op">$</span><span class="st">")</span></span>
+<span id="cb6-16"><a href="#cb6-16"></a><span class="fu">axislegend</span>(ax_se; position <span class="op">=</span> <span class="op">:</span>rt, labelsize <span class="op">=</span> <span class="fl">15</span>)</span>
+<span id="cb6-17"><a href="#cb6-17"></a><span class="fu">display</span>(fig_se);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="rabi_files/figure-html/cell-5-output-1.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>In the above plot, the behaviour of the energy exchange between the atom and the cavity is clearly visible, addressing the Rabi problem.</p>
+</section>
+<section id="dissipative-case" class="level2">
+<h2 class="anchored" data-anchor-id="dissipative-case">Dissipative case</h2>
+<p>In contrast to isolated evolution, a realistic system interacts with its surrounding environment, leading to energy or particle exchange. Here, we focus on observing the Rabi oscillations of the JC model with the inclusion of interactions with an external environment at some finite temperature.</p>
+<p>We start by reviewing the interaction Hamiltonians between the thermal field and atom/cavity</p>
+<ul>
+<li>Atom: <span class="math display">\[
+      \hat{H}_{\text{a}}^\text{int} = \sum_l \alpha_l \left( \hat{b}_l + \hat{b}_l^\dagger \right) \left( \hat{\sigma} + \hat{\sigma}^\dagger \right)
+      \]</span></li>
+<li>Cavity: <span class="math display">\[
+      \hat{H}_{\text{c}}^\text{int} = \sum_l \beta_l \left( \hat{b}_l + \hat{b}_l^\dagger \right) \left( \hat{a} + \hat{a}^\dagger \right)
+      \]</span></li>
+</ul>
+<p>where for the <span class="math inline">\(l\)</span>-th mode</p>
+<ul>
+<li><span class="math inline">\(\alpha_l\)</span> is the coupling strength with the atom</li>
+<li><span class="math inline">\(\beta_l\)</span> is the coupling strength with the cavity</li>
+<li><span class="math inline">\(\hat{b}_l\)</span> is the annihilation operator</li>
+</ul>
+<p>By applying the aforementioned RWA and following the standard procedure of the <a href="https://en.wikiversity.org/wiki/Open_Quantum_Systems/The_Quantum_Optical_Master_Equation">Born-Markovian approximation</a>, we obtain <span class="math inline">\(\kappa\)</span>, the cavity dissipation rate, and <span class="math inline">\(\gamma\)</span>, the atom dissipation rate. Consequently, the time evolution of the dissipative JC model is described by the <a href="https://en.wikipedia.org/wiki/Lindbladian">Lindblad master equation</a>.</p>
+<p><span class="math display">\[
+\dot{\hat{\rho}} = -\frac{i}{\hbar} [\hat{H}, \hat{\rho}] + \sum_{i = 1}^4 \mathcal{D}[\sqrt{\Gamma_i} \hat{S}_i]\left(\hat{\rho}\right)
+\]</span></p>
+<p>where <span class="math inline">\(\sqrt{\Gamma_i} \hat{S}_i\)</span> are the collapse operators, given by</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th><span class="math inline">\(i\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(\Gamma_i\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(\hat{S}_i\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td style="text-align: center;"><span class="math inline">\(\kappa \cdot n(\omega_c, T)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\hat{a}^\dagger\)</span></td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td style="text-align: center;"><span class="math inline">\(\kappa \cdot [1 + n(\omega_c, T)]\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\hat{a}\)</span></td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td style="text-align: center;"><span class="math inline">\(\gamma \cdot n(\omega_a, T)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\hat{\sigma}^\dagger\)</span></td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td style="text-align: center;"><span class="math inline">\(\gamma \cdot [1 + n(\omega_a, T)]\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\hat{\sigma}\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>with <span class="math inline">\(n(\omega, T)\)</span> being the Bose-Einstein distribution of the thermal field and <span class="math display">\[
+\mathcal{D}[\hat{\mathcal{O}}]\left(\cdot\right) = \hat{\mathcal{O}} \left(\cdot\right) \hat{\mathcal{O}}^\dagger - \frac{1}{2} \{ \hat{\mathcal{O}}^\dagger \hat{\mathcal{O}}, \cdot \}
+\]</span> being the Lindblad dissipator.</p>
+<section id="solve-for-evolutions-in-dissipative-case" class="level3">
+<h3 class="anchored" data-anchor-id="solve-for-evolutions-in-dissipative-case">Solve for evolutions in dissipative case</h3>
+<p>We can now define variables in <code>julia</code> and solve the evolution of dissipative JC model</p>
+<div id="10" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># Collapse operators for interaction with the environment with variable dissipation rates </span></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="co"># and thermal energy of the environment. `n_thermal()` gives Bose-Einstein distribution</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="fu">cop_ls</span>(_γ, _κ, _KT) <span class="op">=</span> (</span>
+<span id="cb7-4"><a href="#cb7-4"></a>    <span class="fu">√</span>(_κ <span class="op">*</span> <span class="fu">n_thermal</span>(ωc, _KT)) <span class="op">*</span> a<span class="op">'</span>, </span>
+<span id="cb7-5"><a href="#cb7-5"></a>    <span class="fu">√</span>(_κ <span class="op">*</span> (<span class="fl">1</span> <span class="op">+</span> <span class="fu">n_thermal</span>(ωc, _KT))) <span class="op">*</span> a, </span>
+<span id="cb7-6"><a href="#cb7-6"></a>    <span class="fu">√</span>(_γ <span class="op">*</span> <span class="fu">n_thermal</span>(ωa, _KT)) <span class="op">*</span> σ<span class="ch">', </span></span>
+<span id="cb7-7"><a href="#cb7-7"></a>    <span class="fu">√</span>(_γ <span class="op">*</span> (<span class="fl">1</span> <span class="op">+</span> <span class="fu">n_thermal</span>(ωa, _KT))) <span class="op">*</span> σ, </span>
+<span id="cb7-8"><a href="#cb7-8"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>cop_ls (generic function with 1 method)</code></pre>
+</div>
+</div>
+<div id="12" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># use the same ψ0, tlist, and eop_ls from isolated case</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a>γ <span class="op">=</span> <span class="fl">4e-3</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a>κ <span class="op">=</span> <span class="fl">7e-3</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a>KT <span class="op">=</span> <span class="fl">0</span> <span class="co"># thermal field at zero temperature</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a></span>
+<span id="cb9-6"><a href="#cb9-6"></a><span class="co"># `mesolve()` only has one additional keyword argument `c_ops` from `sesolve()`</span></span>
+<span id="cb9-7"><a href="#cb9-7"></a>sol_me  <span class="op">=</span> <span class="fu">mesolve</span>(Htot,  ψ<span class="fl">0</span>, tlist, <span class="fu">cop_ls</span>(γ, κ, KT), e_ops <span class="op">=</span> eop_ls)</span>
+<span id="cb9-8"><a href="#cb9-8"></a></span>
+<span id="cb9-9"><a href="#cb9-9"></a><span class="fu">print</span>(sol_me)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Progress: [                              ]   0.2% --- Elapsed Time: 0h 00m 01s (ETA: 0h 06m 40s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 00s)
+Solution of time evolution
+(return code: Success)
+--------------------------
+num_states = 1
+num_expect = 2
+ODE alg.: OrdinaryDiffEqTsit5.Tsit5{typeof(OrdinaryDiffEqCore.trivial_limiter!), typeof(OrdinaryDiffEqCore.trivial_limiter!), Static.False}(OrdinaryDiffEqCore.trivial_limiter!, OrdinaryDiffEqCore.trivial_limiter!, static(false))
+abstol = 1.0e-8
+reltol = 1.0e-6</code></pre>
+</div>
+</div>
+<div id="14" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1"></a>n_me <span class="op">=</span> <span class="fu">real</span>.(sol_me.expect[<span class="fl">1</span>, <span class="op">:</span>])</span>
+<span id="cb11-2"><a href="#cb11-2"></a>e_me <span class="op">=</span> <span class="fu">real</span>.(sol_me.expect[<span class="fl">2</span>, <span class="op">:</span>])</span>
+<span id="cb11-3"><a href="#cb11-3"></a></span>
+<span id="cb11-4"><a href="#cb11-4"></a>fig_me <span class="op">=</span> <span class="fu">Figure</span>(size <span class="op">=</span> (<span class="fl">600</span>, <span class="fl">350</span>))</span>
+<span id="cb11-5"><a href="#cb11-5"></a>ax_me <span class="op">=</span> <span class="fu">Axis</span>(</span>
+<span id="cb11-6"><a href="#cb11-6"></a>    fig_me[<span class="fl">1</span>, <span class="fl">1</span>],</span>
+<span id="cb11-7"><a href="#cb11-7"></a>    xlabel <span class="op">=</span> L<span class="st">"time </span><span class="sc">$</span><span class="st">[1/\</span>omega_a<span class="st">]</span><span class="sc">$</span><span class="st">", </span></span>
+<span id="cb11-8"><a href="#cb11-8"></a><span class="st">    </span>ylabel<span class="st"> = "</span>expectation value<span class="st">", </span></span>
+<span id="cb11-9"><a href="#cb11-9"></a>    xlabelsize <span class="op">=</span> <span class="fl">15</span>, </span>
+<span id="cb11-10"><a href="#cb11-10"></a>    ylabelsize <span class="op">=</span> <span class="fl">15</span>,</span>
+<span id="cb11-11"><a href="#cb11-11"></a>    width <span class="op">=</span> <span class="fl">400</span>,</span>
+<span id="cb11-12"><a href="#cb11-12"></a>    height <span class="op">=</span> <span class="fl">220</span></span>
+<span id="cb11-13"><a href="#cb11-13"></a>)</span>
+<span id="cb11-14"><a href="#cb11-14"></a><span class="fu">lines!</span>(ax_me, tlist, n_me, label <span class="op">=</span> L<span class="st">"\langle a^\dagger a </span><span class="sc">\r</span><span class="st">angle"</span>)</span>
+<span id="cb11-15"><a href="#cb11-15"></a><span class="fu">lines!</span>(ax_me, tlist, e_me, label <span class="op">=</span> L<span class="st">"</span><span class="sc">$</span>P_e<span class="sc">$</span><span class="st">")</span></span>
+<span id="cb11-16"><a href="#cb11-16"></a>axislegend<span class="st">(ax_me; position = :rt, labelsize = 15)</span></span>
+<span id="cb11-17"><a href="#cb11-17"></a><span class="fu">display</span>(fig_me);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="rabi_files/figure-html/cell-8-output-1.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>From the above example, one can see that the dissipative system is losing energy over time and asymptoting to zero. We can further consider the thermal field with finite temperature.</p>
+<div id="16" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1"></a>sol_me_  <span class="op">=</span> <span class="fu">mesolve</span>(Htot,  ψ<span class="fl">0</span>, tlist, <span class="fu">cop_ls</span>(γ, κ, <span class="fl">0.3</span> <span class="op">*</span> ωa), e_ops <span class="op">=</span> eop_ls) <span class="co"># replace KT with finite temperature</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a></span>
+<span id="cb12-3"><a href="#cb12-3"></a>n_me_ <span class="op">=</span> <span class="fu">real</span>.(sol_me_.expect[<span class="fl">1</span>, <span class="op">:</span>])</span>
+<span id="cb12-4"><a href="#cb12-4"></a>e_me_ <span class="op">=</span> <span class="fu">real</span>.(sol_me_.expect[<span class="fl">2</span>, <span class="op">:</span>])</span>
+<span id="cb12-5"><a href="#cb12-5"></a>fig_me_ <span class="op">=</span> <span class="fu">Figure</span>(size <span class="op">=</span> (<span class="fl">600</span>, <span class="fl">350</span>))</span>
+<span id="cb12-6"><a href="#cb12-6"></a>ax_me_ <span class="op">=</span> <span class="fu">Axis</span>(</span>
+<span id="cb12-7"><a href="#cb12-7"></a>    fig_me_[<span class="fl">1</span>, <span class="fl">1</span>],</span>
+<span id="cb12-8"><a href="#cb12-8"></a>    xlabel <span class="op">=</span> L<span class="st">"time </span><span class="sc">$</span><span class="st">[1/\</span>omega_a<span class="st">]</span><span class="sc">$</span><span class="st">", </span></span>
+<span id="cb12-9"><a href="#cb12-9"></a><span class="st">    </span>ylabel<span class="st"> = "</span>expectation value<span class="st">", </span></span>
+<span id="cb12-10"><a href="#cb12-10"></a>    xlabelsize <span class="op">=</span> <span class="fl">15</span>, </span>
+<span id="cb12-11"><a href="#cb12-11"></a>    ylabelsize <span class="op">=</span> <span class="fl">15</span>,</span>
+<span id="cb12-12"><a href="#cb12-12"></a>    width <span class="op">=</span> <span class="fl">400</span>,</span>
+<span id="cb12-13"><a href="#cb12-13"></a>    height <span class="op">=</span> <span class="fl">220</span></span>
+<span id="cb12-14"><a href="#cb12-14"></a>)</span>
+<span id="cb12-15"><a href="#cb12-15"></a><span class="fu">lines!</span>(ax_me_, tlist, n_me_, label <span class="op">=</span> L<span class="st">"\langle a^\dagger a </span><span class="sc">\r</span><span class="st">angle"</span>)</span>
+<span id="cb12-16"><a href="#cb12-16"></a><span class="fu">lines!</span>(ax_me_, tlist, e_me_, label <span class="op">=</span> L<span class="st">"</span><span class="sc">$</span>P_e<span class="sc">$</span><span class="st">")</span></span>
+<span id="cb12-17"><a href="#cb12-17"></a>axislegend<span class="st">(ax_me_; position = :rt, labelsize = 15)</span></span>
+<span id="cb12-18"><a href="#cb12-18"></a><span class="fu">display</span>(fig_me_);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="rabi_files/figure-html/cell-9-output-2.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Despite the persistence of the asymptotic behaviour, the system no longer approaches zero but instead reaches a steady-state above zero. This indicates that the system has been thermalized by the environment.</p>
+</section>
+</section>
+<section id="version-information" class="level2">
+<h2 class="anchored" data-anchor-id="version-information">Version Information</h2>
+<div id="18" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1"></a><span class="im">import</span> <span class="bu">QuantumToolbox</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a>QuantumToolbox.<span class="fu">versioninfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ QuantumToolbox.jl: Quantum Toolbox in Julia
+≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
+Copyright © QuTiP team 2022 and later.
+Current admin team:
+    Alberto Mercurio and Yi-Te Huang
+
+Package information:
+====================================
+Julia              Ver. 1.11.3
+QuantumToolbox     Ver. 0.25.1
+SciMLOperators     Ver. 0.3.12
+LinearSolve        Ver. 2.38.0
+OrdinaryDiffEqCore Ver. 1.15.1
+
+System information:
+====================================
+OS       : Linux (x86_64-linux-gnu)
+CPU      : 4 × AMD EPYC 7763 64-Core Processor
+Memory   : 15.615 GB
+WORD_SIZE: 64
+LIBM     : libopenlibm
+LLVM     : libLLVM-16.0.6 (ORCJIT, znver3)
+BLAS     : libopenblas64_.so (ilp64)
+Threads  : 4 (on 4 virtual cores)
+</code></pre>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/qutip\.org\/qutip-julia-tutorials\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>Copyright © 2025 <a href="https://qutip.org/" target="_blank"><strong>QuTiP.org</strong></a>.</p>
+<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/qutip/qutip-julia-tutorials/edit/main/QuantumToolbox.jl/time_evolution/rabi.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/qutip/qutip-julia-tutorials/blob/main/QuantumToolbox.jl/time_evolution/rabi.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/qutip/qutip-julia-tutorials/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

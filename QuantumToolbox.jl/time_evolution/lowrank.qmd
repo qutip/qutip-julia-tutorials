@@ -1,72 +1,121 @@
 ---
 title: Low rank master equation
 author: Luca Gravina
-date: 2025-01-13  # last update (keep this comment as a reminder)
+date: 2025-01-20  # last update (keep this comment as a reminder)
 
 engine: julia
 ---
 
-In this tutorial, we will show how to solve the master equation using the low-rank method. For a detailed explanation of the method, we recommend to read the Ref. [@gravina2024adaptive].
+## Introduction
+In this tutorial we will demonstrate how to solve the master equation without the quadratic overhead associated with the full manipulation of the density matrix. For a detailed explanation of the method, we recommend to read the Ref. [@gravina2024adaptive].
 
-As a test, we will consider the dissipative Ising model with a transverse field. The Hamiltonian is given by
+The proposed approach is based on the realization that many quantum systems, particularly those with low entropy, can be effectively represented by a density matrix of significantly lower rank than what the whole Hilbert space would require. This reduction is achieved by focusing on a subset of states that capture the essential structure of the statistical ensemble characterizing the mixed quantum state, thereby reducing computational complexity while maintaining the exactness of the method.
 
+### Low-rank master equations
+We consider a decomposition of the density matrix of the form
 $$
-\hat{H} = \frac{J_x}{2} \sum_{\langle i,j\rangle} \sigma_i^x \sigma_j^x + \frac{J_y}{2} \sum_{\langle i,j\rangle} \sigma_i^y \sigma_j^y + \frac{J_z}{2} \sum_{\langle i,j\rangle} \sigma_i^z \sigma_j^z - \sum_i h_i \sigma_i^z + h_x \sum_i \sigma_i^x + h_y \sum_i \sigma_i^y + h_z \sum_i \sigma_i^z
+    \hat\rho(t) = \sum_{i,j=1}^{M(t)} B_{i,j}(t) | \varphi_i(t) \rangle \langle \varphi_j(t) |.
 $$
-K
-where the sums are over nearest neighbors, and the collapse operators are given by
+The states $\{|\varphi_k(t)\rangle\,;\,k=1,\ldots,M(t)\}$ spanning the low-rank manifold, can in turn be decomposed as 
+$$
+    |\varphi_k(t)\rangle = \sum_{\alpha=1}^{N} z_{\alpha,k}(t) |e_\alpha\rangle,
+$$
+where $\{|e_\alpha\rangle\,;\,\alpha=1,\ldots,N\}$ is a fixed basis of the Hilbert space, and $z_{\alpha,k}(t)$ are the time-dependent coefficients.
 
-$$
-c_i = \sqrt{\gamma} \sigma_i^{-}
-$$
+The coefficients $B_{i,j}(t)$ are collected in the matrix $B(t)$, and the coefficients $z_{\alpha,k}(t)$ are collected in the matrix $z(t)$.
 
-We start by importing the packages
+In [@gravina2024adaptive] all coefficients $B_{i,j}(t)$ and $z_{\alpha,k}(t)$ are taken to be variational parameters. The evolution equation for the density matrix is consequently mapped onto a set of differential equations for such parameters via the time-dependent variational principle (TDVP).
+
+The TDVP ensures a dynamical adjustment of the variational states, guaranteeing the optimal set of states is selected at all times to best approximate the dissipative evolution. This allows for a significant reduction in computational complexity as the number of states $M(t)$ necessary to accurately capture the dynamics of the system is as small as can be, hopefully much smaller than the full Hilbert space dimension $N$.
+
+## Low-rank dynamics of the transverse field Heisenberg model
+In this example we consider the dynamics of the transverse field Ising model (TFIM) on a 2x3 lattice. We start by importing the packages
 
 ```{julia}
 using QuantumToolbox
 using CairoMakie
 ```
 
-Define lattice
+We define the lattice with dimensions `Nx = 2` and `Ny = 3` and use the `Lattice` class to generate the lattice.
 
 ```{julia}
 Nx, Ny = 2, 3
 latt = Lattice(Nx = Nx, Ny = Ny)
 ```
 
-Define lr-space dimensions
+The Hamiltonian of the TFIM reads 
+$$
+H = J_x \sum_{\langle i,j \rangle} \sigma_i^x \sigma_j^x + J_y \sum_{\langle i,j \rangle} \sigma_i^y \sigma_j^y + J_z \sum_{\langle i,j \rangle} \sigma_i^z \sigma_j^z + h_x \sum_i \sigma_i^x,
+$$
+where $ \sigma_i^{x,y,z} $ are the Pauli matrices acting on site $ i $ and $ \langle i,j \rangle $ denotes nearest neighbors. The collapse operators are given by
+$$
+c_i = \sqrt{\gamma} \sigma_i^-,
+$$
+where $ \sigma_i^- $ is the lowering operator acting on site $ i$. The many-body operators are constructed using
 
 ```{julia}
-N_cut = 2
-N_modes = latt.N
-N = N_cut^N_modes
-M = latt.N + 1
+Jx = 0.9
+Jy = 1.04
+Jz = 1.0
+hx = 0.0
+γ = 1
+
+Sx = mapreduce(i->MultiSiteOperator(latt, i => sigmax()), +, 1:latt.N)
+Sy = mapreduce(i->MultiSiteOperator(latt, i => sigmay()), +, 1:latt.N)
+Sz = mapreduce(i->MultiSiteOperator(latt, i => sigmaz()), +, 1:latt.N)
+
+SFxx = sum([MultiSiteOperator(latt, i => sigmax()) * MultiSiteOperator(latt, j => sigmax()) for i in 1:latt.N for j in 1:latt.N])
+
+H, c_ops = DissipativeIsing(Jx, Jy, Jz, hx, 0., 0., γ, latt; boundary_condition=:periodic_bc, order=1)
+e_ops = (Sx, Sy, Sz, SFxx)
+
+tl = LinRange(0, 10, 100);
 ```
 
-Define `lr` states. Take as initial state all spins up. All other `N` states are taken as those with minimum Hamming distance to the initial state.
+### Constructing the low-rank basis
+We proceed by constructing the low-rank basis. `N_cut` is the dimension of the Hilbert space of each mode, and `N_modes` is the number of modes (or spins).
+We consider an initial low-rank basis with `M = Nx * Ny + 1` states. 
+
+We first define the lr-space dimensions
+
+```{julia}
+N_cut = 2 # Number of states of each mode
+N_modes = latt.N  # Number of modes
+N = N_cut^N_modes # Total number of states
+
+M = latt.N + 1; # Number of states in the LR basis
+```
+
+Since we will take as initial state for our dynamics the pure state with all spins pointing up, the initial low-rank basis must include at least this state.
 
 ```{julia}
 ϕ = Vector{QuantumObject{KetQuantumObject,Dimensions{M - 1,NTuple{M - 1,Space}},Vector{ComplexF64}}}(undef, M)
 ϕ[1] = kron(fill(basis(2, 1), N_modes)...)
+```
 
+The remaining `M-1` states are taken as those with minimal Hamming distance from the latter state, that is those we obtain by flipping the spin of a single site with respect to the completely polarized state.
+
+```{julia}
 i = 1
 for j in 1:N_modes
     global i += 1
     i <= M && (ϕ[i] = MultiSiteOperator(latt, j=>sigmap()) * ϕ[1])
 end
+
 for k in 1:N_modes-1
     for l in k+1:N_modes
         global i += 1
         i <= M && (ϕ[i] = MultiSiteOperator(latt, k=>sigmap(), l=>sigmap()) * ϕ[1])
     end
 end
-for i in i+1:M
-    ϕ[i] = QuantumObject(rand(ComplexF64, size(ϕ[1])[1]), dims = ϕ[1].dims)
-    normalize!(ϕ[i])
-end
 ```
 
-Define the initial state
+At this point the vector of states `ϕ` contains the full representation of our low-rank states. These coefficients comprise matrix `z`. 
+
+The matrix `B`, on the other hand, contains the populations and coherences with which each of the low-rank states contributes to the density matrix.
+We initialize it so that only the first state is populated, and all other states are unpopulated. 
+
+We also compute the full density matrix `ρ` from the low-rank representation. Of course this defeats the purpose of the low-rank representation. We use it here for illustrative purposes to show that the low-rank predictions match the exact dynamics.
 
 ```{julia}
 z = hcat(get_data.(ϕ)...)
@@ -77,38 +126,33 @@ B = B / tr(S * B) # Normalize B
 ρ = QuantumObject(z * B * z', dims = ntuple(i->N_cut, Val(N_modes))); # Full density matrix
 ```
 
-Define the Hamiltonian and collapse operators
+### Full evolution
+We now compare the results of the low-rank evolution with the full evolution. We first evolve the system using the `mesolve` function
 
 ```{julia}
-# Define Hamiltonian and collapse operators
-Jx = 0.9
-Jy = 1.04
-Jz = 1.0
-hx = 0.0
-hy = 0.0
-hz = 0.0
-γ = 1
-
-Sx = mapreduce(i->MultiSiteOperator(latt, i=>sigmax()), +, 1:latt.N)
-Sy = mapreduce(i->MultiSiteOperator(latt, i=>sigmay()), +, 1:latt.N)
-Sz = mapreduce(i->MultiSiteOperator(latt, i=>sigmaz()), +, 1:latt.N)
-
-H, c_ops = DissipativeIsing(Jx, Jy, Jz, hx, hy, hz, γ, latt; boundary_condition = Val(:periodic_bc), order = 1)
-e_ops = (Sx, Sy, Sz)
-
-tl = range(0, 10, 100)
+sol_me = mesolve(H, ρ, tl, c_ops; e_ops = [e_ops...])
+Strue = entropy_vn(sol_me.states[end], base=2) / latt.N;
 ```
 
-## Full evolution
+### Low Rank evolution
 
-```{julia}
-sol_me = mesolve(H, ρ, tl, c_ops; e_ops = [e_ops...]);
-Strue = entropy_vn(sol_me.states[end], base=2) / latt.N
-```
+The `lr_mesolve` function allows to conveniently keep track of non-linear functionals of the density matrix during the evolution without ever computing the full density matrix and without the need to store `z` and `B` at each time step.
+To do so we define the functionals of the density matrix that we want to keep track of and that will be evaluated at each time step.
 
-## Low Rank Evolution
+We compute the purity
+$$
+P = \mathrm{Tr}(\rho^2),
+$$
+the von Neumann entropy
+$$
+S = -\mathrm{Tr}(\rho \log_2(\rho)),
+$$
+and the trace
+$$
+\mathrm{Tr}(\rho).
+$$
 
-Define functions to be evaluated during the low-rank evolution
+To maximize efficiency and minimize memory allocations we make use of preallocated variables stores in the `parameters` constructor of the solver.
 
 ```{julia}
 function f_purity(p, z, B)
@@ -138,18 +182,39 @@ function f_entropy(p, z, B)
     mul!(C, z, sqrt(B))
     mul!(σ, C', C)
     return entropy_vn(Qobj(Hermitian(σ), type=Operator), base=2)
-end
+end;
 ```
 
-Define the options for the low-rank evolution
+A critical aspect of the LR truncation is the possibility to dynamically adjust the dimension of the basis throughout the system's evolution $M=M(t)$. This adaptability is essential for accommodating changes in the system's entropy over time. 
+
+To adapt the dimension of the low-rank basis, we look at a control parameter $\chi$ that is positively correlated with the entropy of the system and provides a measure of the quality of the low-rank approximation. When $\chi$ exceeds a certain threshold, the dimension of the low-rank basis is increased by one. 
+
+The options below specify how the dimension of the low-rank basis is adjusted during the evolution.
 
 ```{julia}
 opt = (err_max = 1e-3, p0 = 0.0, atol_inv = 1e-6, adj_condition = "variational", Δt = 0.0);
+```
 
+`err_max` is the maximum error allowed in the time evolution of the density matrix. 
+
+`p0` is the initial population with which the new state is added to the basis after crossing the threshold.
+
+`adj_condition = "variational"` selects one of three possible definitions for the control quantity `chi`. Specifically, the selected option consists in the leakage from the variational manifold and is defined as
+$$
+\chi = \operatorname{Tr}(S^{-1} L).
+$$
+
+Finally, `Δt` specifies the checkpointing interval by which the simulation is rewinded upon the basis expansion.
+
+Not directly related to the basis expansion, but still important for the stability of the algorithm, are the options `atol_inv` (the tolerance for the inverse of the overlap matrix) and `alg` (the ODE solver).
+
+We now launch the evolution using the `lr_mesolve` function
+
+```{julia}
 sol_lr = lr_mesolve(H, z, B, tl, c_ops; e_ops = e_ops, f_ops = (f_purity, f_entropy, f_trace), opt = opt);
 ```
 
-Plot the results
+We can now compare the results of the low-rank evolution with the full evolution.
 
 ```{julia}
 m_me = real(sol_me.expect[3, :]) / Nx / Ny

@@ -1,7 +1,7 @@
 ## Checklist
 Thank you for contributing to Tutorials for Quantum Toolbox in `Julia`! Please make sure you have finished the following tasks before opening the PR.
 
-- [ ] Please read [Contributing to QuantumToolbox.jl](https://qutip.org/QuantumToolbox.jl/stable/resources/contributing).
+- [ ] Please read [Contributing to Quantum Toolbox in Julia](https://qutip.org/QuantumToolbox.jl/stable/resources/contributing).
 - [ ] The (last update) `date` were modified for new or updated tutorials.
 - [ ] For new tutorials, a `Version Information` section was added at the end and displays the output of `versioninfo()`.
 - [ ] All tutorials were able to render locally by running: `make render`.

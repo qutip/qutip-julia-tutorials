@@ -1,13 +1,14 @@
-name: Quarto Build
+name: Quarto PR preview
 
-on: # either one of the following three cases  
-  workflow_dispatch: # manually trigger
-
-  schedule:
-    - cron: '0 0 * * 0' # weekly (every Sunday)
-
-  push:
-    branches: main
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
 
 jobs:
   build:
@@ -15,6 +16,8 @@ jobs:
     permissions:
       actions: write  # needed to allow julia-actions/cache to delete old caches that it has created
       contents: write # needed for Quarto render
+      pull-requests: write # for GitHub action bot to write messages
+    if: ${{ !github.event.pull_request.draft }}
     steps:
       - uses: actions/checkout@v4
       - name: Set up Quarto
@@ -34,11 +37,9 @@ jobs:
         uses: quarto-dev/quarto-actions/render@v2
         with:
           to: html
-      - name: Deploy page
-        uses: JamesIves/github-pages-deploy-action@v4
+      - name: Deploy PR Preview
+        uses: rossjrw/pr-preview-action@v1.4.8
         with:
-          folder: _output/
-          clean-exclude: pr-preview/
-          force: false
+          source-dir: ./_output/
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

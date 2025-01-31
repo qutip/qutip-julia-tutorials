@@ -1,0 +1,44 @@
+name: Quarto PR preview
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write  # needed to allow julia-actions/cache to delete old caches that it has created
+      contents: write # needed for Quarto render
+    if: ${{ !github.event.pull_request.draft }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+      - uses: julia-actions/setup-julia@v2
+        with:
+          version: '1'
+      - uses: julia-actions/cache@v2
+      - uses: julia-actions/julia-buildpkg@v1
+        with:
+          precompile: true
+      - uses: cardinalby/export-env-action@v2
+        with:
+          envFile: '_environment'    
+          expand: 'true'
+      - name: Quarto Render
+        uses: quarto-dev/quarto-actions/render@v2
+        with:
+          to: html
+      - name: Deploy PR Preview
+        uses: rossjrw/pr-preview-action@v1.4.8
+        with:
+          source-dir: ./_site/
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

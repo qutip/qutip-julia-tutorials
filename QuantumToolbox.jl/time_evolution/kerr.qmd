@@ -114,7 +114,7 @@ p = -1 * im * (a - a')
 H = 0.5 * χ * a' * a' * a * a
 ```
 
-Since we are considering unitary dynamics, i.e., no dissipation, the dynamics are fully captured for $\chi t \in \left[0, 2 \pi \right]$, and the coherent initial state is representive for a laser light source. 
+Since we are considering unitary dynamics, i.e., no dissipation, the dynamics are fully captured for $\chi t \in \left[0, 2 \pi \right]$, and the coherent initial state is representative for a laser light source. 
 
 Note that if the keyword argument `e_ops` is not supplied to [`mesolve`](https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.sesolve), the returned `result` contains the state at each time point at field `states`. Consult the [user guide to `TimeEvolutionSol`](https://qutip.org/QuantumToolbox.jl/stable/users_guide/time_evolution/solution) for more details.
 ```{julia}
@@ -133,7 +133,7 @@ display(fig1)
 fig2, ax2 = plot_Fock_dist(tlist, result.states)
 display(fig2)
 ```
-As expected, the photon number is conserved throughtout. Either the expeactation value or the Fock distribution are conserved in the nonlinear interaction.
+As expected, the photon number is conserved throughout. Either the expeactation value or the Fock distribution are conserved in the nonlinear interaction.
 
 We now turn to the quadrature operators. The expectation value dynamics of `x` and `p` are plotted below. 
 ```{julia}

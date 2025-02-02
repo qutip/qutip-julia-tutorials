@@ -5,7 +5,7 @@ date: 2025-02-01  # last update (keep this comment as a reminder)
 
 engine: julia
 execution:
-  eval: false
+  freeze: auto
 ---
 
 Inspirations taken from [this QuTiP tutorial](https://nbviewer.org/urls/qutip.org/qutip-tutorials/tutorials-v5/lectures/Lecture-14-Kerr-nonlinearities.ipynb) by J. R. Johansson.
@@ -21,27 +21,36 @@ by exploring Kerr nonlinearities.
 
 Kerr nonlinearities arise from the interaction between the electromagnetic field and a nonlinear medium with a significant third-order susceptibility, $\chi^{(3)}$. Since experiments typically use monochromatic light sources such as lasers, we restrict our discussion to a single light mode.
 
-The derivation or the Hamiltonian is based on the following principles:
+The derivation of the Hamiltonian is based on the following principles:
 
-1. The interaction of athe electric field $E$ with polarization density $\mathcal{P}$
-    $$
-    H \sim \int dV \mathcal{P} \cdot E 
-    $$
-2.  The dominance of the third-order polarization term $\mathcal{P}^{(3)}$ in considered medium
-    $$
-    \mathcal{P} = \mathcal{P}_0 + \varepsilon_0 \chi^{(1)} E + \varepsilon_0 \chi^{(2)} E^2 + \varepsilon_0 \chi^{(3)} E^3 + \dots \simeq \varepsilon_0 \chi^{(3)} E^3
-    $$
-3. The quantization of the electromagnetic mode
-    $$
-    E \sim \hat{a}^\dagger \hat{a}
-    $$
-    where $\hat{a}$ is the annihilation operator of the considered light mode
+1. **Interaction of the Electric Field with the Polarization Density:**  
+   The interaction energy is given by
+   $$
+   H \sim \int dV\, \mathcal{P} \cdot E.
+   $$
 
-With the expressions above, we have $H \propto (\hat{a}^\dagger + \hat{a})^4$. Further expanding and performing [rotating wave approximation (RWA)](https://en.wikipedia.org/wiki/Rotating-wave_approximation), terms that rotate at different frequency are dropped, yielding the Hamiltonian
+2. **Dominance of the Third-Order Polarization Term:**  
+   In the medium, the polarization can be expanded as
+   $$
+   \mathcal{P} = \mathcal{P}_0 + \varepsilon_0 \chi^{(1)} E + \varepsilon_0 \chi^{(2)} E^2 + \varepsilon_0 \chi^{(3)} E^3 + \dots,
+   $$
+   and, for media where the third-order term dominates, we approximate
+   $$
+   \mathcal{P} \simeq \varepsilon_0 \chi^{(3)} E^3.
+   $$
+
+3. **Quantization of the Electromagnetic Mode:**  
+   In quantum optics, the electric field operator for a single mode is expressed as
+   $$
+   E \propto \hat{a}^\dagger + \hat{a},
+   $$
+   where $\hat{a}$ is the annihilation operator.
+
+Substituting this expression into the polarization term, we obtain a Hamiltonian proportional to $(\hat{a}^\dagger + \hat{a})^4$. By expanding this expression and applying the [rotating wave approximation (RWA)](https://en.wikipedia.org/wiki/Rotating-wave-approximation) to discard rapidly oscillating, non-resonant terms that do not conserve the number of excitations, we arrive at the effective Hamiltonian
 $$
-H = \frac{\chi}{2} (\hat{a}^\dagger)^2 (\hat{a})^2.
+H = \frac{\chi}{2} (\hat{a}^\dagger)^2 \hat{a}^2,
 $$
-where $\chi$ here is the effective susceptibility mainly determined by the third-order susceptibility $\chi^{(3)}$.
+where $\chi$ is the effective nonlinear coupling determined primarily by the third-order susceptibility $\chi^{(3)}$.
 
 ## Code demonstration
 
@@ -133,7 +142,7 @@ display(fig1)
 fig2, ax2 = plot_Fock_dist(tlist, result.states)
 display(fig2)
 ```
-As expected, the photon number is conserved throughout. Either the expeactation value or the Fock distribution are conserved in the nonlinear interaction.
+As expected, the photon number is conserved throughout. Either the expectation value or the Fock distribution are conserved in the nonlinear interaction.
 
 We now turn to the quadrature operators. The expectation value dynamics of `x` and `p` are plotted below. 
 ```{julia}
@@ -144,38 +153,43 @@ for (idx, op) in enumerate([x, p])
     display(_fig)
 end
 ```
-There are two obvious facts in these plots that the nonlinear interaction has modified the initial coherent state
+There are two clear observations from these plots that indicate how the nonlinear interaction has modified the initial coherent state:
 
-1. The expectation values do not oscillate as in a quantum harmonic oscillator.
-2. The coherent states of a quantum harmonic oscillator should be at the equality of the uncertainty principle, i.e., $\Delta x \Delta p = \frac{\hbar}{2}$, yet the variance product in this case is clearly varying.
+1. **Non-oscillatory Behavior of Expectation Values:**  
+   In a quantum harmonic oscillator, the expectation values of the quadrature operators typically exhibit simple sinusoidal oscillations. However, under the Kerr nonlinearity, the expectation values deviate from this periodic behavior. This deviation reflects the phase distortions introduced by the nonlinear term in the Hamiltonian.
 
-Moreover, The spikes and pits of the variances at $\chi t \sim \pi$ implies **squeezing** behaviour. We can extend the investigation to the wigner function with the built-in function [`plot_wigner`](https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.plot_wigner). 
+2. **Departure from Minimum Uncertainty:**  
+   Coherent states in a harmonic oscillator are known to saturate the uncertainty relation, meaning they maintain a constant uncertainty product, ideally at  
+   $$
+   \Delta x \Delta p = (\frac{\hbar}{2})^2.
+   $$
+   In contrast, the evolving state in the presence of the Kerr interaction shows a time-varying variance product. This variation is indicative of squeezing effects and confirms that the state is no longer a minimum uncertainty state. We can extend the investigation to the wigner function with the built-in function [`plot_wigner`](https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.plot_wigner). 
 ```{julia}
 fig3, ax3, hm3 = plot_wigner(result.states[315])
 ax3.title = "t = " * string(tlist[315])
 Colorbar(fig3[1,2], hm3)
 display(fig3)
 ```
-As the plot revealed, the state at $\chi t = \pi$ is in fact the [**cat state**](https://en.wikipedia.org/wiki/Cat_state#Cat_states_in_single_modes).
+As the plot revealed, the state at $\chi t = \pi$ is in fact the [**cat state**](https://en.wikipedia.org/wiki/Cat_state#Cat_states_in_single_modes) for a single mode.
 
-The dynamics of wigner function can also be explored and visualized as below with function [`wigner`](https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.wigner).
+The dynamics of the Wigner function offer a powerful phase-space perspective on the quantum state evolution under the Kerr nonlinearity. We again use `plot_wigner` to setup the initial plot and update frames with the function [`wigner`](https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.wigner) to record the dynamics as an animated GIF.
 ```{julia}
-fig4, ax4, HM4 = plot_wigner(result.states[1])
+fig4, ax4, hm4 = plot_wigner(result.states[1])
 
-Colorbar(fig4[1,2], HM4)
+Colorbar(fig4[1,2], hm4)
 
-record(fig4, "wigner_dyn.gif", 1:length(tlist); framerate=24) do t
+record(fig4, "images/kerr/wigner_dyn.gif", 1:length(tlist); framerate=24) do t
     wig = wigner(
         result.states[t], 
         range(-7.5, 7.5, 200), 
         range(-7.5, 7.5, 200)
         )
-    HM4[3] = transpose(wig)
+    hm4[3] = transpose(wig)
 end
 ```
-![](images/kerr_wigner_dyn.gif)
+![](images/kerr/wigner_dyn.gif)
 
-As the recorded evolution showed, the wigner function evolves
+As the animation progresses, you can observe how the initial Gaussian distribution, typical of a coherent state, is gradually deformed by the nonlinear interaction. 
 
 ## Version Information
 ```{julia}

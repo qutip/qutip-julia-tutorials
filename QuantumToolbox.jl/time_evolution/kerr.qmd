@@ -231,6 +231,7 @@ end
 ```
 ![](images/kerr/wigner_dyn.gif)
 
+
 As the animation progresses, you can observe how the initial Gaussian distribution, typical of a coherent state, is gradually deformed by the nonlinear interaction. 
 
 ## Version Information

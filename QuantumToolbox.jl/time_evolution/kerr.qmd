@@ -21,6 +21,45 @@ by exploring Kerr nonlinearities.
 
 Kerr nonlinearities arise from the interaction between the electromagnetic field and a nonlinear medium with a significant third-order susceptibility, $\chi^{(3)}$. Since experiments typically use monochromatic light sources such as lasers, we restrict our discussion to a single light mode.
 
+To derive the Hamiltonian, we start by reviewing the classical theory:
+
+1. **Nonlinear polarization density:**  
+   In a nonlinear medium, the $i$-th component of the polarization density $\vec{\mathcal{P}}$ is given by
+   $$
+   \mathcal{P}_i = 
+    \sum_j \chi^{(1)}_{ij} E_j + 
+    \sum_{jk} \chi^{(2)}_{ijk} E_j E_k + 
+    \sum_{jkl} \chi^{(3)}_{ijkl} E_j E_k E_l + \dots  
+   $$
+   for $i,j,k,l \in \{x,y,z\}$, where ${\chi}^{(m)}$ is the $m$-th order nonlinear susceptibility and $E$ is the electric field. By the assumption that only the first and third order terms are non-vanishing for our Kerr medium in the single light mode, we can approximate the polarization density as
+   $$
+   \mathcal{P} \simeq
+    \chi^{(1)} E + 
+    \chi^{(3)} E^3
+   $$
+   with the subscripts dropped. 
+2. **Interaction of the Electric Field with the Polarization Density:**  
+   The interaction energy is proportional to $\mathcal{P} \cdot E$. The nonlinear term in the Hamiltonian is therefore 
+   $$
+   H_{\text{NL}} = \chi E^4 
+   $$
+   where $\chi$ is the effective coefficient primarily determined by the nonlinear susceptibility.
+3. **Quantization of the Electromagnetic Mode:**  
+   In quantum optics, the electric field operator for a single mode is proportional to the quardrature operator $\hat{x} = \frac{(\hat{a} + \hat{a}^\dagger)}{2}$ where $\hat{a}$ is the annihilation operator.
+
+We then combine the above properties, expand $(\hat{a}^\dagger + \hat{a})^4$, drop the terms that do not conserve the photon number or irrelevant to this tutorial with [rotating wave approximation (RWA)](https://en.wikipedia.org/wiki/Rotating-wave-approximation), and put the remaining terms in normal order. Finally, we arrive at the effective Hamiltonian
+$$
+H = \frac{\chi}{2} (\hat{a}^\dagger)^2 \hat{a}^2,
+$$
+where $\chi$ again absorbed the coefficients. 
+
+
+---
+
+## Introduction
+
+Kerr nonlinearities arise from the interaction between the electromagnetic field and a nonlinear medium with a significant third-order susceptibility, $\chi^{(3)}$. Since experiments typically use monochromatic light sources such as lasers, we restrict our discussion to a single light mode.
+
 The derivation of the Hamiltonian is based on the following principles:
 
 1. **Interaction of the Electric Field with the Polarization Density:**  
@@ -30,11 +69,11 @@ The derivation of the Hamiltonian is based on the following principles:
    $$
 
 2. **Dominance of the Third-Order Polarization Term:**  
-   In the medium, the polarization can be expanded as
+   In the medium, the polarization density can be expanded as
    $$
    \mathcal{P} = \mathcal{P}_0 + \varepsilon_0 \chi^{(1)} E + \varepsilon_0 \chi^{(2)} E^2 + \varepsilon_0 \chi^{(3)} E^3 + \dots,
    $$
-   and, for media where the third-order term dominates, we approximate
+   and, for mediums where the third-order term dominates, we approximate
    $$
    \mathcal{P} \simeq \varepsilon_0 \chi^{(3)} E^3.
    $$
@@ -163,14 +202,16 @@ There are two clear observations from these plots that indicate how the nonlinea
    $$
    \Delta x \Delta p = (\frac{\hbar}{2})^2.
    $$
-   In contrast, the evolving state in the presence of the Kerr interaction shows a time-varying variance product. This variation is indicative of squeezing effects and confirms that the state is no longer a minimum uncertainty state. We can extend the investigation to the wigner function with the built-in function [`plot_wigner`](https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.plot_wigner). 
+   In contrast, the evolving state in the presence of the Kerr interaction shows a time-varying variance product. This variation is indicative of squeezing effects and confirms that the state is no longer a minimum uncertainty state. 
+   
+We can extend the investigation to the Wigner function with the built-in function [`plot_wigner`](https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.plot_wigner). 
 ```{julia}
 fig3, ax3, hm3 = plot_wigner(result.states[315])
-ax3.title = "t = " * string(tlist[315])
+ax3.title = "χt = " * string(tlist[315])
 Colorbar(fig3[1,2], hm3)
 display(fig3)
 ```
-As the plot revealed, the state at $\chi t = \pi$ is in fact the [**cat state**](https://en.wikipedia.org/wiki/Cat_state#Cat_states_in_single_modes) for a single mode.
+As the plot revealed, the state at $\chi t = \pi$ is in fact the [**cat state**](https://en.wikipedia.org/wiki/Cat_state#Cat_states_in_single_modes) for a single mode. One of the main characteristics of the cat state is the superposition of two coherent states with opposite phase.
 
 The dynamics of the Wigner function offer a powerful phase-space perspective on the quantum state evolution under the Kerr nonlinearity. We again use `plot_wigner` to setup the initial plot and update frames with the function [`wigner`](https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.wigner) to record the dynamics as an animated GIF.
 ```{julia}
@@ -184,6 +225,7 @@ record(fig4, "images/kerr/wigner_dyn.gif", 1:length(tlist); framerate=24) do t
         range(-7.5, 7.5, 200), 
         range(-7.5, 7.5, 200)
         )
+    ax4.title = "χt = " * string(round(tlist[t]; digits = 2))
     hm4[3] = transpose(wig)
 end
 ```

@@ -24,7 +24,7 @@ make render
 ```
 or
 ```shell
-source _environment
+set -a && source _environment && set +a # Load the environment variables
 julia --project=@. -e 'import Pkg; Pkg.resolve();'
 quarto render
 ```

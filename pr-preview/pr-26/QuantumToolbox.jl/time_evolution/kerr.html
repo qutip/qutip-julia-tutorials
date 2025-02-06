@@ -486,7 +486,7 @@ Coherent states in a harmonic oscillator are known to saturate the uncertainty r
 <span id="cb14-2"><a href="#cb14-2"></a></span>
 <span id="cb14-3"><a href="#cb14-3"></a><span class="fu">Colorbar</span>(fig4[<span class="fl">1</span>,<span class="fl">2</span>], hm4)</span>
 <span id="cb14-4"><a href="#cb14-4"></a></span>
-<span id="cb14-5"><a href="#cb14-5"></a><span class="fu">record</span>(fig4, <span class="st">"images/kerr/wigner_dyn.gif"</span>, <span class="fl">1</span><span class="op">:</span><span class="fu">length</span>(tlist); framerate<span class="op">=</span><span class="fl">24</span>) <span class="cf">do</span> t</span>
+<span id="cb14-5"><a href="#cb14-5"></a><span class="fu">record</span>(fig4, <span class="st">"kerr_wigner_dyn.gif"</span>, <span class="fl">1</span><span class="op">:</span><span class="fu">length</span>(tlist); framerate<span class="op">=</span><span class="fl">24</span>) <span class="cf">do</span> t</span>
 <span id="cb14-6"><a href="#cb14-6"></a>    wig <span class="op">=</span> <span class="fu">wigner</span>(</span>
 <span id="cb14-7"><a href="#cb14-7"></a>        result.states[t], </span>
 <span id="cb14-8"><a href="#cb14-8"></a>        <span class="fu">range</span>(<span class="op">-</span><span class="fl">7.5</span>, <span class="fl">7.5</span>, <span class="fl">200</span>), </span>
@@ -496,10 +496,10 @@ Coherent states in a harmonic oscillator are known to saturate the uncertainty r
 <span id="cb14-12"><a href="#cb14-12"></a>    hm4[<span class="fl">3</span>] <span class="op">=</span> <span class="fu">transpose</span>(wig)</span>
 <span id="cb14-13"><a href="#cb14-13"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>"images/kerr/wigner_dyn.gif"</code></pre>
+<pre><code>"kerr_wigner_dyn.gif"</code></pre>
 </div>
 </div>
-<p><img src="images/kerr/wigner_dyn.gif" class="img-fluid"></p>
+<p><img src="kerr_wigner_dyn.gif" class="img-fluid"></p>
 <p>As the animation progresses, you can observe how the initial Gaussian distribution, typical of a coherent state, is gradually deformed by the nonlinear interaction.</p>
 </section>
 <section id="version-information" class="level2">

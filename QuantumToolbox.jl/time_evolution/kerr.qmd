@@ -219,7 +219,7 @@ fig4, ax4, hm4 = plot_wigner(result.states[1])
 
 Colorbar(fig4[1,2], hm4)
 
-record(fig4, "images/kerr/wigner_dyn.gif", 1:length(tlist); framerate=24) do t
+record(fig4, "kerr_wigner_dyn.gif", 1:length(tlist); framerate=24) do t
     wig = wigner(
         result.states[t], 
         range(-7.5, 7.5, 200), 
@@ -229,7 +229,7 @@ record(fig4, "images/kerr/wigner_dyn.gif", 1:length(tlist); framerate=24) do t
     hm4[3] = transpose(wig)
 end
 ```
-![](images/kerr/wigner_dyn.gif)
+![](kerr_wigner_dyn.gif)
 
 
 As the animation progresses, you can observe how the initial Gaussian distribution, typical of a coherent state, is gradually deformed by the nonlinear interaction. 

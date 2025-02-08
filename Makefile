@@ -1,8 +1,6 @@
 JULIA:=julia
 QUARTO:=quarto
 
-include _environment
-
 default: help
 
 render:

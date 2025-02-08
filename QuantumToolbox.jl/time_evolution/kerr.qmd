@@ -1,11 +1,9 @@
 ---
 title: "Kerr nonlinearities"
 author: Li-Xun Cai
-date: 2025-02-02  # last update (keep this comment as a reminder)
+date: 2025-02-08  # last update (keep this comment as a reminder)
 
 engine: julia
-execution:
-  freeze: auto
 ---
 
 Inspirations taken from [this QuTiP tutorial](https://nbviewer.org/urls/qutip.org/qutip-tutorials/tutorials-v5/lectures/Lecture-14-Kerr-nonlinearities.ipynb) by J. R. Johansson.
@@ -37,7 +35,7 @@ To derive the Hamiltonian, we start by reviewing the classical theory:
     \chi^{(1)} E + 
     \chi^{(3)} E^3
    $$
-   with the subscripts dropped. 
+   with the subscripts for spatial components dropped. 
 2. **Interaction of the Electric Field with the Polarization Density:**  
    The interaction energy is proportional to $\mathcal{P} \cdot E$. The nonlinear term in the Hamiltonian is therefore 
    $$
@@ -52,44 +50,6 @@ $$
 H = \frac{\chi}{2} (\hat{a}^\dagger)^2 \hat{a}^2,
 $$
 where $\chi$ again absorbed the coefficients. 
-
-
----
-
-## Introduction
-
-Kerr nonlinearities arise from the interaction between the electromagnetic field and a nonlinear medium with a significant third-order susceptibility, $\chi^{(3)}$. Since experiments typically use monochromatic light sources such as lasers, we restrict our discussion to a single light mode.
-
-The derivation of the Hamiltonian is based on the following principles:
-
-1. **Interaction of the Electric Field with the Polarization Density:**  
-   The interaction energy is given by
-   $$
-   H \sim \int dV\, \mathcal{P} \cdot E.
-   $$
-
-2. **Dominance of the Third-Order Polarization Term:**  
-   In the medium, the polarization density can be expanded as
-   $$
-   \mathcal{P} = \mathcal{P}_0 + \varepsilon_0 \chi^{(1)} E + \varepsilon_0 \chi^{(2)} E^2 + \varepsilon_0 \chi^{(3)} E^3 + \dots,
-   $$
-   and, for mediums where the third-order term dominates, we approximate
-   $$
-   \mathcal{P} \simeq \varepsilon_0 \chi^{(3)} E^3.
-   $$
-
-3. **Quantization of the Electromagnetic Mode:**  
-   In quantum optics, the electric field operator for a single mode is expressed as
-   $$
-   E \propto \hat{a}^\dagger + \hat{a},
-   $$
-   where $\hat{a}$ is the annihilation operator.
-
-Substituting this expression into the polarization term, we obtain a Hamiltonian proportional to $(\hat{a}^\dagger + \hat{a})^4$. By expanding this expression and applying the [rotating wave approximation (RWA)](https://en.wikipedia.org/wiki/Rotating-wave-approximation) to discard rapidly oscillating, non-resonant terms that do not conserve the number of excitations, we arrive at the effective Hamiltonian
-$$
-H = \frac{\chi}{2} (\hat{a}^\dagger)^2 \hat{a}^2,
-$$
-where $\chi$ is the effective nonlinear coupling determined primarily by the third-order susceptibility $\chi^{(3)}$.
 
 ## Code demonstration
 

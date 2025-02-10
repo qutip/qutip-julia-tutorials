@@ -60,11 +60,11 @@ Jz = 1.0
 hx = 0.0
 γ = 1
 
-Sx = mapreduce(i->MultiSiteOperator(latt, i => sigmax()), +, 1:latt.N)
-Sy = mapreduce(i->MultiSiteOperator(latt, i => sigmay()), +, 1:latt.N)
-Sz = mapreduce(i->MultiSiteOperator(latt, i => sigmaz()), +, 1:latt.N)
+Sx = mapreduce(i->multisite_operator(latt, i => sigmax()), +, 1:latt.N)
+Sy = mapreduce(i->multisite_operator(latt, i => sigmay()), +, 1:latt.N)
+Sz = mapreduce(i->multisite_operator(latt, i => sigmaz()), +, 1:latt.N)
 
-SFxx = sum([MultiSiteOperator(latt, i => sigmax()) * MultiSiteOperator(latt, j => sigmax()) for i in 1:latt.N for j in 1:latt.N])
+SFxx = sum([multisite_operator(latt, i => sigmax()) * multisite_operator(latt, j => sigmax()) for i in 1:latt.N for j in 1:latt.N])
 
 H, c_ops = DissipativeIsing(Jx, Jy, Jz, hx, 0., 0., γ, latt; boundary_condition=:periodic_bc, order=1)
 e_ops = (Sx, Sy, Sz, SFxx)
@@ -99,13 +99,13 @@ The remaining `M-1` states are taken as those with minimal Hamming distance from
 i = 1
 for j in 1:N_modes
     global i += 1
-    i <= M && (ϕ[i] = MultiSiteOperator(latt, j=>sigmap()) * ϕ[1])
+    i <= M && (ϕ[i] = multisite_operator(latt, j=>sigmap()) * ϕ[1])
 end
 
 for k in 1:N_modes-1
     for l in k+1:N_modes
         global i += 1
-        i <= M && (ϕ[i] = MultiSiteOperator(latt, k=>sigmap(), l=>sigmap()) * ϕ[1])
+        i <= M && (ϕ[i] = multisite_operator(latt, k=>sigmap(), l=>sigmap()) * ϕ[1])
     end
 end
 ```

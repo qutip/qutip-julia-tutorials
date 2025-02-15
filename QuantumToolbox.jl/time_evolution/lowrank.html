@@ -96,8 +96,8 @@ div.csl-indent {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-391c4f7f0df7475a7487d1067a5e1fc7.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-8cddf1564d0ae74a4a5761cb3bc5d764.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-48c97925b0c5967516ef08ff0884cb9b.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-ba246931cf101b913bc8846a8d39060e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-2c0847a4c193092bfc62569e8ced534f.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -300,11 +300,11 @@ c_i = \sqrt{\gamma} \sigma_i^-,
 <span id="cb4-4"><a href="#cb4-4"></a>hx <span class="op">=</span> <span class="fl">0.0</span></span>
 <span id="cb4-5"><a href="#cb4-5"></a>γ <span class="op">=</span> <span class="fl">1</span></span>
 <span id="cb4-6"><a href="#cb4-6"></a></span>
-<span id="cb4-7"><a href="#cb4-7"></a>Sx <span class="op">=</span> <span class="fu">mapreduce</span>(<span class="fu">i-&gt;MultiSiteOperator</span>(latt, i <span class="op">=&gt;</span> <span class="fu">sigmax</span>()), <span class="op">+</span>, <span class="fl">1</span><span class="op">:</span>latt.N)</span>
-<span id="cb4-8"><a href="#cb4-8"></a>Sy <span class="op">=</span> <span class="fu">mapreduce</span>(<span class="fu">i-&gt;MultiSiteOperator</span>(latt, i <span class="op">=&gt;</span> <span class="fu">sigmay</span>()), <span class="op">+</span>, <span class="fl">1</span><span class="op">:</span>latt.N)</span>
-<span id="cb4-9"><a href="#cb4-9"></a>Sz <span class="op">=</span> <span class="fu">mapreduce</span>(<span class="fu">i-&gt;MultiSiteOperator</span>(latt, i <span class="op">=&gt;</span> <span class="fu">sigmaz</span>()), <span class="op">+</span>, <span class="fl">1</span><span class="op">:</span>latt.N)</span>
+<span id="cb4-7"><a href="#cb4-7"></a>Sx <span class="op">=</span> <span class="fu">mapreduce</span>(<span class="fu">i-&gt;multisite_operator</span>(latt, i <span class="op">=&gt;</span> <span class="fu">sigmax</span>()), <span class="op">+</span>, <span class="fl">1</span><span class="op">:</span>latt.N)</span>
+<span id="cb4-8"><a href="#cb4-8"></a>Sy <span class="op">=</span> <span class="fu">mapreduce</span>(<span class="fu">i-&gt;multisite_operator</span>(latt, i <span class="op">=&gt;</span> <span class="fu">sigmay</span>()), <span class="op">+</span>, <span class="fl">1</span><span class="op">:</span>latt.N)</span>
+<span id="cb4-9"><a href="#cb4-9"></a>Sz <span class="op">=</span> <span class="fu">mapreduce</span>(<span class="fu">i-&gt;multisite_operator</span>(latt, i <span class="op">=&gt;</span> <span class="fu">sigmaz</span>()), <span class="op">+</span>, <span class="fl">1</span><span class="op">:</span>latt.N)</span>
 <span id="cb4-10"><a href="#cb4-10"></a></span>
-<span id="cb4-11"><a href="#cb4-11"></a>SFxx <span class="op">=</span> <span class="fu">sum</span>([<span class="fu">MultiSiteOperator</span>(latt, i <span class="op">=&gt;</span> <span class="fu">sigmax</span>()) <span class="op">*</span> <span class="fu">MultiSiteOperator</span>(latt, j <span class="op">=&gt;</span> <span class="fu">sigmax</span>()) for i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>latt.N for j <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>latt.N])</span>
+<span id="cb4-11"><a href="#cb4-11"></a>SFxx <span class="op">=</span> <span class="fu">sum</span>([<span class="fu">multisite_operator</span>(latt, i <span class="op">=&gt;</span> <span class="fu">sigmax</span>()) <span class="op">*</span> <span class="fu">multisite_operator</span>(latt, j <span class="op">=&gt;</span> <span class="fu">sigmax</span>()) for i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>latt.N for j <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>latt.N])</span>
 <span id="cb4-12"><a href="#cb4-12"></a></span>
 <span id="cb4-13"><a href="#cb4-13"></a>H, c_ops <span class="op">=</span> <span class="fu">DissipativeIsing</span>(Jx, Jy, Jz, hx, <span class="fl">0</span>., <span class="fl">0</span>., γ, latt; boundary_condition<span class="op">=:</span>periodic_bc, order<span class="op">=</span><span class="fl">1</span>)</span>
 <span id="cb4-14"><a href="#cb4-14"></a>e_ops <span class="op">=</span> (Sx, Sy, Sz, SFxx)</span>
@@ -357,13 +357,13 @@ Quantum Object:   type=Ket   dims=[2, 2, 2, 2, 2, 2]   size=(64,)
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1"></a>i <span class="op">=</span> <span class="fl">1</span></span>
 <span id="cb8-2"><a href="#cb8-2"></a><span class="cf">for</span> j <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>N_modes</span>
 <span id="cb8-3"><a href="#cb8-3"></a>    <span class="kw">global</span> i <span class="op">+=</span> <span class="fl">1</span></span>
-<span id="cb8-4"><a href="#cb8-4"></a>    i <span class="op">&lt;=</span> M <span class="op">&amp;&amp;</span> (ϕ[i] <span class="op">=</span> <span class="fu">MultiSiteOperator</span>(latt, j<span class="op">=&gt;</span><span class="fu">sigmap</span>()) <span class="op">*</span> ϕ[<span class="fl">1</span>])</span>
+<span id="cb8-4"><a href="#cb8-4"></a>    i <span class="op">&lt;=</span> M <span class="op">&amp;&amp;</span> (ϕ[i] <span class="op">=</span> <span class="fu">multisite_operator</span>(latt, j<span class="op">=&gt;</span><span class="fu">sigmap</span>()) <span class="op">*</span> ϕ[<span class="fl">1</span>])</span>
 <span id="cb8-5"><a href="#cb8-5"></a><span class="cf">end</span></span>
 <span id="cb8-6"><a href="#cb8-6"></a></span>
 <span id="cb8-7"><a href="#cb8-7"></a><span class="cf">for</span> k <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>N_modes<span class="op">-</span><span class="fl">1</span></span>
 <span id="cb8-8"><a href="#cb8-8"></a>    <span class="cf">for</span> l <span class="kw">in</span> k<span class="op">+</span><span class="fl">1</span><span class="op">:</span>N_modes</span>
 <span id="cb8-9"><a href="#cb8-9"></a>        <span class="kw">global</span> i <span class="op">+=</span> <span class="fl">1</span></span>
-<span id="cb8-10"><a href="#cb8-10"></a>        i <span class="op">&lt;=</span> M <span class="op">&amp;&amp;</span> (ϕ[i] <span class="op">=</span> <span class="fu">MultiSiteOperator</span>(latt, k<span class="op">=&gt;</span><span class="fu">sigmap</span>(), l<span class="op">=&gt;</span><span class="fu">sigmap</span>()) <span class="op">*</span> ϕ[<span class="fl">1</span>])</span>
+<span id="cb8-10"><a href="#cb8-10"></a>        i <span class="op">&lt;=</span> M <span class="op">&amp;&amp;</span> (ϕ[i] <span class="op">=</span> <span class="fu">multisite_operator</span>(latt, k<span class="op">=&gt;</span><span class="fu">sigmap</span>(), l<span class="op">=&gt;</span><span class="fu">sigmap</span>()) <span class="op">*</span> ϕ[<span class="fl">1</span>])</span>
 <span id="cb8-11"><a href="#cb8-11"></a>    <span class="cf">end</span></span>
 <span id="cb8-12"><a href="#cb8-12"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -503,10 +503,10 @@ Current admin team:
 Package information:
 ====================================
 Julia              Ver. 1.11.3
-QuantumToolbox     Ver. 0.25.2
+QuantumToolbox     Ver. 0.27.0
 SciMLOperators     Ver. 0.3.12
-LinearSolve        Ver. 2.39.0
-OrdinaryDiffEqCore Ver. 1.15.1
+LinearSolve        Ver. 3.1.0
+OrdinaryDiffEqCore Ver. 1.17.0
 
 System information:
 ====================================

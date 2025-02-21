@@ -17,7 +17,7 @@ by exploring Kerr nonlinearities.
 
 ## Introduction
 
-Kerr nonlinearities arise from the interaction between the electromagnetic field and a nonlinear medium with a significant third-order susceptibility, $\chi^{(3)}$. Since experiments typically use monochromatic light sources such as lasers, we restrict our discussion to a single light mode.
+Kerr nonlinearities arise from the interaction between the electromagnetic field and a nonlinear medium with a significant third-order susceptibility, $\chi^{(3)}$. Since experiments typically use monochromatic light sources such as lasers, we restrict our discussion to a single electromagnetic mode.
 
 To derive the Hamiltonian, we start by reviewing the classical theory:
 

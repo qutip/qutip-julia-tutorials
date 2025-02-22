@@ -438,10 +438,11 @@ Coherent states in a harmonic oscillator are known to saturate the uncertainty r
 </ol>
 <p>We can extend the investigation to the Wigner function with the built-in function <a href="https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.plot_wigner"><code>plot_wigner</code></a>.</p>
 <div id="14" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1"></a>fig3, ax3, hm3 <span class="op">=</span> <span class="fu">plot_wigner</span>(result.states[<span class="fl">315</span>])</span>
-<span id="cb12-2"><a href="#cb12-2"></a>ax3.title <span class="op">=</span> <span class="st">"χt = "</span> <span class="op">*</span> <span class="fu">string</span>(tlist[<span class="fl">315</span>])</span>
-<span id="cb12-3"><a href="#cb12-3"></a><span class="fu">Colorbar</span>(fig3[<span class="fl">1</span>,<span class="fl">2</span>], hm3)</span>
-<span id="cb12-4"><a href="#cb12-4"></a><span class="fu">display</span>(fig3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1"></a>idx <span class="op">=</span> <span class="fu">searchsortedfirst</span>(tlist, <span class="cn">π</span><span class="op">/</span>χ) <span class="op">-</span> <span class="fl">1</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a>fig3, ax3, hm3 <span class="op">=</span> <span class="fu">plot_wigner</span>(result.states[idx])</span>
+<span id="cb12-3"><a href="#cb12-3"></a>ax3.title <span class="op">=</span> <span class="st">"χt = </span><span class="sc">$</span>(tlist[idx])<span class="st">"</span></span>
+<span id="cb12-4"><a href="#cb12-4"></a><span class="fu">Colorbar</span>(fig3[<span class="fl">1</span>,<span class="fl">2</span>], hm3)</span>
+<span id="cb12-5"><a href="#cb12-5"></a><span class="fu">display</span>(fig3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">

@@ -166,8 +166,9 @@ There are two clear observations from these plots that indicate how the nonlinea
    
 We can extend the investigation to the Wigner function with the built-in function [`plot_wigner`](https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.plot_wigner). 
 ```{julia}
-fig3, ax3, hm3 = plot_wigner(result.states[315])
-ax3.title = "χt = " * string(tlist[315])
+idx = searchsortedfirst(tlist, π/χ) - 1
+fig3, ax3, hm3 = plot_wigner(result.states[idx])
+ax3.title = "χt = $(tlist[idx])"
 Colorbar(fig3[1,2], hm3)
 display(fig3)
 ```

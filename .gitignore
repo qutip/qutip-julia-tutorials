@@ -29,5 +29,6 @@ pyenv/
 /_output/
 *.html
 *.svg
+*.gif
 *.json
 /site_libs/

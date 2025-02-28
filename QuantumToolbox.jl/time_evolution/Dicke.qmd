@@ -1,0 +1,216 @@
+---
+title: "The Dicke Model"
+author: Li-Xun Cai
+date: 2025-02-11  # last update (keep this comment as a reminder)
+
+engine: julia
+---
+
+Inspirations taken from [this QuTiP tutorial](https://nbviewer.org/urls/qutip.org/qutip-tutorials/tutorials-v5/lectures/Lecture-3A-Dicke-model.ipynb) by J. R. Johansson.
+
+## Introduction
+
+The Dicke model describes the interaction between a single quantized electromagnetic mode (cavity) and an ensemble of N spin-1/2 particles. It is widely used in quantum optics and many-body physics due to its ability to exhibit superradiant phase transitions and collective quantum effects.
+
+The system Hamiltonian is given by
+
+$$ H_D = \omega_0 J_z + \omega a^\dagger a + \frac{\lambda}{\sqrt{N}} (a + a^\dagger) (J_+ + J_-) $$
+
+where
+
+- $ a, a^\dagger $ are the **annihilation and creation operators** for the cavity mode.
+- $ J_z, J_\pm $ are the **collective spin operators**.
+- $ \omega $ is the **cavity frequency**, and $ \omega_0 $ is the **spin transition frequency**.
+- $ \lambda $ represents the **coupling strength** between the spin ensemble and the cavity.
+
+A key phenomenon in this model is the **superradiant phase transition**, where, above a critical coupling strength $ g_c $, the system moves from a **normal phase** (low excitation) to a **superradiant phase** (macroscopic occupation of the cavity mode).
+
+This tutorial explores both the **unitary evolution** of the Dicke model and the effects of **dissipation** by incorporating cavity loss.
+
+We adopt the convention $ \hbar = 1 $ throughout this tutorial.
+
+
+## Code demonstration
+
+```{julia}
+using Pkg
+Pkg.activate(@__DIR__)
+```
+
+```{julia}
+using QuantumToolbox
+using CairoMakie
+```
+
+```{julia}
+W = 1
+W0 = 1
+
+gc = √(W * W0) / 2
+
+κ = 0.05
+γ = 0.15
+```
+
+```{julia}
+M = 16
+N = 4
+j = N / 2
+n = 2 * j + 1
+
+a = destroy(M) ⊗ qeye(Int(n))
+Jz = qeye(M) ⊗ jmat(j, :z)
+
+Jp = qeye(M) ⊗ jmat(j, :+)
+Jm = qeye(M) ⊗ jmat(j, :-);
+```
+
+```{julia}
+H0 = W * a' * a + W0 * Jz
+H1 = 1/ √N * (a + a') * (Jp + Jm)
+
+H(_g) = H0 + _g * H1
+
+print(H(1))
+```
+
+```{julia}
+fig = Figure(size = (600, 550))
+ax = Axis(
+    fig[1,1], 
+    yreversed = true, 
+    width = 500, 
+    height = 500
+)
+hm = heatmap!(ax, 
+    1:80, 
+    1:80, 
+    abs.(to_dense(H(1).data)'), 
+    colormap = cgrad([:white, :blue]),
+    colorrange = (0,20)
+)
+Colorbar(fig[1,2], hm)
+display(fig)
+```
+
+```{julia}
+nth = 0.25
+
+cops = [
+    √(κ * nth) * a',
+    √(κ * (1 + nth)) * a
+];
+```
+
+```{julia}
+gs = 0.01:0.05:1.01
+ψGs = Vector{QuantumObject{KetQuantumObject}}()
+ρsss = Vector{QuantumObject{OperatorQuantumObject}}()
+for _g in gs
+    _H = H(_g)
+    _ω, _ψ = eigenstates(_H)
+    _ss = steadystate(_H, cops)
+    push!(ψGs, _ψ[1])
+    push!(ρsss, _ss)
+end
+```
+
+```{julia}
+n_ψGs = expect(a'*a, ψGs)
+Jz_ψGs = expect(Jz, ψGs);
+n_ρsss = expect(a'*a, ρsss)
+Jz_ρsss = expect(Jz, ρsss);
+```
+
+```{julia}
+fig = Figure(size = (800, 300))
+axn = Axis(
+    fig[1,1],
+    xlabel = "interaction strength",
+    ylabel = L"\langle \hat{n} \rangle"
+)
+axJz = Axis(
+    fig[1,2],
+    xlabel = "interaction strength",
+    ylabel = L"\langle \hat{J}_{z} \rangle"
+)
+ylims!(-j, j)
+lines!(axn, gs, real(n_ψGs))
+lines!(axn, gs, real(n_ρsss))
+lines!(axJz, gs, real(Jz_ψGs))
+lines!(axJz, gs, real(Jz_ρsss))
+display(fig)
+```
+
+```{julia}
+queue = [1,6,11,16,20]
+fig = Figure(size = (1050,1100))
+ax_bot = Axis(fig[5,1:6], height=200)
+xlims!(ax_bot, 0, maximum(gs))
+lines!(ax_bot, gs, real(n_ψGs), label="closed", color=:teal)
+lines!(ax_bot, gs, real(n_ρsss), label="dissipative", color=:red)
+lines!(ax_bot, [gc, gc], [0,5])
+axislegend(ax_bot, position=(:right, :bottom))
+for (hpos, idx) in enumerate(queue)
+    _g = gs[idx]
+    lines!(ax_bot, [_g,_g], [0,5], linestyle=:dash, linewidth=4, color=:blue)
+    _ax = Axis(
+        fig[1,hpos],
+        aspect = 1,
+        title="g = $_g"
+    )
+    _ρcav = ptrace(ψGs[idx], 1)
+    _wig = wigner(_ρcav, -7:0.07:7, -7:0.07:7)
+    _hm = heatmap!(_ax, -7:0.07:7, -7:0.07:7, _wig', colorrange=(0,0.35))
+    (hpos == 5) && (Colorbar(fig[1,6], _hm))
+
+    
+    _ax = Axis(
+        fig[2,hpos],
+        aspect = 1
+    )
+    _ρcav = ptrace(ρsss[idx], 1)
+    _wig = wigner(_ρcav, -7:0.07:7, -7:0.07:7)
+    _hm = heatmap!(_ax, -7:0.07:7, -7:0.07:7, _wig', colorrange=(0,0.35))
+    (hpos == 5) && (Colorbar(fig[2,6], _hm))
+    
+    _ρcav = ptrace(ψGs[idx], 1)
+    barplot(fig[3,hpos], real(diag(_ρcav)), label=L"g = $_g")
+    
+    _ρcav = ptrace(ρsss[idx], 1)
+    barplot(fig[4,hpos], real(diag(_ρcav)), label=L"g = $_g")
+end
+display(fig)
+```
+
+```{julia}
+entropy_tot = []
+entropy_cav = []
+entropy_spin = []
+
+for _ρss in ρsss
+    ρcav, ρspin = ptrace(_ρss, 1), ptrace(_ρss, 2)
+    
+    push!(entropy_tot, entropy_vn(_ρss))
+    push!(entropy_cav, entropy_vn(ρcav))
+    push!(entropy_spin, entropy_vn(ρspin))
+end
+```
+
+```{julia}
+fig = Figure(size = (1000,400))
+ax = Axis(fig[1,1])
+lines!(ax, gs, entropy_tot, label="Total", linestyle=:solid)
+lines!(ax, gs, entropy_cav, label="Cavity", linestyle=:dot)
+lines!(ax, gs, entropy_spin, label="Spin", linestyle=:dash)
+lines!(ax, [gc, gc], [0,2])
+axislegend(ax, position=(:left, :top))
+display(fig)
+```
+
+
+
+## Version Information
+```{julia}
+QuantumToolbox.versioninfo()
+```

@@ -1,41 +1,51 @@
 ---
 title: "The Dicke Model"
 author: Li-Xun Cai
-date: 2025-02-11  # last update (keep this comment as a reminder)
+date: 2025-03-02  # last update (keep this comment as a reminder)
 
 engine: julia
 ---
 
 Inspirations taken from [this QuTiP tutorial](https://nbviewer.org/urls/qutip.org/qutip-tutorials/tutorials-v5/lectures/Lecture-3A-Dicke-model.ipynb) by J. R. Johansson.
 
+This tutorial mainly demonstrates the use of 
+
+- [`jmat`](https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.jmat)
+- [`steadystate`](https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.steadystate)
+- [`wigner`](https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.wigner)
+- [`entropy_mutual`](https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.entropy_mutual)
+
+by exploring the Dicke model.
+
 ## Introduction
 
-The Dicke model describes the interaction between a single quantized electromagnetic mode (cavity) and an ensemble of N spin-1/2 particles. It is widely used in quantum optics and many-body physics due to its ability to exhibit superradiant phase transitions and collective quantum effects.
+The Dicke model describes a system where $N$ two-level atoms interact with a single quantized electromagnetic mode. The original microscopic form of the Dicke Hamiltonian is given by:
 
-The system Hamiltonian is given by
+$$
+H_D = \omega a^\dagger a + \sum_{i=1}^{N} \frac{\omega_0}{2} \sigma_z^{(i)} + \sum_{i=1}^{N} \frac{g}{\sqrt{N}} (a + a^\dagger) (\sigma_+^{(i)} + \sigma_-^{(i)})
+$$
 
-$$ H_D = \omega_0 J_z + \omega a^\dagger a + \frac{\lambda}{\sqrt{N}} (a + a^\dagger) (J_+ + J_-) $$
+where:
 
-where
+- $a$, $a^\dagger$ are the annihilation and creation operators for the cavity mode, with frequency $\omega$.
+- $\sigma_z^{(i)}, \sigma_\pm^{(i)}$ are the Pauli matrices for the $i$-th two-level atom, with transition frequency $\omega_0$.
+- $g$ represents the light-matter coupling strength.
 
-- $ a, a^\dagger $ are the **annihilation and creation operators** for the cavity mode.
-- $ J_z, J_\pm $ are the **collective spin operators**.
-- $ \omega $ is the **cavity frequency**, and $ \omega_0 $ is the **spin transition frequency**.
-- $ \lambda $ represents the **coupling strength** between the spin ensemble and the cavity.
+This formulation explicitly treats each spin individually. However, when the atoms interact identically with the cavity, we can rewrite the Hamiltonian regarding collective spin operators.
 
-A key phenomenon in this model is the **superradiant phase transition**, where, above a critical coupling strength $ g_c $, the system moves from a **normal phase** (low excitation) to a **superradiant phase** (macroscopic occupation of the cavity mode).
+$$
+J_z = \sum_{i=1}^{N} \sigma_z^{(i)}, \quad J_{\pm} = \sum_{i=1}^{N} \sigma_{\pm}^{(i)}, 
+$$
+which describe the total spin of the system as a pseudospin of length $j = N/2$. Using these collective operators, the reformulated Dicke Hamiltonian takes the form:
 
-This tutorial explores both the **unitary evolution** of the Dicke model and the effects of **dissipation** by incorporating cavity loss.
+$$
+H_D = \omega a^\dagger a + \omega_0 J_z + \frac{g}{\sqrt{N}} (a + a^\dagger) (J_+ + J_-)
+$$
 
-We adopt the convention $ \hbar = 1 $ throughout this tutorial.
+This formulation reduces complexity, as it allows us to work on a collective basis instead of the whole individual spin Hilbert space. The superradiant phase transition occurs when the coupling strength $g$ exceeds a critical threshold, leading to a macroscopic population of the cavity mode.
 
 
 ## Code demonstration
-
-```{julia}
-using Pkg
-Pkg.activate(@__DIR__)
-```
 
 ```{julia}
 using QuantumToolbox
@@ -43,170 +53,143 @@ using CairoMakie
 ```
 
 ```{julia}
-W = 1
-W0 = 1
+ω = 1
+ω0 = 1
 
-gc = √(W * W0) / 2
+gc = √(ω * ω0) / 2
 
-κ = 0.05
-γ = 0.15
+κ = 0.05;
+```
+
+Here, we define some functions for later usage.
+```{julia}
+# M: cavity Hilbert space truncation, N: number of atoms
+Jz(M, N) = (qeye(M) ⊗ jmat(N/2, :z))
+
+a(M, N) = (destroy(M) ⊗ qeye(N+1))
+
+function H(M, N, g)
+ j = N / 2
+ n = 2 * j + 1
+    
+ a_ = a(M, N)
+ Jz_ = Jz(M, N)
+ Jp = qeye(M) ⊗ jmat(j, :+)
+ Jm = qeye(M) ⊗ jmat(j, :-);
+    
+ H0 = ω * a_' * a_ + ω0 * Jz_
+ H1 = 1/ √N * (a_ + a_') * (Jp + Jm)
+
+    return (H0 + g * H1)
+end;
+```
+
+Take the example of 4 atoms.
+```{julia}
+M0, N0 = 16, 4
+
+H0(g) = H(M0, N0, g)
+
+a0 = a(M0, N0)
+Jz0 = Jz(M0, N0);
 ```
 
 ```{julia}
-M = 16
-N = 4
-j = N / 2
-n = 2 * j + 1
-
-a = destroy(M) ⊗ qeye(Int(n))
-Jz = qeye(M) ⊗ jmat(j, :z)
-
-Jp = qeye(M) ⊗ jmat(j, :+)
-Jm = qeye(M) ⊗ jmat(j, :-);
-```
-
-```{julia}
-H0 = W * a' * a + W0 * Jz
-H1 = 1/ √N * (a + a') * (Jp + Jm)
-
-H(_g) = H0 + _g * H1
-
-print(H(1))
-```
-
-```{julia}
-fig = Figure(size = (600, 550))
-ax = Axis(
-    fig[1,1], 
-    yreversed = true, 
-    width = 500, 
-    height = 500
-)
-hm = heatmap!(ax, 
-    1:80, 
-    1:80, 
-    abs.(to_dense(H(1).data)'), 
-    colormap = cgrad([:white, :blue]),
-    colorrange = (0,20)
-)
-Colorbar(fig[1,2], hm)
-display(fig)
-```
-
-```{julia}
-nth = 0.25
-
-cops = [
-    √(κ * nth) * a',
-    √(κ * (1 + nth)) * a
-];
-```
-
-```{julia}
-gs = 0.01:0.05:1.01
+gs = 0.0:0.05:1.0
 ψGs = Vector{QuantumObject{KetQuantumObject}}()
-ρsss = Vector{QuantumObject{OperatorQuantumObject}}()
 for _g in gs
-    _H = H(_g)
-    _ω, _ψ = eigenstates(_H)
-    _ss = steadystate(_H, cops)
+ _H = H0(_g)
+ _, _ψ = eigenstates(_H)
     push!(ψGs, _ψ[1])
-    push!(ρsss, _ss)
 end
-```
 
-```{julia}
-n_ψGs = expect(a'*a, ψGs)
-Jz_ψGs = expect(Jz, ψGs);
-n_ρsss = expect(a'*a, ρsss)
-Jz_ρsss = expect(Jz, ρsss);
+nvec = expect(a0'*a0, ψGs)
+Jzvec = expect(Jz0, ψGs);
 ```
 
 ```{julia}
 fig = Figure(size = (800, 300))
 axn = Axis(
-    fig[1,1],
-    xlabel = "interaction strength",
-    ylabel = L"\langle \hat{n} \rangle"
+ fig[1,1],
+ xlabel = "interaction strength",
+ ylabel = L"\langle \hat{n} \rangle"
 )
 axJz = Axis(
-    fig[1,2],
-    xlabel = "interaction strength",
-    ylabel = L"\langle \hat{J}_{z} \rangle"
+ fig[1,2],
+ xlabel = "interaction strength",
+ ylabel = L"\langle \hat{J}_{z} \rangle"
 )
-ylims!(-j, j)
-lines!(axn, gs, real(n_ψGs))
-lines!(axn, gs, real(n_ρsss))
-lines!(axJz, gs, real(Jz_ψGs))
-lines!(axJz, gs, real(Jz_ρsss))
-display(fig)
+ylims!(-N0/2, N0/2)
+lines!(axn, gs, real(nvec))
+lines!(axJz, gs, real(Jzvec))
+display(fig);
 ```
+The expectation value of photon number and $J_z$ showed a sudden increment around $g_c$. 
 
 ```{julia}
 queue = [1,6,11,16,20]
-fig = Figure(size = (1050,1100))
-ax_bot = Axis(fig[5,1:6], height=200)
+fig = Figure(size = (1050,600))
+
+ax_bot = Axis(fig[3,1:6], height=200)
+ax_bot.title=L"\langle \hat{n} \rangle"
 xlims!(ax_bot, 0, maximum(gs))
-lines!(ax_bot, gs, real(n_ψGs), label="closed", color=:teal)
-lines!(ax_bot, gs, real(n_ρsss), label="dissipative", color=:red)
+lines!(ax_bot, gs, real(nvec), color=:teal)
 lines!(ax_bot, [gc, gc], [0,5])
-axislegend(ax_bot, position=(:right, :bottom))
+
 for (hpos, idx) in enumerate(queue)
-    _g = gs[idx]
+ _g = gs[idx]
     lines!(ax_bot, [_g,_g], [0,5], linestyle=:dash, linewidth=4, color=:blue)
-    _ax = Axis(
-        fig[1,hpos],
-        aspect = 1,
-        title="g = $_g"
-    )
-    _ρcav = ptrace(ψGs[idx], 1)
-    _wig = wigner(_ρcav, -7:0.07:7, -7:0.07:7)
-    _hm = heatmap!(_ax, -7:0.07:7, -7:0.07:7, _wig', colorrange=(0,0.35))
-    (hpos == 5) && (Colorbar(fig[1,6], _hm))
-
+ _ax = Axis(
+ fig[1,hpos],
+ aspect = 1,
+ title="g = $_g"
+ )
+ _ρcav = ptrace(ψGs[idx], 1)
+ _wig = wigner(_ρcav, -7:0.07:7, -7:0.07:7)
+ _hm = heatmap!(_ax, -7:0.07:7, -7:0.07:7, _wig', colorrange=(0,0.35))
+ (hpos == 5) && (Colorbar(fig[1,6], _hm))
     
-    _ax = Axis(
-        fig[2,hpos],
-        aspect = 1
-    )
-    _ρcav = ptrace(ρsss[idx], 1)
-    _wig = wigner(_ρcav, -7:0.07:7, -7:0.07:7)
-    _hm = heatmap!(_ax, -7:0.07:7, -7:0.07:7, _wig', colorrange=(0,0.35))
-    (hpos == 5) && (Colorbar(fig[2,6], _hm))
-    
-    _ρcav = ptrace(ψGs[idx], 1)
-    barplot(fig[3,hpos], real(diag(_ρcav)), label=L"g = $_g")
-    
-    _ρcav = ptrace(ρsss[idx], 1)
-    barplot(fig[4,hpos], real(diag(_ρcav)), label=L"g = $_g")
+ _ρcav = ptrace(ψGs[idx], 1)
+    barplot(fig[2,hpos], real(diag(_ρcav)), label=L"g = $_g")
 end
-display(fig)
+
+lines!(ax_bot, [gc, gc], [0,5])
+
+display(fig);
 ```
+As $g$ increases, the cavity ground state's wigner function plot looks more coherent than a thermal state.
 
 ```{julia}
-entropy_tot = []
-entropy_cav = []
-entropy_spin = []
+slists = []
+Ns = 8:8:24
 
-for _ρss in ρsss
-    ρcav, ρspin = ptrace(_ρss, 1), ptrace(_ρss, 2)
-    
-    push!(entropy_tot, entropy_vn(_ρss))
-    push!(entropy_cav, entropy_vn(ρcav))
-    push!(entropy_spin, entropy_vn(ρspin))
+for N in Ns
+ slist = []
+    for g in gs
+ H_ = H(M0, N, g)
+ _, vecs = eigenstates(H_)
+ S = entropy_mutual(vecs[1], 1, 2)
+        push!(slist, S)
+    end
+
+    push!(slists, slist)
 end
 ```
 
 ```{julia}
-fig = Figure(size = (1000,400))
+fig = Figure()
 ax = Axis(fig[1,1])
-lines!(ax, gs, entropy_tot, label="Total", linestyle=:solid)
-lines!(ax, gs, entropy_cav, label="Cavity", linestyle=:dot)
-lines!(ax, gs, entropy_spin, label="Spin", linestyle=:dash)
-lines!(ax, [gc, gc], [0,2])
-axislegend(ax, position=(:left, :top))
-display(fig)
+ax.xlabel = "coupling strength"
+ax.ylabel = "mutual entropy"
+
+for (idx, slist) in enumerate(slists)
+    lines!(gs, slist, label = string(Ns[idx]))
+end
+
+Legend(fig[1,2], ax, label = "number of atoms")
+display(fig);
 ```
+We further consult mutual entropy between the cavity and the spins as a measure of their correlation; the result showed that as the number of atoms $N$ increases, the peak of mutual entropy moves closer to $g_c$.
 
 
 

@@ -1,7 +1,7 @@
 ---
 title: "The Dicke Model"
 author: Li-Xun Cai
-date: 2025-03-06  # last update (keep this comment as a reminder)
+date: 2025-03-07  # last update (keep this comment as a reminder)
 
 engine: julia
 ---

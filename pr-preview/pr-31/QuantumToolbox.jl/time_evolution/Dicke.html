@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Li-Xun Cai">
-<meta name="dcterms.date" content="2025-03-04">
+<meta name="dcterms.date" content="2025-03-07">
 
 <title>The Dicke Model – Tutorials for Quantum Toolbox in Julia</title>
 <style>
@@ -217,7 +217,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Last Update</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2025-03-04</p>
+      <p class="date">2025-03-07</p>
     </div>
   </div>
   
@@ -233,31 +233,31 @@ window.Quarto = {
 <p>This tutorial mainly demonstrates the use of</p>
 <ul>
 <li><a href="https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.jmat"><code>jmat</code></a></li>
-<li><a href="https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.steadystate"><code>steadystate</code></a></li>
-<li><a href="https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.wigner"><code>wigner</code></a></li>
+<li><a href="https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.plot_wigner"><code>plot_wigner</code></a></li>
+<li><a href="https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.plot_fock_distribution"><code>plot_fock_distribution</code></a></li>
 <li><a href="https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.entropy_mutual"><code>entropy_mutual</code></a></li>
 </ul>
-<p>by exploring the Dicke model.</p>
+<p>to explore the Dicke model.</p>
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <p>The Dicke model describes a system where <span class="math inline">\(N\)</span> two-level atoms interact with a single quantized electromagnetic mode. The original microscopic form of the Dicke Hamiltonian is given by:</p>
 <p><span class="math display">\[
-H_D = \omega a^\dagger a + \sum_{i=1}^{N} \frac{\omega_0}{2} \sigma_z^{(i)} + \sum_{i=1}^{N} \frac{g}{\sqrt{N}} (a + a^\dagger) (\sigma_+^{(i)} + \sigma_-^{(i)})
+\hat{H}_D = \omega \hat{a}^\dagger \hat{a} + \sum_{i=1}^{N} \frac{\omega_0}{2} \hat{\sigma}_z^{(i)} + \sum_{i=1}^{N} \frac{g}{\sqrt{N}} (\hat{a} + \hat{a}^\dagger) (\hat{\sigma}_+^{(i)} + \hat{\sigma}_-^{(i)})
 \]</span></p>
 <p>where:</p>
 <ul>
-<li><span class="math inline">\(a\)</span>, <span class="math inline">\(a^\dagger\)</span> are the annihilation and creation operators for the cavity mode, with frequency <span class="math inline">\(\omega\)</span>.</li>
-<li><span class="math inline">\(\sigma_z^{(i)}, \sigma_\pm^{(i)}\)</span> are the Pauli matrices for the <span class="math inline">\(i\)</span>-th two-level atom, with transition frequency <span class="math inline">\(\omega_0\)</span>.</li>
+<li><span class="math inline">\(\hat{a}\)</span> and <span class="math inline">\(\hat{a}^\dagger\)</span> are the cavity (with frequency <span class="math inline">\(\omega\)</span>) annihilation and creation operators, respectively.</li>
+<li><span class="math inline">\(\hat{\sigma}_z^{(i)}, \hat{\sigma}_\pm^{(i)}\)</span> are the Pauli matrices for the <span class="math inline">\(i\)</span>-th two-level atom, with transition frequency <span class="math inline">\(\omega_0\)</span>.</li>
 <li><span class="math inline">\(g\)</span> represents the light-matter coupling strength.</li>
 </ul>
 <p>This formulation explicitly treats each spin individually. However, when the atoms interact identically with the cavity, we can rewrite the Hamiltonian regarding collective spin operators.</p>
 <p><span class="math display">\[
-J_z = \sum_{i=1}^{N} \sigma_z^{(i)}, \quad J_{\pm} = \sum_{i=1}^{N} \sigma_{\pm}^{(i)},
+\hat{J}_z = \sum_{i=1}^{N} \hat{\sigma}_z^{(i)}, \quad \hat{J}_{\pm} = \sum_{i=1}^{N} \hat{\sigma}_{\pm}^{(i)},
 \]</span> which describe the total spin of the system as a pseudospin of length <span class="math inline">\(j = N/2\)</span>. Using these collective operators, the reformulated Dicke Hamiltonian takes the form:</p>
 <p><span class="math display">\[
-H_D = \omega a^\dagger a + \omega_0 J_z + \frac{g}{\sqrt{N}} (a + a^\dagger) (J_+ + J_-)
+\hat{H}_D = \omega \hat{a}^\dagger \hat{a} + \omega_0 \hat{J}_z + \frac{g}{\sqrt{N}} (\hat{a} + \hat{a}^\dagger) (\hat{J}_+ + \hat{J}_-)
 \]</span></p>
-<p>This formulation reduces complexity, as it allows us to work on a collective basis instead of the whole individual spin Hilbert space. The superradiant phase transition occurs when the coupling strength <span class="math inline">\(g\)</span> exceeds a critical threshold, leading to a macroscopic population of the cavity mode.</p>
+<p>This formulation reduces complexity, as it allows us to work on a collective basis instead of the whole individual spin Hilbert space. The superradiant phase transition occurs when the coupling strength <span class="math inline">\(g\)</span> exceeds a critical threshold <span class="math inline">\(g_c = 0.5\sqrt{\omega/\omega_0}\)</span>, leading to a macroscopic population of the cavity mode.</p>
 </section>
 <section id="code-demonstration" class="level2">
 <h2 class="anchored" data-anchor-id="code-demonstration">Code demonstration</h2>
@@ -269,7 +269,7 @@ H_D = \omega a^\dagger a + \omega_0 J_z + \frac{g}{\sqrt{N}} (a + a^\dagger) (J_
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1"></a>ω <span class="op">=</span> <span class="fl">1</span></span>
 <span id="cb2-2"><a href="#cb2-2"></a>ω<span class="fl">0</span> <span class="op">=</span> <span class="fl">1</span></span>
 <span id="cb2-3"><a href="#cb2-3"></a></span>
-<span id="cb2-4"><a href="#cb2-4"></a>gc <span class="op">=</span> <span class="fu">√</span>(ω <span class="op">*</span> ω<span class="fl">0</span>) <span class="op">/</span> <span class="fl">2</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a>gc <span class="op">=</span> <span class="fu">√</span>(ω<span class="op">/</span>ω<span class="fl">0</span>)<span class="op">/</span><span class="fl">2</span></span>
 <span id="cb2-5"><a href="#cb2-5"></a></span>
 <span id="cb2-6"><a href="#cb2-6"></a>κ <span class="op">=</span> <span class="fl">0.05</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -281,16 +281,16 @@ H_D = \omega a^\dagger a + \omega_0 J_z + \frac{g}{\sqrt{N}} (a + a^\dagger) (J_
 <span id="cb3-4"><a href="#cb3-4"></a><span class="fu">a</span>(M, N) <span class="op">=</span> (<span class="fu">destroy</span>(M) <span class="op">⊗</span> <span class="fu">qeye</span>(N<span class="op">+</span><span class="fl">1</span>))</span>
 <span id="cb3-5"><a href="#cb3-5"></a></span>
 <span id="cb3-6"><a href="#cb3-6"></a><span class="kw">function</span> <span class="fu">H</span>(M, N, g)</span>
-<span id="cb3-7"><a href="#cb3-7"></a> j <span class="op">=</span> N <span class="op">/</span> <span class="fl">2</span></span>
-<span id="cb3-8"><a href="#cb3-8"></a> n <span class="op">=</span> <span class="fl">2</span> <span class="op">*</span> j <span class="op">+</span> <span class="fl">1</span></span>
-<span id="cb3-9"><a href="#cb3-9"></a>    </span>
-<span id="cb3-10"><a href="#cb3-10"></a> a_ <span class="op">=</span> <span class="fu">a</span>(M, N)</span>
-<span id="cb3-11"><a href="#cb3-11"></a> Jz_ <span class="op">=</span> <span class="fu">Jz</span>(M, N)</span>
-<span id="cb3-12"><a href="#cb3-12"></a> Jp <span class="op">=</span> <span class="fu">qeye</span>(M) <span class="op">⊗</span> <span class="fu">jmat</span>(j, <span class="op">:+</span>)</span>
-<span id="cb3-13"><a href="#cb3-13"></a> Jm <span class="op">=</span> <span class="fu">qeye</span>(M) <span class="op">⊗</span> <span class="fu">jmat</span>(j, <span class="op">:-</span>);</span>
-<span id="cb3-14"><a href="#cb3-14"></a>    </span>
-<span id="cb3-15"><a href="#cb3-15"></a> H0 <span class="op">=</span> ω <span class="op">*</span> a_<span class="op">'</span> <span class="op">*</span> a_ <span class="op">+</span> ω<span class="fl">0</span> <span class="op">*</span> Jz_</span>
-<span id="cb3-16"><a href="#cb3-16"></a> H1 <span class="op">=</span> <span class="fl">1</span><span class="op">/</span> √N <span class="op">*</span> (a_ <span class="op">+</span> a_<span class="op">'</span>) <span class="op">*</span> (Jp <span class="op">+</span> Jm)</span>
+<span id="cb3-7"><a href="#cb3-7"></a>    j <span class="op">=</span> N <span class="op">/</span> <span class="fl">2</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a>    n <span class="op">=</span> <span class="fl">2</span> <span class="op">*</span> j <span class="op">+</span> <span class="fl">1</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a></span>
+<span id="cb3-10"><a href="#cb3-10"></a>    a_ <span class="op">=</span> <span class="fu">a</span>(M, N)</span>
+<span id="cb3-11"><a href="#cb3-11"></a>    Jz_ <span class="op">=</span> <span class="fu">Jz</span>(M, N)</span>
+<span id="cb3-12"><a href="#cb3-12"></a>    Jp <span class="op">=</span> <span class="fu">qeye</span>(M) <span class="op">⊗</span> <span class="fu">jmat</span>(j, <span class="op">:+</span>)</span>
+<span id="cb3-13"><a href="#cb3-13"></a>    Jm <span class="op">=</span> <span class="fu">qeye</span>(M) <span class="op">⊗</span> <span class="fu">jmat</span>(j, <span class="op">:-</span>);</span>
+<span id="cb3-14"><a href="#cb3-14"></a></span>
+<span id="cb3-15"><a href="#cb3-15"></a>    H0 <span class="op">=</span> ω <span class="op">*</span> a_<span class="op">'</span> <span class="op">*</span> a_ <span class="op">+</span> ω<span class="fl">0</span> <span class="op">*</span> Jz_</span>
+<span id="cb3-16"><a href="#cb3-16"></a>    H1 <span class="op">=</span> <span class="fl">1</span><span class="op">/</span> √N <span class="op">*</span> (a_ <span class="op">+</span> a_<span class="op">'</span>) <span class="op">*</span> (Jp <span class="op">+</span> Jm)</span>
 <span id="cb3-17"><a href="#cb3-17"></a></span>
 <span id="cb3-18"><a href="#cb3-18"></a>    <span class="cf">return</span> (H0 <span class="op">+</span> g <span class="op">*</span> H1)</span>
 <span id="cb3-19"><a href="#cb3-19"></a><span class="kw">end</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -308,8 +308,8 @@ H_D = \omega a^\dagger a + \omega_0 J_z + \frac{g}{\sqrt{N}} (a + a^\dagger) (J_
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1"></a>gs <span class="op">=</span> <span class="fl">0.0</span><span class="op">:</span><span class="fl">0.05</span><span class="op">:</span><span class="fl">1.0</span></span>
 <span id="cb5-2"><a href="#cb5-2"></a>ψGs <span class="op">=</span> <span class="fu">Vector</span><span class="dt">{QuantumObject{KetQuantumObject}}</span>()</span>
 <span id="cb5-3"><a href="#cb5-3"></a><span class="cf">for</span> _g <span class="kw">in</span> gs</span>
-<span id="cb5-4"><a href="#cb5-4"></a> _H <span class="op">=</span> <span class="fu">H0</span>(_g)</span>
-<span id="cb5-5"><a href="#cb5-5"></a> _, _ψ <span class="op">=</span> <span class="fu">eigenstates</span>(_H)</span>
+<span id="cb5-4"><a href="#cb5-4"></a>    _H <span class="op">=</span> <span class="fu">H0</span>(_g)</span>
+<span id="cb5-5"><a href="#cb5-5"></a>    _, _ψ <span class="op">=</span> <span class="fu">eigenstates</span>(_H)</span>
 <span id="cb5-6"><a href="#cb5-6"></a>    <span class="fu">push!</span>(ψGs, _ψ[<span class="fl">1</span>])</span>
 <span id="cb5-7"><a href="#cb5-7"></a><span class="cf">end</span></span>
 <span id="cb5-8"><a href="#cb5-8"></a></span>
@@ -340,35 +340,35 @@ H_D = \omega a^\dagger a + \omega_0 J_z + \frac{g}{\sqrt{N}} (a + a^\dagger) (J_
 </div>
 </div>
 </div>
-<p>The expectation value of photon number and <span class="math inline">\(J_z\)</span> showed a sudden increment around <span class="math inline">\(g_c\)</span>.</p>
+<p>The expectation value of photon number and <span class="math inline">\(\hat{J}_z\)</span> showed a sudden increment around <span class="math inline">\(g_c\)</span>.</p>
 <div id="14" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1"></a>queue <span class="op">=</span> [<span class="fl">1</span>,<span class="fl">6</span>,<span class="fl">11</span>,<span class="fl">16</span>,<span class="fl">20</span>]</span>
-<span id="cb7-2"><a href="#cb7-2"></a>fig <span class="op">=</span> <span class="fu">Figure</span>(size <span class="op">=</span> (<span class="fl">1050</span>,<span class="fl">600</span>))</span>
-<span id="cb7-3"><a href="#cb7-3"></a></span>
-<span id="cb7-4"><a href="#cb7-4"></a>ax_bot <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">3</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">6</span>], height<span class="op">=</span><span class="fl">200</span>)</span>
-<span id="cb7-5"><a href="#cb7-5"></a>ax_bot.title<span class="op">=</span>L<span class="st">"\langle \hat{n} </span><span class="sc">\r</span><span class="st">angle"</span></span>
-<span id="cb7-6"><a href="#cb7-6"></a><span class="fu">xlims!</span>(ax_bot, <span class="fl">0</span>, <span class="fu">maximum</span>(gs))</span>
-<span id="cb7-7"><a href="#cb7-7"></a><span class="fu">lines!</span>(ax_bot, gs, <span class="fu">real</span>(nvec), color<span class="op">=:</span>teal)</span>
-<span id="cb7-8"><a href="#cb7-8"></a><span class="fu">lines!</span>(ax_bot, [gc, gc], [<span class="fl">0</span>,<span class="fl">5</span>])</span>
-<span id="cb7-9"><a href="#cb7-9"></a></span>
-<span id="cb7-10"><a href="#cb7-10"></a><span class="cf">for</span> (hpos, idx) <span class="kw">in</span> <span class="fu">enumerate</span>(queue)</span>
-<span id="cb7-11"><a href="#cb7-11"></a> _g <span class="op">=</span> gs[idx]</span>
-<span id="cb7-12"><a href="#cb7-12"></a>    <span class="fu">lines!</span>(ax_bot, [_g,_g], [<span class="fl">0</span>,<span class="fl">5</span>], linestyle<span class="op">=:</span>dash, linewidth<span class="op">=</span><span class="fl">4</span>, color<span class="op">=:</span>blue)</span>
-<span id="cb7-13"><a href="#cb7-13"></a> _ax <span class="op">=</span> <span class="fu">Axis</span>(</span>
-<span id="cb7-14"><a href="#cb7-14"></a> fig[<span class="fl">1</span>,hpos],</span>
-<span id="cb7-15"><a href="#cb7-15"></a> aspect <span class="op">=</span> <span class="fl">1</span>,</span>
-<span id="cb7-16"><a href="#cb7-16"></a> title<span class="op">=</span><span class="st">"g = </span><span class="sc">$</span>_g<span class="st">"</span></span>
-<span id="cb7-17"><a href="#cb7-17"></a> )</span>
-<span id="cb7-18"><a href="#cb7-18"></a> _ρcav <span class="op">=</span> <span class="fu">ptrace</span>(ψGs[idx], <span class="fl">1</span>)</span>
-<span id="cb7-19"><a href="#cb7-19"></a> _wig <span class="op">=</span> <span class="fu">wigner</span>(_ρcav, <span class="op">-</span><span class="fl">7</span><span class="op">:</span><span class="fl">0.07</span><span class="op">:</span><span class="fl">7</span>, <span class="op">-</span><span class="fl">7</span><span class="op">:</span><span class="fl">0.07</span><span class="op">:</span><span class="fl">7</span>)</span>
-<span id="cb7-20"><a href="#cb7-20"></a> _hm <span class="op">=</span> <span class="fu">heatmap!</span>(_ax, <span class="op">-</span><span class="fl">7</span><span class="op">:</span><span class="fl">0.07</span><span class="op">:</span><span class="fl">7</span>, <span class="op">-</span><span class="fl">7</span><span class="op">:</span><span class="fl">0.07</span><span class="op">:</span><span class="fl">7</span>, _wig<span class="op">'</span>, colorrange<span class="op">=</span>(<span class="fl">0</span>,<span class="fl">0.35</span>))</span>
-<span id="cb7-21"><a href="#cb7-21"></a> (hpos <span class="op">==</span> <span class="fl">5</span>) <span class="op">&amp;&amp;</span> (<span class="fu">Colorbar</span>(fig[<span class="fl">1</span>,<span class="fl">6</span>], _hm))</span>
-<span id="cb7-22"><a href="#cb7-22"></a>    </span>
-<span id="cb7-23"><a href="#cb7-23"></a> _ρcav <span class="op">=</span> <span class="fu">ptrace</span>(ψGs[idx], <span class="fl">1</span>)</span>
-<span id="cb7-24"><a href="#cb7-24"></a>    <span class="fu">barplot</span>(fig[<span class="fl">2</span>,hpos], <span class="fu">real</span>(<span class="fu">diag</span>(_ρcav)), label<span class="op">=</span>L<span class="st">"g = </span><span class="sc">$</span>_g<span class="st">"</span>)</span>
-<span id="cb7-25"><a href="#cb7-25"></a><span class="cf">end</span></span>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># the indices in coupling strength list (gs)</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="co"># to display wigner and fock distribution</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a>cases <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">:</span><span class="fl">21</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a></span>
+<span id="cb7-5"><a href="#cb7-5"></a>fig <span class="op">=</span> <span class="fu">Figure</span>(size <span class="op">=</span> (<span class="fl">1050</span>,<span class="fl">600</span>))</span>
+<span id="cb7-6"><a href="#cb7-6"></a></span>
+<span id="cb7-7"><a href="#cb7-7"></a><span class="cf">for</span> (hpos, idx) <span class="kw">in</span> <span class="fu">enumerate</span>(cases)</span>
+<span id="cb7-8"><a href="#cb7-8"></a>    _g <span class="op">=</span> gs[idx] <span class="co"># coupling strength</span></span>
+<span id="cb7-9"><a href="#cb7-9"></a>    _ρcav <span class="op">=</span> <span class="fu">ptrace</span>(ψGs[idx], <span class="fl">1</span>) <span class="co"># cavity reduced state</span></span>
+<span id="cb7-10"><a href="#cb7-10"></a>    </span>
+<span id="cb7-11"><a href="#cb7-11"></a>    <span class="co"># plot wigner</span></span>
+<span id="cb7-12"><a href="#cb7-12"></a>    _, _ax, _hm <span class="op">=</span> <span class="fu">plot_wigner</span>(_ρcav, location <span class="op">=</span> fig[<span class="fl">1</span>,hpos])</span>
+<span id="cb7-13"><a href="#cb7-13"></a>    _ax.title <span class="op">=</span> <span class="st">"g = </span><span class="sc">$</span>_g<span class="st">"</span></span>
+<span id="cb7-14"><a href="#cb7-14"></a>    <span class="cf">if</span> hpos <span class="op">==</span> <span class="fl">5</span> <span class="co"># Add colorbar with the last returned heatmap (_hm) </span></span>
+<span id="cb7-15"><a href="#cb7-15"></a>        <span class="fu">Colorbar</span>(fig[<span class="fl">1</span>,<span class="fl">6</span>], _hm)</span>
+<span id="cb7-16"><a href="#cb7-16"></a>    <span class="cf">end</span></span>
+<span id="cb7-17"><a href="#cb7-17"></a>    </span>
+<span id="cb7-18"><a href="#cb7-18"></a>    <span class="co"># plot fock distribution</span></span>
+<span id="cb7-19"><a href="#cb7-19"></a>    <span class="fu">plot_fock_distribution</span>(_ρcav, location <span class="op">=</span> fig[<span class="fl">2</span>,hpos])</span>
+<span id="cb7-20"><a href="#cb7-20"></a><span class="cf">end</span></span>
+<span id="cb7-21"><a href="#cb7-21"></a></span>
+<span id="cb7-22"><a href="#cb7-22"></a><span class="co"># plot average photon number with respect to coupling strength</span></span>
+<span id="cb7-23"><a href="#cb7-23"></a>ax3 <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">3</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">6</span>], height<span class="op">=</span><span class="fl">200</span>, xlabel<span class="op">=</span>L<span class="st">"g"</span>, ylabel<span class="op">=</span>L<span class="st">"\langle \hat{n} </span><span class="sc">\r</span><span class="st">angle"</span>)</span>
+<span id="cb7-24"><a href="#cb7-24"></a><span class="fu">xlims!</span>(ax3, <span class="op">-</span><span class="fl">0.02</span>, <span class="fl">1.02</span>)</span>
+<span id="cb7-25"><a href="#cb7-25"></a><span class="fu">lines!</span>(ax3, gs, <span class="fu">real</span>(nvec), color<span class="op">=:</span>teal)</span>
 <span id="cb7-26"><a href="#cb7-26"></a></span>
-<span id="cb7-27"><a href="#cb7-27"></a><span class="fu">lines!</span>(ax_bot, [gc, gc], [<span class="fl">0</span>,<span class="fl">5</span>])</span>
+<span id="cb7-27"><a href="#cb7-27"></a><span class="fu">vlines!</span>(ax3, gs[cases], color<span class="op">=:</span>orange, linestyle <span class="op">=</span> <span class="op">:</span>dash, linewidth <span class="op">=</span> <span class="fl">4</span>)</span>
 <span id="cb7-28"><a href="#cb7-28"></a></span>
 <span id="cb7-29"><a href="#cb7-29"></a><span class="fu">display</span>(fig);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
@@ -433,10 +433,10 @@ Current admin team:
 Package information:
 ====================================
 Julia              Ver. 1.11.3
-QuantumToolbox     Ver. 0.28.0
+QuantumToolbox     Ver. 0.29.0
 SciMLOperators     Ver. 0.3.12
 LinearSolve        Ver. 3.4.0
-OrdinaryDiffEqCore Ver. 1.18.1
+OrdinaryDiffEqCore Ver. 1.19.0
 
 System information:
 ====================================

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Li-Xun Cai">
-<meta name="dcterms.date" content="2025-03-07">
+<meta name="dcterms.date" content="2025-03-10">
 
 <title>The Dicke Model – Tutorials for Quantum Toolbox in Julia</title>
 <style>
@@ -217,7 +217,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Last Update</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2025-03-07</p>
+      <p class="date">2025-03-10</p>
     </div>
   </div>
   
@@ -306,15 +306,14 @@ window.Quarto = {
 </div>
 <div id="10" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1"></a>gs <span class="op">=</span> <span class="fl">0.0</span><span class="op">:</span><span class="fl">0.05</span><span class="op">:</span><span class="fl">1.0</span></span>
-<span id="cb5-2"><a href="#cb5-2"></a>ψGs <span class="op">=</span> <span class="fu">Vector</span><span class="dt">{QuantumObject{KetQuantumObject}}</span>()</span>
-<span id="cb5-3"><a href="#cb5-3"></a><span class="cf">for</span> _g <span class="kw">in</span> gs</span>
-<span id="cb5-4"><a href="#cb5-4"></a>    _H <span class="op">=</span> <span class="fu">H0</span>(_g)</span>
-<span id="cb5-5"><a href="#cb5-5"></a>    _, _ψ <span class="op">=</span> <span class="fu">eigenstates</span>(_H)</span>
-<span id="cb5-6"><a href="#cb5-6"></a>    <span class="fu">push!</span>(ψGs, _ψ[<span class="fl">1</span>])</span>
-<span id="cb5-7"><a href="#cb5-7"></a><span class="cf">end</span></span>
-<span id="cb5-8"><a href="#cb5-8"></a></span>
-<span id="cb5-9"><a href="#cb5-9"></a>nvec <span class="op">=</span> <span class="fu">expect</span>(a0<span class="op">'*</span>a0, ψGs)</span>
-<span id="cb5-10"><a href="#cb5-10"></a>Jzvec <span class="op">=</span> <span class="fu">expect</span>(Jz0, ψGs);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-2"><a href="#cb5-2"></a>ψGs <span class="op">=</span> <span class="fu">map</span>(gs) <span class="cf">do</span> g</span>
+<span id="cb5-3"><a href="#cb5-3"></a>    H <span class="op">=</span> <span class="fu">H0</span>(g)</span>
+<span id="cb5-4"><a href="#cb5-4"></a>    vals, vecs <span class="op">=</span> <span class="fu">eigenstates</span>(H)</span>
+<span id="cb5-5"><a href="#cb5-5"></a>    vecs[<span class="fl">1</span>]</span>
+<span id="cb5-6"><a href="#cb5-6"></a><span class="cf">end</span></span>
+<span id="cb5-7"><a href="#cb5-7"></a></span>
+<span id="cb5-8"><a href="#cb5-8"></a>nvec <span class="op">=</span> <span class="fu">expect</span>(a0<span class="op">'*</span>a0, ψGs)</span>
+<span id="cb5-9"><a href="#cb5-9"></a>Jzvec <span class="op">=</span> <span class="fu">expect</span>(Jz0, ψGs);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="12" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1"></a>fig <span class="op">=</span> <span class="fu">Figure</span>(size <span class="op">=</span> (<span class="fl">800</span>, <span class="fl">300</span>))</span>
@@ -346,31 +345,36 @@ window.Quarto = {
 <span id="cb7-2"><a href="#cb7-2"></a><span class="co"># to display wigner and fock distribution</span></span>
 <span id="cb7-3"><a href="#cb7-3"></a>cases <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">:</span><span class="fl">21</span></span>
 <span id="cb7-4"><a href="#cb7-4"></a></span>
-<span id="cb7-5"><a href="#cb7-5"></a>fig <span class="op">=</span> <span class="fu">Figure</span>(size <span class="op">=</span> (<span class="fl">1050</span>,<span class="fl">600</span>))</span>
-<span id="cb7-6"><a href="#cb7-6"></a></span>
-<span id="cb7-7"><a href="#cb7-7"></a><span class="cf">for</span> (hpos, idx) <span class="kw">in</span> <span class="fu">enumerate</span>(cases)</span>
-<span id="cb7-8"><a href="#cb7-8"></a>    _g <span class="op">=</span> gs[idx] <span class="co"># coupling strength</span></span>
-<span id="cb7-9"><a href="#cb7-9"></a>    _ρcav <span class="op">=</span> <span class="fu">ptrace</span>(ψGs[idx], <span class="fl">1</span>) <span class="co"># cavity reduced state</span></span>
-<span id="cb7-10"><a href="#cb7-10"></a>    </span>
-<span id="cb7-11"><a href="#cb7-11"></a>    <span class="co"># plot wigner</span></span>
-<span id="cb7-12"><a href="#cb7-12"></a>    _, _ax, _hm <span class="op">=</span> <span class="fu">plot_wigner</span>(_ρcav, location <span class="op">=</span> fig[<span class="fl">1</span>,hpos])</span>
-<span id="cb7-13"><a href="#cb7-13"></a>    _ax.title <span class="op">=</span> <span class="st">"g = </span><span class="sc">$</span>_g<span class="st">"</span></span>
-<span id="cb7-14"><a href="#cb7-14"></a>    <span class="cf">if</span> hpos <span class="op">==</span> <span class="fl">5</span> <span class="co"># Add colorbar with the last returned heatmap (_hm) </span></span>
-<span id="cb7-15"><a href="#cb7-15"></a>        <span class="fu">Colorbar</span>(fig[<span class="fl">1</span>,<span class="fl">6</span>], _hm)</span>
-<span id="cb7-16"><a href="#cb7-16"></a>    <span class="cf">end</span></span>
+<span id="cb7-5"><a href="#cb7-5"></a>fig <span class="op">=</span> <span class="fu">Figure</span>(size <span class="op">=</span> (<span class="fl">900</span>,<span class="fl">650</span>))</span>
+<span id="cb7-6"><a href="#cb7-6"></a><span class="cf">for</span> (hpos, idx) <span class="kw">in</span> <span class="fu">enumerate</span>(cases)</span>
+<span id="cb7-7"><a href="#cb7-7"></a>    g <span class="op">=</span> gs[idx] <span class="co"># coupling strength</span></span>
+<span id="cb7-8"><a href="#cb7-8"></a>    ρcav <span class="op">=</span> <span class="fu">ptrace</span>(ψGs[idx], <span class="fl">1</span>) <span class="co"># cavity reduced state</span></span>
+<span id="cb7-9"><a href="#cb7-9"></a>    </span>
+<span id="cb7-10"><a href="#cb7-10"></a>    <span class="co"># plot wigner</span></span>
+<span id="cb7-11"><a href="#cb7-11"></a>    _, ax, hm <span class="op">=</span> <span class="fu">plot_wigner</span>(ρcav, location <span class="op">=</span> fig[<span class="fl">1</span>,hpos])</span>
+<span id="cb7-12"><a href="#cb7-12"></a>    ax.title <span class="op">=</span> <span class="st">"g = </span><span class="sc">$</span>g<span class="st">"</span></span>
+<span id="cb7-13"><a href="#cb7-13"></a>    ax.aspect <span class="op">=</span> <span class="fl">1</span></span>
+<span id="cb7-14"><a href="#cb7-14"></a>    </span>
+<span id="cb7-15"><a href="#cb7-15"></a>    <span class="co"># plot fock distribution</span></span>
+<span id="cb7-16"><a href="#cb7-16"></a>    _, ax2 <span class="op">=</span> <span class="fu">plot_fock_distribution</span>(ρcav, location <span class="op">=</span> fig[<span class="fl">2</span>,hpos])</span>
 <span id="cb7-17"><a href="#cb7-17"></a>    </span>
-<span id="cb7-18"><a href="#cb7-18"></a>    <span class="co"># plot fock distribution</span></span>
-<span id="cb7-19"><a href="#cb7-19"></a>    <span class="fu">plot_fock_distribution</span>(_ρcav, location <span class="op">=</span> fig[<span class="fl">2</span>,hpos])</span>
-<span id="cb7-20"><a href="#cb7-20"></a><span class="cf">end</span></span>
-<span id="cb7-21"><a href="#cb7-21"></a></span>
-<span id="cb7-22"><a href="#cb7-22"></a><span class="co"># plot average photon number with respect to coupling strength</span></span>
-<span id="cb7-23"><a href="#cb7-23"></a>ax3 <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">3</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">6</span>], height<span class="op">=</span><span class="fl">200</span>, xlabel<span class="op">=</span>L<span class="st">"g"</span>, ylabel<span class="op">=</span>L<span class="st">"\langle \hat{n} </span><span class="sc">\r</span><span class="st">angle"</span>)</span>
-<span id="cb7-24"><a href="#cb7-24"></a><span class="fu">xlims!</span>(ax3, <span class="op">-</span><span class="fl">0.02</span>, <span class="fl">1.02</span>)</span>
-<span id="cb7-25"><a href="#cb7-25"></a><span class="fu">lines!</span>(ax3, gs, <span class="fu">real</span>(nvec), color<span class="op">=:</span>teal)</span>
+<span id="cb7-18"><a href="#cb7-18"></a>    <span class="cf">if</span> hpos <span class="op">!=</span> <span class="fl">1</span></span>
+<span id="cb7-19"><a href="#cb7-19"></a>        ax.xlabel, ax.ylabel, ax2.ylabel, ax2.xlabel <span class="op">=</span> <span class="fu">fill</span>(<span class="st">""</span>,<span class="fl">4</span>)</span>
+<span id="cb7-20"><a href="#cb7-20"></a>        ax2.xticks <span class="op">=</span> (<span class="fl">0</span><span class="op">:</span>M0<span class="op">-</span><span class="fl">1</span>, [<span class="st">""</span> for t <span class="kw">in</span> <span class="fl">0</span><span class="op">:</span>M0<span class="op">-</span><span class="fl">1</span>])</span>
+<span id="cb7-21"><a href="#cb7-21"></a>        <span class="cf">if</span> hpos <span class="op">==</span> <span class="fl">5</span> <span class="co"># Add colorbar with the last returned heatmap (_hm) </span></span>
+<span id="cb7-22"><a href="#cb7-22"></a>            <span class="fu">Colorbar</span>(fig[<span class="fl">1</span>,<span class="fl">6</span>], hm)</span>
+<span id="cb7-23"><a href="#cb7-23"></a>        <span class="cf">end</span></span>
+<span id="cb7-24"><a href="#cb7-24"></a>    <span class="cf">end</span></span>
+<span id="cb7-25"><a href="#cb7-25"></a><span class="cf">end</span></span>
 <span id="cb7-26"><a href="#cb7-26"></a></span>
-<span id="cb7-27"><a href="#cb7-27"></a><span class="fu">vlines!</span>(ax3, gs[cases], color<span class="op">=:</span>orange, linestyle <span class="op">=</span> <span class="op">:</span>dash, linewidth <span class="op">=</span> <span class="fl">4</span>)</span>
-<span id="cb7-28"><a href="#cb7-28"></a></span>
-<span id="cb7-29"><a href="#cb7-29"></a><span class="fu">display</span>(fig);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-27"><a href="#cb7-27"></a><span class="co"># plot average photon number with respect to coupling strength</span></span>
+<span id="cb7-28"><a href="#cb7-28"></a>ax3 <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">3</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">6</span>], height<span class="op">=</span><span class="fl">200</span>, xlabel<span class="op">=</span>L<span class="st">"g"</span>, ylabel<span class="op">=</span>L<span class="st">"\langle \hat{n} </span><span class="sc">\r</span><span class="st">angle"</span>)</span>
+<span id="cb7-29"><a href="#cb7-29"></a><span class="fu">xlims!</span>(ax3, <span class="op">-</span><span class="fl">0.02</span>, <span class="fl">1.02</span>)</span>
+<span id="cb7-30"><a href="#cb7-30"></a><span class="fu">lines!</span>(ax3, gs, <span class="fu">real</span>(nvec), color<span class="op">=:</span>teal)</span>
+<span id="cb7-31"><a href="#cb7-31"></a>ax3.xlabelsize, ax3.ylabelsize <span class="op">=</span> <span class="fl">20</span>, <span class="fl">20</span></span>
+<span id="cb7-32"><a href="#cb7-32"></a><span class="fu">vlines!</span>(ax3, gs[cases], color<span class="op">=:</span>orange, linestyle <span class="op">=</span> <span class="op">:</span>dash, linewidth <span class="op">=</span> <span class="fl">4</span>)</span>
+<span id="cb7-33"><a href="#cb7-33"></a></span>
+<span id="cb7-34"><a href="#cb7-34"></a><span class="fu">display</span>(fig);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -385,19 +389,18 @@ window.Quarto = {
 <span id="cb8-2"><a href="#cb8-2"></a>Ns <span class="op">=</span> <span class="fl">8</span><span class="op">:</span><span class="fl">8</span><span class="op">:</span><span class="fl">24</span></span>
 <span id="cb8-3"><a href="#cb8-3"></a></span>
 <span id="cb8-4"><a href="#cb8-4"></a><span class="cf">for</span> N <span class="kw">in</span> Ns</span>
-<span id="cb8-5"><a href="#cb8-5"></a> slist <span class="op">=</span> []</span>
+<span id="cb8-5"><a href="#cb8-5"></a>    slist <span class="op">=</span> []</span>
 <span id="cb8-6"><a href="#cb8-6"></a>    <span class="cf">for</span> g <span class="kw">in</span> gs</span>
-<span id="cb8-7"><a href="#cb8-7"></a> H_ <span class="op">=</span> <span class="fu">H</span>(M0, N, g)</span>
-<span id="cb8-8"><a href="#cb8-8"></a> _, vecs <span class="op">=</span> <span class="fu">eigenstates</span>(H_)</span>
-<span id="cb8-9"><a href="#cb8-9"></a> S <span class="op">=</span> <span class="fu">entropy_mutual</span>(vecs[<span class="fl">1</span>], <span class="fl">1</span>, <span class="fl">2</span>)</span>
+<span id="cb8-7"><a href="#cb8-7"></a>        H_ <span class="op">=</span> <span class="fu">H</span>(M0, N, g)</span>
+<span id="cb8-8"><a href="#cb8-8"></a>        _, vecs <span class="op">=</span> <span class="fu">eigenstates</span>(H_)</span>
+<span id="cb8-9"><a href="#cb8-9"></a>        S <span class="op">=</span> <span class="fu">entropy_mutual</span>(vecs[<span class="fl">1</span>], <span class="fl">1</span>, <span class="fl">2</span>)</span>
 <span id="cb8-10"><a href="#cb8-10"></a>        <span class="fu">push!</span>(slist, S)</span>
 <span id="cb8-11"><a href="#cb8-11"></a>    <span class="cf">end</span></span>
-<span id="cb8-12"><a href="#cb8-12"></a></span>
-<span id="cb8-13"><a href="#cb8-13"></a>    <span class="fu">push!</span>(slists, slist)</span>
-<span id="cb8-14"><a href="#cb8-14"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-12"><a href="#cb8-12"></a>    <span class="fu">push!</span>(slists, slist)</span>
+<span id="cb8-13"><a href="#cb8-13"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="18" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1"></a>fig <span class="op">=</span> <span class="fu">Figure</span>()</span>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1"></a>fig <span class="op">=</span> <span class="fu">Figure</span>(size<span class="op">=</span>(<span class="fl">800</span>, <span class="fl">400</span>))</span>
 <span id="cb9-2"><a href="#cb9-2"></a>ax <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">1</span>,<span class="fl">1</span>])</span>
 <span id="cb9-3"><a href="#cb9-3"></a>ax.xlabel <span class="op">=</span> <span class="st">"coupling strength"</span></span>
 <span id="cb9-4"><a href="#cb9-4"></a>ax.ylabel <span class="op">=</span> <span class="st">"mutual entropy"</span></span>
@@ -432,8 +435,8 @@ Current admin team:
 
 Package information:
 ====================================
-Julia              Ver. 1.11.3
-QuantumToolbox     Ver. 0.29.0
+Julia              Ver. 1.11.4
+QuantumToolbox     Ver. 0.29.1
 SciMLOperators     Ver. 0.3.12
 LinearSolve        Ver. 3.4.0
 OrdinaryDiffEqCore Ver. 1.19.0

@@ -1,7 +1,7 @@
 ---
 title: "The Dicke Model"
 author: Li-Xun Cai
-date: 2025-03-07  # last update (keep this comment as a reminder)
+date: 2025-03-10  # last update (keep this comment as a reminder)
 
 engine: julia
 ---
@@ -96,11 +96,10 @@ Jz0 = Jz(M0, N0);
 
 ```{julia}
 gs = 0.0:0.05:1.0
-ψGs = Vector{QuantumObject{KetQuantumObject}}()
-for _g in gs
-    _H = H0(_g)
-    _, _ψ = eigenstates(_H)
-    push!(ψGs, _ψ[1])
+ψGs = map(gs) do g
+    H = H0(g)
+    vals, vecs = eigenstates(H)
+    vecs[1]
 end
 
 nvec = expect(a0'*a0, ψGs)
@@ -131,28 +130,33 @@ The expectation value of photon number and $\hat{J}_z$ showed a sudden increment
 # to display wigner and fock distribution
 cases = 1:5:21
 
-fig = Figure(size = (1050,600))
-
+fig = Figure(size = (900,650))
 for (hpos, idx) in enumerate(cases)
-    _g = gs[idx] # coupling strength
-    _ρcav = ptrace(ψGs[idx], 1) # cavity reduced state
+    g = gs[idx] # coupling strength
+    ρcav = ptrace(ψGs[idx], 1) # cavity reduced state
     
     # plot wigner
-    _, _ax, _hm = plot_wigner(_ρcav, location = fig[1,hpos])
-    _ax.title = "g = $_g"
-    if hpos == 5 # Add colorbar with the last returned heatmap (_hm) 
-        Colorbar(fig[1,6], _hm)
-    end
+    _, ax, hm = plot_wigner(ρcav, location = fig[1,hpos])
+    ax.title = "g = $g"
+    ax.aspect = 1
     
     # plot fock distribution
-    plot_fock_distribution(_ρcav, location = fig[2,hpos])
+    _, ax2 = plot_fock_distribution(ρcav, location = fig[2,hpos])
+    
+    if hpos != 1
+        ax.xlabel, ax.ylabel, ax2.ylabel, ax2.xlabel = fill("",4)
+        ax2.xticks = (0:M0-1, ["" for t in 0:M0-1])
+        if hpos == 5 # Add colorbar with the last returned heatmap (_hm) 
+            Colorbar(fig[1,6], hm)
+        end
+    end
 end
 
 # plot average photon number with respect to coupling strength
 ax3 = Axis(fig[3,1:6], height=200, xlabel=L"g", ylabel=L"\langle \hat{n} \rangle")
 xlims!(ax3, -0.02, 1.02)
 lines!(ax3, gs, real(nvec), color=:teal)
-
+ax3.xlabelsize, ax3.ylabelsize = 20, 20
 vlines!(ax3, gs[cases], color=:orange, linestyle = :dash, linewidth = 4)
 
 display(fig);
@@ -164,20 +168,19 @@ slists = []
 Ns = 8:8:24
 
 for N in Ns
- slist = []
+    slist = []
     for g in gs
- H_ = H(M0, N, g)
- _, vecs = eigenstates(H_)
- S = entropy_mutual(vecs[1], 1, 2)
+        H_ = H(M0, N, g)
+        _, vecs = eigenstates(H_)
+        S = entropy_mutual(vecs[1], 1, 2)
         push!(slist, S)
     end
-
     push!(slists, slist)
 end
 ```
 
 ```{julia}
-fig = Figure()
+fig = Figure(size=(800, 400))
 ax = Axis(fig[1,1])
 ax.xlabel = "coupling strength"
 ax.ylabel = "mutual entropy"

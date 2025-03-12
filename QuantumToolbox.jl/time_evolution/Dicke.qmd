@@ -1,7 +1,7 @@
 ---
 title: "The Dicke Model"
 author: Li-Xun Cai
-date: 2025-03-10  # last update (keep this comment as a reminder)
+date: 2025-03-11  # last update (keep this comment as a reminder)
 
 engine: julia
 ---
@@ -144,12 +144,13 @@ for (hpos, idx) in enumerate(cases)
     _, ax2 = plot_fock_distribution(ρcav, location = fig[2,hpos])
     
     if hpos != 1
-        ax.xlabel, ax.ylabel, ax2.ylabel, ax2.xlabel = fill("",4)
-        ax2.xticks = (0:M0-1, ["" for t in 0:M0-1])
+        ax.xlabelvisible, ax.ylabelvisible, ax2.ylabelvisible = fill(false, 3)
+        ax.xticksvisible, ax.yticksvisible, ax2.yticksvisible = fill(false, 3)
+        ax2.yticks = (0:0.5:1, ["" for i in 0:0.5:1])
         if hpos == 5 # Add colorbar with the last returned heatmap (_hm) 
             Colorbar(fig[1,6], hm)
         end
-    end
+    end    
 end
 
 # plot average photon number with respect to coupling strength
@@ -164,19 +165,14 @@ display(fig);
 As $g$ increases, the cavity ground state's wigner function plot looks more coherent than a thermal state.
 
 ```{julia}
-slists = []
 Ns = 8:8:24
-
-for N in Ns
-    slist = []
-    for g in gs
+slists = map(Ns) do N
+    slist = map(gs) do g
         H_ = H(M0, N, g)
         _, vecs = eigenstates(H_)
-        S = entropy_mutual(vecs[1], 1, 2)
-        push!(slist, S)
+        entropy_mutual(vecs[1], 1, 2)
     end
-    push!(slists, slist)
-end
+end;
 ```
 
 ```{julia}

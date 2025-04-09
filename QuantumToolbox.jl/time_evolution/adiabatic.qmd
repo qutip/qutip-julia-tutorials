@@ -1,0 +1,120 @@
+---
+title: "Adiabatic sweep"
+author: Li-Xun Cai
+date: 2025-04-09  # last update (keep this comment as a reminder)
+
+engine: julia
+---
+
+Inspirations taken from [the QuTiP tutorial](https://nbviewer.org/urls/qutip.org/qutip-tutorials/tutorials-v5/lectures/Lecture-8-Adiabatic-quantum-computing.ipynb) by J. R. Johansson.
+
+## Introduction
+
+
+
+## Code demonstration
+
+```{julia}
+using QuantumToolbox
+using CairoMakie
+```
+
+```{julia}
+N = 8
+ε0 = 1
+
+gs = rand(N-1)
+```
+
+```{julia}
+Is = Vector{QuantumObject}(fill(qeye(2), N));
+
+H0 = QuantumObject(
+    zeros((2^N, 2^N)),
+    Operator,
+    Tuple(fill(2, N))
+) |> to_sparse
+
+for idx in 1:N
+    is = copy(Is)
+    is[idx] = ε0/2 * sigmaz()
+    H0 += kron(is...)
+end
+
+print(H0)
+```
+
+```{julia}
+H1 = QuantumObject(
+    zeros((2^N, 2^N)),
+    Operator,
+    Tuple(fill(2, N))
+) |> to_sparse
+
+for idx in 1:N
+    is = copy(Is)
+    is[idx] = ε0/2 * sigmaz()
+    H1 += kron(is...)
+end
+
+for idx in 1:N-1
+    is = copy(Is)
+    is[idx] = gs[idx] * sigmax()
+    is[idx+1] = sigmax()
+
+    h_int = kron(is...)
+    
+    H1 += (h_int + h_int')/2
+end
+
+print(H1)
+```
+
+```{julia}
+function ψg(H)
+    _, vecs = eigenstates(H)
+    return vecs[1]
+end
+
+ψf_truth = ψg(H1) |> to_sparse
+ψ0 = ψg(H0) |> to_sparse
+```
+
+```{julia}
+Tlist = 10 .^ (0.25:0.25:1.5)
+
+H(T) = QuantumObjectEvolution((
+        (H0, (p,t) -> 1 - t/T),
+        (H1, (p,t) -> t/T),
+))
+
+results = map(Tlist) do T
+    tlist = range(0,T, 101)
+    sesolve(H(T), ψ0, tlist, e_ops = [H1, ket2dm(ψf_truth)])
+end;
+```
+
+```{julia}
+fig = Figure(size = (800,400))
+axs = Axis.([fig[1,1], fig[1,2]])
+axs[1].title = L"\langle H_f \rangle"
+axs[2].title = L"\langle \psi_G^f \rangle"
+
+for ax_idx in 1:2, T_idx in 1:length(Tlist)
+    T = Tlist[T_idx]
+    exps = results[T_idx].expect
+    # tlist = 0:1/T:1
+    # tlist = LinRange(0,1,T)
+    tlist = range(0,1,101)
+    lines!(axs[ax_idx], tlist, real(exps[ax_idx,:]), label = "10^"*string(log10(T)))
+end
+
+Legend(fig[1,3], axs[1], L"T")
+
+display(fig)
+```
+
+## Version Information
+```{julia}
+QuantumToolbox.versioninfo()
+```

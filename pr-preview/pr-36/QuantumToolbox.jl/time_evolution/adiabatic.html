@@ -234,20 +234,20 @@ window.Quarto = {
 <p>This tutorial mainly demonstrates the use of <a href="https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.QuantumObjectEvolution"><code>QuantumObjectEvolution</code></a>.</p>
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>The quantum adiabatic theorem is a fundamental principle in quantum mechanics that describes how quantum systems evolve when subjected to time-dependent conditions. This theorem states that if a quantum system starts in an eigenstate (typically the ground state) of its initial Hamiltonian, and if the Hamiltonian changes sufficiently slowly, the system will remain in the corresponding eigenstate of the evolving Hamiltonian throughout the process.</p>
-<p>For this theorem to hold, certain conditions must be satisfied: the system must evolve slowly enough compared to the energy gap between the relevant eigenstate and other energy levels, and this gap must remain non-zero throughout the evolution.</p>
-<p>Here, we will demonstrate the well-known application of the adiabatic theorem in quantum computing called . This is a method for preparing some desired quantum state by slowly evolving a quantum system with a time-dependent Hamiltonian. Essentially, the adiabatic theorem allows us to prepare the ground state of the final Hamiltonian <span class="math inline">\(H_1\)</span> from the ground state of the initial Hamiltonian <span class="math inline">\(H_0\)</span>.</p>
+<p>The quantum adiabatic theorem is a fundamental principle in quantum mechanics that describes how quantum systems evolve when subjected to time-dependent conditions. This theorem states that if a quantum system is initialized in an eigenstate (typically the ground state) of its initial Hamiltonian, and if the Hamiltonian changes sufficiently slow, the system will remain in the corresponding eigenstate of the evolving Hamiltonian throughout the process.</p>
+<p>For this theorem to hold, certain conditions must be satisfied: the system must evolve slow enough compared to the energy gap between the relevant eigenstate and other energy levels, and this gap must remain non-zero throughout the evolution.</p>
+<p>Here, we will demonstrate the well-known application of the adiabatic theorem in quantum computing called <span class="math inline">\(\emph{adiabatic sweep}\)</span>. This is a method for preparing some desired quantum state by slowly evolving a quantum system with a time-dependent Hamiltonian. Essentially, the adiabatic theorem allows us to prepare the ground state of the final Hamiltonian <span class="math inline">\(H_1\)</span> from the ground state of the initial Hamiltonian <span class="math inline">\(H_0\)</span>.</p>
 </section>
 <section id="model" class="level2">
 <h2 class="anchored" data-anchor-id="model">Model</h2>
-<p>We consider a chain of <span class="math inline">\(N\)</span> identical spin-half particles to study their spin dynamics and set our interest to finding the ground state of the condition that the spin chain has some random gap, leading to the random magnitude <span class="math inline">\(g_i\)</span> of <span class="math inline">\(\hat{\sigma}^i_x \hat{\sigma}^{i+1}_x\)</span> interaction with the neighboring spin.</p>
+<p>We consider a chain of <span class="math inline">\(N\)</span>-identical spin-<span class="math inline">\(1/2\)</span> particles to study their spin dynamics and set our interest in finding the ground state of the condition that the spin chain has some random gap, leading to the random magnitude <span class="math inline">\(g_i\)</span> of <span class="math inline">\(\hat{\sigma}^i_x \hat{\sigma}^{i+1}_x\)</span> interaction with the neighboring spin.</p>
 <p>Initially, we prepare the system such that the spins are free from interaction with each other and are all in the ground state, i.e.,</p>
-<p><span class="math display">\[H_0 = \sum_i^N \frac{\varepsilon_0}{2} \hat{\sigma}^i_z,\]</span> <span class="math display">\[|\psi(0)\rangle = \otimes_{i=1}^N |g\rangle\]</span></p>
+<p><span class="math display">\[H_0 = \sum_i^N \frac{\varepsilon_0}{2} \hat{\sigma}^i_z,\]</span> <span class="math display">\[|\psi(0)\rangle = \bigotimes_{i=1}^N |g\rangle\]</span></p>
 <p>Then, gradually, the Hamiltonian evolves to:</p>
 <p><span class="math display">\[H_1 = \sum_{i=1}^N \frac{\varepsilon_0}{2} \hat{\sigma}^i_z + \sum_{i=1}^{N-1} g_i \hat{\sigma}^i_x \hat{\sigma}^{i+1}_x,\]</span></p>
 <p>whose ground state are desired. By gradual change, we are subject to the simplest form of adiabatic sweep, i.e.,</p>
 <p><span class="math display">\[H(t,T) = H_0 * (1-t/T) + H_1 * t/T,\]</span></p>
-<p>where the parameter <span class="math inline">\(T\)</span>, the time for full evolution, determines how slow the Hamiltonian changes.</p>
+<p>where the parameter <span class="math inline">\(T\)</span> determines how slow the Hamiltonian changes in time.</p>
 </section>
 <section id="code-demonstration" class="level2">
 <h2 class="anchored" data-anchor-id="code-demonstration">Code demonstration</h2>
@@ -262,13 +262,13 @@ window.Quarto = {
 <span id="cb2-4"><a href="#cb2-4"></a>gs <span class="op">=</span> <span class="fu">rand</span>(N<span class="op">-</span><span class="fl">1</span>) <span class="co"># use rand function for the random interaction strengths</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>7-element Vector{Float64}:
- 0.545299653247716
- 0.4854171920276177
- 0.9948328928013257
- 0.0866957266444075
- 0.28651973978940815
- 0.15700008647188612
- 0.7604010589825434</code></pre>
+ 0.3766399656433791
+ 0.6544156325965719
+ 0.5403342179127791
+ 0.33917019102353196
+ 0.5971098126456189
+ 0.9971600839269823
+ 0.7563066882194381</code></pre>
 </div>
 </div>
 <div id="6" class="cell" data-execution_count="1">
@@ -276,14 +276,14 @@ window.Quarto = {
 <span id="cb4-2"><a href="#cb4-2"></a></span>
 <span id="cb4-3"><a href="#cb4-3"></a>H0 <span class="op">=</span> <span class="fu">QuantumObject</span>(</span>
 <span id="cb4-4"><a href="#cb4-4"></a>    <span class="fu">zeros</span>((<span class="fl">2</span><span class="op">^</span>N, <span class="fl">2</span><span class="op">^</span>N)),</span>
-<span id="cb4-5"><a href="#cb4-5"></a> Operator,</span>
+<span id="cb4-5"><a href="#cb4-5"></a>    Operator,</span>
 <span id="cb4-6"><a href="#cb4-6"></a>    <span class="fu">Tuple</span>(<span class="fu">fill</span>(<span class="fl">2</span>, N))</span>
 <span id="cb4-7"><a href="#cb4-7"></a>)</span>
 <span id="cb4-8"><a href="#cb4-8"></a></span>
 <span id="cb4-9"><a href="#cb4-9"></a><span class="cf">for</span> idx <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>N</span>
-<span id="cb4-10"><a href="#cb4-10"></a> is <span class="op">=</span> <span class="fu">copy</span>(Is)</span>
-<span id="cb4-11"><a href="#cb4-11"></a> is[idx] <span class="op">=</span> ε<span class="fl">0</span><span class="op">/</span><span class="fl">2</span> <span class="op">*</span> <span class="fu">sigmaz</span>()</span>
-<span id="cb4-12"><a href="#cb4-12"></a> H0 <span class="op">+=</span> <span class="fu">kron</span>(is<span class="op">...</span>)</span>
+<span id="cb4-10"><a href="#cb4-10"></a>    is <span class="op">=</span> <span class="fu">copy</span>(Is)</span>
+<span id="cb4-11"><a href="#cb4-11"></a>    is[idx] <span class="op">=</span> ε<span class="fl">0</span><span class="op">/</span><span class="fl">2</span> <span class="op">*</span> <span class="fu">sigmaz</span>()</span>
+<span id="cb4-12"><a href="#cb4-12"></a>    H0 <span class="op">+=</span> <span class="fu">kron</span>(is<span class="op">...</span>)</span>
 <span id="cb4-13"><a href="#cb4-13"></a><span class="cf">end</span></span>
 <span id="cb4-14"><a href="#cb4-14"></a></span>
 <span id="cb4-15"><a href="#cb4-15"></a>ψ<span class="fl">0</span> <span class="op">=</span> <span class="fu">kron</span>(<span class="fu">fill</span>(<span class="fu">basis</span>(<span class="fl">2</span>,<span class="fl">1</span>), N)<span class="op">...</span>)</span>
@@ -317,24 +317,24 @@ Quantum Object:   type=Operator   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256, 256
 <div id="8" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1"></a>H1 <span class="op">=</span> <span class="fu">QuantumObject</span>(</span>
 <span id="cb6-2"><a href="#cb6-2"></a>    <span class="fu">zeros</span>((<span class="fl">2</span><span class="op">^</span>N, <span class="fl">2</span><span class="op">^</span>N)),</span>
-<span id="cb6-3"><a href="#cb6-3"></a> Operator,</span>
+<span id="cb6-3"><a href="#cb6-3"></a>    Operator,</span>
 <span id="cb6-4"><a href="#cb6-4"></a>    <span class="fu">Tuple</span>(<span class="fu">fill</span>(<span class="fl">2</span>, N))</span>
 <span id="cb6-5"><a href="#cb6-5"></a>)</span>
 <span id="cb6-6"><a href="#cb6-6"></a></span>
 <span id="cb6-7"><a href="#cb6-7"></a><span class="cf">for</span> idx <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>N</span>
-<span id="cb6-8"><a href="#cb6-8"></a> is <span class="op">=</span> <span class="fu">copy</span>(Is)</span>
-<span id="cb6-9"><a href="#cb6-9"></a> is[idx] <span class="op">=</span> ε<span class="fl">0</span><span class="op">/</span><span class="fl">2</span> <span class="op">*</span> <span class="fu">sigmaz</span>()</span>
-<span id="cb6-10"><a href="#cb6-10"></a> H1 <span class="op">+=</span> <span class="fu">kron</span>(is<span class="op">...</span>)</span>
+<span id="cb6-8"><a href="#cb6-8"></a>    is <span class="op">=</span> <span class="fu">copy</span>(Is)</span>
+<span id="cb6-9"><a href="#cb6-9"></a>    is[idx] <span class="op">=</span> ε<span class="fl">0</span><span class="op">/</span><span class="fl">2</span> <span class="op">*</span> <span class="fu">sigmaz</span>()</span>
+<span id="cb6-10"><a href="#cb6-10"></a>    H1 <span class="op">+=</span> <span class="fu">kron</span>(is<span class="op">...</span>)</span>
 <span id="cb6-11"><a href="#cb6-11"></a><span class="cf">end</span></span>
 <span id="cb6-12"><a href="#cb6-12"></a></span>
 <span id="cb6-13"><a href="#cb6-13"></a><span class="cf">for</span> idx <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>N<span class="op">-</span><span class="fl">1</span></span>
-<span id="cb6-14"><a href="#cb6-14"></a> is <span class="op">=</span> <span class="fu">copy</span>(Is)</span>
-<span id="cb6-15"><a href="#cb6-15"></a> is[idx] <span class="op">=</span> gs[idx] <span class="op">*</span> <span class="fu">sigmax</span>()</span>
-<span id="cb6-16"><a href="#cb6-16"></a> is[idx<span class="op">+</span><span class="fl">1</span>] <span class="op">=</span> <span class="fu">sigmax</span>()</span>
+<span id="cb6-14"><a href="#cb6-14"></a>    is <span class="op">=</span> <span class="fu">copy</span>(Is)</span>
+<span id="cb6-15"><a href="#cb6-15"></a>    is[idx] <span class="op">=</span> gs[idx] <span class="op">*</span> <span class="fu">sigmax</span>()</span>
+<span id="cb6-16"><a href="#cb6-16"></a>    is[idx<span class="op">+</span><span class="fl">1</span>] <span class="op">=</span> <span class="fu">sigmax</span>()</span>
 <span id="cb6-17"><a href="#cb6-17"></a></span>
-<span id="cb6-18"><a href="#cb6-18"></a> h_int <span class="op">=</span> <span class="fu">kron</span>(is<span class="op">...</span>)</span>
-<span id="cb6-19"><a href="#cb6-19"></a>    </span>
-<span id="cb6-20"><a href="#cb6-20"></a> H1 <span class="op">+=</span> h_int</span>
+<span id="cb6-18"><a href="#cb6-18"></a>    h_int <span class="op">=</span> <span class="fu">kron</span>(is<span class="op">...</span>)</span>
+<span id="cb6-19"><a href="#cb6-19"></a>        </span>
+<span id="cb6-20"><a href="#cb6-20"></a>    H1 <span class="op">+=</span> h_int</span>
 <span id="cb6-21"><a href="#cb6-21"></a><span class="cf">end</span></span>
 <span id="cb6-22"><a href="#cb6-22"></a></span>
 <span id="cb6-23"><a href="#cb6-23"></a><span class="fu">print</span>(H1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -344,22 +344,22 @@ Quantum Object:   type=Operator   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256, 256
 256×256 Matrix{ComplexF64}:
       4.0+0.0im       0.0+0.0im  …       0.0+0.0im       0.0+0.0im
       0.0+0.0im       3.0+0.0im          0.0+0.0im       0.0+0.0im
-      0.0+0.0im  0.760401+0.0im          0.0+0.0im       0.0+0.0im
- 0.760401+0.0im       0.0+0.0im          0.0+0.0im       0.0+0.0im
+      0.0+0.0im  0.756307+0.0im          0.0+0.0im       0.0+0.0im
+ 0.756307+0.0im       0.0+0.0im          0.0+0.0im       0.0+0.0im
       0.0+0.0im       0.0+0.0im          0.0+0.0im       0.0+0.0im
       0.0+0.0im       0.0+0.0im  …       0.0+0.0im       0.0+0.0im
-    0.157+0.0im       0.0+0.0im          0.0+0.0im       0.0+0.0im
-      0.0+0.0im     0.157+0.0im          0.0+0.0im       0.0+0.0im
+  0.99716+0.0im       0.0+0.0im          0.0+0.0im       0.0+0.0im
+      0.0+0.0im   0.99716+0.0im          0.0+0.0im       0.0+0.0im
       0.0+0.0im       0.0+0.0im          0.0+0.0im       0.0+0.0im
       0.0+0.0im       0.0+0.0im          0.0+0.0im       0.0+0.0im
          ⋮                       ⋱                          ⋮
       0.0+0.0im       0.0+0.0im          0.0+0.0im       0.0+0.0im
-      0.0+0.0im       0.0+0.0im        0.157+0.0im       0.0+0.0im
-      0.0+0.0im       0.0+0.0im          0.0+0.0im     0.157+0.0im
+      0.0+0.0im       0.0+0.0im      0.99716+0.0im       0.0+0.0im
+      0.0+0.0im       0.0+0.0im          0.0+0.0im   0.99716+0.0im
       0.0+0.0im       0.0+0.0im  …       0.0+0.0im       0.0+0.0im
       0.0+0.0im       0.0+0.0im          0.0+0.0im       0.0+0.0im
-      0.0+0.0im       0.0+0.0im          0.0+0.0im  0.760401+0.0im
-      0.0+0.0im       0.0+0.0im     0.760401+0.0im       0.0+0.0im
+      0.0+0.0im       0.0+0.0im          0.0+0.0im  0.756307+0.0im
+      0.0+0.0im       0.0+0.0im     0.756307+0.0im       0.0+0.0im
       0.0+0.0im       0.0+0.0im         -3.0+0.0im       0.0+0.0im
       0.0+0.0im       0.0+0.0im  …       0.0+0.0im      -4.0+0.0im</code></pre>
 </div>
@@ -367,8 +367,8 @@ Quantum Object:   type=Operator   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256, 256
 <p>Here, we define the function <code>H(T)</code> where <code>T</code> is the total evolution time.</p>
 <div id="10" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">H</span>(T) <span class="op">=</span> <span class="fu">QuantumObjectEvolution</span>((</span>
-<span id="cb8-2"><a href="#cb8-2"></a> (H0, (p,t) <span class="op">-&gt;</span> <span class="fl">1</span> <span class="op">-</span> t<span class="op">/</span>T),  <span class="co"># the dummy parameter `p` is not used but still required by the ODE solver</span></span>
-<span id="cb8-3"><a href="#cb8-3"></a> (H1, (p,t) <span class="op">-&gt;</span> t<span class="op">/</span>T),</span>
+<span id="cb8-2"><a href="#cb8-2"></a>    (H0, (p,t) <span class="op">-&gt;</span> <span class="fl">1</span> <span class="op">-</span> t<span class="op">/</span>T),  <span class="co"># the dummy parameter `p` is not used but still required by the ODE solver</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a>    (H1, (p,t) <span class="op">-&gt;</span> t<span class="op">/</span>T),</span>
 <span id="cb8-4"><a href="#cb8-4"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>H (generic function with 1 method)</code></pre>
@@ -376,7 +376,7 @@ Quantum Object:   type=Operator   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256, 256
 </div>
 <div id="12" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">function</span> <span class="fu">ψg</span>(H)</span>
-<span id="cb10-2"><a href="#cb10-2"></a> _, vecs <span class="op">=</span> <span class="fu">eigenstates</span>(H)</span>
+<span id="cb10-2"><a href="#cb10-2"></a>    _, vecs <span class="op">=</span> <span class="fu">eigenstates</span>(H)</span>
 <span id="cb10-3"><a href="#cb10-3"></a>    <span class="cf">return</span> vecs[<span class="fl">1</span>]</span>
 <span id="cb10-4"><a href="#cb10-4"></a><span class="kw">end</span></span>
 <span id="cb10-5"><a href="#cb10-5"></a></span>
@@ -386,22 +386,22 @@ Quantum Object:   type=Operator   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256, 256
 <pre><code>
 Quantum Object:   type=Ket   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256,)
 256-element SparseArrays.SparseVector{ComplexF64, Int64} with 128 stored entries:
-  [1  ]  =  0.00448632+0.0im
-  [4  ]  =  -0.0131889+0.0im
-  [6  ]  =  0.00253407+0.0im
-  [7  ]  =  -0.00178752+0.0im
-  [10 ]  =  -0.00827387+0.0im
-  [11 ]  =  0.00507336+0.0im
-  [13 ]  =  -0.031365+0.0im
+  [1  ]  =  0.0057594+0.0im
+  [4  ]  =  -0.0141316+0.0im
+  [6  ]  =  0.0113634+0.0im
+  [7  ]  =  -0.00778962+0.0im
+  [10 ]  =  -0.0184437-0.0im
+  [11 ]  =  0.0113429+0.0im
+  [13 ]  =  -0.0150036-0.0im
          ⋮
-  [241]  =  0.0376146+0.0im
-  [244]  =  -0.110587+0.0im
-  [246]  =  0.0211699+0.0im
-  [247]  =  -0.0149151+0.0im
-  [250]  =  -0.069491+0.0im
-  [251]  =  0.0426047+0.0im
-  [253]  =  -0.263495+0.0im
-  [256]  =  0.778248-0.0im</code></pre>
+  [241]  =  0.0875791+0.0im
+  [244]  =  -0.216719+0.0im
+  [246]  =  0.170239+0.0im
+  [247]  =  -0.115405+0.0im
+  [250]  =  -0.29822+0.0im
+  [251]  =  0.182535+0.0im
+  [253]  =  -0.243669+0.0im
+  [256]  =  0.641129+0.0im</code></pre>
 </div>
 </div>
 <p>We can see that the truthful ground state we are preparing is indeed very complex.</p>
@@ -412,8 +412,8 @@ Quantum Object:   type=Ket   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256,)
 <span id="cb12-3"><a href="#cb12-3"></a>eigs <span class="op">=</span> <span class="fu">Array</span><span class="dt">{Real}</span>(<span class="cn">undef</span>, <span class="fu">length</span>(tlist), <span class="fl">2</span><span class="op">^</span>N)</span>
 <span id="cb12-4"><a href="#cb12-4"></a></span>
 <span id="cb12-5"><a href="#cb12-5"></a><span class="cf">for</span> (idx, t) <span class="kw">in</span> <span class="fu">enumerate</span>(tlist)</span>
-<span id="cb12-6"><a href="#cb12-6"></a> vals, _ <span class="op">=</span> <span class="fu">eigenstates</span>(<span class="fu">H</span>(T)(t))</span>
-<span id="cb12-7"><a href="#cb12-7"></a> eigs[idx,<span class="op">:</span>] <span class="op">=</span> vals</span>
+<span id="cb12-6"><a href="#cb12-6"></a>    vals, _ <span class="op">=</span> <span class="fu">eigenstates</span>(<span class="fu">H</span>(T)(t))</span>
+<span id="cb12-7"><a href="#cb12-7"></a>    eigs[idx,<span class="op">:</span>] <span class="op">=</span> vals</span>
 <span id="cb12-8"><a href="#cb12-8"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="16" class="cell" data-execution_count="1">
@@ -421,7 +421,7 @@ Quantum Object:   type=Ket   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256,)
 <span id="cb13-2"><a href="#cb13-2"></a>ax <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">1</span>,<span class="fl">1</span>], xticks <span class="op">=</span> (<span class="fl">0</span><span class="op">:</span><span class="fl">0.25</span><span class="op">:</span><span class="fl">1</span>, [<span class="st">"</span><span class="sc">$</span>(t)<span class="st">T"</span> for t <span class="kw">in</span> <span class="fl">0</span><span class="op">:</span><span class="fl">0.25</span><span class="op">:</span><span class="fl">1</span>]))</span>
 <span id="cb13-3"><a href="#cb13-3"></a></span>
 <span id="cb13-4"><a href="#cb13-4"></a><span class="cf">for</span> idx <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">20</span> <span class="co"># only check for the lowest 20 eigenvalues</span></span>
-<span id="cb13-5"><a href="#cb13-5"></a> color <span class="op">=</span> (idx <span class="op">==</span> <span class="fl">1</span>) ? <span class="op">:</span>magenta <span class="op">:</span> (<span class="op">:</span>gray,<span class="fl">0.5</span>)</span>
+<span id="cb13-5"><a href="#cb13-5"></a>    color <span class="op">=</span> (idx <span class="op">==</span> <span class="fl">1</span>) ? <span class="op">:</span>magenta <span class="op">:</span> (<span class="op">:</span>gray,<span class="fl">0.5</span>)</span>
 <span id="cb13-6"><a href="#cb13-6"></a>    <span class="fu">lines!</span>(ax, <span class="fu">range</span>(<span class="fl">0</span>,<span class="fl">1</span>,<span class="fu">length</span>(tlist)), eigs[<span class="op">:</span>,idx], label <span class="op">=</span> <span class="fu">string</span>(idx), color <span class="op">=</span> color)</span>
 <span id="cb13-7"><a href="#cb13-7"></a><span class="cf">end</span></span>
 <span id="cb13-8"><a href="#cb13-8"></a></span>
@@ -441,7 +441,7 @@ Quantum Object:   type=Ket   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256,)
 <div id="18" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1"></a>Tlist <span class="op">=</span> <span class="fl">10</span> <span class="op">.^</span> (<span class="fl">0</span><span class="op">:</span><span class="fl">0.25</span><span class="op">:</span><span class="fl">1.25</span>)</span>
 <span id="cb15-2"><a href="#cb15-2"></a>results <span class="op">=</span> <span class="fu">map</span>(Tlist) <span class="cf">do</span> T </span>
-<span id="cb15-3"><a href="#cb15-3"></a> tlist <span class="op">=</span> <span class="fu">range</span>(<span class="fl">0</span>,T, <span class="fl">101</span>)</span>
+<span id="cb15-3"><a href="#cb15-3"></a>    tlist <span class="op">=</span> <span class="fu">range</span>(<span class="fl">0</span>,T, <span class="fl">101</span>)</span>
 <span id="cb15-4"><a href="#cb15-4"></a>    <span class="fu">sesolve</span>(<span class="fu">H</span>(T), ψ<span class="fl">0</span>, tlist, e_ops <span class="op">=</span> [H1, <span class="fu">ket2dm</span>(ψf_truth)]) </span>
 <span id="cb15-5"><a href="#cb15-5"></a>    <span class="co"># check the expectation value with respect to the final Hamiltonian and</span></span>
 <span id="cb15-6"><a href="#cb15-6"></a>    <span class="co"># the fidelity to the truthful ground state throughout the evolution</span></span>
@@ -464,10 +464,10 @@ Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (
 <span id="cb17-6"><a href="#cb17-6"></a>axs[<span class="fl">2</span>].xticks <span class="op">=</span> (<span class="fl">0</span><span class="op">:</span><span class="fl">0.25</span><span class="op">:</span><span class="fl">1</span>, [<span class="st">"</span><span class="sc">$</span>(t)<span class="st">T"</span> for t <span class="kw">in</span> <span class="fl">0</span><span class="op">:</span><span class="fl">0.25</span><span class="op">:</span><span class="fl">1</span>])</span>
 <span id="cb17-7"><a href="#cb17-7"></a></span>
 <span id="cb17-8"><a href="#cb17-8"></a><span class="cf">for</span> ax_idx <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, T_idx <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu">length</span>(Tlist)</span>
-<span id="cb17-9"><a href="#cb17-9"></a> T <span class="op">=</span> Tlist[T_idx]</span>
-<span id="cb17-10"><a href="#cb17-10"></a> exps <span class="op">=</span> results[T_idx].expect</span>
-<span id="cb17-11"><a href="#cb17-11"></a> tlist <span class="op">=</span> <span class="fu">range</span>(<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">101</span>)</span>
-<span id="cb17-12"><a href="#cb17-12"></a>    <span class="fu">lines!</span>(axs[ax_idx], tlist, <span class="fu">real</span>(exps[ax_idx,<span class="op">:</span>]), label <span class="op">=</span> <span class="st">"10^"</span><span class="fu">*string</span>(<span class="fu">log10</span>(T)))</span>
+<span id="cb17-9"><a href="#cb17-9"></a>    T <span class="op">=</span> Tlist[T_idx]</span>
+<span id="cb17-10"><a href="#cb17-10"></a>    exps <span class="op">=</span> results[T_idx].expect</span>
+<span id="cb17-11"><a href="#cb17-11"></a>    tlist <span class="op">=</span> <span class="fu">range</span>(<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">101</span>)</span>
+<span id="cb17-12"><a href="#cb17-12"></a>    <span class="fu">lines!</span>(axs[ax_idx], tlist, <span class="fu">real</span>(exps[ax_idx,<span class="op">:</span>]), label <span class="op">=</span> L<span class="st">"10^{%</span><span class="sc">$</span>(<span class="fu">string</span>(<span class="fu">log10</span>(T)))<span class="st">}"</span>)</span>
 <span id="cb17-13"><a href="#cb17-13"></a><span class="cf">end</span></span>
 <span id="cb17-14"><a href="#cb17-14"></a></span>
 <span id="cb17-15"><a href="#cb17-15"></a><span class="fu">Legend</span>(fig[<span class="fl">1</span>,<span class="fl">3</span>], axs[<span class="fl">1</span>], L<span class="st">"T"</span>)</span>

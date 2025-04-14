@@ -12,20 +12,20 @@ This tutorial mainly demonstrates the use of [`QuantumObjectEvolution`](https://
 
 ## Introduction
 
-The quantum adiabatic theorem is a fundamental principle in quantum mechanics that describes how quantum systems evolve when subjected to time-dependent conditions. This theorem states that if a quantum system starts in an eigenstate (typically the ground state) of its initial Hamiltonian, and if the Hamiltonian changes sufficiently slowly, the system will remain in the corresponding eigenstate of the evolving Hamiltonian throughout the process. 
+The quantum adiabatic theorem is a fundamental principle in quantum mechanics that describes how quantum systems evolve when subjected to time-dependent conditions. This theorem states that if a quantum system is initialized in an eigenstate (typically the ground state) of its initial Hamiltonian, and if the Hamiltonian changes sufficiently slow, the system will remain in the corresponding eigenstate of the evolving Hamiltonian throughout the process. 
 
-For this theorem to hold, certain conditions must be satisfied: the system must evolve slowly enough compared to the energy gap between the relevant eigenstate and other energy levels, and this gap must remain non-zero throughout the evolution.
+For this theorem to hold, certain conditions must be satisfied: the system must evolve slow enough compared to the energy gap between the relevant eigenstate and other energy levels, and this gap must remain non-zero throughout the evolution.
 
-Here, we will demonstrate the well-known application of the adiabatic theorem in quantum computing called \emph{adiabatic sweep}. This is a method for preparing some desired quantum state by slowly evolving a quantum system with a time-dependent Hamiltonian. Essentially, the adiabatic theorem allows us to prepare the ground state of the final Hamiltonian $H_1$ from the ground state of the initial Hamiltonian $H_0$.
+Here, we will demonstrate the well-known application of the adiabatic theorem in quantum computing called $\emph{adiabatic sweep}$. This is a method for preparing some desired quantum state by slowly evolving a quantum system with a time-dependent Hamiltonian. Essentially, the adiabatic theorem allows us to prepare the ground state of the final Hamiltonian $H_1$ from the ground state of the initial Hamiltonian $H_0$.
 
 ## Model
 
-We consider a chain of $N$ identical spin-half particles to study their spin dynamics and set our interest to finding the ground state of the condition that the spin chain has some random gap, leading to the random magnitude $g_i$ of $\hat{\sigma}^i_x \hat{\sigma}^{i+1}_x$ interaction with the neighboring spin.
+We consider a chain of $N$-identical spin-$1/2$ particles to study their spin dynamics and set our interest in finding the ground state of the condition that the spin chain has some random gap, leading to the random magnitude $g_i$ of $\hat{\sigma}^i_x \hat{\sigma}^{i+1}_x$ interaction with the neighboring spin.
 
 Initially, we prepare the system such that the spins are free from interaction with each other and are all in the ground state, i.e.,
 
 $$H_0 = \sum_i^N \frac{\varepsilon_0}{2} \hat{\sigma}^i_z,$$
-$$|\psi(0)\rangle = \otimes_{i=1}^N |g\rangle$$
+$$|\psi(0)\rangle = \bigotimes_{i=1}^N |g\rangle$$
 
 Then, gradually, the Hamiltonian evolves to:
 
@@ -35,7 +35,7 @@ whose ground state are desired. By gradual change, we are subject to the simples
 
 $$H(t,T) = H_0 * (1-t/T) + H_1 * t/T,$$
 
-where the parameter $T$, the time for full evolution, determines how slow the Hamiltonian changes.
+where the parameter $T$ determines how slow the Hamiltonian changes in time.
 
 ## Code demonstration
 
@@ -56,14 +56,14 @@ Is = Vector{QuantumObject}(fill(qeye(2), N));
 
 H0 = QuantumObject(
     zeros((2^N, 2^N)),
- Operator,
+    Operator,
     Tuple(fill(2, N))
 )
 
 for idx in 1:N
- is = copy(Is)
- is[idx] = ε0/2 * sigmaz()
- H0 += kron(is...)
+    is = copy(Is)
+    is[idx] = ε0/2 * sigmaz()
+    H0 += kron(is...)
 end
 
 ψ0 = kron(fill(basis(2,1), N)...)
@@ -73,24 +73,24 @@ print(H0)
 ```{julia}
 H1 = QuantumObject(
     zeros((2^N, 2^N)),
- Operator,
+    Operator,
     Tuple(fill(2, N))
 )
 
 for idx in 1:N
- is = copy(Is)
- is[idx] = ε0/2 * sigmaz()
- H1 += kron(is...)
+    is = copy(Is)
+    is[idx] = ε0/2 * sigmaz()
+    H1 += kron(is...)
 end
 
 for idx in 1:N-1
- is = copy(Is)
- is[idx] = gs[idx] * sigmax()
- is[idx+1] = sigmax()
+    is = copy(Is)
+    is[idx] = gs[idx] * sigmax()
+    is[idx+1] = sigmax()
 
- h_int = kron(is...)
-    
- H1 += h_int
+    h_int = kron(is...)
+        
+    H1 += h_int
 end
 
 print(H1)
@@ -99,14 +99,14 @@ print(H1)
 Here, we define the function `H(T)` where `T` is the total evolution time.
 ```{julia}
 H(T) = QuantumObjectEvolution((
- (H0, (p,t) -> 1 - t/T),  # the dummy parameter `p` is not used but still required by the ODE solver
- (H1, (p,t) -> t/T),
+    (H0, (p,t) -> 1 - t/T),  # the dummy parameter `p` is not used but still required by the ODE solver
+    (H1, (p,t) -> t/T),
 ))
 ```
 
 ```{julia}
 function ψg(H)
- _, vecs = eigenstates(H)
+    _, vecs = eigenstates(H)
     return vecs[1]
 end
 
@@ -123,8 +123,8 @@ tlist = 0:0.1:T
 eigs = Array{Real}(undef, length(tlist), 2^N)
 
 for (idx, t) in enumerate(tlist)
- vals, _ = eigenstates(H(T)(t))
- eigs[idx,:] = vals
+    vals, _ = eigenstates(H(T)(t))
+    eigs[idx,:] = vals
 end
 ```
 
@@ -133,7 +133,7 @@ fig = Figure()
 ax = Axis(fig[1,1], xticks = (0:0.25:1, ["$(t)T" for t in 0:0.25:1]))
 
 for idx in 1:20 # only check for the lowest 20 eigenvalues
- color = (idx == 1) ? :magenta : (:gray,0.5)
+    color = (idx == 1) ? :magenta : (:gray,0.5)
     lines!(ax, range(0,1,length(tlist)), eigs[:,idx], label = string(idx), color = color)
 end
 
@@ -144,7 +144,7 @@ The plot shows that the gap is nonvanishing and thus validates the evolution.
 ```{julia}
 Tlist = 10 .^ (0:0.25:1.25)
 results = map(Tlist) do T 
- tlist = range(0,T, 101)
+    tlist = range(0,T, 101)
     sesolve(H(T), ψ0, tlist, e_ops = [H1, ket2dm(ψf_truth)]) 
     # check the expectation value with respect to the final Hamiltonian and
     # the fidelity to the truthful ground state throughout the evolution
@@ -160,10 +160,10 @@ axs[2].title = L"|\langle \psi_G^f |\psi(t)\rangle|^2"
 axs[2].xticks = (0:0.25:1, ["$(t)T" for t in 0:0.25:1])
 
 for ax_idx in 1:2, T_idx in 1:length(Tlist)
- T = Tlist[T_idx]
- exps = results[T_idx].expect
- tlist = range(0,1,101)
-    lines!(axs[ax_idx], tlist, real(exps[ax_idx,:]), label = "10^"*string(log10(T)))
+    T = Tlist[T_idx]
+    exps = results[T_idx].expect
+    tlist = range(0,1,101)
+    lines!(axs[ax_idx], tlist, real(exps[ax_idx,:]), label = L"10^{%$(string(log10(T)))}")
 end
 
 Legend(fig[1,3], axs[1], L"T")

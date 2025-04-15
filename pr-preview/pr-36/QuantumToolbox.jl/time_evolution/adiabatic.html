@@ -236,7 +236,7 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <p>The quantum adiabatic theorem is a fundamental principle in quantum mechanics that describes how quantum systems evolve when subjected to time-dependent conditions. This theorem states that if a quantum system is initialized in an eigenstate (typically the ground state) of its initial Hamiltonian, and if the Hamiltonian changes sufficiently slow, the system will remain in the corresponding eigenstate of the evolving Hamiltonian throughout the process.</p>
 <p>For this theorem to hold, certain conditions must be satisfied: the system must evolve slow enough compared to the energy gap between the relevant eigenstate and other energy levels, and this gap must remain non-zero throughout the evolution.</p>
-<p>Here, we will demonstrate the well-known application of the adiabatic theorem in quantum computing called <span class="math inline">\(\emph{adiabatic sweep}\)</span>. This is a method for preparing some desired quantum state by slowly evolving a quantum system with a time-dependent Hamiltonian. Essentially, the adiabatic theorem allows us to prepare the ground state of the final Hamiltonian <span class="math inline">\(H_1\)</span> from the ground state of the initial Hamiltonian <span class="math inline">\(H_0\)</span>.</p>
+<p>Here, we will demonstrate the well-known application of the adiabatic theorem in quantum computing called <span class="math inline">\(\text{\emph{adiabatic sweep}}\)</span>. This is a method for preparing some desired quantum state by slowly evolving a quantum system with a time-dependent Hamiltonian. Essentially, the adiabatic theorem allows us to prepare the ground state of the final Hamiltonian <span class="math inline">\(H_1\)</span> from the ground state of the initial Hamiltonian <span class="math inline">\(H_0\)</span>.</p>
 </section>
 <section id="model" class="level2">
 <h2 class="anchored" data-anchor-id="model">Model</h2>
@@ -262,13 +262,13 @@ window.Quarto = {
 <span id="cb2-4"><a href="#cb2-4"></a>gs <span class="op">=</span> <span class="fu">rand</span>(N<span class="op">-</span><span class="fl">1</span>) <span class="co"># use rand function for the random interaction strengths</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>7-element Vector{Float64}:
- 0.3766399656433791
- 0.6544156325965719
- 0.5403342179127791
- 0.33917019102353196
- 0.5971098126456189
- 0.9971600839269823
- 0.7563066882194381</code></pre>
+ 0.41464339721252486
+ 0.27149070395114583
+ 0.2745656570905276
+ 0.47947338074374923
+ 0.051355020462794165
+ 0.17639152718418427
+ 0.3107452633385841</code></pre>
 </div>
 </div>
 <div id="6" class="cell" data-execution_count="1">
@@ -344,22 +344,22 @@ Quantum Object:   type=Operator   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256, 256
 256×256 Matrix{ComplexF64}:
       4.0+0.0im       0.0+0.0im  …       0.0+0.0im       0.0+0.0im
       0.0+0.0im       3.0+0.0im          0.0+0.0im       0.0+0.0im
-      0.0+0.0im  0.756307+0.0im          0.0+0.0im       0.0+0.0im
- 0.756307+0.0im       0.0+0.0im          0.0+0.0im       0.0+0.0im
+      0.0+0.0im  0.310745+0.0im          0.0+0.0im       0.0+0.0im
+ 0.310745+0.0im       0.0+0.0im          0.0+0.0im       0.0+0.0im
       0.0+0.0im       0.0+0.0im          0.0+0.0im       0.0+0.0im
       0.0+0.0im       0.0+0.0im  …       0.0+0.0im       0.0+0.0im
-  0.99716+0.0im       0.0+0.0im          0.0+0.0im       0.0+0.0im
-      0.0+0.0im   0.99716+0.0im          0.0+0.0im       0.0+0.0im
+ 0.176392+0.0im       0.0+0.0im          0.0+0.0im       0.0+0.0im
+      0.0+0.0im  0.176392+0.0im          0.0+0.0im       0.0+0.0im
       0.0+0.0im       0.0+0.0im          0.0+0.0im       0.0+0.0im
       0.0+0.0im       0.0+0.0im          0.0+0.0im       0.0+0.0im
          ⋮                       ⋱                          ⋮
       0.0+0.0im       0.0+0.0im          0.0+0.0im       0.0+0.0im
-      0.0+0.0im       0.0+0.0im      0.99716+0.0im       0.0+0.0im
-      0.0+0.0im       0.0+0.0im          0.0+0.0im   0.99716+0.0im
+      0.0+0.0im       0.0+0.0im     0.176392+0.0im       0.0+0.0im
+      0.0+0.0im       0.0+0.0im          0.0+0.0im  0.176392+0.0im
       0.0+0.0im       0.0+0.0im  …       0.0+0.0im       0.0+0.0im
       0.0+0.0im       0.0+0.0im          0.0+0.0im       0.0+0.0im
-      0.0+0.0im       0.0+0.0im          0.0+0.0im  0.756307+0.0im
-      0.0+0.0im       0.0+0.0im     0.756307+0.0im       0.0+0.0im
+      0.0+0.0im       0.0+0.0im          0.0+0.0im  0.310745+0.0im
+      0.0+0.0im       0.0+0.0im     0.310745+0.0im       0.0+0.0im
       0.0+0.0im       0.0+0.0im         -3.0+0.0im       0.0+0.0im
       0.0+0.0im       0.0+0.0im  …       0.0+0.0im      -4.0+0.0im</code></pre>
 </div>
@@ -386,22 +386,22 @@ Quantum Object:   type=Operator   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256, 256
 <pre><code>
 Quantum Object:   type=Ket   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256,)
 256-element SparseArrays.SparseVector{ComplexF64, Int64} with 128 stored entries:
-  [1  ]  =  0.0057594+0.0im
-  [4  ]  =  -0.0141316+0.0im
-  [6  ]  =  0.0113634+0.0im
-  [7  ]  =  -0.00778962+0.0im
-  [10 ]  =  -0.0184437-0.0im
-  [11 ]  =  0.0113429+0.0im
-  [13 ]  =  -0.0150036-0.0im
+  [1  ]  =  0.000121945+0.0im
+  [4  ]  =  -0.000789014+0.0im
+  [6  ]  =  0.000159551+0.0im
+  [7  ]  =  -6.21084e-5+0.0im
+  [10 ]  =  -0.00245412-0.0im
+  [11 ]  =  0.000728728+0.0im
+  [13 ]  =  -0.00418829-0.0im
          ⋮
-  [241]  =  0.0875791+0.0im
-  [244]  =  -0.216719+0.0im
-  [246]  =  0.170239+0.0im
-  [247]  =  -0.115405+0.0im
-  [250]  =  -0.29822+0.0im
-  [251]  =  0.182535+0.0im
-  [253]  =  -0.243669+0.0im
-  [256]  =  0.641129+0.0im</code></pre>
+  [241]  =  0.00387472+0.0im
+  [244]  =  -0.0251154+0.0im
+  [246]  =  0.00483495+0.0im
+  [247]  =  -0.00182715+0.0im
+  [250]  =  -0.0821706+0.0im
+  [251]  =  0.0243963+0.0im
+  [253]  =  -0.140253+0.0im
+  [256]  =  0.917404+0.0im</code></pre>
 </div>
 </div>
 <p>We can see that the truthful ground state we are preparing is indeed very complex.</p>
@@ -500,7 +500,7 @@ Current admin team:
 
 Package information:
 ====================================
-Julia              Ver. 1.11.4
+Julia              Ver. 1.11.5
 QuantumToolbox     Ver. 0.30.0
 SciMLOperators     Ver. 0.3.13
 LinearSolve        Ver. 3.7.2

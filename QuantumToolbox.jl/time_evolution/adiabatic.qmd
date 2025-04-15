@@ -16,7 +16,7 @@ The quantum adiabatic theorem is a fundamental principle in quantum mechanics th
 
 For this theorem to hold, certain conditions must be satisfied: the system must evolve slow enough compared to the energy gap between the relevant eigenstate and other energy levels, and this gap must remain non-zero throughout the evolution.
 
-Here, we will demonstrate the well-known application of the adiabatic theorem in quantum computing called $\emph{adiabatic sweep}$. This is a method for preparing some desired quantum state by slowly evolving a quantum system with a time-dependent Hamiltonian. Essentially, the adiabatic theorem allows us to prepare the ground state of the final Hamiltonian $H_1$ from the ground state of the initial Hamiltonian $H_0$.
+Here, we will demonstrate the well-known application of the adiabatic theorem in quantum computing called $\text{\emph{adiabatic sweep}}$. This is a method for preparing some desired quantum state by slowly evolving a quantum system with a time-dependent Hamiltonian. Essentially, the adiabatic theorem allows us to prepare the ground state of the final Hamiltonian $H_1$ from the ground state of the initial Hamiltonian $H_0$.
 
 ## Model
 

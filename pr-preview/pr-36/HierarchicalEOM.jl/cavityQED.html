@@ -353,7 +353,7 @@ H_{\textrm{sb}}   &amp;=(a+a^\dagger)\sum_{k}g_{k}(b_k + b_k^{\dagger}).
 <div class="cell-output cell-output-stdout">
 <pre><code>Checking the importance value for each ADOs...[DONE]
 Preparing block matrices for HEOM Liouvillian superoperator (using 4 threads)...
-Progress: [                              ]   3.1% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 31s)Progress: [                              ]   2.1% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 47s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 00s)
+Progress: [                              ]   2.1% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 47s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 00s)
 Constructing matrix...[DONE]</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
@@ -372,7 +372,7 @@ MatrixOperator(3492 × 3492)</code></pre>
 <span id="cb9-2"><a href="#cb9-2"></a>sol_H <span class="op">=</span> <span class="fu">HEOMsolve</span>(M_Heom, ψ<span class="fl">0</span>, t_list; e_ops <span class="op">=</span> [σz, a<span class="op">'</span> <span class="op">*</span> a])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Solving time evolution for ADOs by Ordinary Differential Equations method...
-Progress: [                              ]   0.2% --- Elapsed Time: 0h 00m 02s (ETA: 0h 16m 40s)Progress: [========================      ]  80.4% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 00s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 00s)</code></pre>
+Progress: [                              ]   0.2% --- Elapsed Time: 0h 00m 02s (ETA: 0h 16m 40s)Progress: [=======================       ]  79.8% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 00s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 00s)</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>Solution of hierarchical EOM
@@ -393,7 +393,9 @@ reltol = 1.0e-6</code></pre>
 <div id="14" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1"></a>steady_H <span class="op">=</span> <span class="fu">steadystate</span>(M_Heom);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Solving steady state for ADOs by linear-solve method...[DONE]</code></pre>
+<pre><code>Solving steady state for ADOs by linear-solve method...
+Calculating left preconditioner with ilu...[DONE]
+Solving linear problem...[DONE]</code></pre>
 </div>
 </div>
 </section>
@@ -453,7 +455,7 @@ reltol = 1.0e-6</code></pre>
 <span id="cb19-9"><a href="#cb19-9"></a>fig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Calculating power spectrum in frequency domain...
-Progress: [===                           ]  11.4% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 07s)Progress: [======                        ]  22.4% --- Elapsed Time: 0h 00m 02s (ETA: 0h 00m 06s)Progress: [=========                     ]  31.8% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 06s)Progress: [===========                   ]  39.8% --- Elapsed Time: 0h 00m 04s (ETA: 0h 00m 06s)Progress: [=============                 ]  46.3% --- Elapsed Time: 0h 00m 05s (ETA: 0h 00m 05s)Progress: [===============               ]  52.7% --- Elapsed Time: 0h 00m 06s (ETA: 0h 00m 05s)Progress: [================              ]  56.2% --- Elapsed Time: 0h 00m 07s (ETA: 0h 00m 05s)Progress: [=================             ]  57.7% --- Elapsed Time: 0h 00m 08s (ETA: 0h 00m 05s)Progress: [=================             ]  59.7% --- Elapsed Time: 0h 00m 09s (ETA: 0h 00m 06s)Progress: [===================           ]  64.2% --- Elapsed Time: 0h 00m 10s (ETA: 0h 00m 05s)Progress: [====================          ]  69.2% --- Elapsed Time: 0h 00m 11s (ETA: 0h 00m 04s)Progress: [======================        ]  75.1% --- Elapsed Time: 0h 00m 12s (ETA: 0h 00m 03s)Progress: [========================      ]  82.6% --- Elapsed Time: 0h 00m 13s (ETA: 0h 00m 02s)Progress: [===========================   ]  92.5% --- Elapsed Time: 0h 00m 14s (ETA: 0h 00m 01s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 15s (ETA: 0h 00m 00s)
+Progress: [===                           ]  10.9% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 08s)Progress: [======                        ]  21.9% --- Elapsed Time: 0h 00m 02s (ETA: 0h 00m 07s)Progress: [=========                     ]  31.3% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 06s)Progress: [===========                   ]  39.3% --- Elapsed Time: 0h 00m 04s (ETA: 0h 00m 06s)Progress: [=============                 ]  45.8% --- Elapsed Time: 0h 00m 05s (ETA: 0h 00m 05s)Progress: [===============               ]  52.2% --- Elapsed Time: 0h 00m 06s (ETA: 0h 00m 05s)Progress: [================              ]  56.2% --- Elapsed Time: 0h 00m 07s (ETA: 0h 00m 05s)Progress: [=================             ]  57.7% --- Elapsed Time: 0h 00m 08s (ETA: 0h 00m 05s)Progress: [=================             ]  59.7% --- Elapsed Time: 0h 00m 09s (ETA: 0h 00m 06s)Progress: [===================           ]  64.2% --- Elapsed Time: 0h 00m 10s (ETA: 0h 00m 05s)Progress: [====================          ]  69.2% --- Elapsed Time: 0h 00m 11s (ETA: 0h 00m 04s)Progress: [======================        ]  74.6% --- Elapsed Time: 0h 00m 12s (ETA: 0h 00m 04s)Progress: [========================      ]  82.1% --- Elapsed Time: 0h 00m 13s (ETA: 0h 00m 02s)Progress: [===========================   ]  91.5% --- Elapsed Time: 0h 00m 14s (ETA: 0h 00m 01s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 15s (ETA: 0h 00m 00s)
 [DONE]</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
@@ -504,7 +506,9 @@ Progress: [===                           ]  11.4% --- Elapsed Time: 0h 00m 01s (
 [DONE]
 Solving time evolution for ADOs by Ordinary Differential Equations method...
 Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)
-Solving steady state for ADOs by linear-solve method...[DONE]</code></pre>
+Solving steady state for ADOs by linear-solve method...
+Calculating left preconditioner with ilu...[DONE]
+Solving linear problem...[DONE]</code></pre>
 </div>
 </div>
 <p>plot results</p>
@@ -583,10 +587,10 @@ Other developers:
 Package information:
 ====================================
 Julia              Ver. 1.11.5
-HierarchicalEOM    Ver. 2.5.0
+HierarchicalEOM    Ver. 2.5.3
 QuantumToolbox     Ver. 0.30.0
 SciMLOperators     Ver. 0.3.13
-LinearSolve        Ver. 3.7.2
+LinearSolve        Ver. 3.8.0
 OrdinaryDiffEqCore Ver. 1.22.0
 
 System information:

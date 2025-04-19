@@ -392,7 +392,9 @@ Progress: [                              ]   0.5% --- Elapsed Time: 0h 00m 02s (
 <div id="12" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1"></a>ados_steady <span class="op">=</span> <span class="fu">steadystate</span>(M)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Solving steady state for ADOs by linear-solve method...[DONE]</code></pre>
+<pre><code>Solving steady state for ADOs by linear-solve method...
+Calculating left preconditioner with ilu...[DONE]
+Solving linear problem...[DONE]</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>1586 Auxiliary Density Operators with even-parity and (system) dims = [2]</code></pre>
@@ -534,10 +536,10 @@ Other developers:
 Package information:
 ====================================
 Julia              Ver. 1.11.5
-HierarchicalEOM    Ver. 2.5.0
+HierarchicalEOM    Ver. 2.5.3
 QuantumToolbox     Ver. 0.30.0
 SciMLOperators     Ver. 0.3.13
-LinearSolve        Ver. 3.7.2
+LinearSolve        Ver. 3.8.0
 OrdinaryDiffEqCore Ver. 1.22.0
 
 System information:

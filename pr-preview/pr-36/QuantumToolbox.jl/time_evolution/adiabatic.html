@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Li-Xun Cai">
-<meta name="dcterms.date" content="2025-04-09">
+<meta name="dcterms.date" content="2025-04-20">
 
 <title>Adiabatic sweep (with QuantumObjectEvolution) – Tutorials for Quantum Toolbox in Julia</title>
 <style>
@@ -218,7 +218,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Last Update</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2025-04-09</p>
+      <p class="date">2025-04-20</p>
     </div>
   </div>
   
@@ -262,118 +262,95 @@ window.Quarto = {
 <span id="cb2-4"><a href="#cb2-4"></a>gs <span class="op">=</span> <span class="fu">rand</span>(N<span class="op">-</span><span class="fl">1</span>) <span class="co"># use rand function for the random interaction strengths</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>7-element Vector{Float64}:
- 0.41464339721252486
- 0.27149070395114583
- 0.2745656570905276
- 0.47947338074374923
- 0.051355020462794165
- 0.17639152718418427
- 0.3107452633385841</code></pre>
+ 0.07710786431528283
+ 0.9028151156053815
+ 0.20486007195845968
+ 0.6245182173629716
+ 0.7006788861544315
+ 0.8500840122659116
+ 0.43469418029424434</code></pre>
 </div>
 </div>
 <div id="6" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1"></a>Is <span class="op">=</span> <span class="fu">Vector</span><span class="dt">{QuantumObject}</span>(<span class="fu">fill</span>(<span class="fu">qeye</span>(<span class="fl">2</span>), N));</span>
-<span id="cb4-2"><a href="#cb4-2"></a></span>
-<span id="cb4-3"><a href="#cb4-3"></a>H0 <span class="op">=</span> <span class="fu">QuantumObject</span>(</span>
-<span id="cb4-4"><a href="#cb4-4"></a>    <span class="fu">zeros</span>((<span class="fl">2</span><span class="op">^</span>N, <span class="fl">2</span><span class="op">^</span>N)),</span>
-<span id="cb4-5"><a href="#cb4-5"></a>    Operator,</span>
-<span id="cb4-6"><a href="#cb4-6"></a>    <span class="fu">Tuple</span>(<span class="fu">fill</span>(<span class="fl">2</span>, N))</span>
-<span id="cb4-7"><a href="#cb4-7"></a>)</span>
-<span id="cb4-8"><a href="#cb4-8"></a></span>
-<span id="cb4-9"><a href="#cb4-9"></a><span class="cf">for</span> idx <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>N</span>
-<span id="cb4-10"><a href="#cb4-10"></a>    is <span class="op">=</span> <span class="fu">copy</span>(Is)</span>
-<span id="cb4-11"><a href="#cb4-11"></a>    is[idx] <span class="op">=</span> ε<span class="fl">0</span><span class="op">/</span><span class="fl">2</span> <span class="op">*</span> <span class="fu">sigmaz</span>()</span>
-<span id="cb4-12"><a href="#cb4-12"></a>    H0 <span class="op">+=</span> <span class="fu">kron</span>(is<span class="op">...</span>)</span>
-<span id="cb4-13"><a href="#cb4-13"></a><span class="cf">end</span></span>
-<span id="cb4-14"><a href="#cb4-14"></a></span>
-<span id="cb4-15"><a href="#cb4-15"></a>ψ<span class="fl">0</span> <span class="op">=</span> <span class="fu">kron</span>(<span class="fu">fill</span>(<span class="fu">basis</span>(<span class="fl">2</span>,<span class="fl">1</span>), N)<span class="op">...</span>)</span>
-<span id="cb4-16"><a href="#cb4-16"></a><span class="fu">print</span>(H0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1"></a>H0 <span class="op">=</span> <span class="fu">sum</span>(<span class="fl">1</span><span class="op">:</span>N) <span class="cf">do</span> i</span>
+<span id="cb4-2"><a href="#cb4-2"></a>    ε<span class="fl">0</span><span class="op">/</span><span class="fl">2</span> <span class="op">*</span> <span class="fu">multisite_operator</span>(<span class="fu">Val</span>(N), i<span class="op">=&gt;</span><span class="fu">sigmaz</span>())</span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="cf">end</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a></span>
+<span id="cb4-5"><a href="#cb4-5"></a>ψ<span class="fl">0</span> <span class="op">=</span> <span class="fu">kron</span>(<span class="fu">fill</span>(<span class="fu">basis</span>(<span class="fl">2</span>,<span class="fl">1</span>), N)<span class="op">...</span>)</span>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="fu">print</span>(H0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Quantum Object:   type=Operator   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256, 256)   ishermitian=true
-256×256 Matrix{ComplexF64}:
- 4.0+0.0im  0.0+0.0im  0.0+0.0im  …   0.0+0.0im   0.0+0.0im   0.0+0.0im
- 0.0+0.0im  3.0+0.0im  0.0+0.0im      0.0+0.0im   0.0+0.0im   0.0+0.0im
- 0.0+0.0im  0.0+0.0im  3.0+0.0im      0.0+0.0im   0.0+0.0im   0.0+0.0im
- 0.0+0.0im  0.0+0.0im  0.0+0.0im      0.0+0.0im   0.0+0.0im   0.0+0.0im
- 0.0+0.0im  0.0+0.0im  0.0+0.0im      0.0+0.0im   0.0+0.0im   0.0+0.0im
- 0.0+0.0im  0.0+0.0im  0.0+0.0im  …   0.0+0.0im   0.0+0.0im   0.0+0.0im
- 0.0+0.0im  0.0+0.0im  0.0+0.0im      0.0+0.0im   0.0+0.0im   0.0+0.0im
- 0.0+0.0im  0.0+0.0im  0.0+0.0im      0.0+0.0im   0.0+0.0im   0.0+0.0im
- 0.0+0.0im  0.0+0.0im  0.0+0.0im      0.0+0.0im   0.0+0.0im   0.0+0.0im
- 0.0+0.0im  0.0+0.0im  0.0+0.0im      0.0+0.0im   0.0+0.0im   0.0+0.0im
-    ⋮                             ⋱                              ⋮
- 0.0+0.0im  0.0+0.0im  0.0+0.0im      0.0+0.0im   0.0+0.0im   0.0+0.0im
- 0.0+0.0im  0.0+0.0im  0.0+0.0im      0.0+0.0im   0.0+0.0im   0.0+0.0im
- 0.0+0.0im  0.0+0.0im  0.0+0.0im      0.0+0.0im   0.0+0.0im   0.0+0.0im
- 0.0+0.0im  0.0+0.0im  0.0+0.0im  …   0.0+0.0im   0.0+0.0im   0.0+0.0im
- 0.0+0.0im  0.0+0.0im  0.0+0.0im      0.0+0.0im   0.0+0.0im   0.0+0.0im
- 0.0+0.0im  0.0+0.0im  0.0+0.0im      0.0+0.0im   0.0+0.0im   0.0+0.0im
- 0.0+0.0im  0.0+0.0im  0.0+0.0im     -3.0+0.0im   0.0+0.0im   0.0+0.0im
- 0.0+0.0im  0.0+0.0im  0.0+0.0im      0.0+0.0im  -3.0+0.0im   0.0+0.0im
- 0.0+0.0im  0.0+0.0im  0.0+0.0im  …   0.0+0.0im   0.0+0.0im  -4.0+0.0im</code></pre>
+256×256 SparseArrays.SparseMatrixCSC{ComplexF64, Int64} with 186 stored entries:
+⎡⠑⢄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⎤
+⎢⠀⠀⠑⢄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⎥
+⎢⠀⠀⠀⠀⠑⢄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⎥
+⎢⠀⠀⠀⠀⠀⠀⠑⢄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⎥
+⎢⠀⠀⠀⠀⠀⠀⠀⠀⠑⢄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⎥
+⎢⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠑⢄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⎥
+⎢⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠑⢄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⎥
+⎢⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠑⢄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⎥
+⎢⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠑⢄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⎥
+⎢⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠑⢄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⎥
+⎢⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠑⢄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⎥
+⎢⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠑⢄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⎥
+⎢⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠑⢄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⎥
+⎢⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠑⢄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⎥
+⎢⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠑⢄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⎥
+⎢⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠑⢄⠀⠀⠀⠀⠀⠀⠀⠀⎥
+⎢⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠑⢄⠀⠀⠀⠀⠀⠀⎥
+⎢⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠑⢄⠀⠀⠀⠀⎥
+⎢⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠑⢄⠀⠀⎥
+⎣⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠑⢄⎦</code></pre>
 </div>
 </div>
 <div id="8" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1"></a>H1 <span class="op">=</span> <span class="fu">QuantumObject</span>(</span>
-<span id="cb6-2"><a href="#cb6-2"></a>    <span class="fu">zeros</span>((<span class="fl">2</span><span class="op">^</span>N, <span class="fl">2</span><span class="op">^</span>N)),</span>
-<span id="cb6-3"><a href="#cb6-3"></a>    Operator,</span>
-<span id="cb6-4"><a href="#cb6-4"></a>    <span class="fu">Tuple</span>(<span class="fu">fill</span>(<span class="fl">2</span>, N))</span>
-<span id="cb6-5"><a href="#cb6-5"></a>)</span>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1"></a>Hint <span class="op">=</span> <span class="fu">sum</span>(<span class="fl">1</span><span class="op">:</span>N<span class="op">-</span><span class="fl">1</span>) <span class="cf">do</span> i</span>
+<span id="cb6-2"><a href="#cb6-2"></a>    gs[i] <span class="op">*</span> <span class="fu">multisite_operator</span>(<span class="fu">Val</span>(N), i<span class="op">=&gt;</span><span class="fu">sigmax</span>(), i<span class="op">+</span><span class="fl">1</span><span class="op">=&gt;</span><span class="fu">sigmax</span>())</span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="cf">end</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a></span>
+<span id="cb6-5"><a href="#cb6-5"></a>H1 <span class="op">=</span> H0 <span class="op">+</span> Hint</span>
 <span id="cb6-6"><a href="#cb6-6"></a></span>
-<span id="cb6-7"><a href="#cb6-7"></a><span class="cf">for</span> idx <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>N</span>
-<span id="cb6-8"><a href="#cb6-8"></a>    is <span class="op">=</span> <span class="fu">copy</span>(Is)</span>
-<span id="cb6-9"><a href="#cb6-9"></a>    is[idx] <span class="op">=</span> ε<span class="fl">0</span><span class="op">/</span><span class="fl">2</span> <span class="op">*</span> <span class="fu">sigmaz</span>()</span>
-<span id="cb6-10"><a href="#cb6-10"></a>    H1 <span class="op">+=</span> <span class="fu">kron</span>(is<span class="op">...</span>)</span>
-<span id="cb6-11"><a href="#cb6-11"></a><span class="cf">end</span></span>
-<span id="cb6-12"><a href="#cb6-12"></a></span>
-<span id="cb6-13"><a href="#cb6-13"></a><span class="cf">for</span> idx <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>N<span class="op">-</span><span class="fl">1</span></span>
-<span id="cb6-14"><a href="#cb6-14"></a>    is <span class="op">=</span> <span class="fu">copy</span>(Is)</span>
-<span id="cb6-15"><a href="#cb6-15"></a>    is[idx] <span class="op">=</span> gs[idx] <span class="op">*</span> <span class="fu">sigmax</span>()</span>
-<span id="cb6-16"><a href="#cb6-16"></a>    is[idx<span class="op">+</span><span class="fl">1</span>] <span class="op">=</span> <span class="fu">sigmax</span>()</span>
-<span id="cb6-17"><a href="#cb6-17"></a></span>
-<span id="cb6-18"><a href="#cb6-18"></a>    h_int <span class="op">=</span> <span class="fu">kron</span>(is<span class="op">...</span>)</span>
-<span id="cb6-19"><a href="#cb6-19"></a>        </span>
-<span id="cb6-20"><a href="#cb6-20"></a>    H1 <span class="op">+=</span> h_int</span>
-<span id="cb6-21"><a href="#cb6-21"></a><span class="cf">end</span></span>
-<span id="cb6-22"><a href="#cb6-22"></a></span>
-<span id="cb6-23"><a href="#cb6-23"></a><span class="fu">print</span>(H1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-7"><a href="#cb6-7"></a><span class="fu">print</span>(H1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Quantum Object:   type=Operator   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256, 256)   ishermitian=true
-256×256 Matrix{ComplexF64}:
-      4.0+0.0im       0.0+0.0im  …       0.0+0.0im       0.0+0.0im
-      0.0+0.0im       3.0+0.0im          0.0+0.0im       0.0+0.0im
-      0.0+0.0im  0.310745+0.0im          0.0+0.0im       0.0+0.0im
- 0.310745+0.0im       0.0+0.0im          0.0+0.0im       0.0+0.0im
-      0.0+0.0im       0.0+0.0im          0.0+0.0im       0.0+0.0im
-      0.0+0.0im       0.0+0.0im  …       0.0+0.0im       0.0+0.0im
- 0.176392+0.0im       0.0+0.0im          0.0+0.0im       0.0+0.0im
-      0.0+0.0im  0.176392+0.0im          0.0+0.0im       0.0+0.0im
-      0.0+0.0im       0.0+0.0im          0.0+0.0im       0.0+0.0im
-      0.0+0.0im       0.0+0.0im          0.0+0.0im       0.0+0.0im
-         ⋮                       ⋱                          ⋮
-      0.0+0.0im       0.0+0.0im          0.0+0.0im       0.0+0.0im
-      0.0+0.0im       0.0+0.0im     0.176392+0.0im       0.0+0.0im
-      0.0+0.0im       0.0+0.0im          0.0+0.0im  0.176392+0.0im
-      0.0+0.0im       0.0+0.0im  …       0.0+0.0im       0.0+0.0im
-      0.0+0.0im       0.0+0.0im          0.0+0.0im       0.0+0.0im
-      0.0+0.0im       0.0+0.0im          0.0+0.0im  0.310745+0.0im
-      0.0+0.0im       0.0+0.0im     0.310745+0.0im       0.0+0.0im
-      0.0+0.0im       0.0+0.0im         -3.0+0.0im       0.0+0.0im
-      0.0+0.0im       0.0+0.0im  …       0.0+0.0im      -4.0+0.0im</code></pre>
+256×256 SparseArrays.SparseMatrixCSC{ComplexF64, Int64} with 1978 stored entries:
+⎡⠿⣧⣷⡈⠳⠄⠀⠘⠦⡀⠀⠀⠀⠀⠀⠳⢄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠳⣄⠀⠀⠀⠀⠀⠀⠀⠀⎤
+⎢⡙⠻⣿⣿⣰⢦⡀⠀⠀⠈⠂⠀⠀⠀⠀⠀⠈⠳⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠳⣄⠀⠀⠀⠀⠀⠀⎥
+⎢⠙⠆⠰⣞⠿⣧⣌⣦⠠⣄⣄⠀⠀⠀⠀⠀⠀⠀⠈⠳⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠳⣄⠀⠀⠀⠀⎥
+⎢⣀⠀⠀⠈⠢⣽⣿⣿⣦⢈⠁⠑⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠳⣄⠀⠀⎥
+⎢⠈⠣⡀⠀⠀⢦⡈⢛⢿⣷⡅⠀⠀⠑⢄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠳⣄⎥
+⎢⠀⠀⠈⠀⠀⠙⢅⠀⠁⠉⢿⣷⣧⡈⠻⠀⠀⠈⢢⡀⠑⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⎥
+⎢⠀⠀⠀⠀⠀⠀⠀⠙⢄⠀⡉⠻⣵⣿⣴⠢⡀⠀⠀⠉⠀⠈⠑⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⎥
+⎢⢤⡀⠀⠀⠀⠀⠀⠀⠀⠑⠛⠂⠰⡛⠛⣤⣼⡆⠠⣄⠀⠀⠀⠈⠓⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⎥
+⎢⠀⠑⢦⡀⠀⠀⠀⠀⠀⠀⡀⠀⠀⠈⠲⠿⣿⢟⣦⣈⠀⠀⠀⠀⠀⠈⠓⢄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⎥
+⎢⠀⠀⠀⠙⢦⡀⠀⠀⠀⠀⠈⠲⡄⠀⠀⢦⡈⢻⣻⣾⠀⠀⠀⠀⠀⠀⠀⠈⠓⢄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⎥
+⎢⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠑⢤⡀⠀⠀⠀⠀⠀⠀⠀⡿⣯⣧⡈⠳⠀⠀⠘⠦⡀⠀⠀⠀⠀⠈⠳⣄⠀⠀⠀⎥
+⎢⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠑⢤⡀⠀⠀⠀⠀⠀⡉⠻⣵⣿⣶⠦⡀⠀⠀⠈⠀⠀⠀⠀⠀⠀⠈⠳⢄⠀⎥
+⎢⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢤⡀⠀⠀⠀⠙⠂⠸⡟⠛⣤⣬⠆⠠⣤⢄⠀⠀⠀⠀⠀⠀⠀⠈⠓⎥
+⎢⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢄⡀⠀⣀⠀⠀⠈⠢⠟⣿⢟⣦⣈⠀⠑⣄⠀⠀⠀⠀⠀⠀⠀⎥
+⎢⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢄⠈⠣⡀⠀⠀⣦⡈⢻⢿⣷⣀⢀⠀⢑⣄⠀⠀⡀⠀⠀⎥
+⎢⠙⢦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠑⢄⠀⠀⢘⢿⣷⣥⡈⠳⠀⠀⠈⢢⡀⎥
+⎢⠀⠀⠙⢦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢄⢀⡁⠻⣿⣿⣟⠢⡀⠀⠀⠉⎥
+⎢⠀⠀⠀⠀⠙⢦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢦⡀⠀⠀⠀⠀⠀⠀⠀⠙⠙⠂⠻⡙⢻⣶⡽⠆⠰⣄⎥
+⎢⠀⠀⠀⠀⠀⠀⠙⢦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢦⡀⠀⠀⠀⠀⠀⠠⡀⠀⠀⠈⠳⠏⣿⣿⣦⣌⎥
+⎣⠀⠀⠀⠀⠀⠀⠀⠀⠙⢦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠑⢦⠀⠀⠀⠀⠀⠈⠲⡄⠀⠐⢦⡈⢿⢻⣶⎦</code></pre>
 </div>
 </div>
-<p>Here, we define the function <code>H(T)</code> where <code>T</code> is the total evolution time.</p>
+<p>Here, we define the time-dependent Hamiltonian with <code>QuantumObjectEvolution</code>.</p>
 <div id="10" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">H</span>(T) <span class="op">=</span> <span class="fu">QuantumObjectEvolution</span>((</span>
-<span id="cb8-2"><a href="#cb8-2"></a>    (H0, (p,t) <span class="op">-&gt;</span> <span class="fl">1</span> <span class="op">-</span> t<span class="op">/</span>T),  <span class="co"># the dummy parameter `p` is not used but still required by the ODE solver</span></span>
-<span id="cb8-3"><a href="#cb8-3"></a>    (H1, (p,t) <span class="op">-&gt;</span> t<span class="op">/</span>T),</span>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1"></a>H <span class="op">=</span> <span class="fu">QuantumObjectEvolution</span>((</span>
+<span id="cb8-2"><a href="#cb8-2"></a>    (H0, (p,t) <span class="op">-&gt;</span> <span class="fl">1</span> <span class="op">-</span> t<span class="op">/</span>p.T),</span>
+<span id="cb8-3"><a href="#cb8-3"></a>    (H1, (p,t) <span class="op">-&gt;</span> t<span class="op">/</span>p.T),</span>
 <span id="cb8-4"><a href="#cb8-4"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>H (generic function with 1 method)</code></pre>
+<pre><code>
+Quantum Object Evo.:   type=Operator   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256, 256)   ishermitian=true   isconstant=false
+(ScalarOperator(0.0 + 0.0im) * MatrixOperator(256 × 256) + ScalarOperator(0.0 + 0.0im) * MatrixOperator(256 × 256))</code></pre>
 </div>
 </div>
+<p>We will show below the usage of field <code>p</code> in solving the eigen problems and the dynamics.</p>
 <div id="12" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">function</span> <span class="fu">ψg</span>(H)</span>
 <span id="cb10-2"><a href="#cb10-2"></a>    _, vecs <span class="op">=</span> <span class="fu">eigenstates</span>(H)</span>
@@ -386,22 +363,22 @@ Quantum Object:   type=Operator   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256, 256
 <pre><code>
 Quantum Object:   type=Ket   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256,)
 256-element SparseArrays.SparseVector{ComplexF64, Int64} with 128 stored entries:
-  [1  ]  =  0.000121945+0.0im
-  [4  ]  =  -0.000789014+0.0im
-  [6  ]  =  0.000159551+0.0im
-  [7  ]  =  -6.21084e-5+0.0im
-  [10 ]  =  -0.00245412-0.0im
-  [11 ]  =  0.000728728+0.0im
-  [13 ]  =  -0.00418829-0.0im
+  [1  ]  =  0.000577794+0.0im
+  [4  ]  =  -0.0021901+0.0im
+  [6  ]  =  0.0016193+0.0im
+  [7  ]  =  -0.000816979+0.0im
+  [10 ]  =  -0.00213419+0.0im
+  [11 ]  =  0.000930617+0.0im
+  [13 ]  =  -0.00123305+0.0im
          ⋮
-  [241]  =  0.00387472+0.0im
-  [244]  =  -0.0251154+0.0im
-  [246]  =  0.00483495+0.0im
-  [247]  =  -0.00182715+0.0im
-  [250]  =  -0.0821706+0.0im
-  [251]  =  0.0243963+0.0im
-  [253]  =  -0.140253+0.0im
-  [256]  =  0.917404+0.0im</code></pre>
+  [241]  =  0.0674389+0.0im
+  [244]  =  -0.262532+0.0im
+  [246]  =  0.183482+0.0im
+  [247]  =  -0.0890265+0.0im
+  [250]  =  -0.283927+0.0im
+  [251]  =  0.120977+0.0im
+  [253]  =  -0.165957+0.0im
+  [256]  =  0.69172+0.0im</code></pre>
 </div>
 </div>
 <p>We can see that the truthful ground state we are preparing is indeed very complex.</p>
@@ -409,15 +386,17 @@ Quantum Object:   type=Ket   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256,)
 <div id="14" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1"></a>T <span class="op">=</span> <span class="fl">10</span></span>
 <span id="cb12-2"><a href="#cb12-2"></a>tlist <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">0.1</span><span class="op">:</span>T</span>
-<span id="cb12-3"><a href="#cb12-3"></a>eigs <span class="op">=</span> <span class="fu">Array</span><span class="dt">{Real}</span>(<span class="cn">undef</span>, <span class="fu">length</span>(tlist), <span class="fl">2</span><span class="op">^</span>N)</span>
+<span id="cb12-3"><a href="#cb12-3"></a>eigs <span class="op">=</span> <span class="fu">Array</span><span class="dt">{Float64}</span>(<span class="cn">undef</span>, <span class="fu">length</span>(tlist), <span class="fl">2</span><span class="op">^</span>N)</span>
 <span id="cb12-4"><a href="#cb12-4"></a></span>
-<span id="cb12-5"><a href="#cb12-5"></a><span class="cf">for</span> (idx, t) <span class="kw">in</span> <span class="fu">enumerate</span>(tlist)</span>
-<span id="cb12-6"><a href="#cb12-6"></a>    vals, _ <span class="op">=</span> <span class="fu">eigenstates</span>(<span class="fu">H</span>(T)(t))</span>
-<span id="cb12-7"><a href="#cb12-7"></a>    eigs[idx,<span class="op">:</span>] <span class="op">=</span> vals</span>
-<span id="cb12-8"><a href="#cb12-8"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-5"><a href="#cb12-5"></a>params <span class="op">=</span> (T<span class="op">=</span>T,)</span>
+<span id="cb12-6"><a href="#cb12-6"></a><span class="cf">for</span> (idx, t) <span class="kw">in</span> <span class="fu">enumerate</span>(tlist)</span>
+<span id="cb12-7"><a href="#cb12-7"></a>    <span class="co"># passing `params` and `t` to `H` can yield the `QuantumObject` with `p = params` at time `t`</span></span>
+<span id="cb12-8"><a href="#cb12-8"></a>    vals, _ <span class="op">=</span> <span class="fu">eigenstates</span>(<span class="fu">H</span>(params, t))</span>
+<span id="cb12-9"><a href="#cb12-9"></a>    eigs[idx,<span class="op">:</span>] <span class="op">=</span> vals</span>
+<span id="cb12-10"><a href="#cb12-10"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="16" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1"></a>fig <span class="op">=</span> <span class="fu">Figure</span>()</span>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1"></a>fig <span class="op">=</span> <span class="fu">Figure</span>(size<span class="op">=</span>(<span class="fl">800</span>, <span class="fl">400</span>))</span>
 <span id="cb13-2"><a href="#cb13-2"></a>ax <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">1</span>,<span class="fl">1</span>], xticks <span class="op">=</span> (<span class="fl">0</span><span class="op">:</span><span class="fl">0.25</span><span class="op">:</span><span class="fl">1</span>, [<span class="st">"</span><span class="sc">$</span>(t)<span class="st">T"</span> for t <span class="kw">in</span> <span class="fl">0</span><span class="op">:</span><span class="fl">0.25</span><span class="op">:</span><span class="fl">1</span>]))</span>
 <span id="cb13-3"><a href="#cb13-3"></a></span>
 <span id="cb13-4"><a href="#cb13-4"></a><span class="cf">for</span> idx <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">20</span> <span class="co"># only check for the lowest 20 eigenvalues</span></span>
@@ -437,17 +416,17 @@ Quantum Object:   type=Ket   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256,)
 <pre><code>CairoMakie.Screen{PDF}</code></pre>
 </div>
 </div>
-<p>The plot shows that the gap is nonvanishing and thus validates the evolution.</p>
+<p>The plot shows that the gap is nonvanishing and thus validates the evolution. So we proceed to check the expectation value dynamics of the final Hamiltonian and the fidelity dynamics to the truthful ground state throughout the evolution.</p>
 <div id="18" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1"></a>Tlist <span class="op">=</span> <span class="fl">10</span> <span class="op">.^</span> (<span class="fl">0</span><span class="op">:</span><span class="fl">0.25</span><span class="op">:</span><span class="fl">1.25</span>)</span>
 <span id="cb15-2"><a href="#cb15-2"></a>results <span class="op">=</span> <span class="fu">map</span>(Tlist) <span class="cf">do</span> T </span>
 <span id="cb15-3"><a href="#cb15-3"></a>    tlist <span class="op">=</span> <span class="fu">range</span>(<span class="fl">0</span>,T, <span class="fl">101</span>)</span>
-<span id="cb15-4"><a href="#cb15-4"></a>    <span class="fu">sesolve</span>(<span class="fu">H</span>(T), ψ<span class="fl">0</span>, tlist, e_ops <span class="op">=</span> [H1, <span class="fu">ket2dm</span>(ψf_truth)]) </span>
-<span id="cb15-5"><a href="#cb15-5"></a>    <span class="co"># check the expectation value with respect to the final Hamiltonian and</span></span>
-<span id="cb15-6"><a href="#cb15-6"></a>    <span class="co"># the fidelity to the truthful ground state throughout the evolution</span></span>
+<span id="cb15-4"><a href="#cb15-4"></a>    params <span class="op">=</span> (T<span class="op">=</span>T,)</span>
+<span id="cb15-5"><a href="#cb15-5"></a>    <span class="fu">sesolve</span>(H, ψ<span class="fl">0</span>, tlist, e_ops <span class="op">=</span> [H1, <span class="fu">ket2dm</span>(ψf_truth)], params<span class="op">=</span>params)</span>
+<span id="cb15-6"><a href="#cb15-6"></a>    <span class="co"># for solving dynamics, we can pass `params` to the keyword argument `params` for its reference</span></span>
 <span id="cb15-7"><a href="#cb15-7"></a><span class="cf">end</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Progress: [                              ]   1.0% --- Elapsed Time: 0h 00m 02s (ETA: 0h 03m 20s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 02s (ETA: 0h 00m 00s)
+<pre><code>Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)
 Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)
 Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)
 Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)
@@ -456,7 +435,7 @@ Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (
 </div>
 </div>
 <div id="20" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1"></a>fig <span class="op">=</span> <span class="fu">Figure</span>(size <span class="op">=</span> (<span class="fl">800</span>,<span class="fl">400</span>))</span>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1"></a>fig <span class="op">=</span> <span class="fu">Figure</span>(size<span class="op">=</span>(<span class="fl">800</span>, <span class="fl">400</span>))</span>
 <span id="cb17-2"><a href="#cb17-2"></a>axs <span class="op">=</span> <span class="fu">Axis</span>.([fig[<span class="fl">1</span>,<span class="fl">1</span>], fig[<span class="fl">1</span>,<span class="fl">2</span>]])</span>
 <span id="cb17-3"><a href="#cb17-3"></a>axs[<span class="fl">1</span>].title <span class="op">=</span> L<span class="st">"\langle H_f </span><span class="sc">\r</span><span class="st">angle"</span></span>
 <span id="cb17-4"><a href="#cb17-4"></a>axs[<span class="fl">1</span>].xticks <span class="op">=</span> (<span class="fl">0</span><span class="op">:</span><span class="fl">0.25</span><span class="op">:</span><span class="fl">1</span>, [<span class="st">"</span><span class="sc">$</span>(t)<span class="st">T"</span> for t <span class="kw">in</span> <span class="fl">0</span><span class="op">:</span><span class="fl">0.25</span><span class="op">:</span><span class="fl">1</span>])</span>
@@ -503,7 +482,7 @@ Package information:
 Julia              Ver. 1.11.5
 QuantumToolbox     Ver. 0.30.0
 SciMLOperators     Ver. 0.3.13
-LinearSolve        Ver. 3.7.2
+LinearSolve        Ver. 3.8.0
 OrdinaryDiffEqCore Ver. 1.22.0
 
 System information:

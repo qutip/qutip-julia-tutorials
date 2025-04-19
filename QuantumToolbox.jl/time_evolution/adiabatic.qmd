@@ -1,7 +1,7 @@
 ---
 title: "Adiabatic sweep (with `QuantumObjectEvolution`)"
 author: Li-Xun Cai
-date: 2025-04-09  # last update (keep this comment as a reminder)
+date: 2025-04-20  # last update (keep this comment as a reminder)
 
 engine: julia
 ---
@@ -52,18 +52,8 @@ gs = rand(N-1) # use rand function for the random interaction strengths
 ```
 
 ```{julia}
-Is = Vector{QuantumObject}(fill(qeye(2), N));
-
-H0 = QuantumObject(
-    zeros((2^N, 2^N)),
-    Operator,
-    Tuple(fill(2, N))
-)
-
-for idx in 1:N
-    is = copy(Is)
-    is[idx] = ε0/2 * sigmaz()
-    H0 += kron(is...)
+H0 = sum(1:N) do i
+    ε0/2 * multisite_operator(Val(N), i=>sigmaz())
 end
 
 ψ0 = kron(fill(basis(2,1), N)...)
@@ -71,38 +61,23 @@ print(H0)
 ```
 
 ```{julia}
-H1 = QuantumObject(
-    zeros((2^N, 2^N)),
-    Operator,
-    Tuple(fill(2, N))
-)
-
-for idx in 1:N
-    is = copy(Is)
-    is[idx] = ε0/2 * sigmaz()
-    H1 += kron(is...)
+Hint = sum(1:N-1) do i
+    gs[i] * multisite_operator(Val(N), i=>sigmax(), i+1=>sigmax())
 end
 
-for idx in 1:N-1
-    is = copy(Is)
-    is[idx] = gs[idx] * sigmax()
-    is[idx+1] = sigmax()
-
-    h_int = kron(is...)
-        
-    H1 += h_int
-end
+H1 = H0 + Hint
 
 print(H1)
 ```
 
-Here, we define the function `H(T)` where `T` is the total evolution time.
+Here, we define the time-dependent Hamiltonian with `QuantumObjectEvolution`.
 ```{julia}
-H(T) = QuantumObjectEvolution((
-    (H0, (p,t) -> 1 - t/T),  # the dummy parameter `p` is not used but still required by the ODE solver
-    (H1, (p,t) -> t/T),
+H = QuantumObjectEvolution((
+    (H0, (p,t) -> 1 - t/p.T),
+    (H1, (p,t) -> t/p.T),
 ))
 ```
+We will show below the usage of field `p` in solving the eigen problems and the dynamics.
 
 ```{julia}
 function ψg(H)
@@ -120,16 +95,18 @@ For the adiabatic theorem to apply, we have to check for the gap between the gro
 ```{julia}
 T = 10
 tlist = 0:0.1:T
-eigs = Array{Real}(undef, length(tlist), 2^N)
+eigs = Array{Float64}(undef, length(tlist), 2^N)
 
+params = (T=T,)
 for (idx, t) in enumerate(tlist)
-    vals, _ = eigenstates(H(T)(t))
+    # passing `params` and `t` to `H` can yield the `QuantumObject` with `p = params` at time `t`
+    vals, _ = eigenstates(H(params, t))
     eigs[idx,:] = vals
 end
 ```
 
 ```{julia}
-fig = Figure()
+fig = Figure(size=(800, 400))
 ax = Axis(fig[1,1], xticks = (0:0.25:1, ["$(t)T" for t in 0:0.25:1]))
 
 for idx in 1:20 # only check for the lowest 20 eigenvalues
@@ -140,19 +117,19 @@ end
 display(fig)
 ```
 
-The plot shows that the gap is nonvanishing and thus validates the evolution.
+The plot shows that the gap is nonvanishing and thus validates the evolution. So we proceed to check the expectation value dynamics of the final Hamiltonian and the fidelity dynamics to the truthful ground state throughout the evolution.
 ```{julia}
 Tlist = 10 .^ (0:0.25:1.25)
 results = map(Tlist) do T 
     tlist = range(0,T, 101)
-    sesolve(H(T), ψ0, tlist, e_ops = [H1, ket2dm(ψf_truth)]) 
-    # check the expectation value with respect to the final Hamiltonian and
-    # the fidelity to the truthful ground state throughout the evolution
+    params = (T=T,)
+    sesolve(H, ψ0, tlist, e_ops = [H1, ket2dm(ψf_truth)], params=params)
+    # for solving dynamics, we can pass `params` to the keyword argument `params` for its reference
 end;
 ```
 
 ```{julia}
-fig = Figure(size = (800,400))
+fig = Figure(size=(800, 400))
 axs = Axis.([fig[1,1], fig[1,2]])
 axs[1].title = L"\langle H_f \rangle"
 axs[1].xticks = (0:0.25:1, ["$(t)T" for t in 0:0.25:1])

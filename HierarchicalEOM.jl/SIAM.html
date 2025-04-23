@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.6.42">
+<meta name="generator" content="quarto-1.6.43">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -92,8 +92,8 @@ div.csl-indent {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-2fa0555fe88427c29efa1b60aaf9e62d.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-6d7e7b9b3dbd114c66b233ded7072392.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-99fa6729ad23987aafeada22b1565191.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-96eb28dfcb1a9f9f854aabaf44231fb4.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../site_libs/bootstrap/bootstrap-a01147dbd7d5814ba4bda054800761a1.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
@@ -288,7 +288,7 @@ H_{\textrm{sf}} &amp;=\sum_{\sigma=\uparrow,\downarrow}\sum_{k}g_{k}c_{\sigma,k}
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>
 Quantum Object:   type=Operator   dims=[2, 2]   size=(4, 4)   ishermitian=true
-4×4 SparseMatrixCSC{ComplexF64, Int64} with 2 stored entries:
+4×4 SparseArrays.SparseMatrixCSC{ComplexF64, Int64} with 2 stored entries:
      ⋅           ⋅           ⋅          ⋅    
      ⋅      -5.0+0.0im       ⋅          ⋅    
      ⋅           ⋅      -5.0+0.0im      ⋅    
@@ -351,7 +351,9 @@ MatrixOperator(37200 × 37200)</code></pre>
 <div id="10" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1"></a>ados_s <span class="op">=</span> <span class="fu">steadystate</span>(M_even)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Solving steady state for ADOs by linear-solve method...[DONE]</code></pre>
+<pre><code>Solving steady state for ADOs by linear-solve method...
+Calculating left preconditioner with ilu...[DONE]
+Solving linear problem...[DONE]</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>2325 Auxiliary Density Operators with even-parity and (system) dims = [2, 2]</code></pre>
@@ -365,31 +367,31 @@ MatrixOperator(37200 × 37200)</code></pre>
 <span id="cb12-2"><a href="#cb12-2"></a>dos <span class="op">=</span> <span class="fu">DensityOfStates</span>(M_odd, ados_s, d_up, ωlist)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Calculating density of states in frequency domain...
-Progress: [=======                       ]  23.8% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 03s)Progress: [==============                ]  47.6% --- Elapsed Time: 0h 00m 02s (ETA: 0h 00m 02s)Progress: [=====================         ]  71.4% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 01s)Progress: [============================  ]  95.2% --- Elapsed Time: 0h 00m 04s (ETA: 0h 00m 00s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 04s (ETA: 0h 00m 00s)
+Progress: [==========                    ]  33.3% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 02s)Progress: [=====================         ]  71.4% --- Elapsed Time: 0h 00m 02s (ETA: 0h 00m 00s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 02s (ETA: 0h 00m 00s)
 [DONE]</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>21-element Vector{Float64}:
- 0.024341620652868125
- 0.04465552042384671
- 0.09077144051561165
- 0.1929888055674428
- 0.29351536894471525
- 0.23367107985909338
- 0.15864674406917825
- 0.1237987795050877
- 0.11772111509217494
- 0.14524303704733388
+ 0.02434162065287433
+ 0.04465552042386106
+ 0.09077144051563167
+ 0.19298880556747883
+ 0.29351536894468416
+ 0.2336710798590972
+ 0.15864674406912216
+ 0.12379877950505998
+ 0.11772111509217288
+ 0.1452430370473492
  ⋮
- 0.11772111509217663
- 0.12379877950508988
- 0.15864674406918147
- 0.2336710798590986
- 0.2935153689447211
- 0.1929888055674464
- 0.090771440515613
- 0.044655520423847135
- 0.024341620652868233</code></pre>
+ 0.11772111509218791
+ 0.12379877950509523
+ 0.1586467440691224
+ 0.23367107985903765
+ 0.2935153689446749
+ 0.1929888055674517
+ 0.09077144051560802
+ 0.0446555204238425
+ 0.024341620652870988</code></pre>
 </div>
 </div>
 <p>plot the results</p>
@@ -434,12 +436,12 @@ Other developers:
 
 Package information:
 ====================================
-Julia              Ver. 1.11.4
-HierarchicalEOM    Ver. 2.4.7
-QuantumToolbox     Ver. 0.29.1
-SciMLOperators     Ver. 0.3.12
-LinearSolve        Ver. 3.4.0
-OrdinaryDiffEqCore Ver. 1.19.0
+Julia              Ver. 1.11.5
+HierarchicalEOM    Ver. 2.5.3
+QuantumToolbox     Ver. 0.30.0
+SciMLOperators     Ver. 0.3.13
+LinearSolve        Ver. 3.8.0
+OrdinaryDiffEqCore Ver. 1.23.0
 
 System information:
 ====================================

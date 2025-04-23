@@ -1,0 +1,156 @@
+---
+title: "Adiabatic sweep (with `QuantumObjectEvolution`)"
+author: Li-Xun Cai
+date: 2025-04-20  # last update (keep this comment as a reminder)
+
+engine: julia
+---
+
+Inspirations taken from [the QuTiP tutorial](https://nbviewer.org/urls/qutip.org/qutip-tutorials/tutorials-v5/lectures/Lecture-8-Adiabatic-quantum-computing.ipynb) by J. R. Johansson.
+
+This tutorial mainly demonstrates the use of [`QuantumObjectEvolution`](https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.QuantumObjectEvolution). 
+
+## Introduction
+
+The quantum adiabatic theorem is a fundamental principle in quantum mechanics that describes how quantum systems evolve when subjected to time-dependent conditions. This theorem states that if a quantum system is initialized in an eigenstate (typically the ground state) of its initial Hamiltonian, and if the Hamiltonian changes sufficiently slow, the system will remain in the corresponding eigenstate of the evolving Hamiltonian throughout the process. 
+
+For this theorem to hold, certain conditions must be satisfied: the system must evolve slow enough compared to the energy gap between the relevant eigenstate and other energy levels, and this gap must remain non-zero throughout the evolution.
+
+Here, we will demonstrate the well-known application of the adiabatic theorem in quantum computing called $\text{\emph{adiabatic sweep}}$. This is a method for preparing some desired quantum state by slowly evolving a quantum system with a time-dependent Hamiltonian. Essentially, the adiabatic theorem allows us to prepare the ground state of the final Hamiltonian $H_1$ from the ground state of the initial Hamiltonian $H_0$.
+
+## Model
+
+We consider a chain of $N$-identical spin-$1/2$ particles to study their spin dynamics and set our interest in finding the ground state of the condition that the spin chain has some random gap, leading to the random magnitude $g_i$ of $\hat{\sigma}^i_x \hat{\sigma}^{i+1}_x$ interaction with the neighboring spin.
+
+Initially, we prepare the system such that the spins are free from interaction with each other and are all in the ground state, i.e.,
+
+$$H_0 = \sum_i^N \frac{\varepsilon_0}{2} \hat{\sigma}^i_z,$$
+$$|\psi(0)\rangle = \bigotimes_{i=1}^N |g\rangle$$
+
+Then, gradually, the Hamiltonian evolves to:
+
+$$H_1 = \sum_{i=1}^N \frac{\varepsilon_0}{2} \hat{\sigma}^i_z + \sum_{i=1}^{N-1} g_i \hat{\sigma}^i_x \hat{\sigma}^{i+1}_x,$$
+
+whose ground state are desired. By gradual change, we are subject to the simplest form of adiabatic sweep, i.e.,
+
+$$H(t,T) = H_0 * (1-t/T) + H_1 * t/T,$$
+
+where the parameter $T$ determines how slow the Hamiltonian changes in time.
+
+## Code demonstration
+
+```{julia}
+using QuantumToolbox
+using CairoMakie
+```
+
+```{julia}
+N = 8 # number of spins
+ε0 = 1 # energy gap of the spins
+
+gs = rand(N-1) # use rand function for the random interaction strengths
+```
+
+```{julia}
+H0 = sum(1:N) do i
+    ε0/2 * multisite_operator(Val(N), i=>sigmaz())
+end
+
+ψ0 = kron(fill(basis(2,1), N)...)
+print(H0)
+```
+
+```{julia}
+Hint = sum(1:N-1) do i
+    gs[i] * multisite_operator(Val(N), i=>sigmax(), i+1=>sigmax())
+end
+
+H1 = H0 + Hint
+
+print(H1)
+```
+
+Here, we define the time-dependent Hamiltonian with `QuantumObjectEvolution`.
+```{julia}
+H = QuantumObjectEvolution((
+    (H0, (p,t) -> 1 - t/p.T),
+    (H1, (p,t) -> t/p.T),
+))
+```
+We will show below the usage of field `p` in solving the eigen problems and the dynamics.
+
+```{julia}
+function ψg(H)
+    _, vecs = eigenstates(H)
+    return vecs[1]
+end
+
+ψf_truth = ψg(H1) |> to_sparse
+print(ψf_truth)
+```
+
+We can see that the truthful ground state we are preparing is indeed very complex. 
+
+For the adiabatic theorem to apply, we have to check for the gap between the ground state and first excited state remaining non-zero throughout the evolution.
+```{julia}
+T = 10
+tlist = 0:0.1:T
+eigs = Array{Float64}(undef, length(tlist), 2^N)
+
+params = (T=T,)
+for (idx, t) in enumerate(tlist)
+    # passing `params` and `t` to `H` can yield the `QuantumObject` with `p = params` at time `t`
+    vals, _ = eigenstates(H(params, t))
+    eigs[idx,:] = vals
+end
+```
+
+```{julia}
+fig = Figure(size=(800, 400))
+ax = Axis(fig[1,1], xticks = (0:0.25:1, ["$(t)T" for t in 0:0.25:1]))
+
+for idx in 1:20 # only check for the lowest 20 eigenvalues
+    color = (idx == 1) ? :magenta : (:gray,0.5)
+    lines!(ax, range(0,1,length(tlist)), eigs[:,idx], label = string(idx), color = color)
+end
+
+display(fig)
+```
+
+The plot shows that the gap is nonvanishing and thus validates the evolution. So we proceed to check the expectation value dynamics of the final Hamiltonian and the fidelity dynamics to the truthful ground state throughout the evolution.
+```{julia}
+Tlist = 10 .^ (0:0.25:1.25)
+results = map(Tlist) do T 
+    tlist = range(0,T, 101)
+    params = (T=T,)
+    sesolve(H, ψ0, tlist, e_ops = [H1, ket2dm(ψf_truth)], params=params)
+    # for solving dynamics, we can pass `params` to the keyword argument `params` for its reference
+end;
+```
+
+```{julia}
+fig = Figure(size=(800, 400))
+axs = Axis.([fig[1,1], fig[1,2]])
+axs[1].title = L"\langle H_f \rangle"
+axs[1].xticks = (0:0.25:1, ["$(t)T" for t in 0:0.25:1])
+axs[2].title = L"|\langle \psi_G^f |\psi(t)\rangle|^2"
+axs[2].xticks = (0:0.25:1, ["$(t)T" for t in 0:0.25:1])
+
+for ax_idx in 1:2, T_idx in 1:length(Tlist)
+    T = Tlist[T_idx]
+    exps = results[T_idx].expect
+    tlist = range(0,1,101)
+    lines!(axs[ax_idx], tlist, real(exps[ax_idx,:]), label = L"10^{%$(string(log10(T)))}")
+end
+
+Legend(fig[1,3], axs[1], L"T")
+
+display(fig)
+```
+As the plot showed, the fidelity between the prepared final state and the truthful ground state reaches 1 as the total evolution time $T$ increases, showcasing the requirement of the adiabatic theorem that the change has to be gradual. 
+
+
+## Version Information
+```{julia}
+QuantumToolbox.versioninfo()
+```

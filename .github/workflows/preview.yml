@@ -38,7 +38,7 @@ jobs:
         with:
           to: html
       - name: Deploy PR Preview
-        uses: rossjrw/pr-preview-action@v1.6.0
+        uses: rossjrw/pr-preview-action@v1.6.1
         with:
           source-dir: ./_output/
         env:

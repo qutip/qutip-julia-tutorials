@@ -76,8 +76,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-96eb28dfcb1a9f9f854aabaf44231fb4.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-a01147dbd7d5814ba4bda054800761a1.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-50fef18cb936f83334a1f6b548adfb92.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-fe078aa73aa7a8bc500ed306fba3b889.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-33257a3f25bc6b21655a05c679776fd2.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -262,13 +262,13 @@ window.Quarto = {
 <span id="cb2-4"><a href="#cb2-4"></a>gs <span class="op">=</span> <span class="fu">rand</span>(N<span class="op">-</span><span class="fl">1</span>) <span class="co"># use rand function for the random interaction strengths</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>7-element Vector{Float64}:
- 0.7370774471720883
- 0.020073302502693458
- 0.7947074165800363
- 0.8191691583715407
- 0.12536561038903882
- 0.9438470779227539
- 0.05914361744015861</code></pre>
+ 0.7701805066198384
+ 0.34929283396506916
+ 0.8469586894244838
+ 0.7827419760181481
+ 0.7179319480004893
+ 0.42362521746798965
+ 0.06040391861442551</code></pre>
 </div>
 </div>
 <div id="6" class="cell" data-execution_count="1">
@@ -363,22 +363,22 @@ Quantum Object Evo.:   type=Operator   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256
 <pre><code>
 Quantum Object:   type=Ket   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256,)
 256-element SparseArrays.SparseVector{ComplexF64, Int64} with 128 stored entries:
-  [1  ]  =  0.000395278+0.0im
-  [4  ]  =  -0.00971005+0.0im
-  [6  ]  =  0.0074313+0.0im
-  [7  ]  =  -0.000597281+0.0im
-  [10 ]  =  -0.0373141-0.0im
-  [11 ]  =  0.00222116+0.0im
-  [13 ]  =  -0.00320691+0.0im
+  [1  ]  =  0.00130437+0.0im
+  [4  ]  =  -0.038433-0.0im
+  [6  ]  =  0.0171435+0.0im
+  [7  ]  =  -0.00147584+0.0im
+  [10 ]  =  -0.0227532+0.0im
+  [11 ]  =  0.00161011+0.0im
+  [13 ]  =  -0.00315018-0.0im
          ⋮
-  [241]  =  0.00287551+0.0im
-  [244]  =  -0.0715983+0.0im
-  [246]  =  0.0537136+0.0im
-  [247]  =  -0.00424184+0.0im
-  [250]  =  -0.299937+0.0im
-  [251]  =  0.0178394+0.0im
-  [253]  =  -0.0257815+0.0im
-  [256]  =  0.751164+0.0im</code></pre>
+  [241]  =  0.00816319+0.0im
+  [244]  =  -0.242249+0.0im
+  [246]  =  0.104655+0.0im
+  [247]  =  -0.00881473+0.0im
+  [250]  =  -0.149403+0.0im
+  [251]  =  0.0104324+0.0im
+  [253]  =  -0.0208855+0.0im
+  [256]  =  0.647374+0.0im</code></pre>
 </div>
 </div>
 <p>We can see that the truthful ground state we are preparing is indeed very complex.</p>
@@ -480,9 +480,9 @@ Current admin team:
 Package information:
 ====================================
 Julia              Ver. 1.11.5
-QuantumToolbox     Ver. 0.30.0
+QuantumToolbox     Ver. 0.30.1
 SciMLOperators     Ver. 0.3.13
-LinearSolve        Ver. 3.8.0
+LinearSolve        Ver. 3.9.0
 OrdinaryDiffEqCore Ver. 1.23.0
 
 System information:

@@ -1,0 +1,198 @@
+---
+title: "The Dicke Model"
+author: Li-Xun Cai
+date: 2025-03-11  # last update (keep this comment as a reminder)
+
+engine: julia
+---
+
+Inspirations taken from [this QuTiP tutorial](https://nbviewer.org/urls/qutip.org/qutip-tutorials/tutorials-v5/lectures/Lecture-3A-Dicke-model.ipynb) by J. R. Johansson.
+
+This tutorial mainly demonstrates the use of 
+
+- [`jmat`](https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.jmat)
+- [`plot_wigner`](https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.plot_wigner)
+- [`plot_fock_distribution`](https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.plot_fock_distribution)
+- [`entropy_mutual`](https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.entropy_mutual)
+
+to explore the Dicke model.
+
+## Introduction
+
+The Dicke model describes a system where $N$ two-level atoms interact with a single quantized electromagnetic mode. The original microscopic form of the Dicke Hamiltonian is given by:
+
+$$
+\hat{H}_D = \omega \hat{a}^\dagger \hat{a} + \sum_{i=1}^{N} \frac{\omega_0}{2} \hat{\sigma}_z^{(i)} + \sum_{i=1}^{N} \frac{g}{\sqrt{N}} (\hat{a} + \hat{a}^\dagger) (\hat{\sigma}_+^{(i)} + \hat{\sigma}_-^{(i)})
+$$
+
+where:
+
+- $\hat{a}$ and $\hat{a}^\dagger$ are the cavity (with frequency $\omega$) annihilation and creation operators, respectively.
+- $\hat{\sigma}_z^{(i)}, \hat{\sigma}_\pm^{(i)}$ are the Pauli matrices for the $i$-th two-level atom, with transition frequency $\omega_0$.
+- $g$ represents the light-matter coupling strength.
+
+This formulation explicitly treats each spin individually. However, when the atoms interact identically with the cavity, we can rewrite the Hamiltonian regarding collective spin operators.
+
+$$
+\hat{J}_z = \sum_{i=1}^{N} \hat{\sigma}_z^{(i)}, \quad \hat{J}_{\pm} = \sum_{i=1}^{N} \hat{\sigma}_{\pm}^{(i)}, 
+$$
+which describe the total spin of the system as a pseudospin of length $j = N/2$. Using these collective operators, the reformulated Dicke Hamiltonian takes the form:
+
+$$
+\hat{H}_D = \omega \hat{a}^\dagger \hat{a} + \omega_0 \hat{J}_z + \frac{g}{\sqrt{N}} (\hat{a} + \hat{a}^\dagger) (\hat{J}_+ + \hat{J}_-)
+$$
+
+This formulation reduces complexity, as it allows us to work on a collective basis instead of the whole individual spin Hilbert space. The superradiant phase transition occurs when the coupling strength $g$ exceeds a critical threshold $g_c = 0.5\sqrt{\omega/\omega_0}$, leading to a macroscopic population of the cavity mode.
+
+
+## Code demonstration
+
+```{julia}
+using QuantumToolbox
+using CairoMakie
+```
+
+```{julia}
+ω = 1
+ω0 = 1
+
+gc = √(ω/ω0)/2
+
+κ = 0.05;
+```
+
+Here, we define some functions for later usage.
+```{julia}
+# M: cavity Hilbert space truncation, N: number of atoms
+Jz(M, N) = (qeye(M) ⊗ jmat(N/2, :z))
+
+a(M, N) = (destroy(M) ⊗ qeye(N+1))
+
+function H(M, N, g)
+    j = N / 2
+    n = 2 * j + 1
+
+    a_ = a(M, N)
+    Jz_ = Jz(M, N)
+    Jp = qeye(M) ⊗ jmat(j, :+)
+    Jm = qeye(M) ⊗ jmat(j, :-);
+
+    H0 = ω * a_' * a_ + ω0 * Jz_
+    H1 = 1/ √N * (a_ + a_') * (Jp + Jm)
+
+    return (H0 + g * H1)
+end;
+```
+
+Take the example of 4 atoms.
+```{julia}
+M0, N0 = 16, 4
+
+H0(g) = H(M0, N0, g)
+
+a0 = a(M0, N0)
+Jz0 = Jz(M0, N0);
+```
+
+```{julia}
+gs = 0.0:0.05:1.0
+ψGs = map(gs) do g
+    H = H0(g)
+    vals, vecs = eigenstates(H)
+    vecs[1]
+end
+
+nvec = expect(a0'*a0, ψGs)
+Jzvec = expect(Jz0, ψGs);
+```
+
+```{julia}
+fig = Figure(size = (800, 300))
+axn = Axis(
+ fig[1,1],
+ xlabel = "interaction strength",
+ ylabel = L"\langle \hat{n} \rangle"
+)
+axJz = Axis(
+ fig[1,2],
+ xlabel = "interaction strength",
+ ylabel = L"\langle \hat{J}_{z} \rangle"
+)
+ylims!(-N0/2, N0/2)
+lines!(axn, gs, real(nvec))
+lines!(axJz, gs, real(Jzvec))
+display(fig);
+```
+The expectation value of photon number and $\hat{J}_z$ showed a sudden increment around $g_c$. 
+
+```{julia}
+# the indices in coupling strength list (gs)
+# to display wigner and fock distribution
+cases = 1:5:21
+
+fig = Figure(size = (900,650))
+for (hpos, idx) in enumerate(cases)
+    g = gs[idx] # coupling strength
+    ρcav = ptrace(ψGs[idx], 1) # cavity reduced state
+    
+    # plot wigner
+    _, ax, hm = plot_wigner(ρcav, location = fig[1,hpos])
+    ax.title = "g = $g"
+    ax.aspect = 1
+    
+    # plot fock distribution
+    _, ax2 = plot_fock_distribution(ρcav, location = fig[2,hpos])
+    
+    if hpos != 1
+        ax.xlabelvisible, ax.ylabelvisible, ax2.ylabelvisible = fill(false, 3)
+        ax.xticksvisible, ax.yticksvisible, ax2.yticksvisible = fill(false, 3)
+        ax2.yticks = (0:0.5:1, ["" for i in 0:0.5:1])
+        if hpos == 5 # Add colorbar with the last returned heatmap (_hm) 
+            Colorbar(fig[1,6], hm)
+        end
+    end    
+end
+
+# plot average photon number with respect to coupling strength
+ax3 = Axis(fig[3,1:6], height=200, xlabel=L"g", ylabel=L"\langle \hat{n} \rangle")
+xlims!(ax3, -0.02, 1.02)
+lines!(ax3, gs, real(nvec), color=:teal)
+ax3.xlabelsize, ax3.ylabelsize = 20, 20
+vlines!(ax3, gs[cases], color=:orange, linestyle = :dash, linewidth = 4)
+
+display(fig);
+```
+As $g$ increases, the cavity ground state's wigner function plot looks more coherent than a thermal state.
+
+```{julia}
+Ns = 8:8:24
+slists = map(Ns) do N
+    slist = map(gs) do g
+        H_ = H(M0, N, g)
+        _, vecs = eigenstates(H_)
+        entropy_mutual(vecs[1], 1, 2)
+    end
+end;
+```
+
+```{julia}
+fig = Figure(size=(800, 400))
+ax = Axis(fig[1,1])
+ax.xlabel = "coupling strength"
+ax.ylabel = "mutual entropy"
+
+for (idx, slist) in enumerate(slists)
+    lines!(gs, slist, label = string(Ns[idx]))
+end
+
+Legend(fig[1,2], ax, label = "number of atoms")
+display(fig);
+```
+We further consult mutual entropy between the cavity and the spins as a measure of their correlation; the result showed that as the number of atoms $N$ increases, the peak of mutual entropy moves closer to $g_c$.
+
+
+
+## Version Information
+```{julia}
+QuantumToolbox.versioninfo()
+```

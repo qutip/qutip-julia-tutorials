@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.29">
+<meta name="generator" content="quarto-1.7.31">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Luca Gravina">
-<meta name="dcterms.date" content="2025-04-14">
+<meta name="dcterms.date" content="2025-05-17">
 
 <title>Low rank master equation – Tutorials for Quantum Toolbox in Julia</title>
 <style>
@@ -94,14 +94,14 @@ div.csl-indent {
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-958fc32383290b5ef6234cdb9c3ce2d8.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-00039a9b2ce3f1a1ebc67187faa3690e.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-958fc32383290b5ef6234cdb9c3ce2d8.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-f428fda71a3abb5b1b9c21151da8fd61.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-6ec1ea2183979a90750e7180bf9040de.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-f428fda71a3abb5b1b9c21151da8fd61.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-a154da93fb9ded9327cd0f0700a171c0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-6a94191dd6ca580aaf7219b3b438e646.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-a154da93fb9ded9327cd0f0700a171c0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-474bc217b519df080f6326b627f749a9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-177587cd3ac3957cdd689dc94afd3196.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-474bc217b519df080f6326b627f749a9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -320,6 +320,7 @@ window.Quarto = {
       toggleColorMode(toAlternate);
       setStyleSentinel(toAlternate);
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
     };
     // Switch to dark mode if need be
     if (hasAlternateSentinel()) {
@@ -414,7 +415,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Last Update</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2025-04-14</p>
+      <p class="date">2025-05-17</p>
     </div>
   </div>
   
@@ -494,11 +495,11 @@ c_i = \sqrt{\gamma} \sigma_i^-,
 </div>
 <p>Since we will take as initial state for our dynamics the pure state with all spins pointing up, the initial low-rank basis must include at least this state.</p>
 <div id="10" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1"></a>ϕ <span class="op">=</span> <span class="fu">Vector</span><span class="dt">{QuantumObject{KetQuantumObject,Dimensions{M - 1,NTuple{M - 1,Space}},Vector{ComplexF64}}}</span>(<span class="cn">undef</span>, M)</span>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1"></a>ϕ <span class="op">=</span> <span class="fu">Vector</span><span class="dt">{QuantumObject{Ket,Dimensions{M - 1,NTuple{M - 1,Space}},Vector{ComplexF64}}}</span>(<span class="cn">undef</span>, M)</span>
 <span id="cb6-2"><a href="#cb6-2"></a>ϕ[<span class="fl">1</span>] <span class="op">=</span> <span class="fu">kron</span>(<span class="fu">fill</span>(<span class="fu">basis</span>(<span class="fl">2</span>, <span class="fl">1</span>), N_modes)<span class="op">...</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>
-Quantum Object:   type=Ket   dims=[2, 2, 2, 2, 2, 2]   size=(64,)
+Quantum Object:   type=Ket()   dims=[2, 2, 2, 2, 2, 2]   size=(64,)
 64-element Vector{ComplexF64}:
  0.0 + 0.0im
  0.0 + 0.0im
@@ -598,7 +599,7 @@ S = -\mathrm{Tr}(\rho \log_2(\rho)),
 <span id="cb12-24"><a href="#cb12-24"></a></span>
 <span id="cb12-25"><a href="#cb12-25"></a>    <span class="fu">mul!</span>(C, z, <span class="fu">sqrt</span>(B))</span>
 <span id="cb12-26"><a href="#cb12-26"></a>    <span class="fu">mul!</span>(σ, C<span class="op">'</span>, C)</span>
-<span id="cb12-27"><a href="#cb12-27"></a>    <span class="cf">return</span> <span class="fu">entropy_vn</span>(<span class="fu">Qobj</span>(<span class="fu">Hermitian</span>(σ), <span class="kw">type</span><span class="op">=</span>Operator), base<span class="op">=</span><span class="fl">2</span>)</span>
+<span id="cb12-27"><a href="#cb12-27"></a>    <span class="cf">return</span> <span class="fu">entropy_vn</span>(<span class="fu">Qobj</span>(<span class="fu">Hermitian</span>(σ), <span class="kw">type</span><span class="op">=</span><span class="fu">Operator</span>()), base<span class="op">=</span><span class="fl">2</span>)</span>
 <span id="cb12-28"><a href="#cb12-28"></a><span class="kw">end</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>A critical aspect of the LR truncation is the possibility to dynamically adjust the dimension of the basis throughout the system’s evolution <span class="math inline">\(M=M(t)\)</span>. This adaptability is essential for accommodating changes in the system’s entropy over time.</p>
@@ -669,16 +670,16 @@ Current admin team:
 Package information:
 ====================================
 Julia              Ver. 1.11.5
-QuantumToolbox     Ver. 0.30.1
-SciMLOperators     Ver. 0.3.14
-LinearSolve        Ver. 3.10.0
-OrdinaryDiffEqCore Ver. 1.23.0
+QuantumToolbox     Ver. 0.31.1
+SciMLOperators     Ver. 0.3.13
+LinearSolve        Ver. 3.12.0
+OrdinaryDiffEqCore Ver. 1.25.0
 
 System information:
 ====================================
 OS       : Linux (x86_64-linux-gnu)
 CPU      : 4 × AMD EPYC 7763 64-Core Processor
-Memory   : 15.615 GB
+Memory   : 15.621 GB
 WORD_SIZE: 64
 LIBM     : libopenlibm
 LLVM     : libLLVM-16.0.6 (ORCJIT, znver3)

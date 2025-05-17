@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.29">
+<meta name="generator" content="quarto-1.7.31">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -94,14 +94,14 @@ div.csl-indent {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-958fc32383290b5ef6234cdb9c3ce2d8.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-00039a9b2ce3f1a1ebc67187faa3690e.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-958fc32383290b5ef6234cdb9c3ce2d8.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-f428fda71a3abb5b1b9c21151da8fd61.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-6ec1ea2183979a90750e7180bf9040de.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-f428fda71a3abb5b1b9c21151da8fd61.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-a154da93fb9ded9327cd0f0700a171c0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-6a94191dd6ca580aaf7219b3b438e646.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-a154da93fb9ded9327cd0f0700a171c0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-474bc217b519df080f6326b627f749a9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-177587cd3ac3957cdd689dc94afd3196.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-474bc217b519df080f6326b627f749a9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -320,6 +320,7 @@ window.Quarto = {
       toggleColorMode(toAlternate);
       setStyleSentinel(toAlternate);
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
     };
     // Switch to dark mode if need be
     if (hasAlternateSentinel()) {
@@ -456,7 +457,7 @@ H_{\textrm{sf}} &amp;=\sum_{\sigma=\uparrow,\downarrow}\sum_{k}g_{k}c_{\sigma,k}
 <span id="cb2-11"><a href="#cb2-11"></a>Hsys <span class="op">=</span> ϵ <span class="op">*</span> (d_up<span class="op">'</span> <span class="op">*</span> d_up <span class="op">+</span> d_dn<span class="op">'</span> <span class="op">*</span> d_dn) <span class="op">+</span> U <span class="op">*</span> (d_up<span class="op">'</span> <span class="op">*</span> d_up <span class="op">*</span> d_dn<span class="op">'</span> <span class="op">*</span> d_dn)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>
-Quantum Object:   type=Operator   dims=[2, 2]   size=(4, 4)   ishermitian=true
+Quantum Object:   type=Operator()   dims=[2, 2]   size=(4, 4)   ishermitian=true
 4×4 SparseArrays.SparseMatrixCSC{ComplexF64, Int64} with 2 stored entries:
      ⋅           ⋅           ⋅          ⋅    
      ⋅      -5.0+0.0im       ⋅          ⋅    
@@ -536,7 +537,7 @@ Solving linear problem...[DONE]</code></pre>
 <span id="cb12-2"><a href="#cb12-2"></a>dos <span class="op">=</span> <span class="fu">DensityOfStates</span>(M_odd, ados_s, d_up, ωlist)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Calculating density of states in frequency domain...
-Progress: [==========                    ]  33.3% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 02s)Progress: [=====================         ]  71.4% --- Elapsed Time: 0h 00m 02s (ETA: 0h 00m 00s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 02s (ETA: 0h 00m 00s)
+Progress: [============                  ]  42.9% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 01s)Progress: [======================        ]  76.2% --- Elapsed Time: 0h 00m 02s (ETA: 0h 00m 00s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 02s (ETA: 0h 00m 00s)
 [DONE]</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
@@ -602,17 +603,17 @@ Other developers:
 Package information:
 ====================================
 Julia              Ver. 1.11.5
-HierarchicalEOM    Ver. 2.5.3
-QuantumToolbox     Ver. 0.30.1
-SciMLOperators     Ver. 0.3.14
-LinearSolve        Ver. 3.10.0
-OrdinaryDiffEqCore Ver. 1.23.0
+HierarchicalEOM    Ver. 2.5.4
+QuantumToolbox     Ver. 0.31.1
+SciMLOperators     Ver. 0.3.13
+LinearSolve        Ver. 3.12.0
+OrdinaryDiffEqCore Ver. 1.25.0
 
 System information:
 ====================================
 OS       : Linux (x86_64-linux-gnu)
 CPU      : 4 × AMD EPYC 7763 64-Core Processor
-Memory   : 15.615 GB
+Memory   : 15.621 GB
 WORD_SIZE: 64
 LIBM     : libopenlibm
 LLVM     : libLLVM-16.0.6 (ORCJIT, znver3)

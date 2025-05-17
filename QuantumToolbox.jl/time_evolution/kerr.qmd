@@ -1,7 +1,7 @@
 ---
 title: "Kerr nonlinearities"
 author: Li-Xun Cai
-date: 2025-02-08  # last update (keep this comment as a reminder)
+date: 2025-05-17  # last update (keep this comment as a reminder)
 
 engine: julia
 ---
@@ -126,10 +126,10 @@ Since we are considering unitary dynamics, i.e., no dissipation, the dynamics ar
 
 Note that if the keyword argument `e_ops` is not supplied to [`mesolve`](https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.sesolve), the returned `result` contains the state at each time point at field `states`. Consult the [user guide to `TimeEvolutionSol`](https://qutip.org/QuantumToolbox.jl/stable/users_guide/time_evolution/solution) for more details.
 ```{julia}
-ψ0 = coherent(N, 2.0)
+ρ0 = coherent_dm(N, 2.0)
 tlist = 0:0.01:(2*π / χ)
 
-result = mesolve(H, ψ0, tlist)
+result = mesolve(H, ρ0, tlist)
 ```
 
 We first check the expectation value dynamics of the number operator `n` with the two visualization functions we defined previously.

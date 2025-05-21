@@ -2,6 +2,11 @@
 title: "Electronic Current"
 author: Yi-Te Huang
 date: last-modified
+
+other-links:
+  - text: Run notebook in Binder
+    href: "https://mybinder.org/v2/gh/qutip/qutip-julia-tutorials/notebooks/?urlpath=lab/tree/HierarchicalEOM.jl/electronic_current.ipynb"
+    icon: file-code
 ---
 
 Inspirations taken from [qutip documentation](https://qutip.org/documentation.html).

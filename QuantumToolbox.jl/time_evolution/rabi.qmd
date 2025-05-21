@@ -2,6 +2,11 @@
 title: "Vacuum Rabi oscillation"
 author: Li-Xun Cai
 date: last-modified
+
+other-links:
+  - text: Run notebook in Binder
+    href: "https://mybinder.org/v2/gh/qutip/qutip-julia-tutorials/notebooks/?urlpath=lab/tree/QuantumToolbox.jl/time_evolution/rabi.ipynb"
+    icon: file-code
 ---
     
 Inspirations taken from [this QuTiP tutorial](https://nbviewer.org/urls/qutip.org/qutip-tutorials/tutorials-v5/time-evolution/004_rabi-oscillations.ipynb) by J.R. Johansson, P.D. Nation, and C. Staufenbiel

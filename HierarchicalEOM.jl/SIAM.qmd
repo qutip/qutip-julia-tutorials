@@ -2,6 +2,11 @@
 title: "Single-impurity Anderson model"
 author: Yi-Te Huang
 date: last-modified
+
+other-links:
+  - text: Run notebook in Binder
+    href: "https://mybinder.org/v2/gh/qutip/qutip-julia-tutorials/notebooks/?urlpath=lab/tree/HierarchicalEOM.jl/SIAM.ipynb"
+    icon: file-code
 ---
 
 ## Introduction

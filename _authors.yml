@@ -1,0 +1,43 @@
+author:
+  - id: albertomercurio
+    name: Alberto Mercurio
+    orcid: 0000-0001-7814-1936
+    email: alberto.mercurio@epfl.ch
+    affiliations:
+      - ref: 1
+
+  - id: yitehuang
+    name: Yi-Te Huang
+    orcid: 0000-0002-2520-8348
+    email: yitehuang.tw@gmail.com
+    affiliations:
+      - ref: 2
+      - ref: 3
+
+  - id: lixuncai
+    name: Li-Xun Cai
+    orcid: 0009-0006-7644-5200
+    email: cailixun23@gmail.com
+    affiliations:
+      - ref: 2
+      - ref: 3
+
+affiliations:
+  - id: 1
+    name: École Polytechnique Fédérale de Lausanne (EPFL)
+    address: Rte Cantonale
+    city: Lausanne
+    state: Switzerland
+    postal-code: 1015
+
+  - id: 2
+    name: National Cheng Kung University
+    city: Tainan
+    state: Taiwan
+    postal-code: 701401
+
+  - id: 3
+    name: Center for Quantum Frontiers of Research and Technology (QFort)
+    city: Tainan
+    state: Taiwan
+    postal-code: 701401

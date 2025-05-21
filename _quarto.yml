@@ -43,7 +43,9 @@ website:
       - icon: github
         href:  https://github.com/qutip/qutip-julia-tutorials
 
-bibliography: bibliography.bib  
+bibliography: bibliography.bib
+
+engines: ['julia']
 
 # default format for all files
 format:

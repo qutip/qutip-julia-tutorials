@@ -1,0 +1,27 @@
+name: Build container image
+
+permissions:
+  contents: write
+  packages: write
+
+on:
+  workflow_run:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: checkout files in repo
+      uses: actions/checkout@v4
+      with:
+        ref: notebooks
+
+    - name: update jupyter dependencies with repo2docker
+      uses: jupyterhub/repo2docker-action@master
+      with: 
+        DOCKER_USERNAME: ${{github.actor}}
+        DOCKER_PASSWORD: ${{secrets.GITHUB_TOKEN}}
+        BINDER_CACHE: true
+        DOCKER_REGISTRY: "ghcr.io"
+        IMAGE_NAME: "qutip/quantumtoolbox-jl-binder"

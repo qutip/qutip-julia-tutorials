@@ -9,6 +9,9 @@ project:
     - "!CODE_OF_CONDUCT.md"    # ignore
     - "!tutorial_template.qmd" # ignore
 
+metadata-files:
+  - _authors.yml
+
 website:
   title: Tutorials for Quantum Toolbox in Julia
   site-url: https://qutip.org/qutip-julia-tutorials/

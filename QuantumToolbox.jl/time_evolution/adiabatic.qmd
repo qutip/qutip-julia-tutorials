@@ -1,7 +1,8 @@
 ---
 title: "Adiabatic sweep (with `QuantumObjectEvolution`)"
-author: Li-Xun Cai
 date: 2025-04-20  # last update (keep this comment as a reminder)
+author:
+    - ref: lixuncai
 
 engine: julia
 ---

@@ -1,7 +1,9 @@
 ---
 title: "The Dicke Model"
 author: Li-Xun Cai
-date: 2025-05-22  # last update (keep this comment as a reminder)
+date: last-modified
+
+engine: julia
 ---
 
 Inspirations taken from [this QuTiP tutorial](https://nbviewer.org/urls/qutip.org/qutip-tutorials/tutorials-v5/lectures/Lecture-3A-Dicke-model.ipynb) by J. R. Johansson.

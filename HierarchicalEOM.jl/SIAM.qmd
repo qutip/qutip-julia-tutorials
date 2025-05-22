@@ -1,7 +1,9 @@
 ---
 title: "Single-impurity Anderson model"
 author: Yi-Te Huang
-date: 2025-05-22  # last update (keep this comment as a reminder)
+date: last-modified
+
+engine: julia
 ---
 
 ## Introduction

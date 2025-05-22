@@ -48,6 +48,8 @@ This formulation reduces complexity, as it allows us to work on a collective bas
 ```{julia}
 using QuantumToolbox
 using CairoMakie
+
+CairoMakie.activate!(type = "svg")
 ```
 
 ```{julia}
@@ -105,7 +107,7 @@ Jzvec = expect(Jz0, ψGs);
 ```
 
 ```{julia}
-fig = Figure(size = (800, 300))
+fig = Figure(size=(900, 350))
 axn = Axis(
  fig[1,1],
  xlabel = "interaction strength",
@@ -119,7 +121,7 @@ axJz = Axis(
 ylims!(-N0/2, N0/2)
 lines!(axn, gs, real(nvec))
 lines!(axJz, gs, real(Jzvec))
-display(fig);
+fig
 ```
 The expectation value of photon number and $\hat{J}_z$ showed a sudden increment around $g_c$. 
 
@@ -140,11 +142,12 @@ for (hpos, idx) in enumerate(cases)
     
     # plot fock distribution
     _, ax2 = plot_fock_distribution(ρcav, location = fig[2,hpos])
+
+    ax2.xticks = (0:2:size(ρcav,1)-1, string.(0:2:size(ρcav,1)-1))
     
     if hpos != 1
-        ax.xlabelvisible, ax.ylabelvisible, ax2.ylabelvisible = fill(false, 3)
-        ax.xticksvisible, ax.yticksvisible, ax2.yticksvisible = fill(false, 3)
-        ax2.yticks = (0:0.5:1, ["" for i in 0:0.5:1])
+        hideydecorations!(ax, ticks=false)
+        hideydecorations!(ax2, ticks=false)
         if hpos == 5 # Add colorbar with the last returned heatmap (_hm) 
             Colorbar(fig[1,6], hm)
         end
@@ -158,7 +161,7 @@ lines!(ax3, gs, real(nvec), color=:teal)
 ax3.xlabelsize, ax3.ylabelsize = 20, 20
 vlines!(ax3, gs[cases], color=:orange, linestyle = :dash, linewidth = 4)
 
-display(fig);
+fig
 ```
 As $g$ increases, the cavity ground state's wigner function plot looks more coherent than a thermal state.
 
@@ -174,7 +177,7 @@ end;
 ```
 
 ```{julia}
-fig = Figure(size=(800, 400))
+fig = Figure(size=(900, 400))
 ax = Axis(fig[1,1])
 ax.xlabel = "coupling strength"
 ax.ylabel = "mutual entropy"
@@ -184,7 +187,7 @@ for (idx, slist) in enumerate(slists)
 end
 
 Legend(fig[1,2], ax, label = "number of atoms")
-display(fig);
+fig
 ```
 We further consult mutual entropy between the cavity and the spins as a measure of their correlation; the result showed that as the number of atoms $N$ increases, the peak of mutual entropy moves closer to $g_c$.
 

@@ -81,7 +81,9 @@ where
 
 ```{julia}
 using QuantumToolbox
-import CairoMakie: Figure, Axis, @L_str, lines!, axislegend, display, ylims!, xlims!
+using CairoMakie
+
+CairoMakie.activate!(type = "svg")
 ```
 
 ```{julia}
@@ -116,7 +118,7 @@ e_ops = [
 ]
 ψ0 = e_ket # set initial state being purely excited to better observe the radiative behaviour
 L = liouvillian_spec(Ω, γ0, KT)
-print(L)
+L
 ```  
 
 We already generate the Liouvillian with `c_ops` included above. We don't need to specify the `c_ops` again in [`mesolve`](https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.mesolve):  
@@ -128,7 +130,7 @@ sol = mesolve(L, ψ0, tlist, nothing, e_ops = e_ops)
 By observing the expectation values of the Pauli operators, we see that the Bloch vector $(\langle \hat{\sigma}_x \rangle, \langle \hat{\sigma}_y \rangle, \langle \hat{\sigma}_z \rangle)$ becomes shorter over time, which is consistent with the dissipative behaviour. Also, the population of the excited state $|e\rangle$ has an oscillation amplitude decaying over time.  
 ```{julia}
 expect = real.(sol.expect)
-fig1 = Figure(size = (600,300))
+fig1 = Figure(size = (900,400))
 ax11 = Axis(
     fig1[1,1]
 )
@@ -146,7 +148,7 @@ lines!(ax12, tlist, expect[6,:], label = L"P_e")
 axislegend(ax12)
 ylims!(ax12, (0,1))
 
-display(fig1);
+fig1
 ```
 
 Further, we check the effect of different values of the damping rate. Note that despite these dissipation rates looked enormous at first glance, it is still to the order of the field strength and therefore considered dissipative for the system in the lab frame.
@@ -162,7 +164,7 @@ end
 
 The expectation values dynamics of $\hat{\sigma}^{+}$ and $\hat{\sigma}^{-}$ shows the driving-field-induced dipole moment of the atom oscillates and persists.
 ```{julia}
-fig2 = Figure(size = (600,300))
+fig2 = Figure(size = (900,400))
 ax2 = Axis(
     fig2[1,1],
     xlabel = L"time $[1/\Omega]$",
@@ -174,11 +176,11 @@ for (γ0, expect) in results
 end
 
 axislegend(ax2)
-display(fig2);
+fig2
 ```
 
 ```{julia}
-fig3 = Figure(size = (600,300))
+fig3 = Figure(size = (900,400))
 ax3 = Axis(
     fig3[1,1],
     xlabel = L"time $[1/\Omega]$",
@@ -189,12 +191,12 @@ for (γ0, expect) in results
     lines!(ax3, tlist, imag(expect[4,:]), label = "γ0 = $γ0")
 end
 axislegend(ax3)
-display(fig3);
+fig3
 ```
 
 We now move to the analysis of the correlation function $C(\tau) = \langle \hat{\sigma}^{+}(\tau) \hat{\sigma}^{-}(0)\rangle$, which describes the radiative behaviour of the atom towards its surrounding environment. Using [`correlation_2op_1t`](https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.correlation_2op_1t), we can obtain the correlation function as a function of $\tau$ and use [`spectrum_correlation_fft`](https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.spectrum_correlation_fft) to obtain the corresponding Fourier transform.
 ```{julia}
-fig4 = Figure(size = (600,300))
+fig4 = Figure(size = (900,400))
 ax41 = Axis(
     fig4[1,1],
     xlabel = L"\tau",
@@ -219,7 +221,7 @@ end
 xlims!(ax42, (-2,2))
 axislegend(ax41)
 axislegend(ax42)
-display(fig4);
+fig4
 ```
 In the above plots, one finds that the correlation functions decay faster with higher dissipation rate, and therefore the lower spectral peaks. On the other hand, the higher spectral peaks means the radiation is brighter in terms of intensity.
 

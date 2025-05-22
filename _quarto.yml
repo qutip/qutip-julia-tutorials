@@ -63,8 +63,10 @@ format:
     footnotes-hover: true
     fig-align: center
     fig-responsive: true
+    fig-width: 8.5
+    fig-height: 4
 
 execute:
   eval: true
-  cache: true
+  cache: false
   freeze: false

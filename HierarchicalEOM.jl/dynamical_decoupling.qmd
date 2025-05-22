@@ -37,6 +37,8 @@ Now, we need to build the system Hamiltonian and initial state with the package 
 ```{julia}
 using HierarchicalEOM  # this automatically loads `QuantumToolbox`
 using CairoMakie       # for plotting results
+
+CairoMakie.activate!(type = "svg")
 ```
 
 ```{julia}
@@ -152,7 +154,7 @@ slowPulseSol = HEOMsolve(M, ψ0, tlist; e_ops = [ρ01], H_t = H_D, params = slow
 ## Plot the coherence
 
 ```{julia}
-fig = Figure(size = (600, 350))
+fig = Figure()
 ax = Axis(fig[1, 1], xlabel = L"t", ylabel = L"\rho_{01}")
 lines!(ax, tlist, real(fastPulseSol.expect[1, :]), label = "Fast Pulse", linestyle = :solid)
 lines!(ax, tlist, real(slowPulseSol.expect[1, :]), label = "Slow Pulse", linestyle = :dot)

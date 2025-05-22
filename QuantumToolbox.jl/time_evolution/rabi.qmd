@@ -42,9 +42,10 @@ $$
 
 ##### import:
 ```{julia}
-import QuantumToolbox: sigmaz, sigmam, destroy, qeye, basis, fock, 
-    ⊗, n_thermal, sesolve, mesolve
-import CairoMakie: Figure, Axis, lines!, axislegend, xlims!, display, @L_str
+using QuantumToolbox
+using CairoMakie
+
+CairoMakie.activate!(type = "svg")
 ```
 
 ```{julia}
@@ -84,14 +85,14 @@ eop_ls = [
 ]
 
 sol = sesolve(Htot , ψ0, tlist; e_ops = eop_ls)
-print(sol)
+sol
 ```
 
 Compare the dynamics of $| e \rangle\langle e|$ alongside $a^\dagger a$
 ```{julia}
 n = real.(sol.expect[1, :])
 e = real.(sol.expect[2, :])
-fig_se = Figure(size = (600, 350))
+fig_se = Figure()
 ax_se = Axis(
     fig_se[1, 1],
     xlabel = L"time $[1/\omega_a]$", 
@@ -105,7 +106,7 @@ xlims!(ax_se, 0, 400)
 lines!(ax_se, tlist, n, label = L"$\langle a^\dagger a \rangle$")
 lines!(ax_se, tlist, e, label = L"$P_e$")
 axislegend(ax_se; position = :rt, labelsize = 15)
-display(fig_se);
+fig_se
 ```
 
 In the above plot, the behaviour of the energy exchange between the atom and the cavity is clearly visible, addressing the Rabi problem.
@@ -180,7 +181,7 @@ print(sol_me)
 n_me = real.(sol_me.expect[1, :])
 e_me = real.(sol_me.expect[2, :])
 
-fig_me = Figure(size = (600, 350))
+fig_me = Figure()
 ax_me = Axis(
     fig_me[1, 1],
     xlabel = L"time $[1/\omega_a]$", 
@@ -193,7 +194,7 @@ ax_me = Axis(
 lines!(ax_me, tlist, n_me, label = L"\langle a^\dagger a \rangle")
 lines!(ax_me, tlist, e_me, label = L"$P_e$")
 axislegend(ax_me; position = :rt, labelsize = 15)
-display(fig_me);
+fig_me
 ```
 
 From the above example, one can see that the dissipative system is losing energy over time and asymptoting to zero. We can further consider the thermal field with finite temperature.
@@ -203,7 +204,7 @@ sol_me_  = mesolve(Htot,  ψ0, tlist, cop_ls(γ, κ, 0.3 * ωa), e_ops = eop_ls)
 
 n_me_ = real.(sol_me_.expect[1, :])
 e_me_ = real.(sol_me_.expect[2, :])
-fig_me_ = Figure(size = (600, 350))
+fig_me_ = Figure()
 ax_me_ = Axis(
     fig_me_[1, 1],
     xlabel = L"time $[1/\omega_a]$", 
@@ -216,7 +217,7 @@ ax_me_ = Axis(
 lines!(ax_me_, tlist, n_me_, label = L"\langle a^\dagger a \rangle")
 lines!(ax_me_, tlist, e_me_, label = L"$P_e$")
 axislegend(ax_me_; position = :rt, labelsize = 15)
-display(fig_me_);
+fig_me_
 ```
 Despite the persistence of the asymptotic behaviour, the system no longer approaches zero but instead reaches a steady-state above zero. This indicates that the system has been thermalized by the environment.
 

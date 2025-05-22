@@ -33,6 +33,8 @@ In this example we consider the dynamics of the transverse field Ising model (TF
 using QuantumToolbox
 using LinearAlgebra
 using CairoMakie
+
+CairoMakie.activate!(type = "svg")
 ```
 
 We define the lattice with dimensions `Nx = 2` and `Ny = 3` and use the `Lattice` class to generate the lattice.
@@ -219,7 +221,7 @@ We can now compare the results of the low-rank evolution with the full evolution
 m_me = real(sol_me.expect[3, :]) / Nx / Ny
 m_lr = real(sol_lr.expect[3, :]) / Nx / Ny
 
-fig = Figure(size = (500, 350), fontsize = 15)
+fig = Figure(size = (900, 400), fontsize = 15)
 ax = Axis(fig[1, 1], xlabel = L"\gamma t", ylabel = L"M_{z}", xlabelsize = 20, ylabelsize = 20)
 lines!(ax, tl, m_lr, label = L"LR $[M=M(t)]$", linewidth = 2)
 lines!(ax, tl, m_me, label = "Fock", linewidth = 2, linestyle = :dash)

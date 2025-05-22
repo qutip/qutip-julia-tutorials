@@ -95,7 +95,7 @@ fastTuple = (V = amp_fast, Δ = delay)
 slowTuple = (V = amp_slow, Δ = delay)
 
 # plot
-fig = Figure(size = (600, 350))
+fig = Figure()
 ax = Axis(fig[1, 1], xlabel = L"t")
 lines!(ax, tlist, [pulse(fastTuple, t) for t in tlist], label = "Fast Pulse", linestyle = :solid)
 lines!(ax, tlist, [pulse(slowTuple, t) for t in tlist], label = "Slow Pulse", linestyle = :dash)

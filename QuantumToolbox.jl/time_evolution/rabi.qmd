@@ -101,8 +101,6 @@ ax_se = Axis(
     ylabel = "expectation value", 
     xlabelsize = 15, 
     ylabelsize = 15,
-    width = 400,
-    height = 220
 )
 xlims!(ax_se, 0, 400)
 lines!(ax_se, tlist, n, label = L"$\langle a^\dagger a \rangle$")
@@ -190,8 +188,6 @@ ax_me = Axis(
     ylabel = "expectation value", 
     xlabelsize = 15, 
     ylabelsize = 15,
-    width = 400,
-    height = 220
 )
 lines!(ax_me, tlist, n_me, label = L"\langle a^\dagger a \rangle")
 lines!(ax_me, tlist, e_me, label = L"$P_e$")
@@ -213,8 +209,6 @@ ax_me_ = Axis(
     ylabel = "expectation value", 
     xlabelsize = 15, 
     ylabelsize = 15,
-    width = 400,
-    height = 220
 )
 lines!(ax_me_, tlist, n_me_, label = L"\langle a^\dagger a \rangle")
 lines!(ax_me_, tlist, e_me_, label = L"$P_e$")

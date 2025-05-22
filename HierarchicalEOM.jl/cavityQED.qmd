@@ -180,7 +180,7 @@ fig
 psd_H = PowerSpectrum(M_Heom, steady_H, a, ω_list)
 
 # plot
-fig = Figure(size = (500, 350))
+fig = Figure()
 ax = Axis(fig[1, 1], xlabel = L"\omega")
 lines!(ax, ω_list, psd_H)
 

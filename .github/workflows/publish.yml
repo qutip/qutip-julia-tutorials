@@ -7,7 +7,7 @@ on: # either one of the following three cases
     - cron: '0 0 * * 0' # weekly (every Sunday)
 
   push:
-    branches: main
+    branches: [main]
 
 jobs:
   build:
@@ -26,10 +26,8 @@ jobs:
       - uses: julia-actions/julia-buildpkg@v1
         with:
           precompile: true
-      - uses: cardinalby/export-env-action@v2
-        with:
-          envFile: '_environment'    
-          expand: 'true'
+      - name: Fix Timestamps
+        run: bash .github/scripts/fix-timestamps
       - name: Quarto Render
         uses: quarto-dev/quarto-actions/render@v2
         with:

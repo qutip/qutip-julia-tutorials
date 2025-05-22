@@ -15,11 +15,11 @@ if [ $QUARTO_JSON != "" ]; then
 # create a python script and run it
 PYTHON_SCRIPT=_quarto_version.py
 if [ -e $PYTHON_SCRIPT ]; then
-	rm -rf $PYTHON_SCRIPT
+	rm -r $PYTHON_SCRIPT
 fi
 
 cat > $PYTHON_SCRIPT <<EOF
-import urllib, json
+import urllib
 
 import urllib.request, json
 with urllib.request.urlopen("https://quarto.org/docs/download/${QUARTO_JSON}") as url:

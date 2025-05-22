@@ -2,8 +2,6 @@
 title: Low rank master equation
 author: Luca Gravina
 date: last-modified
-
-engine: julia
 ---
 
 ## Introduction

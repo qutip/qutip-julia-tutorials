@@ -2,8 +2,6 @@
 title: "Cavity QED system"
 author: Shen-Liang Yang, Yi-Te Huang
 date: last-modified
-
-engine: julia
 ---
 
 ## Introduction

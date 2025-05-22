@@ -2,8 +2,6 @@
 title: "Electronic Current"
 author: Yi-Te Huang
 date: last-modified
-
-engine: julia
 ---
 
 Inspirations taken from [qutip documentation](https://qutip.org/documentation.html).

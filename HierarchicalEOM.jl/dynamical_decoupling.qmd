@@ -2,6 +2,11 @@
 title: "Driven systems and dynamical decoupling"
 author: Yi-Te Huang
 date: last-modified
+
+other-links:
+  - text: Run notebook in Binder
+    href: "https://mybinder.org/v2/gh/qutip/qutip-julia-tutorials/notebooks/?urlpath=lab/tree/HierarchicalEOM.jl/dynamical_decoupling.ipynb"
+    icon: file-code
 ---
 
 Inspirations taken from an example in QuTiP-BoFiN article [@QuTiP-BoFiN2023].

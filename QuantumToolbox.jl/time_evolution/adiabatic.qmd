@@ -2,6 +2,11 @@
 title: "Adiabatic sweep (with `QuantumObjectEvolution`)"
 author: Li-Xun Cai
 date: last-modified
+
+other-links:
+  - text: Run notebook in Binder
+    href: "https://mybinder.org/v2/gh/qutip/qutip-julia-tutorials/notebooks/?urlpath=lab/tree/QuantumToolbox.jl/time_evolution/adiabatic.ipynb"
+    icon: file-code
 ---
 
 Inspirations taken from [the QuTiP tutorial](https://nbviewer.org/urls/qutip.org/qutip-tutorials/tutorials-v5/lectures/Lecture-8-Adiabatic-quantum-computing.ipynb) by J. R. Johansson.

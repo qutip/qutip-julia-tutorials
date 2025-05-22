@@ -1,9 +1,7 @@
 ---
 title: "Kerr nonlinearities"
 author: Li-Xun Cai
-date: 2025-05-17  # last update (keep this comment as a reminder)
-
-engine: julia
+date: 2025-05-22  # last update (keep this comment as a reminder)
 ---
 
 Inspirations taken from [this QuTiP tutorial](https://nbviewer.org/urls/qutip.org/qutip-tutorials/tutorials-v5/lectures/Lecture-14-Kerr-nonlinearities.ipynb) by J. R. Johansson.

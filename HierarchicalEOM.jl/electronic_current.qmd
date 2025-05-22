@@ -1,9 +1,7 @@
 ---
 title: "Electronic Current"
 author: Yi-Te Huang
-date: 2025-01-14  # last update (keep this comment as a reminder)
-
-engine: julia
+date: 2025-05-22  # last update (keep this comment as a reminder)
 ---
 
 Inspirations taken from [qutip documentation](https://qutip.org/documentation.html).

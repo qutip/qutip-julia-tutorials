@@ -1,9 +1,7 @@
 ---
 title: "Resonance fluorescence"
 author: Li-Xun Cai
-date: 2025-01-27 # last update (keep this comment as a reminder)
-
-engine: julia
+date: 2025-05-22 # last update (keep this comment as a reminder)
 ---
 
 Inspirations taken from [this QuTiP tutorial](https://nbviewer.org/urls/qutip.org/qutip-tutorials/tutorials-v5/lectures/Lecture-13-Resonance-flourescence.ipynb) by J. R. Johansson.

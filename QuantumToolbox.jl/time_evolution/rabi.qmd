@@ -1,11 +1,9 @@
 ---
 title: "Vacuum Rabi oscillation"
 author: Li-Xun Cai
-date: 2025-01-17 # last update (keep this comment as a reminder)
-
-engine: julia
+date: 2025-05-22 # last update (keep this comment as a reminder)
 ---
-
+    
 Inspirations taken from [this QuTiP tutorial](https://nbviewer.org/urls/qutip.org/qutip-tutorials/tutorials-v5/time-evolution/004_rabi-oscillations.ipynb) by J.R. Johansson, P.D. Nation, and C. Staufenbiel
 
 In this notebook, the usage of `QuantumToolbox.sesolve` and `QuantumToolbox.mesolve` will be demonstrated with Jaynes-Cummings model (JC model) to observe Rabi oscillations in the isolated case and the dissipative case. In the dissipative case, a bosonic interacts with the cavity and the two-level atom in the JC model.

@@ -1,9 +1,7 @@
 ---
 title: "Driven systems and dynamical decoupling"
 author: Yi-Te Huang
-date: 2025-01-14  # last update (keep this comment as a reminder)
-
-engine: julia
+date: 2025-05-22  # last update (keep this comment as a reminder)
 ---
 
 Inspirations taken from an example in QuTiP-BoFiN article [@QuTiP-BoFiN2023].

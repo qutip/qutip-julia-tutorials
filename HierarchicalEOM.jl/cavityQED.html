@@ -366,7 +366,7 @@ window.Quarto = {
   <li><a href="#compare-with-master-eq.-approach" id="toc-compare-with-master-eq.-approach" class="nav-link" data-scroll-target="#compare-with-master-eq.-approach">Compare with Master Eq. approach</a></li>
   <li><a href="#version-information" id="toc-version-information" class="nav-link" data-scroll-target="#version-information">Version Information</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/qutip/qutip-julia-tutorials/edit/main/HierarchicalEOM.jl/cavityQED.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/qutip/qutip-julia-tutorials/blob/main/HierarchicalEOM.jl/cavityQED.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/qutip/qutip-julia-tutorials/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/qutip/qutip-julia-tutorials/edit/main/HierarchicalEOM.jl/cavityQED.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/qutip/qutip-julia-tutorials/blob/main/HierarchicalEOM.jl/cavityQED.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/qutip/qutip-julia-tutorials/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-other-links"><h2>Other Links</h2><ul><li><a href="https://mybinder.org/v2/gh/qutip/qutip-julia-tutorials/notebooks/?urlpath=lab/tree/HierarchicalEOM.jl/cavityQED.ipynb"><i class="bi bi-file-code"></i>Run notebook in Binder</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -522,7 +522,7 @@ H_{\textrm{sb}}   &amp;=(a+a^\dagger)\sum_{k}g_{k}(b_k + b_k^{\dagger}).
 <div class="cell-output cell-output-stdout">
 <pre><code>Checking the importance value for each ADOs...[DONE]
 Preparing block matrices for HEOM Liouvillian superoperator (using 4 threads)...
-Progress: [                              ]   2.1% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 47s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 00s)
+Progress: [                              ]   1.0% --- Elapsed Time: 0h 00m 01s (ETA: 0h 01m 36s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 00s)
 Constructing matrix...[DONE]</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
@@ -541,7 +541,7 @@ MatrixOperator(3492 × 3492)</code></pre>
 <span id="cb9-2"><a href="#cb9-2"></a>sol_H <span class="op">=</span> <span class="fu">HEOMsolve</span>(M_Heom, ψ<span class="fl">0</span>, t_list; e_ops <span class="op">=</span> [σz, a<span class="op">'</span> <span class="op">*</span> a])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Solving time evolution for ADOs by Ordinary Differential Equations method...
-Progress: [                              ]   0.2% --- Elapsed Time: 0h 00m 02s (ETA: 0h 16m 40s)Progress: [=======================       ]  79.4% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 00s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 00s)</code></pre>
+Progress: [                              ]   0.2% --- Elapsed Time: 0h 00m 02s (ETA: 0h 16m 40s)Progress: [=======================       ]  79.6% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 00s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 00s)</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>Solution of hierarchical EOM
@@ -624,7 +624,7 @@ Solving linear problem...[DONE]</code></pre>
 <span id="cb19-9"><a href="#cb19-9"></a>fig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Calculating power spectrum in frequency domain...
-Progress: [===                           ]  11.4% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 07s)Progress: [======                        ]  22.4% --- Elapsed Time: 0h 00m 02s (ETA: 0h 00m 06s)Progress: [=========                     ]  31.8% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 06s)Progress: [===========                   ]  38.3% --- Elapsed Time: 0h 00m 04s (ETA: 0h 00m 06s)Progress: [=============                 ]  45.3% --- Elapsed Time: 0h 00m 05s (ETA: 0h 00m 06s)Progress: [===============               ]  51.7% --- Elapsed Time: 0h 00m 06s (ETA: 0h 00m 05s)Progress: [================              ]  55.7% --- Elapsed Time: 0h 00m 07s (ETA: 0h 00m 05s)Progress: [=================             ]  57.7% --- Elapsed Time: 0h 00m 08s (ETA: 0h 00m 05s)Progress: [=================             ]  59.7% --- Elapsed Time: 0h 00m 09s (ETA: 0h 00m 06s)Progress: [===================           ]  64.2% --- Elapsed Time: 0h 00m 10s (ETA: 0h 00m 05s)Progress: [====================          ]  69.2% --- Elapsed Time: 0h 00m 11s (ETA: 0h 00m 04s)Progress: [======================        ]  75.1% --- Elapsed Time: 0h 00m 12s (ETA: 0h 00m 03s)Progress: [========================      ]  82.6% --- Elapsed Time: 0h 00m 13s (ETA: 0h 00m 02s)Progress: [===========================   ]  92.5% --- Elapsed Time: 0h 00m 14s (ETA: 0h 00m 01s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 15s (ETA: 0h 00m 00s)
+Progress: [===                           ]  11.4% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 07s)Progress: [======                        ]  22.4% --- Elapsed Time: 0h 00m 02s (ETA: 0h 00m 06s)Progress: [=========                     ]  31.8% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 06s)Progress: [===========                   ]  39.8% --- Elapsed Time: 0h 00m 04s (ETA: 0h 00m 06s)Progress: [=============                 ]  46.3% --- Elapsed Time: 0h 00m 05s (ETA: 0h 00m 05s)Progress: [===============               ]  52.7% --- Elapsed Time: 0h 00m 06s (ETA: 0h 00m 05s)Progress: [================              ]  56.2% --- Elapsed Time: 0h 00m 07s (ETA: 0h 00m 05s)Progress: [=================             ]  57.7% --- Elapsed Time: 0h 00m 08s (ETA: 0h 00m 05s)Progress: [=================             ]  59.7% --- Elapsed Time: 0h 00m 09s (ETA: 0h 00m 06s)Progress: [===================           ]  64.2% --- Elapsed Time: 0h 00m 10s (ETA: 0h 00m 05s)Progress: [====================          ]  69.2% --- Elapsed Time: 0h 00m 11s (ETA: 0h 00m 04s)Progress: [======================        ]  75.1% --- Elapsed Time: 0h 00m 12s (ETA: 0h 00m 03s)Progress: [========================      ]  82.6% --- Elapsed Time: 0h 00m 13s (ETA: 0h 00m 02s)Progress: [===========================   ]  92.5% --- Elapsed Time: 0h 00m 14s (ETA: 0h 00m 01s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 15s (ETA: 0h 00m 00s)
 [DONE]</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">

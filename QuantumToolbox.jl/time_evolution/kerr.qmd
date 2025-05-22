@@ -1,7 +1,7 @@
 ---
 title: "Kerr nonlinearities"
 author: Li-Xun Cai
-date: 2025-05-22  # last update (keep this comment as a reminder)
+date: last-modified
 ---
 
 Inspirations taken from [this QuTiP tutorial](https://nbviewer.org/urls/qutip.org/qutip-tutorials/tutorials-v5/lectures/Lecture-14-Kerr-nonlinearities.ipynb) by J. R. Johansson.
@@ -54,6 +54,8 @@ where $\chi$ again absorbed the coefficients.
 ```{julia}
 using QuantumToolbox
 using CairoMakie
+
+CairoMakie.activate!(type = "svg")
 ```
 
 We begin by defining functions for visualization:
@@ -73,7 +75,7 @@ function plot_variance(op, tlist, states)
 end
 
 function plot_Fock_dist(tlist, states)
-    fig = Figure()
+    fig = Figure(size = (900, 300))
     ax = Axis(
         fig[1,1],
         xlabel = L"N",
@@ -168,7 +170,7 @@ idx = searchsortedfirst(tlist, π/χ) - 1
 fig3, ax3, hm3 = plot_wigner(result.states[idx])
 ax3.title = "χt = $(tlist[idx])"
 Colorbar(fig3[1,2], hm3)
-display(fig3)
+fig3
 ```
 As the plot revealed, the state at $\chi t = \pi$ is in fact the [**cat state**](https://en.wikipedia.org/wiki/Cat_state#Cat_states_in_single_modes) for a single mode. One of the main characteristics of the cat state is the superposition of two coherent states with opposite phase.
 

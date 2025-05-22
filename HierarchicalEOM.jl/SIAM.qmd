@@ -1,7 +1,7 @@
 ---
 title: "Single-impurity Anderson model"
 author: Yi-Te Huang
-date: 2025-05-22  # last update (keep this comment as a reminder)
+date: last-modified
 ---
 
 ## Introduction
@@ -27,6 +27,8 @@ Now, we need to build the system Hamiltonian and initial state with the package 
 ```{julia}
 using HierarchicalEOM  # this automatically loads `QuantumToolbox`
 using CairoMakie       # for plotting results
+
+CairoMakie.activate!(type = "svg")
 ```
 
 ```{julia}
@@ -88,7 +90,7 @@ dos = DensityOfStates(M_odd, ados_s, d_up, ωlist)
 plot the results
 
 ```{julia}
-fig = Figure(size = (500, 350))
+fig = Figure()
 ax = Axis(fig[1, 1], xlabel = L"\omega")
 lines!(ax, ωlist, dos)
 

@@ -1,7 +1,7 @@
 ---
 title: "Driven systems and dynamical decoupling"
 author: Yi-Te Huang
-date: 2025-05-22  # last update (keep this comment as a reminder)
+date: last-modified
 ---
 
 Inspirations taken from an example in QuTiP-BoFiN article [@QuTiP-BoFiN2023].
@@ -37,6 +37,8 @@ Now, we need to build the system Hamiltonian and initial state with the package 
 ```{julia}
 using HierarchicalEOM  # this automatically loads `QuantumToolbox`
 using CairoMakie       # for plotting results
+
+CairoMakie.activate!(type = "svg")
 ```
 
 ```{julia}
@@ -91,7 +93,7 @@ fastTuple = (V = amp_fast, Δ = delay)
 slowTuple = (V = amp_slow, Δ = delay)
 
 # plot
-fig = Figure(size = (600, 350))
+fig = Figure()
 ax = Axis(fig[1, 1], xlabel = L"t")
 lines!(ax, tlist, [pulse(fastTuple, t) for t in tlist], label = "Fast Pulse", linestyle = :solid)
 lines!(ax, tlist, [pulse(slowTuple, t) for t in tlist], label = "Slow Pulse", linestyle = :dash)
@@ -152,7 +154,7 @@ slowPulseSol = HEOMsolve(M, ψ0, tlist; e_ops = [ρ01], H_t = H_D, params = slow
 ## Plot the coherence
 
 ```{julia}
-fig = Figure(size = (600, 350))
+fig = Figure()
 ax = Axis(fig[1, 1], xlabel = L"t", ylabel = L"\rho_{01}")
 lines!(ax, tlist, real(fastPulseSol.expect[1, :]), label = "Fast Pulse", linestyle = :solid)
 lines!(ax, tlist, real(slowPulseSol.expect[1, :]), label = "Slow Pulse", linestyle = :dot)

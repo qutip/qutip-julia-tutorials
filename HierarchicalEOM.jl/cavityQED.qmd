@@ -1,7 +1,7 @@
 ---
 title: "Cavity QED system"
 author: Shen-Liang Yang, Yi-Te Huang
-date: 2025-05-22  # last update (keep this comment as a reminder)
+date: last-modified
 ---
 
 ## Introduction
@@ -41,6 +41,8 @@ Now, we need to build the system Hamiltonian and initial state with the package 
 ```{julia}
 using HierarchicalEOM  # this automatically loads `QuantumToolbox`
 using CairoMakie       # for plotting results
+
+CairoMakie.activate!(type = "svg")
 ```
 
 ```{julia}
@@ -96,7 +98,7 @@ Ct = correlation_function(Bath, tlist_test);
 Ct2 = correlation_function(Bath_test, tlist_test)
 
 # plot
-fig = Figure(size = (500, 350))
+fig = Figure()
 ax = Axis(fig[1, 1], xlabel = L"t", ylabel = L"C(t)")
 lines!(ax, tlist_test, real(Ct2), label = L"$N=1000$ (real part)", linestyle = :solid)
 lines!(ax, tlist_test, real(Ct),  label = L"$N=20$ (real part)", linestyle = :dash)
@@ -154,7 +156,7 @@ np_steady_H = expect(a' * a, steady_H)
 plot results
 
 ```{julia}
-fig = Figure(size = (600, 350))
+fig = Figure()
 
 ax1 = Axis(fig[1, 1], xlabel = L"t")
 lines!(ax1, t_list, σz_evo_H, label = L"\langle \sigma_z \rangle", linestyle = :solid)
@@ -176,7 +178,7 @@ fig
 psd_H = PowerSpectrum(M_Heom, steady_H, a, ω_list)
 
 # plot
-fig = Figure(size = (500, 350))
+fig = Figure()
 ax = Axis(fig[1, 1], xlabel = L"\omega")
 lines!(ax, ω_list, psd_H)
 
@@ -223,7 +225,7 @@ np_steady_M = expect(a' * a, steady_M);
 plot results
 
 ```{julia}
-fig = Figure(size = (600, 350))
+fig = Figure()
 
 ax1 = Axis(fig[1, 1], xlabel = L"t")
 lines!(ax1, t_list, σz_evo_M, label = L"\langle \sigma_z \rangle", linestyle = :solid)

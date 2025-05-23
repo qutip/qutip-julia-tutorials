@@ -65,8 +65,9 @@ format:
     fig-responsive: true
     fig-width: 8.5
     fig-height: 4
+  ipynb: default
 
 execute:
   eval: true
-  cache: false
+  cache: true
   freeze: false

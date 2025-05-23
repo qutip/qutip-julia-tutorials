@@ -30,8 +30,48 @@ jobs:
         run: bash .github/scripts/fix-timestamps
       - name: Quarto Render
         uses: quarto-dev/quarto-actions/render@v2
+      - name: Checkout notebooks branch
+        uses: actions/checkout@v4
         with:
-          to: html
+          ref: notebooks
+          path: _output/branch-out
+          fetch-depth: 0
+      - name: Remove stale notebooks
+        run: |
+          cd _output/branch-out
+          git ls-files "*.ipynb" | while read ipynb; do
+            src="../${ipynb%.ipynb}.qmd"
+            if [ ! -f "$src" ]; then
+              git rm --ignore-unmatch "$ipynb"
+            fi
+          done
+          cd ../..
+      - name: Copy artifacts
+        run: |
+          # helper files at root
+          cp Project.toml apt.txt postBuild _output/branch-out/
+          cp -r .jupyter _output/branch-out/
+
+          cd _output
+
+          rsync -avc --exclude='branch-out/' --include='*/' --include='*.ipynb' --exclude='*'  --prune-empty-dirs ./ branch-out/
+
+          cd ..
+      - name: Commit & Push to notebooks branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd _output/branch-out
+          git config user.name  "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add .
+          if git diff --cached --quiet; then
+            echo "✅ No changes to push"
+          else
+            git commit -m "Update notebooks from ${{ github.sha }}"
+            git push origin notebooks
+          fi
+          cd ../..
       - name: Deploy page
         uses: JamesIves/github-pages-deploy-action@v4
         with:

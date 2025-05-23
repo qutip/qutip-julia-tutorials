@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Yi-Te Huang">
-<meta name="dcterms.date" content="2025-05-22">
+<meta name="dcterms.date" content="2025-05-23">
 
 <title>Single-impurity Anderson model – Tutorials for Quantum Toolbox in Julia</title>
 <style>
@@ -383,7 +383,7 @@ window.Quarto = {
   <li><a href="#calculate-density-of-states-dos" id="toc-calculate-density-of-states-dos" class="nav-link" data-scroll-target="#calculate-density-of-states-dos">Calculate density of states (DOS)</a></li>
   <li><a href="#version-information" id="toc-version-information" class="nav-link" data-scroll-target="#version-information">Version Information</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/qutip/qutip-julia-tutorials/edit/main/HierarchicalEOM.jl/SIAM.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/qutip/qutip-julia-tutorials/blob/main/HierarchicalEOM.jl/SIAM.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/qutip/qutip-julia-tutorials/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-other-links"><h2>Other Links</h2><ul><li><a href="https://mybinder.org/v2/gh/qutip/qutip-julia-tutorials/notebooks/?urlpath=lab/tree/HierarchicalEOM.jl/SIAM.ipynb"><i class="bi bi-file-code"></i>Run notebook in Binder</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/qutip/qutip-julia-tutorials/edit/main/HierarchicalEOM.jl/SIAM.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/qutip/qutip-julia-tutorials/blob/main/HierarchicalEOM.jl/SIAM.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/qutip/qutip-julia-tutorials/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="SIAM.ipynb" download="SIAM.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div><div class="quarto-other-links"><h2>Other Links</h2><ul><li><a href="https://mybinder.org/v2/gh/qutip/qutip-julia-tutorials/notebooks/?urlpath=lab/tree/HierarchicalEOM.jl/SIAM.ipynb"><i class="bi bi-file-code"></i>Run notebook in Binder</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -408,7 +408,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Last Update</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2025-05-22</p>
+      <p class="date">2025-05-23</p>
     </div>
   </div>
   
@@ -536,7 +536,7 @@ Solving linear problem...[DONE]</code></pre>
 <span id="cb12-2"><a href="#cb12-2"></a>dos <span class="op">=</span> <span class="fu">DensityOfStates</span>(M_odd, ados_s, d_up, ωlist)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Calculating density of states in frequency domain...
-Progress: [===========                   ]  38.1% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 01s)Progress: [======================        ]  76.2% --- Elapsed Time: 0h 00m 02s (ETA: 0h 00m 00s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 02s (ETA: 0h 00m 00s)
+Progress: [============                  ]  42.9% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 01s)Progress: [=====================         ]  71.4% --- Elapsed Time: 0h 00m 02s (ETA: 0h 00m 00s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 02s (ETA: 0h 00m 00s)
 [DONE]</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
@@ -609,7 +609,7 @@ Julia              Ver. 1.11.5
 HierarchicalEOM    Ver. 2.5.4
 QuantumToolbox     Ver. 0.31.1
 SciMLOperators     Ver. 0.3.13
-LinearSolve        Ver. 3.14.0
+LinearSolve        Ver. 3.14.1
 OrdinaryDiffEqCore Ver. 1.26.0
 
 System information:

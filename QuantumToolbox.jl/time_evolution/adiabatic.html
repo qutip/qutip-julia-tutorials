@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Li-Xun Cai">
-<meta name="dcterms.date" content="2025-05-22">
+<meta name="dcterms.date" content="2025-05-23">
 
 <title>Adiabatic sweep (with QuantumObjectEvolution) – Tutorials for Quantum Toolbox in Julia</title>
 <style>
@@ -360,7 +360,7 @@ window.Quarto = {
   <li><a href="#code-demonstration" id="toc-code-demonstration" class="nav-link" data-scroll-target="#code-demonstration">Code demonstration</a></li>
   <li><a href="#version-information" id="toc-version-information" class="nav-link" data-scroll-target="#version-information">Version Information</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/qutip/qutip-julia-tutorials/edit/main/QuantumToolbox.jl/time_evolution/adiabatic.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/qutip/qutip-julia-tutorials/blob/main/QuantumToolbox.jl/time_evolution/adiabatic.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/qutip/qutip-julia-tutorials/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-other-links"><h2>Other Links</h2><ul><li><a href="https://mybinder.org/v2/gh/qutip/qutip-julia-tutorials/notebooks/?urlpath=lab/tree/QuantumToolbox.jl/time_evolution/adiabatic.ipynb"><i class="bi bi-file-code"></i>Run notebook in Binder</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/qutip/qutip-julia-tutorials/edit/main/QuantumToolbox.jl/time_evolution/adiabatic.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/qutip/qutip-julia-tutorials/blob/main/QuantumToolbox.jl/time_evolution/adiabatic.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/qutip/qutip-julia-tutorials/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="adiabatic.ipynb" download="adiabatic.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div><div class="quarto-other-links"><h2>Other Links</h2><ul><li><a href="https://mybinder.org/v2/gh/qutip/qutip-julia-tutorials/notebooks/?urlpath=lab/tree/QuantumToolbox.jl/time_evolution/adiabatic.ipynb"><i class="bi bi-file-code"></i>Run notebook in Binder</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -385,7 +385,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Last Update</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2025-05-22</p>
+      <p class="date">2025-05-23</p>
     </div>
   </div>
   
@@ -431,13 +431,13 @@ window.Quarto = {
 <span id="cb2-4"><a href="#cb2-4"></a>gs <span class="op">=</span> <span class="fu">rand</span>(N<span class="op">-</span><span class="fl">1</span>) <span class="co"># use rand function for the random interaction strengths</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>7-element Vector{Float64}:
- 0.12272336707999665
- 0.13329588183276297
- 0.22031242001628104
- 0.7570203455488078
- 0.09880038880640807
- 0.28449681759041623
- 0.5586069867788329</code></pre>
+ 0.4724137184687006
+ 0.2855811572946799
+ 0.400002653554587
+ 0.421947939137729
+ 0.2853661923840941
+ 0.0006114231067683162
+ 0.5692238332708244</code></pre>
 </div>
 </div>
 <div id="6" class="cell" data-execution_count="1">
@@ -532,22 +532,22 @@ Quantum Object Evo.:   type=Operator()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(2
 <pre><code>
 Quantum Object:   type=Ket()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256,)
 256-element SparseArrays.SparseVector{ComplexF64, Int64} with 128 stored entries:
-  [1  ]  =  0.000113613+0.0im
-  [4  ]  =  -0.000417224+0.0im
-  [6  ]  =  0.000156818+0.0im
-  [7  ]  =  -9.83633e-5+0.0im
-  [10 ]  =  -0.000996682+0.0im
-  [11 ]  =  0.000487039+0.0im
-  [13 ]  =  -0.00176764-0.0im
+  [1  ]  =  0.001679+0.0im
+  [4  ]  =  -0.00634363+0.0im
+  [6  ]  =  4.98309e-6+0.0im
+  [7  ]  =  -3.0859e-6+0.0im
+  [10 ]  =  -1.41917e-5+0.0im
+  [11 ]  =  7.18279e-6+0.0im
+  [13 ]  =  -0.0110769+0.0im
          ⋮
-  [241]  =  0.0137942+0.0im
-  [244]  =  -0.0509185+0.0im
-  [246]  =  0.017809+0.0im
-  [247]  =  -0.0108773+0.0im
-  [250]  =  -0.132602+0.0im
-  [251]  =  0.0647521+0.0im
-  [253]  =  -0.235379+0.0im
-  [256]  =  0.889817+0.0im</code></pre>
+  [241]  =  0.0338661+0.0im
+  [244]  =  -0.127954+0.0im
+  [246]  =  9.56019e-5+0.0im
+  [247]  =  -5.80589e-5+0.0im
+  [250]  =  -0.000295878+0.0im
+  [251]  =  0.000149343+0.0im
+  [253]  =  -0.231829+0.0im
+  [256]  =  0.875903+0.0im</code></pre>
 </div>
 </div>
 <p>We can see that the truthful ground state we are preparing is indeed very complex.</p>
@@ -645,7 +645,7 @@ Package information:
 Julia              Ver. 1.11.5
 QuantumToolbox     Ver. 0.31.1
 SciMLOperators     Ver. 0.3.13
-LinearSolve        Ver. 3.14.0
+LinearSolve        Ver. 3.14.1
 OrdinaryDiffEqCore Ver. 1.26.0
 
 System information:

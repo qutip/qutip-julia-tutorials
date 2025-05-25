@@ -559,7 +559,7 @@ Warning
 <span id="cb7-2"><a href="#cb7-2"></a>M <span class="op">=</span> <span class="fu">M_Boson</span>(H0, tier, bath)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Preparing block matrices for HEOM Liouvillian superoperator (using 4 threads)...
-Progress: [                              ]   1.0% --- Elapsed Time: 0h 00m 01s (ETA: 0h 01m 44s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 00s)
+Progress: [                              ]   0.5% --- Elapsed Time: 0h 00m 01s (ETA: 0h 03m 29s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 00s)
 Constructing matrix...[DONE]</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
@@ -598,7 +598,7 @@ ScalarOperator(0.0 + 0.0im) * MatrixOperator(2 × 2)</code></pre>
 <span id="cb14-2"><a href="#cb14-2"></a>slowPulseSol <span class="op">=</span> <span class="fu">HEOMsolve</span>(M, ψ<span class="fl">0</span>, tlist; e_ops <span class="op">=</span> [ρ<span class="fl">01</span>], H_t <span class="op">=</span> H_D, params <span class="op">=</span> slowTuple)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Solving time evolution for ADOs by Ordinary Differential Equations method...
-Progress: [                              ]   0.1% --- Elapsed Time: 0h 00m 01s (ETA: 0h 16m 40s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 02s (ETA: 0h 00m 00s)
+Progress: [                              ]   0.1% --- Elapsed Time: 0h 00m 02s (ETA: 0h 33m 20s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 02s (ETA: 0h 00m 00s)
 Solving time evolution for ADOs by Ordinary Differential Equations method...
 Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)</code></pre>
 </div>
@@ -667,7 +667,7 @@ Julia              Ver. 1.11.5
 HierarchicalEOM    Ver. 2.5.4
 QuantumToolbox     Ver. 0.31.1
 SciMLOperators     Ver. 0.3.13
-LinearSolve        Ver. 3.14.1
+LinearSolve        Ver. 3.14.2
 OrdinaryDiffEqCore Ver. 1.26.0
 
 System information:

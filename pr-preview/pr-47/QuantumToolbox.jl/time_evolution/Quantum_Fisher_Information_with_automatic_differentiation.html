@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.31">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Orjan Ameye">
+<meta name="dcterms.date" content="2025-06-16">
+
+<title>Quantum Fisher Information – Tutorials for Quantum Toolbox in Julia</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../assets/favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-f428fda71a3abb5b1b9c21151da8fd61.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-6ec1ea2183979a90750e7180bf9040de.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-f428fda71a3abb5b1b9c21151da8fd61.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-b650d9cb99fe7fadf66fa5493d232f21.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-87abe81ac76ad473eb4c7bc4b1162077.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-b650d9cb99fe7fadf66fa5493d232f21.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../assets/logo.png" alt="QuantumToolbox logo." class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Tutorials for Quantum Toolbox in Julia</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../QuantumToolbox.jl/toc.html"> 
+<span class="menu-text">QuantumToolbox.jl</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../HierarchicalEOM.jl/toc.html"> 
+<span class="menu-text">HierarchicalEOM.jl</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+    <a href="https://github.com/qutip/qutip-julia-tutorials" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#system-parameters-and-hamiltonian" id="toc-system-parameters-and-hamiltonian" class="nav-link active" data-scroll-target="#system-parameters-and-hamiltonian">System Parameters and Hamiltonian</a></li>
+  <li><a href="#quantum-fisher-information-calculation" id="toc-quantum-fisher-information-calculation" class="nav-link" data-scroll-target="#quantum-fisher-information-calculation">Quantum Fisher Information Calculation</a></li>
+  <li><a href="#automatic-differentiation-setup" id="toc-automatic-differentiation-setup" class="nav-link" data-scroll-target="#automatic-differentiation-setup">Automatic Differentiation Setup</a></li>
+  <li><a href="#time-evolution-of-quantum-fisher-information" id="toc-time-evolution-of-quantum-fisher-information" class="nav-link" data-scroll-target="#time-evolution-of-quantum-fisher-information">Time Evolution of Quantum Fisher Information</a></li>
+  <li><a href="#visualization" id="toc-visualization" class="nav-link" data-scroll-target="#visualization">Visualization</a></li>
+  <li><a href="#version-information" id="toc-version-information" class="nav-link" data-scroll-target="#version-information">Version Information</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/qutip/qutip-julia-tutorials/edit/main/QuantumToolbox.jl/time_evolution/Quantum_Fisher_Information_with_automatic_differentiation.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/qutip/qutip-julia-tutorials/blob/main/QuantumToolbox.jl/time_evolution/Quantum_Fisher_Information_with_automatic_differentiation.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/qutip/qutip-julia-tutorials/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="Quantum_Fisher_Information_with_automatic_differentiation.ipynb" download="Quantum_Fisher_Information_with_automatic_differentiation.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Quantum Fisher Information</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Orjan Ameye </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Last Update</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">2025-06-16</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>This notebook demonstrates the computation of Quantum Fisher Information (QFI) for a driven-dissipative Kerr Parametric Oscillator using automatic differentiation. The QFI quantifies the ultimate precision limit for parameter estimation in quantum systems.</p>
+<p>We import the necessary packages for quantum simulations and automatic differentiation:</p>
+<div id="2" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">using</span> <span class="bu">QuantumToolbox</span>      <span class="co"># Quantum optics simulations</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="im">using</span> <span class="bu">DifferentiationInterface</span>  <span class="co"># Unified automatic differentiation interface</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="im">using</span> <span class="bu">SciMLSensitivity</span>   <span class="co"># Allows for ODE sensitivity analysis</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="im">using</span> <span class="bu">FiniteDiff</span>         <span class="co"># Finite difference methods</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="im">using</span> <span class="bu">LinearAlgebra</span>      <span class="co"># Linear algebra operations</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="im">using</span> <span class="bu">CairoMakie</span>              <span class="co"># Plotting</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="system-parameters-and-hamiltonian" class="level2">
+<h2 class="anchored" data-anchor-id="system-parameters-and-hamiltonian">System Parameters and Hamiltonian</h2>
+<p>The KPO system is governed by the Hamiltonian: <span class="math display">\[H = -p_1 a^\dagger a + K (a^\dagger)^2 a^2 - G (a^\dagger a^\dagger + a a)\]</span></p>
+<p>where: - <span class="math inline">\(p_1\)</span> is the parameter we want to estimate (detuning) - <span class="math inline">\(K\)</span> is the Kerr nonlinearity - <span class="math inline">\(G\)</span> is the parametric drive strength - <span class="math inline">\(\gamma\)</span> is the decay rate</p>
+<div id="4" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">function</span> <span class="fu">final_state</span>(p)</span>
+<span id="cb2-2"><a href="#cb2-2"></a>    G, K, γ <span class="op">=</span> <span class="fl">0.002</span>, <span class="fl">0.001</span>, <span class="fl">0.01</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a></span>
+<span id="cb2-4"><a href="#cb2-4"></a>    N <span class="op">=</span> <span class="fl">20</span> <span class="co"># cutoff of the Hilbert space dimension</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a>    a <span class="op">=</span> <span class="fu">destroy</span>(N) <span class="co"># annihilation operator</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a></span>
+<span id="cb2-7"><a href="#cb2-7"></a>    <span class="fu">coef</span>(p,t) <span class="op">=</span> <span class="op">-</span> p[<span class="fl">1</span>]</span>
+<span id="cb2-8"><a href="#cb2-8"></a>    H <span class="op">=</span> <span class="fu">QobjEvo</span>(a<span class="op">'</span> <span class="op">*</span> a , coef) <span class="op">+</span> K <span class="op">*</span> a<span class="op">'</span> <span class="op">*</span> a<span class="op">'</span> <span class="op">*</span> a <span class="op">*</span> a <span class="op">-</span> G <span class="op">*</span> (a<span class="op">'</span> <span class="op">*</span> a<span class="op">'</span> <span class="op">+</span> a <span class="op">*</span> a)</span>
+<span id="cb2-9"><a href="#cb2-9"></a>    c_ops <span class="op">=</span> [<span class="fu">sqrt</span>(γ)<span class="op">*</span>a]</span>
+<span id="cb2-10"><a href="#cb2-10"></a>    ψ<span class="fl">0</span> <span class="op">=</span> <span class="fu">fock</span>(N, <span class="fl">0</span>) <span class="co"># initial state</span></span>
+<span id="cb2-11"><a href="#cb2-11"></a></span>
+<span id="cb2-12"><a href="#cb2-12"></a>    tlist <span class="op">=</span> <span class="fu">range</span>(<span class="fl">0</span>, <span class="fl">2000</span>, <span class="fl">100</span>)</span>
+<span id="cb2-13"><a href="#cb2-13"></a></span>
+<span id="cb2-14"><a href="#cb2-14"></a>    sol <span class="op">=</span> <span class="fu">mesolve</span>(H, ψ<span class="fl">0</span>, tlist, c_ops; params <span class="op">=</span> p, progress_bar <span class="op">=</span> <span class="fu">Val</span>(<span class="cn">false</span>), saveat <span class="op">=</span> [tlist[<span class="kw">end</span>]])</span>
+<span id="cb2-15"><a href="#cb2-15"></a>    <span class="cf">return</span> sol.states[<span class="kw">end</span>].data</span>
+<span id="cb2-16"><a href="#cb2-16"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>final_state (generic function with 1 method)</code></pre>
+</div>
+</div>
+<div id="6" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">function</span> <span class="fu">final_state</span>(p, t)</span>
+<span id="cb4-2"><a href="#cb4-2"></a>    G, K, γ <span class="op">=</span> <span class="fl">0.002</span>, <span class="fl">0.001</span>, <span class="fl">0.01</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a></span>
+<span id="cb4-4"><a href="#cb4-4"></a>    N <span class="op">=</span> <span class="fl">20</span> <span class="co"># cutoff of the Hilbert space dimension</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a>    a <span class="op">=</span> <span class="fu">destroy</span>(N) <span class="co"># annihilation operator</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a></span>
+<span id="cb4-7"><a href="#cb4-7"></a>    <span class="fu">coef</span>(p,t) <span class="op">=</span> <span class="op">-</span> p[<span class="fl">1</span>]</span>
+<span id="cb4-8"><a href="#cb4-8"></a>    H <span class="op">=</span> <span class="fu">QobjEvo</span>(a<span class="op">'</span> <span class="op">*</span> a , coef) <span class="op">+</span> K <span class="op">*</span> a<span class="op">'</span> <span class="op">*</span> a<span class="op">'</span> <span class="op">*</span> a <span class="op">*</span> a <span class="op">-</span> G <span class="op">*</span> (a<span class="op">'</span> <span class="op">*</span> a<span class="op">'</span> <span class="op">+</span> a <span class="op">*</span> a)</span>
+<span id="cb4-9"><a href="#cb4-9"></a>    c_ops <span class="op">=</span> [<span class="fu">sqrt</span>(γ)<span class="op">*</span>a]</span>
+<span id="cb4-10"><a href="#cb4-10"></a>    ψ<span class="fl">0</span> <span class="op">=</span> <span class="fu">fock</span>(N, <span class="fl">0</span>) <span class="co"># initial state</span></span>
+<span id="cb4-11"><a href="#cb4-11"></a></span>
+<span id="cb4-12"><a href="#cb4-12"></a>    tlist <span class="op">=</span> <span class="fu">range</span>(<span class="fl">0</span>, <span class="fl">2000</span>, <span class="fl">100</span>)</span>
+<span id="cb4-13"><a href="#cb4-13"></a></span>
+<span id="cb4-14"><a href="#cb4-14"></a>    sol <span class="op">=</span> <span class="fu">mesolve</span>(H, ψ<span class="fl">0</span>, tlist, c_ops; params <span class="op">=</span> p, progress_bar <span class="op">=</span> <span class="fu">Val</span>(<span class="cn">false</span>), saveat <span class="op">=</span> [t])</span>
+<span id="cb4-15"><a href="#cb4-15"></a>    <span class="cf">return</span> sol.states[<span class="kw">end</span>].data</span>
+<span id="cb4-16"><a href="#cb4-16"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>final_state (generic function with 2 methods)</code></pre>
+</div>
+</div>
+</section>
+<section id="quantum-fisher-information-calculation" class="level2">
+<h2 class="anchored" data-anchor-id="quantum-fisher-information-calculation">Quantum Fisher Information Calculation</h2>
+<p>The QFI is computed using the symmetric logarithmic derivative (SLD). For a density matrix <span class="math inline">\(\rho(\theta)\)</span> parametrized by <span class="math inline">\(\theta\)</span>:</p>
+<p><span class="math display">\[F_Q = \text{Tr}[\partial_\theta \rho \cdot L]\]</span></p>
+<p>where <span class="math inline">\(L\)</span> is the SLD satisfying: <span class="math inline">\(\partial_\theta \rho = \frac{1}{2}(\rho L + L \rho)\)</span></p>
+<div id="8" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">function</span> <span class="fu">compute_fisher_information</span>(ρ, dρ)</span>
+<span id="cb6-2"><a href="#cb6-2"></a>    <span class="co"># Add small regularization to avoid numerical issues with zero eigenvalues</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a>    reg <span class="op">=</span> <span class="fl">1e-12</span> <span class="op">*</span> I</span>
+<span id="cb6-4"><a href="#cb6-4"></a>    ρ_reg <span class="op">=</span> ρ <span class="op">+</span> reg</span>
+<span id="cb6-5"><a href="#cb6-5"></a></span>
+<span id="cb6-6"><a href="#cb6-6"></a>    <span class="co"># Solve for the symmetric logarithmic derivative L</span></span>
+<span id="cb6-7"><a href="#cb6-7"></a>    <span class="co"># dρ = (1/2)(ρL + Lρ)</span></span>
+<span id="cb6-8"><a href="#cb6-8"></a>    <span class="co"># This is a Sylvester equation: ρL + Lρ = 2*dρ</span></span>
+<span id="cb6-9"><a href="#cb6-9"></a>    L <span class="op">=</span> <span class="fu">sylvester</span>(ρ_reg, ρ_reg, <span class="op">-</span><span class="fl">2</span><span class="op">*</span>dρ)</span>
+<span id="cb6-10"><a href="#cb6-10"></a></span>
+<span id="cb6-11"><a href="#cb6-11"></a>    <span class="co"># Fisher information F = Tr(dρ * L)</span></span>
+<span id="cb6-12"><a href="#cb6-12"></a>    F <span class="op">=</span> <span class="fu">real</span>(<span class="fu">tr</span>(dρ <span class="op">*</span> L))</span>
+<span id="cb6-13"><a href="#cb6-13"></a></span>
+<span id="cb6-14"><a href="#cb6-14"></a>    <span class="cf">return</span> F</span>
+<span id="cb6-15"><a href="#cb6-15"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>compute_fisher_information (generic function with 1 method)</code></pre>
+</div>
+</div>
+</section>
+<section id="automatic-differentiation-setup" class="level2">
+<h2 class="anchored" data-anchor-id="automatic-differentiation-setup">Automatic Differentiation Setup</h2>
+<p>We use finite differences through DifferentiationInterface.jl to compute the derivative of the quantum state with respect to the parameter. This is a key step that enables efficient QFI computation without manual derivative calculations.</p>
+<div id="10" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1"></a><span class="co"># Test the system</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="fu">final_state</span>([<span class="fl">0</span>], <span class="fl">100</span>)</span>
+<span id="cb8-3"><a href="#cb8-3"></a></span>
+<span id="cb8-4"><a href="#cb8-4"></a><span class="co"># Define state function for automatic differentiation</span></span>
+<span id="cb8-5"><a href="#cb8-5"></a><span class="fu">state</span>(p) <span class="op">=</span> <span class="fu">final_state</span>(p, <span class="fl">2000</span>)</span>
+<span id="cb8-6"><a href="#cb8-6"></a></span>
+<span id="cb8-7"><a href="#cb8-7"></a><span class="co"># Compute both the state and its derivative</span></span>
+<span id="cb8-8"><a href="#cb8-8"></a>ρ, dρ <span class="op">=</span> DifferentiationInterface.<span class="fu">value_and_jacobian</span>(state, <span class="fu">AutoFiniteDiff</span>(), [<span class="fl">0.0</span>])</span>
+<span id="cb8-9"><a href="#cb8-9"></a></span>
+<span id="cb8-10"><a href="#cb8-10"></a><span class="co"># Reshape the derivative back to matrix form</span></span>
+<span id="cb8-11"><a href="#cb8-11"></a>dρ <span class="op">=</span> QuantumToolbox.<span class="fu">vec2mat</span>(<span class="fu">vec</span>(dρ))</span>
+<span id="cb8-12"><a href="#cb8-12"></a></span>
+<span id="cb8-13"><a href="#cb8-13"></a><span class="co"># Compute QFI at final time</span></span>
+<span id="cb8-14"><a href="#cb8-14"></a>qfi_final <span class="op">=</span> <span class="fu">compute_fisher_information</span>(ρ, dρ)</span>
+<span id="cb8-15"><a href="#cb8-15"></a><span class="fu">println</span>(<span class="st">"QFI at final time: "</span>, qfi_final)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>QFI at final time: 19795.821946511165</code></pre>
+</div>
+</div>
+</section>
+<section id="time-evolution-of-quantum-fisher-information" class="level2">
+<h2 class="anchored" data-anchor-id="time-evolution-of-quantum-fisher-information">Time Evolution of Quantum Fisher Information</h2>
+<p>Now we compute how the QFI evolves over time to understand the optimal measurement time for parameter estimation:</p>
+<div id="12" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1"></a>ts <span class="op">=</span> <span class="fu">range</span>(<span class="fl">0</span>, <span class="fl">2000</span>, <span class="fl">100</span>)</span>
+<span id="cb10-2"><a href="#cb10-2"></a></span>
+<span id="cb10-3"><a href="#cb10-3"></a>QFI_t <span class="op">=</span> <span class="fu">map</span>(ts) <span class="cf">do</span> t</span>
+<span id="cb10-4"><a href="#cb10-4"></a>    <span class="fu">state</span>(p) <span class="op">=</span> <span class="fu">final_state</span>(p, t)</span>
+<span id="cb10-5"><a href="#cb10-5"></a>    ρ, dρ <span class="op">=</span> DifferentiationInterface.<span class="fu">value_and_jacobian</span>(state, <span class="fu">AutoFiniteDiff</span>(), [<span class="fl">0.0</span>])</span>
+<span id="cb10-6"><a href="#cb10-6"></a>    dρ <span class="op">=</span> QuantumToolbox.<span class="fu">vec2mat</span>(<span class="fu">vec</span>(dρ))</span>
+<span id="cb10-7"><a href="#cb10-7"></a>    <span class="fu">compute_fisher_information</span>(ρ, dρ)</span>
+<span id="cb10-8"><a href="#cb10-8"></a><span class="cf">end</span></span>
+<span id="cb10-9"><a href="#cb10-9"></a></span>
+<span id="cb10-10"><a href="#cb10-10"></a><span class="fu">println</span>(<span class="st">"QFI computed for "</span>, <span class="fu">length</span>(ts), <span class="st">" time points"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>QFI computed for 100 time points</code></pre>
+</div>
+</div>
+</section>
+<section id="visualization" class="level2">
+<h2 class="anchored" data-anchor-id="visualization">Visualization</h2>
+<p>Plot the time evolution of the Quantum Fisher Information:</p>
+<div id="14" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1"></a>fig <span class="op">=</span> <span class="fu">Figure</span>(size<span class="op">=</span>(<span class="fl">900</span>, <span class="fl">350</span>))</span>
+<span id="cb12-2"><a href="#cb12-2"></a>ax <span class="op">=</span> <span class="fu">Axis</span>(</span>
+<span id="cb12-3"><a href="#cb12-3"></a> fig[<span class="fl">1</span>,<span class="fl">1</span>],</span>
+<span id="cb12-4"><a href="#cb12-4"></a> xlabel <span class="op">=</span> <span class="st">"Time"</span>,</span>
+<span id="cb12-5"><a href="#cb12-5"></a> ylabel <span class="op">=</span> <span class="st">"Quantum Fisher Information"</span></span>
+<span id="cb12-6"><a href="#cb12-6"></a>)</span>
+<span id="cb12-7"><a href="#cb12-7"></a><span class="fu">lines!</span>(ax, ts, QFI_t)</span>
+<span id="cb12-8"><a href="#cb12-8"></a>fig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<img width="900" height="350" style="object-fit: contain; height: auto;" src="data:image/png;base64, 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5dy5c3Tt2hWX7777DqfTSUhICPWRLcAXm60lIiIiIiLScBhInTOZTMTHx7N161bi4uJw2bZtG2FhYXTu3BkRERERERFPYCC3xaxZs3jwwQdp2bIlVquV3//+9yxevBgvLy9EREREREQ8gYHcFv369WPHjh288847fPPNN7z++usMGzYMERERERERT2Egt01MTAwxMTGIiIiIiIh4IgMRERERERFplAxERERERESkUTIQERERERGRRslAREREREREGiUDERERERERaZQMxCMVFBRw5swZlixZgiew2+1YrVZE6qurV6/i4ufnh0h9ZbfbsVqtiNRXV69excXPzw+R+sput2O1WvEE+/fvp23btvwYBuKROnfuTEVFBaWlpXiCAwcOEBMTg0h9dfbsWVzatGmDSH114MABYmJiEKmvzp49i0ubNm0Qqa8OHDhATEwMniAoKIjOnTvzYxiIR/rtb3+LJzGZTOzZsweR+iotLQ2XtLQ0ROork8nEnj17EKmv0tLScElLS0OkvjKZTOzZs4eGwkBEREREREQaJQMRERERERFplAxERERERESkUTIQ+QFmzZqFSH3Wr18/ROq7WbNmIVKf9evXD5H6btasWTQkBiI/wOLFixGpz+Li4hCp7xYvXoxIfRYXF4dIfbd48WIaEgMRERERERFplAxERERERESkUTIQERERERGRRslAREREREREGiUDkX+gqKiI9PR08vLyiImJ4bHHHsNkMiHiKQoKCli/fj3uLBYLU6dOpcaWLVvYtm0bgYGBJCcn06VLF9xt2bKFbdu2ERgYSHJyMl26dEHkTigvL2fOnDmsXLkSd06nk/T0dA4dOkTHjh2ZNGkSgYGB1CgqKiI9PZ28vDxiYmJ47LHHMJlM1Dh69Cjvvvsuly9fZujQoTzwwAOI3C5vvPEGHTt2JDY2lhoFBQWsX78edxaLhalTp1Jjy5YtbNu2jcDAQJKTk+nSpQs1nE4n6enpHDp0iI4dOzJp0iQCAwMRqUtVVVWsXbuWrKwsfH19GTJkCA8++CA1nE4n6enpHDp0iI4dOzJp0iQCAwOpUVRURHp6Onl5ecTExPDYY49hMpmocfToUd59910uX77M0KFDeeCBB/BEBiK3YLfbiY2NpW3btsTGxvLss89y4MABVq9ejYin2LdvH4sXL6Znz57UaNGiBVOnTsVl1apV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">
+</div>
+</div>
+</section>
+<section id="version-information" class="level2">
+<h2 class="anchored" data-anchor-id="version-information">Version Information</h2>
+<div id="16" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1"></a>QuantumToolbox.<span class="fu">versioninfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ QuantumToolbox.jl: Quantum Toolbox in Julia
+≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
+Copyright © QuTiP team 2022 and later.
+Current admin team:
+    Alberto Mercurio and Yi-Te Huang
+
+Package information:
+====================================
+Julia              Ver. 1.11.5
+QuantumToolbox     Ver. 0.31.1
+SciMLOperators     Ver. 0.3.13
+LinearSolve        Ver. 3.17.0
+OrdinaryDiffEqCore Ver. 1.26.1
+
+System information:
+====================================
+OS       : Linux (x86_64-linux-gnu)
+CPU      : 4 × AMD EPYC 7763 64-Core Processor
+Memory   : 15.621 GB
+WORD_SIZE: 64
+LIBM     : libopenlibm
+LLVM     : libLLVM-16.0.6 (ORCJIT, znver3)
+BLAS     : libopenblas64_.so (ilp64)
+Threads  : 4 (on 4 virtual cores)
+</code></pre>
+</div>
+</div>
+<div id="18" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1"></a><span class="im">using</span> <span class="bu">Pkg</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="bu">Pkg</span>.<span class="fu">status</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<div class="ansi-escaped-output">
+<pre><span class="ansi-green-fg ansi-bold">Status</span> `~/work/qutip-julia-tutorials/qutip-julia-tutorials/Project.toml`
+<span class="ansi-green-fg">⌃</span> <span class="ansi-bright-black-fg">[13f3f980] </span>CairoMakie v0.13.10
+  <span class="ansi-bright-black-fg">[a0c0ee7d] </span>DifferentiationInterface v0.7.1
+  <span class="ansi-bright-black-fg">[6a86dc24] </span>FiniteDiff v2.27.0
+  <span class="ansi-bright-black-fg">[a62dbcb7] </span>HierarchicalEOM v2.5.4
+  <span class="ansi-bright-black-fg">[6c2fb7c5] </span>QuantumToolbox v0.31.1
+  <span class="ansi-bright-black-fg">[4c0109c6] </span>QuartoNotebookRunner v0.17.3
+<span class="ansi-green-fg">⌃</span> <span class="ansi-bright-black-fg">[1ed8b502] </span>SciMLSensitivity v7.83.0
+<span class="ansi-cyan-fg ansi-bold">Info</span> Packages marked with <span class="ansi-green-fg">⌃</span> have new versions available and may be upgradable.
+</pre>
+</div>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/qutip\.org\/qutip-julia-tutorials\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>Copyright © 2025 <a href="https://qutip.org/" target="_blank"><strong>QuTiP.org</strong></a>.</p>
+<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/qutip/qutip-julia-tutorials/edit/main/QuantumToolbox.jl/time_evolution/Quantum_Fisher_Information_with_automatic_differentiation.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/qutip/qutip-julia-tutorials/blob/main/QuantumToolbox.jl/time_evolution/Quantum_Fisher_Information_with_automatic_differentiation.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/qutip/qutip-julia-tutorials/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

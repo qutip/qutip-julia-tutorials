@@ -139,7 +139,7 @@ Plot the time evolution of the Quantum Fisher Information:
 fig = Figure(size=(900, 350))
 ax = Axis(
  fig[1,1],
- xlabel = "iTime",
+ xlabel = "Time",
  ylabel = "Quantum Fisher Information"
 )
 lines!(ax, ts, QFI_t)

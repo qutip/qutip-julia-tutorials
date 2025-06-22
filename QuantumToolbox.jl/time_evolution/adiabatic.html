@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.31">
+<meta name="generator" content="quarto-1.7.32">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -74,9 +74,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-f428fda71a3abb5b1b9c21151da8fd61.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-6ec1ea2183979a90750e7180bf9040de.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-f428fda71a3abb5b1b9c21151da8fd61.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-c1f63da3e08f13bc72dc17e92cfd001d.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-e25bb2ec88b96ab004d13ad1d1924df4.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-c1f63da3e08f13bc72dc17e92cfd001d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../site_libs/bootstrap/bootstrap-b650d9cb99fe7fadf66fa5493d232f21.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
@@ -431,13 +431,13 @@ window.Quarto = {
 <span id="cb2-4"><a href="#cb2-4"></a>gs <span class="op">=</span> <span class="fu">rand</span>(N<span class="op">-</span><span class="fl">1</span>) <span class="co"># use rand function for the random interaction strengths</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>7-element Vector{Float64}:
- 0.8956144306119463
- 0.9250968949265351
- 0.43995733158152006
- 0.22162455115179802
- 0.26296510551969554
- 0.6051448169637837
- 0.5376317957330312</code></pre>
+ 0.5434562147962314
+ 0.7514179584509441
+ 0.36988244403143467
+ 0.21283732958894563
+ 0.9139526308334479
+ 0.7105259145899695
+ 0.935398324826815</code></pre>
 </div>
 </div>
 <div id="6" class="cell" data-execution_count="1">
@@ -532,22 +532,22 @@ Quantum Object Evo.:   type=Operator()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(2
 <pre><code>
 Quantum Object:   type=Ket()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256,)
 256-element SparseArrays.SparseVector{ComplexF64, Int64} with 128 stored entries:
-  [1  ]  =  0.0034082+0.0im
-  [4  ]  =  -0.0119434+0.0im
-  [6  ]  =  0.00707646+0.0im
-  [7  ]  =  -0.0040476+0.0im
-  [10 ]  =  -0.0236906+0.0im
-  [11 ]  =  0.0113055+0.0im
-  [13 ]  =  -0.0213259-0.0im
+  [1  ]  =  0.00763094+0.0im
+  [4  ]  =  -0.0172691-0.0im
+  [6  ]  =  0.0120128+0.0im
+  [7  ]  =  -0.00919126+0.0im
+  [10 ]  =  -0.0162011-0.0im
+  [11 ]  =  0.0115513+0.0im
+  [13 ]  =  -0.0169129+0.0im
          ⋮
-  [241]  =  0.029097+0.0im
-  [244]  =  -0.102748+0.0im
-  [246]  =  0.0591025+0.0im
-  [247]  =  -0.0332278+0.0im
-  [250]  =  -0.211547+0.0im
-  [251]  =  0.100766+0.0im
-  [253]  =  -0.190712+0.0im
-  [256]  =  0.710351+0.0im</code></pre>
+  [241]  =  0.11902+0.0im
+  [244]  =  -0.270384+0.0im
+  [246]  =  0.184283+0.0im
+  [247]  =  -0.140094+0.0im
+  [250]  =  -0.257684+0.0im
+  [251]  =  0.182994+0.0im
+  [253]  =  -0.271084+0.0im
+  [256]  =  0.635814+0.0im</code></pre>
 </div>
 </div>
 <p>We can see that the truthful ground state we are preparing is indeed very complex.</p>
@@ -645,7 +645,7 @@ Package information:
 Julia              Ver. 1.11.5
 QuantumToolbox     Ver. 0.31.1
 SciMLOperators     Ver. 0.3.13
-LinearSolve        Ver. 3.17.0
+LinearSolve        Ver. 3.18.0
 OrdinaryDiffEqCore Ver. 1.26.1
 
 System information:

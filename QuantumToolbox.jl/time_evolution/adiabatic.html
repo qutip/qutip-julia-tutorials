@@ -79,9 +79,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-c1f63da3e08f13bc72dc17e92cfd001d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-b650d9cb99fe7fadf66fa5493d232f21.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-87abe81ac76ad473eb4c7bc4b1162077.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-b650d9cb99fe7fadf66fa5493d232f21.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-a99012b8b0ddc51003ad743008e8cf5a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-e443fc87a3d858964cf789ba78d9250e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-a99012b8b0ddc51003ad743008e8cf5a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -431,13 +431,13 @@ window.Quarto = {
 <span id="cb2-4"><a href="#cb2-4"></a>gs <span class="op">=</span> <span class="fu">rand</span>(N<span class="op">-</span><span class="fl">1</span>) <span class="co"># use rand function for the random interaction strengths</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>7-element Vector{Float64}:
- 0.5434562147962314
- 0.7514179584509441
- 0.36988244403143467
- 0.21283732958894563
- 0.9139526308334479
- 0.7105259145899695
- 0.935398324826815</code></pre>
+ 0.27378122513796666
+ 0.9528123498465086
+ 0.8621742976599257
+ 0.9031685207193736
+ 0.007859753159342286
+ 0.4200465483598206
+ 0.36709950638624256</code></pre>
 </div>
 </div>
 <div id="6" class="cell" data-execution_count="1">
@@ -532,22 +532,22 @@ Quantum Object Evo.:   type=Operator()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(2
 <pre><code>
 Quantum Object:   type=Ket()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256,)
 256-element SparseArrays.SparseVector{ComplexF64, Int64} with 128 stored entries:
-  [1  ]  =  0.00763094+0.0im
-  [4  ]  =  -0.0172691-0.0im
-  [6  ]  =  0.0120128+0.0im
-  [7  ]  =  -0.00919126+0.0im
-  [10 ]  =  -0.0162011-0.0im
-  [11 ]  =  0.0115513+0.0im
-  [13 ]  =  -0.0169129+0.0im
+  [1  ]  =  6.67801e-5+0.0im
+  [4  ]  =  -0.000332477+0.0im
+  [6  ]  =  0.000178943+0.0im
+  [7  ]  =  -8.81756e-5+0.0im
+  [10 ]  =  -0.0113805+0.0im
+  [11 ]  =  0.00391328+0.0im
+  [13 ]  =  -0.0101258-0.0im
          ⋮
-  [241]  =  0.11902+0.0im
-  [244]  =  -0.270384+0.0im
-  [246]  =  0.184283+0.0im
-  [247]  =  -0.140094+0.0im
-  [250]  =  -0.257684+0.0im
-  [251]  =  0.182994+0.0im
-  [253]  =  -0.271084+0.0im
-  [256]  =  0.635814+0.0im</code></pre>
+  [241]  =  0.000732344+0.0im
+  [244]  =  -0.00369151+0.0im
+  [246]  =  0.00187081+0.0im
+  [247]  =  -0.000895096+0.0im
+  [250]  =  -0.14158+0.0im
+  [251]  =  0.0486832+0.0im
+  [253]  =  -0.125972+0.0im
+  [256]  =  0.683665+0.0im</code></pre>
 </div>
 </div>
 <p>We can see that the truthful ground state we are preparing is indeed very complex.</p>
@@ -645,7 +645,7 @@ Package information:
 Julia              Ver. 1.11.5
 QuantumToolbox     Ver. 0.31.1
 SciMLOperators     Ver. 0.3.13
-LinearSolve        Ver. 3.18.0
+LinearSolve        Ver. 3.18.2
 OrdinaryDiffEqCore Ver. 1.26.1
 
 System information:

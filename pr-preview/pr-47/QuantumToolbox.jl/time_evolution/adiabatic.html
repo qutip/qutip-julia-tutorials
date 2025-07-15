@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.31">
+<meta name="generator" content="quarto-1.7.32">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Li-Xun Cai">
-<meta name="dcterms.date" content="2025-06-16">
+<meta name="dcterms.date" content="2025-07-15">
 
 <title>Adiabatic sweep (with QuantumObjectEvolution) – Tutorials for Quantum Toolbox in Julia</title>
 <style>
@@ -74,14 +74,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-f428fda71a3abb5b1b9c21151da8fd61.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-6ec1ea2183979a90750e7180bf9040de.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-f428fda71a3abb5b1b9c21151da8fd61.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-c1f63da3e08f13bc72dc17e92cfd001d.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-e25bb2ec88b96ab004d13ad1d1924df4.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-c1f63da3e08f13bc72dc17e92cfd001d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-b650d9cb99fe7fadf66fa5493d232f21.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-87abe81ac76ad473eb4c7bc4b1162077.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-b650d9cb99fe7fadf66fa5493d232f21.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-2f284401de6aa9259900de21922fc1dd.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-04fe6bc79933632774f919b68e78a667.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-2f284401de6aa9259900de21922fc1dd.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -385,7 +385,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Last Update</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2025-06-16</p>
+      <p class="date">2025-07-15</p>
     </div>
   </div>
   
@@ -431,13 +431,13 @@ window.Quarto = {
 <span id="cb2-4"><a href="#cb2-4"></a>gs <span class="op">=</span> <span class="fu">rand</span>(N<span class="op">-</span><span class="fl">1</span>) <span class="co"># use rand function for the random interaction strengths</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>7-element Vector{Float64}:
- 0.5033694064064166
- 0.9166391173208648
- 0.24094574155920034
- 0.2737431260127412
- 0.8794737334367533
- 0.26728459581339403
- 0.3605878952335876</code></pre>
+ 0.17144175097715297
+ 0.7768316084233753
+ 0.042647925616491444
+ 0.6134729695247971
+ 0.21085217667760003
+ 0.2885104799681204
+ 0.7160322766545696</code></pre>
 </div>
 </div>
 <div id="6" class="cell" data-execution_count="1">
@@ -532,22 +532,22 @@ Quantum Object Evo.:   type=Operator()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(2
 <pre><code>
 Quantum Object:   type=Ket()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256,)
 256-element SparseArrays.SparseVector{ComplexF64, Int64} with 128 stored entries:
-  [1  ]  =  0.00239045+0.0im
-  [4  ]  =  -0.0131446+0.0im
-  [6  ]  =  0.00381618+0.0im
-  [7  ]  =  -0.0016753+0.0im
-  [10 ]  =  -0.00527652+0.0im
-  [11 ]  =  0.00202976+0.0im
-  [13 ]  =  -0.00592226+0.0im
+  [1  ]  =  0.000106236+0.0im
+  [4  ]  =  -0.000316595+0.0im
+  [6  ]  =  0.000133135+0.0im
+  [7  ]  =  -9.72585e-5-0.0im
+  [10 ]  =  -0.000381249-0.0im
+  [11 ]  =  0.000224987+0.0im
+  [13 ]  =  -0.000779496-0.0im
          ⋮
-  [241]  =  0.0541454+0.0im
-  [244]  =  -0.298753+0.0im
-  [246]  =  0.0833404+0.0im
-  [247]  =  -0.0356456+0.0im
-  [250]  =  -0.121297+0.0im
-  [251]  =  0.045956+0.0im
-  [253]  =  -0.138227+0.0im
-  [256]  =  0.771801+0.0im</code></pre>
+  [241]  =  0.0325195+0.0im
+  [244]  =  -0.097825+0.0im
+  [246]  =  0.0355442+0.0im
+  [247]  =  -0.0248343+0.0im
+  [250]  =  -0.132577+0.0im
+  [251]  =  0.0778245+0.0im
+  [253]  =  -0.273345+0.0im
+  [256]  =  0.83846+0.0im</code></pre>
 </div>
 </div>
 <p>We can see that the truthful ground state we are preparing is indeed very complex.</p>
@@ -642,11 +642,11 @@ Current admin team:
 
 Package information:
 ====================================
-Julia              Ver. 1.11.5
+Julia              Ver. 1.11.6
 QuantumToolbox     Ver. 0.31.1
 SciMLOperators     Ver. 0.3.13
-LinearSolve        Ver. 3.17.0
-OrdinaryDiffEqCore Ver. 1.26.1
+LinearSolve        Ver. 3.19.2
+OrdinaryDiffEqCore Ver. 1.26.2
 
 System information:
 ====================================

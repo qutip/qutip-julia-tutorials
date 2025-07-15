@@ -4,7 +4,7 @@ author: Orjan Ameye
 date: last-modified
 ---
 
-This notebook demonstrates the computation of Quantum Fisher Information (QFI) for a driven-dissipative Kerr Parametric Oscillator using automatic differentiation. The QFI quantifies the ultimate precision limit for parameter estimation in quantum systems.
+This notebook demonstrates the computation of Quantum Fisher Information (QFI) for a driven-dissipative Kerr Parametric Oscillator (KPO) using automatic differentiation. The QFI quantifies the ultimate precision limit for parameter estimation in quantum systems.
 
 We import the necessary packages for quantum simulations and automatic differentiation:
 
@@ -15,6 +15,7 @@ using SciMLSensitivity   # Allows for ODE sensitivity analysis
 using FiniteDiff         # Finite difference methods
 using LinearAlgebra      # Linear algebra operations
 using CairoMakie              # Plotting
+CairoMakie.activate!(type = "svg")
 ```
 
 ## System Parameters and Hamiltonian
@@ -23,29 +24,11 @@ The KPO system is governed by the Hamiltonian:
 $$H = -p_1 a^\dagger a + K (a^\dagger)^2 a^2 - G (a^\dagger a^\dagger + a a)$$
 
 where:
+
 - $p_1$ is the parameter we want to estimate (detuning)
 - $K$ is the Kerr nonlinearity
 - $G$ is the parametric drive strength
 - $\gamma$ is the decay rate
-
-```{julia}
-function final_state(p)
-    G, K, γ = 0.002, 0.001, 0.01
-
-    N = 20 # cutoff of the Hilbert space dimension
-    a = destroy(N) # annihilation operator
-
-    coef(p,t) = - p[1]
-    H = QobjEvo(a' * a , coef) + K * a' * a' * a * a - G * (a' * a' + a * a)
-    c_ops = [sqrt(γ)*a]
-    ψ0 = fock(N, 0) # initial state
-
-    tlist = range(0, 2000, 100)
-
-    sol = mesolve(H, ψ0, tlist, c_ops; params = p, progress_bar = Val(false), saveat = [tlist[end]])
-    return sol.states[end].data
-end
-```
 
 ```{julia}
 function final_state(p, t)
@@ -58,9 +41,8 @@ function final_state(p, t)
     H = QobjEvo(a' * a , coef) + K * a' * a' * a * a - G * (a' * a' + a * a)
     c_ops = [sqrt(γ)*a]
     ψ0 = fock(N, 0) # initial state
-
+    
     tlist = range(0, 2000, 100)
-
     sol = mesolve(H, ψ0, tlist, c_ops; params = p, progress_bar = Val(false), saveat = [t])
     return sol.states[end].data
 end
@@ -136,7 +118,7 @@ println("QFI computed for ", length(ts), " time points")
 Plot the time evolution of the Quantum Fisher Information:
 
 ```{julia}
-fig = Figure(size=(900, 350))
+fig = Figure()
 ax = Axis(
  fig[1,1],
  xlabel = "Time",

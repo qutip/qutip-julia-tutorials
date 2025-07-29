@@ -9,12 +9,10 @@ This notebook demonstrates the computation of Quantum Fisher Information (QFI) f
 We import the necessary packages for quantum simulations and automatic differentiation:
 
 ```{julia}
-using QuantumToolbox      # Quantum optics simulations
-using DifferentiationInterface  # Unified automatic differentiation interface
-using SciMLSensitivity   # Allows for ODE sensitivity analysis
-using FiniteDiff         # Finite difference methods
-using LinearAlgebra      # Linear algebra operations
-using CairoMakie              # Plotting
+using QuantumToolbox   # Quantum optics simulations
+using ForwardDiff      # For automatic differentiation
+using LinearAlgebra    # Linear algebra operations
+using CairoMakie       # Plotting
 CairoMakie.activate!(type = "svg")
 ```
 
@@ -31,20 +29,24 @@ where:
 - $\gamma$ is the decay rate
 
 ```{julia}
+const G, K, γ = 0.002, 0.001, 0.01
+
+const N = 20 # cutoff of the Hilbert space dimension
+const a = destroy(N) # annihilation operator
+
+const c_ops = [sqrt(γ)*a]
+const ψ0 = fock(N, 0) # initial state
+
+const tlist = range(0, 2000, 100)
+
 function final_state(p, t)
-    G, K, γ = 0.002, 0.001, 0.01
+    H = - p[1] * a' * a + K * a' * a' * a * a - G * (a' * a' + a * a)
 
-    N = 20 # cutoff of the Hilbert space dimension
-    a = destroy(N) # annihilation operator
-
-    coef(p,t) = - p[1]
-    H = QobjEvo(a' * a , coef) + K * a' * a' * a * a - G * (a' * a' + a * a)
-    c_ops = [sqrt(γ)*a]
-    ψ0 = fock(N, 0) # initial state
-    
-    tlist = range(0, 2000, 100)
     sol = mesolve(H, ψ0, tlist, c_ops; params = p, progress_bar = Val(false), saveat = [t])
-    return sol.states[end].data
+    ρ_vec = vec(sol.states[end].data)
+
+    # Split the real and imaginary parts of the density matrix to a real vector since ForwardDiff doesn't handle complex numbers directly
+    return vcat(real.(ρ_vec), imag.(ρ_vec))
 end
 ```
 
@@ -86,10 +88,13 @@ final_state([0], 100)
 state(p) = final_state(p, 2000)
 
 # Compute both the state and its derivative
-ρ, dρ = DifferentiationInterface.value_and_jacobian(state, AutoFiniteDiff(), [0.0])
+ρ, dρ = state([0.0]), ForwardDiff.jacobian(state, [0.0])
+
+# Reshape back to complex matrix form
+ρ = reshape(ρ[1:end÷2] + 1im * ρ[end÷2+1:end], N, N)
 
 # Reshape the derivative back to matrix form
-dρ = QuantumToolbox.vec2mat(vec(dρ))
+dρ = reshape(dρ[1:end÷2] + 1im * dρ[end÷2+1:end], N, N)
 
 # Compute QFI at final time
 qfi_final = compute_fisher_information(ρ, dρ)
@@ -103,10 +108,13 @@ Now we compute how the QFI evolves over time to understand the optimal measureme
 ```{julia}
 ts = range(0, 2000, 100)
 
-QFI_t = map(ts) do t
+@time QFI_t = map(ts) do t
     state(p) = final_state(p, t)
-    ρ, dρ = DifferentiationInterface.value_and_jacobian(state, AutoFiniteDiff(), [0.0])
-    dρ = QuantumToolbox.vec2mat(vec(dρ))
+    ρ, dρ = state([0.0]), ForwardDiff.jacobian(state, [0.0])
+
+    ρ = reshape(ρ[1:end÷2] + 1im * ρ[end÷2+1:end], N, N)
+    dρ = reshape(dρ[1:end÷2] + 1im * dρ[end÷2+1:end], N, N)
+
     compute_fisher_information(ρ, dρ)
 end
 

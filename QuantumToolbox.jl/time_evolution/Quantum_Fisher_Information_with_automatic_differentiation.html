@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Orjan Ameye">
-<meta name="dcterms.date" content="2025-07-18">
+<meta name="dcterms.date" content="2025-07-30">
 
 <title>Quantum Fisher Information – Tutorials for Quantum Toolbox in Julia</title>
 <style>
@@ -387,7 +387,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Last Update</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2025-07-18</p>
+      <p class="date">2025-07-30</p>
     </div>
   </div>
   
@@ -402,13 +402,11 @@ window.Quarto = {
 <p>This notebook demonstrates the computation of Quantum Fisher Information (QFI) for a driven-dissipative Kerr Parametric Oscillator (KPO) using automatic differentiation. The QFI quantifies the ultimate precision limit for parameter estimation in quantum systems.</p>
 <p>We import the necessary packages for quantum simulations and automatic differentiation:</p>
 <div id="2" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">using</span> <span class="bu">QuantumToolbox</span>      <span class="co"># Quantum optics simulations</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="im">using</span> <span class="bu">DifferentiationInterface</span>  <span class="co"># Unified automatic differentiation interface</span></span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="im">using</span> <span class="bu">SciMLSensitivity</span>   <span class="co"># Allows for ODE sensitivity analysis</span></span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="im">using</span> <span class="bu">FiniteDiff</span>         <span class="co"># Finite difference methods</span></span>
-<span id="cb1-5"><a href="#cb1-5"></a><span class="im">using</span> <span class="bu">LinearAlgebra</span>      <span class="co"># Linear algebra operations</span></span>
-<span id="cb1-6"><a href="#cb1-6"></a><span class="im">using</span> <span class="bu">CairoMakie</span>              <span class="co"># Plotting</span></span>
-<span id="cb1-7"><a href="#cb1-7"></a>CairoMakie.<span class="fu">activate!</span>(<span class="kw">type</span> <span class="op">=</span> <span class="st">"svg"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">using</span> <span class="bu">QuantumToolbox</span>   <span class="co"># Quantum optics simulations</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="im">using</span> <span class="bu">ForwardDiff</span>      <span class="co"># For automatic differentiation</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="im">using</span> <span class="bu">LinearAlgebra</span>    <span class="co"># Linear algebra operations</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="im">using</span> <span class="bu">CairoMakie</span>       <span class="co"># Plotting</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a>CairoMakie.<span class="fu">activate!</span>(<span class="kw">type</span> <span class="op">=</span> <span class="st">"svg"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="system-parameters-and-hamiltonian" class="level2">
 <h2 class="anchored" data-anchor-id="system-parameters-and-hamiltonian">System Parameters and Hamiltonian</h2>
@@ -421,21 +419,25 @@ window.Quarto = {
 <li><span class="math inline">\(\gamma\)</span> is the decay rate</li>
 </ul>
 <div id="4" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">function</span> <span class="fu">final_state</span>(p, t)</span>
-<span id="cb2-2"><a href="#cb2-2"></a>    G, K, γ <span class="op">=</span> <span class="fl">0.002</span>, <span class="fl">0.001</span>, <span class="fl">0.01</span></span>
-<span id="cb2-3"><a href="#cb2-3"></a></span>
-<span id="cb2-4"><a href="#cb2-4"></a>    N <span class="op">=</span> <span class="fl">20</span> <span class="co"># cutoff of the Hilbert space dimension</span></span>
-<span id="cb2-5"><a href="#cb2-5"></a>    a <span class="op">=</span> <span class="fu">destroy</span>(N) <span class="co"># annihilation operator</span></span>
-<span id="cb2-6"><a href="#cb2-6"></a></span>
-<span id="cb2-7"><a href="#cb2-7"></a>    <span class="fu">coef</span>(p,t) <span class="op">=</span> <span class="op">-</span> p[<span class="fl">1</span>]</span>
-<span id="cb2-8"><a href="#cb2-8"></a>    H <span class="op">=</span> <span class="fu">QobjEvo</span>(a<span class="op">'</span> <span class="op">*</span> a , coef) <span class="op">+</span> K <span class="op">*</span> a<span class="op">'</span> <span class="op">*</span> a<span class="op">'</span> <span class="op">*</span> a <span class="op">*</span> a <span class="op">-</span> G <span class="op">*</span> (a<span class="op">'</span> <span class="op">*</span> a<span class="op">'</span> <span class="op">+</span> a <span class="op">*</span> a)</span>
-<span id="cb2-9"><a href="#cb2-9"></a>    c_ops <span class="op">=</span> [<span class="fu">sqrt</span>(γ)<span class="op">*</span>a]</span>
-<span id="cb2-10"><a href="#cb2-10"></a>    ψ<span class="fl">0</span> <span class="op">=</span> <span class="fu">fock</span>(N, <span class="fl">0</span>) <span class="co"># initial state</span></span>
-<span id="cb2-11"><a href="#cb2-11"></a>    </span>
-<span id="cb2-12"><a href="#cb2-12"></a>    tlist <span class="op">=</span> <span class="fu">range</span>(<span class="fl">0</span>, <span class="fl">2000</span>, <span class="fl">100</span>)</span>
-<span id="cb2-13"><a href="#cb2-13"></a>    sol <span class="op">=</span> <span class="fu">mesolve</span>(H, ψ<span class="fl">0</span>, tlist, c_ops; params <span class="op">=</span> p, progress_bar <span class="op">=</span> <span class="fu">Val</span>(<span class="cn">false</span>), saveat <span class="op">=</span> [t])</span>
-<span id="cb2-14"><a href="#cb2-14"></a>    <span class="cf">return</span> sol.states[<span class="kw">end</span>].data</span>
-<span id="cb2-15"><a href="#cb2-15"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">const</span> G, K, γ <span class="op">=</span> <span class="fl">0.002</span>, <span class="fl">0.001</span>, <span class="fl">0.01</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="kw">const</span> N <span class="op">=</span> <span class="fl">20</span> <span class="co"># cutoff of the Hilbert space dimension</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="kw">const</span> a <span class="op">=</span> <span class="fu">destroy</span>(N) <span class="co"># annihilation operator</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a></span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="kw">const</span> c_ops <span class="op">=</span> [<span class="fu">sqrt</span>(γ)<span class="op">*</span>a]</span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="kw">const</span> ψ<span class="fl">0</span> <span class="op">=</span> <span class="fu">fock</span>(N, <span class="fl">0</span>) <span class="co"># initial state</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a></span>
+<span id="cb2-9"><a href="#cb2-9"></a><span class="kw">const</span> tlist <span class="op">=</span> <span class="fu">range</span>(<span class="fl">0</span>, <span class="fl">2000</span>, <span class="fl">100</span>)</span>
+<span id="cb2-10"><a href="#cb2-10"></a></span>
+<span id="cb2-11"><a href="#cb2-11"></a><span class="kw">function</span> <span class="fu">final_state</span>(p, t)</span>
+<span id="cb2-12"><a href="#cb2-12"></a>    H <span class="op">=</span> <span class="op">-</span> p[<span class="fl">1</span>] <span class="op">*</span> a<span class="op">'</span> <span class="op">*</span> a <span class="op">+</span> K <span class="op">*</span> a<span class="op">'</span> <span class="op">*</span> a<span class="op">'</span> <span class="op">*</span> a <span class="op">*</span> a <span class="op">-</span> G <span class="op">*</span> (a<span class="op">'</span> <span class="op">*</span> a<span class="op">'</span> <span class="op">+</span> a <span class="op">*</span> a)</span>
+<span id="cb2-13"><a href="#cb2-13"></a></span>
+<span id="cb2-14"><a href="#cb2-14"></a>    sol <span class="op">=</span> <span class="fu">mesolve</span>(H, ψ<span class="fl">0</span>, tlist, c_ops; params <span class="op">=</span> p, progress_bar <span class="op">=</span> <span class="fu">Val</span>(<span class="cn">false</span>), saveat <span class="op">=</span> [t])</span>
+<span id="cb2-15"><a href="#cb2-15"></a>    ρ_vec <span class="op">=</span> <span class="fu">vec</span>(sol.states[<span class="kw">end</span>].data)</span>
+<span id="cb2-16"><a href="#cb2-16"></a></span>
+<span id="cb2-17"><a href="#cb2-17"></a>    <span class="co"># Split the real and imaginary parts of the density matrix to a real vector since ForwardDiff doesn't handle complex numbers directly</span></span>
+<span id="cb2-18"><a href="#cb2-18"></a>    <span class="cf">return</span> <span class="fu">vcat</span>(<span class="fu">real</span>.(ρ_vec), <span class="fu">imag</span>.(ρ_vec))</span>
+<span id="cb2-19"><a href="#cb2-19"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>final_state (generic function with 1 method)</code></pre>
 </div>
@@ -478,16 +480,19 @@ window.Quarto = {
 <span id="cb6-5"><a href="#cb6-5"></a><span class="fu">state</span>(p) <span class="op">=</span> <span class="fu">final_state</span>(p, <span class="fl">2000</span>)</span>
 <span id="cb6-6"><a href="#cb6-6"></a></span>
 <span id="cb6-7"><a href="#cb6-7"></a><span class="co"># Compute both the state and its derivative</span></span>
-<span id="cb6-8"><a href="#cb6-8"></a>ρ, dρ <span class="op">=</span> DifferentiationInterface.<span class="fu">value_and_jacobian</span>(state, <span class="fu">AutoFiniteDiff</span>(), [<span class="fl">0.0</span>])</span>
+<span id="cb6-8"><a href="#cb6-8"></a>ρ, dρ <span class="op">=</span> <span class="fu">state</span>([<span class="fl">0.0</span>]), ForwardDiff.<span class="fu">jacobian</span>(state, [<span class="fl">0.0</span>])</span>
 <span id="cb6-9"><a href="#cb6-9"></a></span>
-<span id="cb6-10"><a href="#cb6-10"></a><span class="co"># Reshape the derivative back to matrix form</span></span>
-<span id="cb6-11"><a href="#cb6-11"></a>dρ <span class="op">=</span> QuantumToolbox.<span class="fu">vec2mat</span>(<span class="fu">vec</span>(dρ))</span>
+<span id="cb6-10"><a href="#cb6-10"></a><span class="co"># Reshape back to complex matrix form</span></span>
+<span id="cb6-11"><a href="#cb6-11"></a>ρ <span class="op">=</span> <span class="fu">reshape</span>(ρ[<span class="fl">1</span><span class="op">:</span><span class="kw">end</span><span class="op">÷</span><span class="fl">2</span>] <span class="op">+</span> <span class="fl">1im</span> <span class="op">*</span> ρ[<span class="kw">end</span><span class="op">÷</span><span class="fl">2</span><span class="op">+</span><span class="fl">1</span><span class="op">:</span><span class="kw">end</span>], N, N)</span>
 <span id="cb6-12"><a href="#cb6-12"></a></span>
-<span id="cb6-13"><a href="#cb6-13"></a><span class="co"># Compute QFI at final time</span></span>
-<span id="cb6-14"><a href="#cb6-14"></a>qfi_final <span class="op">=</span> <span class="fu">compute_fisher_information</span>(ρ, dρ)</span>
-<span id="cb6-15"><a href="#cb6-15"></a><span class="fu">println</span>(<span class="st">"QFI at final time: "</span>, qfi_final)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-13"><a href="#cb6-13"></a><span class="co"># Reshape the derivative back to matrix form</span></span>
+<span id="cb6-14"><a href="#cb6-14"></a>dρ <span class="op">=</span> <span class="fu">reshape</span>(dρ[<span class="fl">1</span><span class="op">:</span><span class="kw">end</span><span class="op">÷</span><span class="fl">2</span>] <span class="op">+</span> <span class="fl">1im</span> <span class="op">*</span> dρ[<span class="kw">end</span><span class="op">÷</span><span class="fl">2</span><span class="op">+</span><span class="fl">1</span><span class="op">:</span><span class="kw">end</span>], N, N)</span>
+<span id="cb6-15"><a href="#cb6-15"></a></span>
+<span id="cb6-16"><a href="#cb6-16"></a><span class="co"># Compute QFI at final time</span></span>
+<span id="cb6-17"><a href="#cb6-17"></a>qfi_final <span class="op">=</span> <span class="fu">compute_fisher_information</span>(ρ, dρ)</span>
+<span id="cb6-18"><a href="#cb6-18"></a><span class="fu">println</span>(<span class="st">"QFI at final time: "</span>, qfi_final)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>QFI at final time: 19795.821946511165</code></pre>
+<pre><code>QFI at final time: 19795.69738041981</code></pre>
 </div>
 </div>
 </section>
@@ -497,16 +502,20 @@ window.Quarto = {
 <div id="10" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1"></a>ts <span class="op">=</span> <span class="fu">range</span>(<span class="fl">0</span>, <span class="fl">2000</span>, <span class="fl">100</span>)</span>
 <span id="cb8-2"><a href="#cb8-2"></a></span>
-<span id="cb8-3"><a href="#cb8-3"></a>QFI_t <span class="op">=</span> <span class="fu">map</span>(ts) <span class="cf">do</span> t</span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="pp">@time</span> QFI_t <span class="op">=</span> <span class="fu">map</span>(ts) <span class="cf">do</span> t</span>
 <span id="cb8-4"><a href="#cb8-4"></a>    <span class="fu">state</span>(p) <span class="op">=</span> <span class="fu">final_state</span>(p, t)</span>
-<span id="cb8-5"><a href="#cb8-5"></a>    ρ, dρ <span class="op">=</span> DifferentiationInterface.<span class="fu">value_and_jacobian</span>(state, <span class="fu">AutoFiniteDiff</span>(), [<span class="fl">0.0</span>])</span>
-<span id="cb8-6"><a href="#cb8-6"></a>    dρ <span class="op">=</span> QuantumToolbox.<span class="fu">vec2mat</span>(<span class="fu">vec</span>(dρ))</span>
-<span id="cb8-7"><a href="#cb8-7"></a>    <span class="fu">compute_fisher_information</span>(ρ, dρ)</span>
-<span id="cb8-8"><a href="#cb8-8"></a><span class="cf">end</span></span>
+<span id="cb8-5"><a href="#cb8-5"></a>    ρ, dρ <span class="op">=</span> <span class="fu">state</span>([<span class="fl">0.0</span>]), ForwardDiff.<span class="fu">jacobian</span>(state, [<span class="fl">0.0</span>])</span>
+<span id="cb8-6"><a href="#cb8-6"></a></span>
+<span id="cb8-7"><a href="#cb8-7"></a>    ρ <span class="op">=</span> <span class="fu">reshape</span>(ρ[<span class="fl">1</span><span class="op">:</span><span class="kw">end</span><span class="op">÷</span><span class="fl">2</span>] <span class="op">+</span> <span class="fl">1im</span> <span class="op">*</span> ρ[<span class="kw">end</span><span class="op">÷</span><span class="fl">2</span><span class="op">+</span><span class="fl">1</span><span class="op">:</span><span class="kw">end</span>], N, N)</span>
+<span id="cb8-8"><a href="#cb8-8"></a>    dρ <span class="op">=</span> <span class="fu">reshape</span>(dρ[<span class="fl">1</span><span class="op">:</span><span class="kw">end</span><span class="op">÷</span><span class="fl">2</span>] <span class="op">+</span> <span class="fl">1im</span> <span class="op">*</span> dρ[<span class="kw">end</span><span class="op">÷</span><span class="fl">2</span><span class="op">+</span><span class="fl">1</span><span class="op">:</span><span class="kw">end</span>], N, N)</span>
 <span id="cb8-9"><a href="#cb8-9"></a></span>
-<span id="cb8-10"><a href="#cb8-10"></a><span class="fu">println</span>(<span class="st">"QFI computed for "</span>, <span class="fu">length</span>(ts), <span class="st">" time points"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-10"><a href="#cb8-10"></a>    <span class="fu">compute_fisher_information</span>(ρ, dρ)</span>
+<span id="cb8-11"><a href="#cb8-11"></a><span class="cf">end</span></span>
+<span id="cb8-12"><a href="#cb8-12"></a></span>
+<span id="cb8-13"><a href="#cb8-13"></a><span class="fu">println</span>(<span class="st">"QFI computed for "</span>, <span class="fu">length</span>(ts), <span class="st">" time points"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>QFI computed for 100 time points</code></pre>
+<pre><code> 10.301366 seconds (15.10 M allocations: 947.844 MiB, 2.17% gc time, 56.07% compilation time)
+QFI computed for 100 time points</code></pre>
 </div>
 </div>
 </section>
@@ -546,8 +555,8 @@ Current admin team:
 Package information:
 ====================================
 Julia              Ver. 1.11.6
-QuantumToolbox     Ver. 0.33.0
-SciMLOperators     Ver. 0.4.0
+QuantumToolbox     Ver. 0.34.0
+SciMLOperators     Ver. 1.4.0
 LinearSolve        Ver. 3.23.0
 OrdinaryDiffEqCore Ver. 1.26.2
 
@@ -570,14 +579,11 @@ Threads  : 4 (on 4 virtual cores)
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
 <pre><span class="ansi-green-fg ansi-bold">Status</span> `~/work/qutip-julia-tutorials/qutip-julia-tutorials/Project.toml`
-<span class="ansi-green-fg">⌃</span> <span class="ansi-bright-black-fg">[13f3f980] </span>CairoMakie v0.13.10
-  <span class="ansi-bright-black-fg">[a0c0ee7d] </span>DifferentiationInterface v0.7.3
-  <span class="ansi-bright-black-fg">[6a86dc24] </span>FiniteDiff v2.27.0
-  <span class="ansi-bright-black-fg">[a62dbcb7] </span>HierarchicalEOM v2.5.5
-  <span class="ansi-bright-black-fg">[6c2fb7c5] </span>QuantumToolbox v0.33.0
+  <span class="ansi-bright-black-fg">[13f3f980] </span>CairoMakie v0.15.4
+  <span class="ansi-bright-black-fg">[f6369f11] </span>ForwardDiff v1.0.1
+  <span class="ansi-bright-black-fg">[a62dbcb7] </span>HierarchicalEOM v2.5.6
+  <span class="ansi-bright-black-fg">[6c2fb7c5] </span>QuantumToolbox v0.34.0
   <span class="ansi-bright-black-fg">[4c0109c6] </span>QuartoNotebookRunner v0.17.3
-<span class="ansi-green-fg">⌃</span> <span class="ansi-bright-black-fg">[1ed8b502] </span>SciMLSensitivity v7.87.1
-<span class="ansi-cyan-fg ansi-bold">Info</span> Packages marked with <span class="ansi-green-fg">⌃</span> have new versions available and may be upgradable.
 </pre>
 </div>
 </div>

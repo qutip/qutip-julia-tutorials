@@ -6,7 +6,7 @@ listing:
     sort: false
     sort-ui: false
     filter-ui: false
-    fields: [date, title, author]
+    fields: [title, author]
     field-display-names:
       date: "Last Update"
     contents:

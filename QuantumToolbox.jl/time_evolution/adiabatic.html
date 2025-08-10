@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.32">
+<meta name="generator" content="quarto-1.7.33">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -74,14 +74,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-c1f63da3e08f13bc72dc17e92cfd001d.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-e25bb2ec88b96ab004d13ad1d1924df4.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-c1f63da3e08f13bc72dc17e92cfd001d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-fe91322616dd2b9cea8bc6bfc6aa44e1.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-3b5b7bdecb98fb7fdd6ce03669097777.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-fe91322616dd2b9cea8bc6bfc6aa44e1.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-2f284401de6aa9259900de21922fc1dd.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-04fe6bc79933632774f919b68e78a667.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-2f284401de6aa9259900de21922fc1dd.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-aef1c54e66c9007147224e11b4506a3e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-cecd1b6f3bac8eaa6eb5c6db6bef67c3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-aef1c54e66c9007147224e11b4506a3e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -431,13 +431,13 @@ window.Quarto = {
 <span id="cb2-4"><a href="#cb2-4"></a>gs <span class="op">=</span> <span class="fu">rand</span>(N<span class="op">-</span><span class="fl">1</span>) <span class="co"># use rand function for the random interaction strengths</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>7-element Vector{Float64}:
- 0.5825578615161192
- 0.9863979468531858
- 0.0899576677778331
- 0.18370085772387956
- 0.0921631136307357
- 0.06732422414421346
- 0.04790017342561015</code></pre>
+ 0.8915708336055
+ 0.07350153292812811
+ 0.18871396139314456
+ 0.3033056533043308
+ 0.2842702147203162
+ 0.09317124821638945
+ 0.6207453279704347</code></pre>
 </div>
 </div>
 <div id="6" class="cell" data-execution_count="1">
@@ -532,22 +532,22 @@ Quantum Object Evo.:   type=Operator()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(2
 <pre><code>
 Quantum Object:   type=Ket()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256,)
 256-element SparseArrays.SparseVector{ComplexF64, Int64} with 128 stored entries:
-  [1  ]  =  1.76495e-5+0.0im
-  [4  ]  =  -0.00073554+0.0im
-  [6  ]  =  5.10188e-5+0.0im
-  [7  ]  =  -3.13744e-6+0.0im
-  [10 ]  =  -0.000524632-0.0im
-  [11 ]  =  2.51631e-5+0.0im
-  [13 ]  =  -0.000372814-0.0im
+  [1  ]  =  0.00133108+0.0im
+  [4  ]  =  -0.00464979+0.0im
+  [6  ]  =  0.000532335+0.0im
+  [7  ]  =  -0.000339867-0.0im
+  [10 ]  =  -0.00165438+0.0im
+  [11 ]  =  0.000887955+0.0im
+  [13 ]  =  -0.00911985+0.0im
          ⋮
-  [241]  =  0.000961215+0.0im
-  [244]  =  -0.0400646+0.0im
-  [246]  =  0.00271714+0.0im
-  [247]  =  -0.000163569+0.0im
-  [250]  =  -0.0290976+0.0im
-  [251]  =  0.00139526+0.0im
-  [253]  =  -0.0206806+0.0im
-  [256]  =  0.863+0.0im</code></pre>
+  [241]  =  0.0356288+0.0im
+  [244]  =  -0.124483+0.0im
+  [246]  =  0.0138762+0.0im
+  [247]  =  -0.00877238+0.0im
+  [250]  =  -0.0450936+0.0im
+  [251]  =  0.0241744+0.0im
+  [253]  =  -0.249039+0.0im
+  [256]  =  0.871798+0.0im</code></pre>
 </div>
 </div>
 <p>We can see that the truthful ground state we are preparing is indeed very complex.</p>
@@ -645,8 +645,8 @@ Package information:
 Julia              Ver. 1.11.6
 QuantumToolbox     Ver. 0.34.0
 SciMLOperators     Ver. 1.4.0
-LinearSolve        Ver. 3.24.0
-OrdinaryDiffEqCore Ver. 1.26.2
+LinearSolve        Ver. 3.27.1
+OrdinaryDiffEqCore Ver. 1.28.0
 
 System information:
 ====================================

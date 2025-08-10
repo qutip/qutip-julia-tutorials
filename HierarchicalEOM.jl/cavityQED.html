@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.32">
+<meta name="generator" content="quarto-1.7.33">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -74,14 +74,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-c1f63da3e08f13bc72dc17e92cfd001d.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-e25bb2ec88b96ab004d13ad1d1924df4.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-c1f63da3e08f13bc72dc17e92cfd001d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-fe91322616dd2b9cea8bc6bfc6aa44e1.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-3b5b7bdecb98fb7fdd6ce03669097777.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-fe91322616dd2b9cea8bc6bfc6aa44e1.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-2f284401de6aa9259900de21922fc1dd.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-04fe6bc79933632774f919b68e78a667.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-2f284401de6aa9259900de21922fc1dd.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-aef1c54e66c9007147224e11b4506a3e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-cecd1b6f3bac8eaa6eb5c6db6bef67c3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-aef1c54e66c9007147224e11b4506a3e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -541,7 +541,7 @@ MatrixOperator(3492 × 3492)</code></pre>
 <span id="cb9-2"><a href="#cb9-2"></a>sol_H <span class="op">=</span> <span class="fu">HEOMsolve</span>(M_Heom, ψ<span class="fl">0</span>, t_list; e_ops <span class="op">=</span> [σz, a<span class="op">'</span> <span class="op">*</span> a])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Solving time evolution for ADOs by Ordinary Differential Equations method...
-Progress: [                              ]   0.2% --- Elapsed Time: 0h 00m 02s (ETA: 0h 16m 40s)Progress: [========================      ]  80.4% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 00s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 00s)</code></pre>
+Progress: [                              ]   0.2% --- Elapsed Time: 0h 00m 02s (ETA: 0h 16m 40s)Progress: [=======================       ]  78.8% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 00s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 00s)</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>Solution of hierarchical EOM
@@ -575,7 +575,7 @@ Solving linear problem...[DONE]</code></pre>
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1"></a>σz_evo_H <span class="op">=</span> <span class="fu">real</span>(sol_H.expect[<span class="fl">1</span>, <span class="op">:</span>])</span>
 <span id="cb14-2"><a href="#cb14-2"></a>σz_steady_H <span class="op">=</span> <span class="fu">expect</span>(σz, steady_H)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>-0.3731173931322698</code></pre>
+<pre><code>-0.3731173931111374</code></pre>
 </div>
 </div>
 <p>observable of cavity: <span class="math inline">\(a^\dagger a\)</span> (average photon number)</p>
@@ -583,7 +583,7 @@ Solving linear problem...[DONE]</code></pre>
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1"></a>np_evo_H <span class="op">=</span> <span class="fu">real</span>(sol_H.expect[<span class="fl">2</span>, <span class="op">:</span>])</span>
 <span id="cb16-2"><a href="#cb16-2"></a>np_steady_H <span class="op">=</span> <span class="fu">expect</span>(a<span class="op">'</span> <span class="op">*</span> a, steady_H)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>0.4312130158196654</code></pre>
+<pre><code>0.43121301583085037</code></pre>
 </div>
 </div>
 <p>plot results</p>
@@ -624,7 +624,7 @@ Solving linear problem...[DONE]</code></pre>
 <span id="cb19-9"><a href="#cb19-9"></a>fig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Calculating power spectrum in frequency domain...
-Progress: [===                           ]  10.9% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 08s)Progress: [======                        ]  21.9% --- Elapsed Time: 0h 00m 02s (ETA: 0h 00m 07s)Progress: [=========                     ]  31.3% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 06s)Progress: [===========                   ]  39.3% --- Elapsed Time: 0h 00m 04s (ETA: 0h 00m 06s)Progress: [=============                 ]  45.8% --- Elapsed Time: 0h 00m 05s (ETA: 0h 00m 05s)Progress: [===============               ]  52.2% --- Elapsed Time: 0h 00m 06s (ETA: 0h 00m 05s)Progress: [================              ]  56.2% --- Elapsed Time: 0h 00m 07s (ETA: 0h 00m 05s)Progress: [=================             ]  57.7% --- Elapsed Time: 0h 00m 08s (ETA: 0h 00m 05s)Progress: [=================             ]  59.7% --- Elapsed Time: 0h 00m 09s (ETA: 0h 00m 06s)Progress: [===================           ]  64.2% --- Elapsed Time: 0h 00m 10s (ETA: 0h 00m 05s)Progress: [====================          ]  69.2% --- Elapsed Time: 0h 00m 11s (ETA: 0h 00m 04s)Progress: [======================        ]  75.1% --- Elapsed Time: 0h 00m 12s (ETA: 0h 00m 03s)Progress: [========================      ]  82.6% --- Elapsed Time: 0h 00m 13s (ETA: 0h 00m 02s)Progress: [===========================   ]  92.5% --- Elapsed Time: 0h 00m 14s (ETA: 0h 00m 01s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 15s (ETA: 0h 00m 00s)
+Progress: [=                             ]   4.0% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 24s)Progress: [==                            ]   8.5% --- Elapsed Time: 0h 00m 02s (ETA: 0h 00m 21s)Progress: [===                           ]  12.9% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 20s)Progress: [=====                         ]  17.4% --- Elapsed Time: 0h 00m 04s (ETA: 0h 00m 18s)Progress: [======                        ]  21.9% --- Elapsed Time: 0h 00m 05s (ETA: 0h 00m 17s)Progress: [=======                       ]  25.9% --- Elapsed Time: 0h 00m 06s (ETA: 0h 00m 17s)Progress: [========                      ]  29.9% --- Elapsed Time: 0h 00m 07s (ETA: 0h 00m 16s)Progress: [==========                    ]  33.3% --- Elapsed Time: 0h 00m 08s (ETA: 0h 00m 16s)Progress: [==========                    ]  36.3% --- Elapsed Time: 0h 00m 09s (ETA: 0h 00m 15s)Progress: [===========                   ]  38.8% --- Elapsed Time: 0h 00m 10s (ETA: 0h 00m 15s)Progress: [============                  ]  41.3% --- Elapsed Time: 0h 00m 11s (ETA: 0h 00m 15s)Progress: [=============                 ]  43.8% --- Elapsed Time: 0h 00m 13s (ETA: 0h 00m 16s)Progress: [=============                 ]  45.8% --- Elapsed Time: 0h 00m 14s (ETA: 0h 00m 16s)Progress: [==============                ]  48.3% --- Elapsed Time: 0h 00m 15s (ETA: 0h 00m 16s)Progress: [===============               ]  50.7% --- Elapsed Time: 0h 00m 16s (ETA: 0h 00m 15s)Progress: [===============               ]  53.2% --- Elapsed Time: 0h 00m 17s (ETA: 0h 00m 14s)Progress: [================              ]  55.7% --- Elapsed Time: 0h 00m 19s (ETA: 0h 00m 15s)Progress: [=================             ]  58.2% --- Elapsed Time: 0h 00m 20s (ETA: 0h 00m 14s)Progress: [==================            ]  60.2% --- Elapsed Time: 0h 00m 21s (ETA: 0h 00m 13s)Progress: [==================            ]  63.2% --- Elapsed Time: 0h 00m 22s (ETA: 0h 00m 12s)Progress: [====================          ]  66.7% --- Elapsed Time: 0h 00m 23s (ETA: 0h 00m 11s)Progress: [=====================         ]  70.6% --- Elapsed Time: 0h 00m 24s (ETA: 0h 00m 09s)Progress: [======================        ]  75.6% --- Elapsed Time: 0h 00m 25s (ETA: 0h 00m 08s)Progress: [========================      ]  81.1% --- Elapsed Time: 0h 00m 26s (ETA: 0h 00m 06s)Progress: [==========================    ]  87.1% --- Elapsed Time: 0h 00m 27s (ETA: 0h 00m 04s)Progress: [============================  ]  93.5% --- Elapsed Time: 0h 00m 28s (ETA: 0h 00m 01s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 29s (ETA: 0h 00m 00s)
 [DONE]</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
@@ -756,11 +756,11 @@ Other developers:
 Package information:
 ====================================
 Julia              Ver. 1.11.6
-HierarchicalEOM    Ver. 2.5.6
+HierarchicalEOM    Ver. 2.6.0
 QuantumToolbox     Ver. 0.34.0
 SciMLOperators     Ver. 1.4.0
-LinearSolve        Ver. 3.24.0
-OrdinaryDiffEqCore Ver. 1.26.2
+LinearSolve        Ver. 3.27.1
+OrdinaryDiffEqCore Ver. 1.28.0
 
 System information:
 ====================================

@@ -16,7 +16,7 @@ jobs:
       actions: write  # needed to allow julia-actions/cache to delete old caches that it has created
       contents: write # needed for Quarto render
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
       - uses: julia-actions/setup-julia@v2
@@ -31,7 +31,7 @@ jobs:
       - name: Quarto Render
         uses: quarto-dev/quarto-actions/render@v2
       - name: Checkout notebooks branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: notebooks
           path: _output/branch-out

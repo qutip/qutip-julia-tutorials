@@ -431,13 +431,13 @@ window.Quarto = {
 <span id="cb2-4"><a href="#cb2-4"></a>gs <span class="op">=</span> <span class="fu">rand</span>(N<span class="op">-</span><span class="fl">1</span>) <span class="co"># use rand function for the random interaction strengths</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>7-element Vector{Float64}:
- 0.9748589709113965
- 0.1656751638543934
- 0.3666603256144283
- 0.3642484946142698
- 0.6838375693633639
- 0.5159033154307746
- 0.9664104656403775</code></pre>
+ 0.6035662819368027
+ 0.6341808440800992
+ 0.17653293158667882
+ 0.8629357795480569
+ 0.014972766851795272
+ 0.7838043124989702
+ 0.30276697828234655</code></pre>
 </div>
 </div>
 <div id="6" class="cell" data-execution_count="1">
@@ -532,22 +532,22 @@ Quantum Object Evo.:   type=Operator()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(2
 <pre><code>
 Quantum Object:   type=Ket()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256,)
 256-element SparseArrays.SparseVector{ComplexF64, Int64} with 128 stored entries:
-  [1  ]  =  0.00833698+0.0im
-  [4  ]  =  -0.0191347-0.0im
-  [6  ]  =  0.0116041+0.0im
-  [7  ]  =  -0.00917887+0.0im
-  [10 ]  =  -0.0171012+0.0im
-  [11 ]  =  0.0123725+0.0im
-  [13 ]  =  -0.0229949+0.0im
+  [1  ]  =  7.48723e-5+0.0im
+  [4  ]  =  -0.000388609+0.0im
+  [6  ]  =  0.000291372+0.0im
+  [7  ]  =  -0.000115462+0.0im
+  [10 ]  =  -0.0102376+0.0im
+  [11 ]  =  0.00295309+0.0im
+  [13 ]  =  -0.00480142+0.0im
          ⋮
-  [241]  =  0.104152+0.0im
-  [244]  =  -0.23983+0.0im
-  [246]  =  0.141234+0.0im
-  [247]  =  -0.110923+0.0im
-  [250]  =  -0.219205+0.0im
-  [251]  =  0.158019+0.0im
-  [253]  =  -0.29739+0.0im
-  [256]  =  0.703977+0.0im</code></pre>
+  [241]  =  0.00151309+0.0im
+  [244]  =  -0.00818983+0.0im
+  [246]  =  0.0056755+0.0im
+  [247]  =  -0.00211417+0.0im
+  [250]  =  -0.273312+0.0im
+  [251]  =  0.0788347+0.0im
+  [253]  =  -0.128185+0.0im
+  [256]  =  0.780005+0.0im</code></pre>
 </div>
 </div>
 <p>We can see that the truthful ground state we are preparing is indeed very complex.</p>
@@ -644,9 +644,9 @@ Package information:
 ====================================
 Julia              Ver. 1.11.6
 QuantumToolbox     Ver. 0.34.1
-SciMLOperators     Ver. 1.6.0
+SciMLOperators     Ver. 1.7.1
 LinearSolve        Ver. 3.28.0
-OrdinaryDiffEqCore Ver. 1.30.0
+OrdinaryDiffEqCore Ver. 1.33.0
 
 System information:
 ====================================

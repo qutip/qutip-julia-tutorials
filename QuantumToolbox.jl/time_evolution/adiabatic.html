@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Li-Xun Cai">
-<meta name="dcterms.date" content="2025-08-26">
+<meta name="dcterms.date" content="2025-09-08">
 
 <title>Adiabatic sweep (with QuantumObjectEvolution) – Tutorials for Quantum Toolbox in Julia</title>
 <style>
@@ -385,7 +385,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Last Update</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2025-08-26</p>
+      <p class="date">2025-09-08</p>
     </div>
   </div>
   
@@ -431,13 +431,13 @@ window.Quarto = {
 <span id="cb2-4"><a href="#cb2-4"></a>gs <span class="op">=</span> <span class="fu">rand</span>(N<span class="op">-</span><span class="fl">1</span>) <span class="co"># use rand function for the random interaction strengths</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>7-element Vector{Float64}:
- 0.6035662819368027
- 0.6341808440800992
- 0.17653293158667882
- 0.8629357795480569
- 0.014972766851795272
- 0.7838043124989702
- 0.30276697828234655</code></pre>
+ 0.1822418544629859
+ 0.9301067670641704
+ 0.4232944586858969
+ 0.653570687125658
+ 0.6001517498136072
+ 0.977249922952583
+ 0.2880845646327115</code></pre>
 </div>
 </div>
 <div id="6" class="cell" data-execution_count="1">
@@ -532,22 +532,22 @@ Quantum Object Evo.:   type=Operator()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(2
 <pre><code>
 Quantum Object:   type=Ket()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256,)
 256-element SparseArrays.SparseVector{ComplexF64, Int64} with 128 stored entries:
-  [1  ]  =  7.48723e-5+0.0im
-  [4  ]  =  -0.000388609+0.0im
-  [6  ]  =  0.000291372+0.0im
-  [7  ]  =  -0.000115462+0.0im
-  [10 ]  =  -0.0102376+0.0im
-  [11 ]  =  0.00295309+0.0im
-  [13 ]  =  -0.00480142+0.0im
+  [1  ]  =  0.00164747+0.0im
+  [4  ]  =  -0.00863105+0.0im
+  [6  ]  =  0.00665867+0.0im
+  [7  ]  =  -0.00239916+0.0im
+  [10 ]  =  -0.00949681+0.0im
+  [11 ]  =  0.00287051+0.0im
+  [13 ]  =  -0.00365882+0.0im
          ⋮
-  [241]  =  0.00151309+0.0im
-  [244]  =  -0.00818983+0.0im
-  [246]  =  0.0056755+0.0im
-  [247]  =  -0.00211417+0.0im
-  [250]  =  -0.273312+0.0im
-  [251]  =  0.0788347+0.0im
-  [253]  =  -0.128185+0.0im
-  [256]  =  0.780005+0.0im</code></pre>
+  [241]  =  0.042833+0.0im
+  [244]  =  -0.23058+0.0im
+  [246]  =  0.170685+0.0im
+  [247]  =  -0.0592922+0.0im
+  [250]  =  -0.28412+0.0im
+  [251]  =  0.0842515+0.0im
+  [253]  =  -0.109908+0.0im
+  [256]  =  0.649223+0.0im</code></pre>
 </div>
 </div>
 <p>We can see that the truthful ground state we are preparing is indeed very complex.</p>

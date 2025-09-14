@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.34">
+<meta name="generator" content="quarto-1.8.24">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -90,18 +90,19 @@ div.csl-indent {
 <link href="../../assets/favicon.ico" rel="icon">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-83aa21ed72f0068e2bb8f0090f02f802.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-f0a4794d096e7901d871e43f74665444.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-83aa21ed72f0068e2bb8f0090f02f802.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-f16cd255ecb5ae9510f6a112aa2ee9ab.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-f3afb4d828d77514a78ff08d52625b9d.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-f16cd255ecb5ae9510f6a112aa2ee9ab.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-5a2f0cd714322f9d28070e1678e5b478.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-666874306d53323563f630c4bc2c1354.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-5a2f0cd714322f9d28070e1678e5b478.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-385fe92fe65ca0dffbe5a0daae6f4f31.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-0188f7b1a8634cb5a69946dd3f5eece5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-385fe92fe65ca0dffbe5a0daae6f4f31.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -144,7 +145,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -333,7 +334,8 @@ window.Quarto = {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="../../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../../assets/logo.png" alt="QuantumToolbox logo." class="navbar-logo">
+    <img src="../../assets/logo.png" alt="QuantumToolbox logo." class="navbar-logo light-content">
+    <img src="../../assets/logo.png" alt="QuantumToolbox logo." class="navbar-logo dark-content">
     </a>
     <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Tutorials for Quantum Toolbox in Julia</span>
@@ -444,16 +446,16 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="low-rank-dynamics-of-the-transverse-field-heisenberg-model">Low-rank dynamics of the transverse field Heisenberg model</h2>
 <p>In this example we consider the dynamics of the transverse field Ising model (TFIM) on a 2x3 lattice. We start by importing the packages</p>
 <div id="2" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">using</span> <span class="bu">QuantumToolbox</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">using</span> <span class="bu">QuantumToolbox</span></span>
 <span id="cb1-2"><a href="#cb1-2"></a><span class="im">using</span> <span class="bu">LinearAlgebra</span></span>
 <span id="cb1-3"><a href="#cb1-3"></a><span class="im">using</span> <span class="bu">CairoMakie</span></span>
 <span id="cb1-4"><a href="#cb1-4"></a></span>
-<span id="cb1-5"><a href="#cb1-5"></a>CairoMakie.<span class="fu">activate!</span>(<span class="kw">type</span> <span class="op">=</span> <span class="st">"svg"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-5"><a href="#cb1-5"></a>CairoMakie.<span class="fu">activate!</span>(<span class="kw">type</span> <span class="op">=</span> <span class="st">"svg"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We define the lattice with dimensions <code>Nx = 2</code> and <code>Ny = 3</code> and use the <code>Lattice</code> class to generate the lattice.</p>
 <div id="4" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1"></a>Nx, Ny <span class="op">=</span> <span class="fl">2</span>, <span class="fl">3</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a>latt <span class="op">=</span> <span class="fu">Lattice</span>(Nx <span class="op">=</span> Nx, Ny <span class="op">=</span> Ny)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1"></a>Nx, Ny <span class="op">=</span> <span class="fl">2</span>, <span class="fl">3</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>latt <span class="op">=</span> <span class="fu">Lattice</span>(Nx <span class="op">=</span> Nx, Ny <span class="op">=</span> Ny)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>Lattice{Int64, LinearIndices{2, Tuple{Base.OneTo{Int64}, Base.OneTo{Int64}}}, CartesianIndices{2, Tuple{Base.OneTo{Int64}, Base.OneTo{Int64}}}}(2, 3, 6, [1 3 5; 2 4 6], CartesianIndices((2, 3)))</code></pre>
 </div>
@@ -464,7 +466,7 @@ H = J_x \sum_{\langle i,j \rangle} \sigma_i^x \sigma_j^x + J_y \sum_{\langle i,j
 c_i = \sqrt{\gamma} \sigma_i^-,
 \]</span> where $ _i^- $ is the lowering operator acting on site $ i$. The many-body operators are constructed using</p>
 <div id="6" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1"></a>Jx <span class="op">=</span> <span class="fl">0.9</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1"></a>Jx <span class="op">=</span> <span class="fl">0.9</span></span>
 <span id="cb4-2"><a href="#cb4-2"></a>Jy <span class="op">=</span> <span class="fl">1.04</span></span>
 <span id="cb4-3"><a href="#cb4-3"></a>Jz <span class="op">=</span> <span class="fl">1.0</span></span>
 <span id="cb4-4"><a href="#cb4-4"></a>hx <span class="op">=</span> <span class="fl">0.0</span></span>
@@ -479,23 +481,23 @@ c_i = \sqrt{\gamma} \sigma_i^-,
 <span id="cb4-13"><a href="#cb4-13"></a>H, c_ops <span class="op">=</span> <span class="fu">DissipativeIsing</span>(Jx, Jy, Jz, hx, <span class="fl">0</span>., <span class="fl">0</span>., γ, latt; boundary_condition<span class="op">=:</span>periodic_bc, order<span class="op">=</span><span class="fl">1</span>)</span>
 <span id="cb4-14"><a href="#cb4-14"></a>e_ops <span class="op">=</span> (Sx, Sy, Sz, SFxx)</span>
 <span id="cb4-15"><a href="#cb4-15"></a></span>
-<span id="cb4-16"><a href="#cb4-16"></a>tl <span class="op">=</span> <span class="fu">LinRange</span>(<span class="fl">0</span>, <span class="fl">10</span>, <span class="fl">100</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-16"><a href="#cb4-16"></a>tl <span class="op">=</span> <span class="fu">LinRange</span>(<span class="fl">0</span>, <span class="fl">10</span>, <span class="fl">100</span>);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <section id="constructing-the-low-rank-basis" class="level3">
 <h3 class="anchored" data-anchor-id="constructing-the-low-rank-basis">Constructing the low-rank basis</h3>
 <p>We proceed by constructing the low-rank basis. <code>N_cut</code> is the dimension of the Hilbert space of each mode, and <code>N_modes</code> is the number of modes (or spins). We consider an initial low-rank basis with <code>M = Nx * Ny + 1</code> states.</p>
 <p>We first define the lr-space dimensions</p>
 <div id="8" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1"></a>N_cut <span class="op">=</span> <span class="fl">2</span> <span class="co"># Number of states of each mode</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1"></a>N_cut <span class="op">=</span> <span class="fl">2</span> <span class="co"># Number of states of each mode</span></span>
 <span id="cb5-2"><a href="#cb5-2"></a>N_modes <span class="op">=</span> latt.N  <span class="co"># Number of modes</span></span>
 <span id="cb5-3"><a href="#cb5-3"></a>N <span class="op">=</span> N_cut<span class="op">^</span>N_modes <span class="co"># Total number of states</span></span>
 <span id="cb5-4"><a href="#cb5-4"></a></span>
-<span id="cb5-5"><a href="#cb5-5"></a>M <span class="op">=</span> latt.N <span class="op">+</span> <span class="fl">1</span>; <span class="co"># Number of states in the LR basis</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-5"><a href="#cb5-5"></a>M <span class="op">=</span> latt.N <span class="op">+</span> <span class="fl">1</span>; <span class="co"># Number of states in the LR basis</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Since we will take as initial state for our dynamics the pure state with all spins pointing up, the initial low-rank basis must include at least this state.</p>
 <div id="10" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1"></a>ϕ <span class="op">=</span> <span class="fu">Vector</span><span class="dt">{QuantumObject{Ket,Dimensions{M - 1,NTuple{M - 1,Space}},Vector{ComplexF64}}}</span>(<span class="cn">undef</span>, M)</span>
-<span id="cb6-2"><a href="#cb6-2"></a>ϕ[<span class="fl">1</span>] <span class="op">=</span> <span class="fu">kron</span>(<span class="fu">fill</span>(<span class="fu">basis</span>(<span class="fl">2</span>, <span class="fl">1</span>), N_modes)<span class="op">...</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1"></a>ϕ <span class="op">=</span> <span class="fu">Vector</span><span class="dt">{QuantumObject{Ket,Dimensions{M - 1,NTuple{M - 1,Space}},Vector{ComplexF64}}}</span>(<span class="cn">undef</span>, M)</span>
+<span id="cb6-2"><a href="#cb6-2"></a>ϕ[<span class="fl">1</span>] <span class="op">=</span> <span class="fu">kron</span>(<span class="fu">fill</span>(<span class="fu">basis</span>(<span class="fl">2</span>, <span class="fl">1</span>), N_modes)<span class="op">...</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>
 Quantum Object:   type=Ket()   dims=[2, 2, 2, 2, 2, 2]   size=(64,)
@@ -524,7 +526,7 @@ Quantum Object:   type=Ket()   dims=[2, 2, 2, 2, 2, 2]   size=(64,)
 </div>
 <p>The remaining <code>M-1</code> states are taken as those with minimal Hamming distance from the latter state, that is those we obtain by flipping the spin of a single site with respect to the completely polarized state.</p>
 <div id="12" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1"></a>i <span class="op">=</span> <span class="fl">1</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1"></a>i <span class="op">=</span> <span class="fl">1</span></span>
 <span id="cb8-2"><a href="#cb8-2"></a><span class="cf">for</span> j <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>N_modes</span>
 <span id="cb8-3"><a href="#cb8-3"></a>    <span class="kw">global</span> i <span class="op">+=</span> <span class="fl">1</span></span>
 <span id="cb8-4"><a href="#cb8-4"></a>    i <span class="op">&lt;=</span> M <span class="op">&amp;&amp;</span> (ϕ[i] <span class="op">=</span> <span class="fu">multisite_operator</span>(latt, j<span class="op">=&gt;</span><span class="fu">sigmap</span>()) <span class="op">*</span> ϕ[<span class="fl">1</span>])</span>
@@ -535,26 +537,26 @@ Quantum Object:   type=Ket()   dims=[2, 2, 2, 2, 2, 2]   size=(64,)
 <span id="cb8-9"><a href="#cb8-9"></a>        <span class="kw">global</span> i <span class="op">+=</span> <span class="fl">1</span></span>
 <span id="cb8-10"><a href="#cb8-10"></a>        i <span class="op">&lt;=</span> M <span class="op">&amp;&amp;</span> (ϕ[i] <span class="op">=</span> <span class="fu">multisite_operator</span>(latt, k<span class="op">=&gt;</span><span class="fu">sigmap</span>(), l<span class="op">=&gt;</span><span class="fu">sigmap</span>()) <span class="op">*</span> ϕ[<span class="fl">1</span>])</span>
 <span id="cb8-11"><a href="#cb8-11"></a>    <span class="cf">end</span></span>
-<span id="cb8-12"><a href="#cb8-12"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-12"><a href="#cb8-12"></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>At this point the vector of states <code>ϕ</code> contains the full representation of our low-rank states. These coefficients comprise matrix <code>z</code>.</p>
 <p>The matrix <code>B</code>, on the other hand, contains the populations and coherences with which each of the low-rank states contributes to the density matrix. We initialize it so that only the first state is populated, and all other states are unpopulated.</p>
 <p>We also compute the full density matrix <code>ρ</code> from the low-rank representation. Of course this defeats the purpose of the low-rank representation. We use it here for illustrative purposes to show that the low-rank predictions match the exact dynamics.</p>
 <div id="14" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1"></a>z <span class="op">=</span> <span class="fu">hcat</span>(<span class="fu">get_data</span>.(ϕ)<span class="op">...</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1"></a>z <span class="op">=</span> <span class="fu">hcat</span>(<span class="fu">get_data</span>.(ϕ)<span class="op">...</span>)</span>
 <span id="cb9-2"><a href="#cb9-2"></a>B <span class="op">=</span> <span class="fu">Matrix</span>(<span class="fu">Diagonal</span>([<span class="fl">1</span> <span class="op">+</span> <span class="fl">0im</span>; <span class="fu">zeros</span>(M <span class="op">-</span> <span class="fl">1</span>)]))</span>
 <span id="cb9-3"><a href="#cb9-3"></a>S <span class="op">=</span> z<span class="op">'</span> <span class="op">*</span> z <span class="co"># Overlap matrix</span></span>
 <span id="cb9-4"><a href="#cb9-4"></a>B <span class="op">=</span> B <span class="op">/</span> <span class="fu">tr</span>(S <span class="op">*</span> B) <span class="co"># Normalize B</span></span>
 <span id="cb9-5"><a href="#cb9-5"></a></span>
-<span id="cb9-6"><a href="#cb9-6"></a>ρ <span class="op">=</span> <span class="fu">QuantumObject</span>(z <span class="op">*</span> B <span class="op">*</span> z<span class="op">'</span>, dims <span class="op">=</span> <span class="fu">ntuple</span>(i<span class="op">-&gt;</span>N_cut, <span class="fu">Val</span>(N_modes))); <span class="co"># Full density matrix</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-6"><a href="#cb9-6"></a>ρ <span class="op">=</span> <span class="fu">QuantumObject</span>(z <span class="op">*</span> B <span class="op">*</span> z<span class="op">'</span>, dims <span class="op">=</span> <span class="fu">ntuple</span>(i<span class="op">-&gt;</span>N_cut, <span class="fu">Val</span>(N_modes))); <span class="co"># Full density matrix</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="full-evolution" class="level3">
 <h3 class="anchored" data-anchor-id="full-evolution">Full evolution</h3>
 <p>We now compare the results of the low-rank evolution with the full evolution. We first evolve the system using the <code>mesolve</code> function</p>
 <div id="16" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1"></a>sol_me <span class="op">=</span> <span class="fu">mesolve</span>(H, ρ, tl, c_ops; e_ops <span class="op">=</span> [e_ops<span class="op">...</span>])</span>
-<span id="cb10-2"><a href="#cb10-2"></a>Strue <span class="op">=</span> <span class="fu">entropy_vn</span>(sol_me.states[<span class="kw">end</span>], base<span class="op">=</span><span class="fl">2</span>) <span class="op">/</span> latt.N;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1"></a>sol_me <span class="op">=</span> <span class="fu">mesolve</span>(H, ρ, tl, c_ops; e_ops <span class="op">=</span> [e_ops<span class="op">...</span>])</span>
+<span id="cb10-2"><a href="#cb10-2"></a>Strue <span class="op">=</span> <span class="fu">entropy_vn</span>(sol_me.states[<span class="kw">end</span>], base<span class="op">=</span><span class="fl">2</span>) <span class="op">/</span> latt.N;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)</code></pre>
 </div>
@@ -572,7 +574,7 @@ S = -\mathrm{Tr}(\rho \log_2(\rho)),
 \]</span></p>
 <p>To maximize efficiency and minimize memory allocations we make use of preallocated variables stores in the <code>parameters</code> constructor of the solver.</p>
 <div id="18" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw">function</span> <span class="fu">f_purity</span>(p, z, B)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw">function</span> <span class="fu">f_purity</span>(p, z, B)</span>
 <span id="cb12-2"><a href="#cb12-2"></a>    N <span class="op">=</span> p.N</span>
 <span id="cb12-3"><a href="#cb12-3"></a>    M <span class="op">=</span> p.M</span>
 <span id="cb12-4"><a href="#cb12-4"></a>    S <span class="op">=</span> p.S</span>
@@ -599,13 +601,13 @@ S = -\mathrm{Tr}(\rho \log_2(\rho)),
 <span id="cb12-25"><a href="#cb12-25"></a>    <span class="fu">mul!</span>(C, z, <span class="fu">sqrt</span>(B))</span>
 <span id="cb12-26"><a href="#cb12-26"></a>    <span class="fu">mul!</span>(σ, C<span class="op">'</span>, C)</span>
 <span id="cb12-27"><a href="#cb12-27"></a>    <span class="cf">return</span> <span class="fu">entropy_vn</span>(<span class="fu">Qobj</span>(<span class="fu">Hermitian</span>(σ), <span class="kw">type</span><span class="op">=</span><span class="fu">Operator</span>()), base<span class="op">=</span><span class="fl">2</span>)</span>
-<span id="cb12-28"><a href="#cb12-28"></a><span class="kw">end</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-28"><a href="#cb12-28"></a><span class="kw">end</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>A critical aspect of the LR truncation is the possibility to dynamically adjust the dimension of the basis throughout the system’s evolution <span class="math inline">\(M=M(t)\)</span>. This adaptability is essential for accommodating changes in the system’s entropy over time.</p>
 <p>To adapt the dimension of the low-rank basis, we look at a control parameter <span class="math inline">\(\chi\)</span> that is positively correlated with the entropy of the system and provides a measure of the quality of the low-rank approximation. When <span class="math inline">\(\chi\)</span> exceeds a certain threshold, the dimension of the low-rank basis is increased by one.</p>
 <p>The options below specify how the dimension of the low-rank basis is adjusted during the evolution.</p>
 <div id="20" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1"></a>opt <span class="op">=</span> (err_max <span class="op">=</span> <span class="fl">1e-3</span>, p0 <span class="op">=</span> <span class="fl">0.0</span>, atol_inv <span class="op">=</span> <span class="fl">1e-6</span>, adj_condition <span class="op">=</span> <span class="st">"variational"</span>, Δt <span class="op">=</span> <span class="fl">0.0</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1"></a>opt <span class="op">=</span> (err_max <span class="op">=</span> <span class="fl">1e-3</span>, p0 <span class="op">=</span> <span class="fl">0.0</span>, atol_inv <span class="op">=</span> <span class="fl">1e-6</span>, adj_condition <span class="op">=</span> <span class="st">"variational"</span>, Δt <span class="op">=</span> <span class="fl">0.0</span>);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><code>err_max</code> is the maximum error allowed in the time evolution of the density matrix.</p>
 <p><code>p0</code> is the initial population with which the new state is added to the basis after crossing the threshold.</p>
@@ -616,14 +618,14 @@ S = -\mathrm{Tr}(\rho \log_2(\rho)),
 <p>Not directly related to the basis expansion, but still important for the stability of the algorithm, are the options <code>atol_inv</code> (the tolerance for the inverse of the overlap matrix) and <code>alg</code> (the ODE solver).</p>
 <p>We now launch the evolution using the <code>lr_mesolve</code> function</p>
 <div id="22" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1"></a>sol_lr <span class="op">=</span> <span class="fu">lr_mesolve</span>(H, z, B, tl, c_ops; e_ops <span class="op">=</span> e_ops, f_ops <span class="op">=</span> (f_purity, f_entropy, f_trace), opt <span class="op">=</span> opt);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1"></a>sol_lr <span class="op">=</span> <span class="fu">lr_mesolve</span>(H, z, B, tl, c_ops; e_ops <span class="op">=</span> e_ops, f_ops <span class="op">=</span> (f_purity, f_entropy, f_trace), opt <span class="op">=</span> opt);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Progress: 2%Progress: 3%Progress: 4%Progress: 5%Progress: 6%Progress: 7%Progress: 8%Progress: 9%Progress: 10%Progress: 11%Progress: 12%Progress: 13%Progress: 14%Progress: 15%Progress: 16%Progress: 17%Progress: 18%Progress: 19%Progress: 20%Progress: 21%Progress: 22%Progress: 23%Progress: 24%Progress: 25%Progress: 26%Progress: 27%Progress: 28%Progress: 29%Progress: 30%Progress: 31%Progress: 32%Progress: 33%Progress: 34%Progress: 35%Progress: 36%Progress: 37%Progress: 38%Progress: 39%Progress: 40%Progress: 41%Progress: 42%Progress: 43%Progress: 44%Progress: 45%Progress: 46%Progress: 47%Progress: 48%Progress: 49%Progress: 50%Progress: 51%Progress: 52%Progress: 53%Progress: 54%Progress: 55%Progress: 56%Progress: 57%Progress: 58%Progress: 59%Progress: 60%Progress: 61%Progress: 62%Progress: 63%Progress: 64%Progress: 65%Progress: 66%Progress: 67%Progress: 68%Progress: 69%Progress: 70%Progress: 71%Progress: 72%Progress: 73%Progress: 74%Progress: 75%Progress: 76%Progress: 77%Progress: 78%Progress: 79%Progress: 80%Progress: 81%Progress: 82%Progress: 83%Progress: 84%Progress: 85%Progress: 86%Progress: 87%Progress: 88%Progress: 89%Progress: 90%Progress: 91%Progress: 92%Progress: 93%Progress: 94%Progress: 95%Progress: 96%Progress: 97%Progress: 98%Progress: 99%Progress: 100%</code></pre>
 </div>
 </div>
 <p>We can now compare the results of the low-rank evolution with the full evolution.</p>
 <div id="24" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1"></a>m_me <span class="op">=</span> <span class="fu">real</span>(sol_me.expect[<span class="fl">3</span>, <span class="op">:</span>]) <span class="op">/</span> Nx <span class="op">/</span> Ny</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1"></a>m_me <span class="op">=</span> <span class="fu">real</span>(sol_me.expect[<span class="fl">3</span>, <span class="op">:</span>]) <span class="op">/</span> Nx <span class="op">/</span> Ny</span>
 <span id="cb16-2"><a href="#cb16-2"></a>m_lr <span class="op">=</span> <span class="fu">real</span>(sol_lr.expect[<span class="fl">3</span>, <span class="op">:</span>]) <span class="op">/</span> Nx <span class="op">/</span> Ny</span>
 <span id="cb16-3"><a href="#cb16-3"></a></span>
 <span id="cb16-4"><a href="#cb16-4"></a>fig <span class="op">=</span> <span class="fu">Figure</span>(size <span class="op">=</span> (<span class="fl">900</span>, <span class="fl">400</span>), fontsize <span class="op">=</span> <span class="fl">15</span>)</span>
@@ -647,7 +649,7 @@ S = -\mathrm{Tr}(\rho \log_2(\rho)),
 <span id="cb16-22"><a href="#cb16-22"></a><span class="fu">hlines!</span>(ax2, [Strue], color <span class="op">=</span> <span class="op">:</span>blue, linestyle <span class="op">=</span> <span class="op">:</span>dash, linewidth <span class="op">=</span> <span class="fl">2</span>, label <span class="op">=</span> L<span class="st">"S^{\,\mathrm{true}}_{\mathrm{ss}}"</span>)</span>
 <span id="cb16-23"><a href="#cb16-23"></a><span class="fu">axislegend</span>(ax2, position <span class="op">=</span> <span class="op">:</span>rb)</span>
 <span id="cb16-24"><a href="#cb16-24"></a></span>
-<span id="cb16-25"><a href="#cb16-25"></a>fig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb16-25"><a href="#cb16-25"></a>fig</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div>
 <figure class="figure">
@@ -661,7 +663,7 @@ S = -\mathrm{Tr}(\rho \log_2(\rho)),
 <section id="version-information" class="level2">
 <h2 class="anchored" data-anchor-id="version-information">Version Information</h2>
 <div id="26" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1"></a>QuantumToolbox.<span class="fu">versioninfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1"></a>QuantumToolbox.<span class="fu">versioninfo</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
  QuantumToolbox.jl: Quantum Toolbox in Julia
@@ -676,7 +678,7 @@ Julia              Ver. 1.11.6
 QuantumToolbox     Ver. 0.34.1
 SciMLOperators     Ver. 1.7.1
 LinearSolve        Ver. 3.28.0
-OrdinaryDiffEqCore Ver. 1.33.0
+OrdinaryDiffEqCore Ver. 1.34.0
 
 System information:
 ====================================
@@ -765,13 +767,14 @@ Gravina, Luca, and Vincenzo Savona. 2024. <span>“<span class="nocase">Adaptive
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

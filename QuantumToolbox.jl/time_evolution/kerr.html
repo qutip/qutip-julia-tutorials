@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.34">
+<meta name="generator" content="quarto-1.8.24">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -70,18 +70,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../assets/favicon.ico" rel="icon">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-83aa21ed72f0068e2bb8f0090f02f802.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-f0a4794d096e7901d871e43f74665444.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-83aa21ed72f0068e2bb8f0090f02f802.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-f16cd255ecb5ae9510f6a112aa2ee9ab.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-f3afb4d828d77514a78ff08d52625b9d.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-f16cd255ecb5ae9510f6a112aa2ee9ab.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-5a2f0cd714322f9d28070e1678e5b478.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-666874306d53323563f630c4bc2c1354.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-5a2f0cd714322f9d28070e1678e5b478.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-385fe92fe65ca0dffbe5a0daae6f4f31.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-0188f7b1a8634cb5a69946dd3f5eece5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-385fe92fe65ca0dffbe5a0daae6f4f31.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -124,7 +125,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -313,7 +314,8 @@ window.Quarto = {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="../../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../../assets/logo.png" alt="QuantumToolbox logo." class="navbar-logo">
+    <img src="../../assets/logo.png" alt="QuantumToolbox logo." class="navbar-logo light-content">
+    <img src="../../assets/logo.png" alt="QuantumToolbox logo." class="navbar-logo dark-content">
     </a>
     <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Tutorials for Quantum Toolbox in Julia</span>
@@ -433,10 +435,10 @@ H = \frac{\chi}{2} (\hat{a}^\dagger)^2 \hat{a}^2,
 <section id="code-demonstration" class="level2">
 <h2 class="anchored" data-anchor-id="code-demonstration">Code demonstration</h2>
 <div id="2" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">using</span> <span class="bu">QuantumToolbox</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">using</span> <span class="bu">QuantumToolbox</span></span>
 <span id="cb1-2"><a href="#cb1-2"></a><span class="im">using</span> <span class="bu">CairoMakie</span></span>
 <span id="cb1-3"><a href="#cb1-3"></a></span>
-<span id="cb1-4"><a href="#cb1-4"></a>CairoMakie.<span class="fu">activate!</span>(<span class="kw">type</span> <span class="op">=</span> <span class="st">"svg"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-4"><a href="#cb1-4"></a>CairoMakie.<span class="fu">activate!</span>(<span class="kw">type</span> <span class="op">=</span> <span class="st">"svg"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We begin by defining functions for visualization:</p>
 <ol type="1">
@@ -444,7 +446,7 @@ H = \frac{\chi}{2} (\hat{a}^\dagger)^2 \hat{a}^2,
 <li><code>plot_Fock_dist</code> plots the dynamics of the Fock distribution.</li>
 </ol>
 <div id="4" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">function</span> <span class="fu">plot_variance</span>(op, tlist, states)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">function</span> <span class="fu">plot_variance</span>(op, tlist, states)</span>
 <span id="cb2-2"><a href="#cb2-2"></a>    <span class="cn">e</span> <span class="op">=</span> <span class="fu">real</span>.(<span class="fu">expect</span>(op, states))</span>
 <span id="cb2-3"><a href="#cb2-3"></a>    v <span class="op">=</span> <span class="fu">real</span>.(<span class="fu">variance</span>(op, states))</span>
 <span id="cb2-4"><a href="#cb2-4"></a>    </span>
@@ -484,14 +486,14 @@ H = \frac{\chi}{2} (\hat{a}^\dagger)^2 \hat{a}^2,
 <span id="cb2-38"><a href="#cb2-38"></a></span>
 <span id="cb2-39"><a href="#cb2-39"></a>    </span>
 <span id="cb2-40"><a href="#cb2-40"></a>    <span class="cf">return</span> fig, ax</span>
-<span id="cb2-41"><a href="#cb2-41"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-41"><a href="#cb2-41"></a><span class="kw">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>plot_Fock_dist (generic function with 1 method)</code></pre>
 </div>
 </div>
 <p>Next, we define the system parameters and operators.</p>
 <div id="6" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1"></a>N <span class="op">=</span> <span class="fl">15</span> <span class="co"># Dimension of the Hilbert space</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1"></a>N <span class="op">=</span> <span class="fl">15</span> <span class="co"># Dimension of the Hilbert space</span></span>
 <span id="cb4-2"><a href="#cb4-2"></a>χ <span class="op">=</span> <span class="fl">1</span>  <span class="co"># effective susceptibility</span></span>
 <span id="cb4-3"><a href="#cb4-3"></a></span>
 <span id="cb4-4"><a href="#cb4-4"></a>a <span class="op">=</span> <span class="fu">destroy</span>(N) <span class="co"># annihilation operator</span></span>
@@ -502,7 +504,7 @@ H = \frac{\chi}{2} (\hat{a}^\dagger)^2 \hat{a}^2,
 <span id="cb4-9"><a href="#cb4-9"></a>p <span class="op">=</span> <span class="op">-</span><span class="fl">1</span> <span class="op">*</span> <span class="cn">im</span> <span class="op">*</span> (a <span class="op">-</span> a<span class="op">'</span>)</span>
 <span id="cb4-10"><a href="#cb4-10"></a></span>
 <span id="cb4-11"><a href="#cb4-11"></a><span class="co"># Hamiltonian</span></span>
-<span id="cb4-12"><a href="#cb4-12"></a>H <span class="op">=</span> <span class="fl">0.5</span> <span class="op">*</span> χ <span class="op">*</span> a<span class="op">'</span> <span class="op">*</span> a<span class="op">'</span> <span class="op">*</span> a <span class="op">*</span> a</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-12"><a href="#cb4-12"></a>H <span class="op">=</span> <span class="fl">0.5</span> <span class="op">*</span> χ <span class="op">*</span> a<span class="op">'</span> <span class="op">*</span> a<span class="op">'</span> <span class="op">*</span> a <span class="op">*</span> a</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>
 Quantum Object:   type=Operator()   dims=[15]   size=(15, 15)   ishermitian=true
@@ -527,10 +529,10 @@ Quantum Object:   type=Operator()   dims=[15]   size=(15, 15)   ishermitian=true
 <p>Since we are considering unitary dynamics, i.e., no dissipation, the dynamics are fully captured for <span class="math inline">\(\chi t \in \left[0, 2 \pi \right]\)</span>, and the coherent initial state is representative for a laser light source.</p>
 <p>Note that if the keyword argument <code>e_ops</code> is not supplied to <a href="https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.sesolve"><code>mesolve</code></a>, the returned <code>result</code> contains the state at each time point at field <code>states</code>. Consult the <a href="https://qutip.org/QuantumToolbox.jl/stable/users_guide/time_evolution/solution">user guide to <code>TimeEvolutionSol</code></a> for more details.</p>
 <div id="8" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1"></a>ρ<span class="fl">0</span> <span class="op">=</span> <span class="fu">coherent_dm</span>(N, <span class="fl">2.0</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1"></a>ρ<span class="fl">0</span> <span class="op">=</span> <span class="fu">coherent_dm</span>(N, <span class="fl">2.0</span>)</span>
 <span id="cb6-2"><a href="#cb6-2"></a>tlist <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">0.01</span><span class="op">:</span>(<span class="fl">2</span><span class="op">*</span><span class="cn">π</span> <span class="op">/</span> χ)</span>
 <span id="cb6-3"><a href="#cb6-3"></a></span>
-<span id="cb6-4"><a href="#cb6-4"></a>result <span class="op">=</span> <span class="fu">mesolve</span>(H, ρ<span class="fl">0</span>, tlist)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-4"><a href="#cb6-4"></a>result <span class="op">=</span> <span class="fu">mesolve</span>(H, ρ<span class="fl">0</span>, tlist)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)</code></pre>
 </div>
@@ -547,12 +549,12 @@ reltol = 1.0e-6</code></pre>
 </div>
 <p>We first check the expectation value dynamics of the number operator <code>n</code> with the two visualization functions we defined previously.</p>
 <div id="10" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1"></a>fig1, ax1 <span class="op">=</span> <span class="fu">plot_variance</span>(n, tlist, result.states)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1"></a>fig1, ax1 <span class="op">=</span> <span class="fu">plot_variance</span>(n, tlist, result.states)</span>
 <span id="cb9-2"><a href="#cb9-2"></a>ax1.title <span class="op">=</span> L<span class="st">"N"</span></span>
 <span id="cb9-3"><a href="#cb9-3"></a><span class="fu">display</span>(fig1)</span>
 <span id="cb9-4"><a href="#cb9-4"></a></span>
 <span id="cb9-5"><a href="#cb9-5"></a>fig2, ax2 <span class="op">=</span> <span class="fu">plot_Fock_dist</span>(tlist, result.states)</span>
-<span id="cb9-6"><a href="#cb9-6"></a><span class="fu">display</span>(fig2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-6"><a href="#cb9-6"></a><span class="fu">display</span>(fig2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -574,12 +576,12 @@ reltol = 1.0e-6</code></pre>
 <p>As expected, the photon number is conserved throughout. Either the expectation value or the Fock distribution are conserved in the nonlinear interaction.</p>
 <p>We now turn to the quadrature operators. The expectation value dynamics of <code>x</code> and <code>p</code> are plotted below.</p>
 <div id="12" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1"></a>titles <span class="op">=</span> [L<span class="st">"x"</span>, L<span class="st">"p"</span>]</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1"></a>titles <span class="op">=</span> [L<span class="st">"x"</span>, L<span class="st">"p"</span>]</span>
 <span id="cb11-2"><a href="#cb11-2"></a><span class="cf">for</span> (idx, op) <span class="kw">in</span> <span class="fu">enumerate</span>([x, p])</span>
 <span id="cb11-3"><a href="#cb11-3"></a>    _fig, _ax <span class="op">=</span> <span class="fu">plot_variance</span>(op, tlist, result.states)</span>
 <span id="cb11-4"><a href="#cb11-4"></a>    _ax.title <span class="op">=</span> titles[idx]</span>
 <span id="cb11-5"><a href="#cb11-5"></a>    <span class="fu">display</span>(_fig)</span>
-<span id="cb11-6"><a href="#cb11-6"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-6"><a href="#cb11-6"></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -607,11 +609,11 @@ Coherent states in a harmonic oscillator are known to saturate the uncertainty r
 </ol>
 <p>We can extend the investigation to the Wigner function with the built-in function <a href="https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.plot_wigner"><code>plot_wigner</code></a>.</p>
 <div id="14" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1"></a>idx <span class="op">=</span> <span class="fu">searchsortedfirst</span>(tlist, <span class="cn">π</span><span class="op">/</span>χ) <span class="op">-</span> <span class="fl">1</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1"></a>idx <span class="op">=</span> <span class="fu">searchsortedfirst</span>(tlist, <span class="cn">π</span><span class="op">/</span>χ) <span class="op">-</span> <span class="fl">1</span></span>
 <span id="cb12-2"><a href="#cb12-2"></a>fig3, ax3, hm3 <span class="op">=</span> <span class="fu">plot_wigner</span>(result.states[idx])</span>
 <span id="cb12-3"><a href="#cb12-3"></a>ax3.title <span class="op">=</span> <span class="st">"χt = </span><span class="sc">$</span>(tlist[idx])<span class="st">"</span></span>
 <span id="cb12-4"><a href="#cb12-4"></a><span class="fu">Colorbar</span>(fig3[<span class="fl">1</span>,<span class="fl">2</span>], hm3)</span>
-<span id="cb12-5"><a href="#cb12-5"></a>fig3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-5"><a href="#cb12-5"></a>fig3</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div>
 <figure class="figure">
@@ -623,7 +625,7 @@ Coherent states in a harmonic oscillator are known to saturate the uncertainty r
 <p>As the plot revealed, the state at <span class="math inline">\(\chi t = \pi\)</span> is in fact the <a href="https://en.wikipedia.org/wiki/Cat_state#Cat_states_in_single_modes"><strong>cat state</strong></a> for a single mode. One of the main characteristics of the cat state is the superposition of two coherent states with opposite phase.</p>
 <p>The dynamics of the Wigner function offer a powerful phase-space perspective on the quantum state evolution under the Kerr nonlinearity. We again use <code>plot_wigner</code> to setup the initial plot and update frames with the function <a href="https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.wigner"><code>wigner</code></a> to record the dynamics as an animated GIF.</p>
 <div id="16" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1"></a>fig4, ax4, hm4 <span class="op">=</span> <span class="fu">plot_wigner</span>(result.states[<span class="fl">1</span>])</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1"></a>fig4, ax4, hm4 <span class="op">=</span> <span class="fu">plot_wigner</span>(result.states[<span class="fl">1</span>])</span>
 <span id="cb13-2"><a href="#cb13-2"></a></span>
 <span id="cb13-3"><a href="#cb13-3"></a><span class="fu">Colorbar</span>(fig4[<span class="fl">1</span>,<span class="fl">2</span>], hm4)</span>
 <span id="cb13-4"><a href="#cb13-4"></a></span>
@@ -635,7 +637,7 @@ Coherent states in a harmonic oscillator are known to saturate the uncertainty r
 <span id="cb13-10"><a href="#cb13-10"></a>        )</span>
 <span id="cb13-11"><a href="#cb13-11"></a>    ax4.title <span class="op">=</span> <span class="st">"χt = "</span> <span class="op">*</span> <span class="fu">string</span>(<span class="fu">round</span>(tlist[t]; digits <span class="op">=</span> <span class="fl">2</span>))</span>
 <span id="cb13-12"><a href="#cb13-12"></a>    hm4[<span class="fl">3</span>] <span class="op">=</span> <span class="fu">transpose</span>(wig)</span>
-<span id="cb13-13"><a href="#cb13-13"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-13"><a href="#cb13-13"></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>"kerr_wigner_dyn.gif"</code></pre>
 </div>
@@ -646,7 +648,7 @@ Coherent states in a harmonic oscillator are known to saturate the uncertainty r
 <section id="version-information" class="level2">
 <h2 class="anchored" data-anchor-id="version-information">Version Information</h2>
 <div id="18" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1"></a>QuantumToolbox.<span class="fu">versioninfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1"></a>QuantumToolbox.<span class="fu">versioninfo</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
  QuantumToolbox.jl: Quantum Toolbox in Julia
@@ -661,7 +663,7 @@ Julia              Ver. 1.11.6
 QuantumToolbox     Ver. 0.34.1
 SciMLOperators     Ver. 1.7.1
 LinearSolve        Ver. 3.28.0
-OrdinaryDiffEqCore Ver. 1.33.0
+OrdinaryDiffEqCore Ver. 1.34.0
 
 System information:
 ====================================
@@ -745,13 +747,14 @@ Threads  : 4 (on 4 virtual cores)
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

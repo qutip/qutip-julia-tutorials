@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.34">
+<meta name="generator" content="quarto-1.8.24">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -70,18 +70,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../assets/favicon.ico" rel="icon">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-83aa21ed72f0068e2bb8f0090f02f802.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-f0a4794d096e7901d871e43f74665444.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-83aa21ed72f0068e2bb8f0090f02f802.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-f16cd255ecb5ae9510f6a112aa2ee9ab.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-f3afb4d828d77514a78ff08d52625b9d.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-f16cd255ecb5ae9510f6a112aa2ee9ab.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-5a2f0cd714322f9d28070e1678e5b478.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-666874306d53323563f630c4bc2c1354.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-5a2f0cd714322f9d28070e1678e5b478.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-385fe92fe65ca0dffbe5a0daae6f4f31.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-0188f7b1a8634cb5a69946dd3f5eece5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-385fe92fe65ca0dffbe5a0daae6f4f31.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -124,7 +125,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -313,7 +314,8 @@ window.Quarto = {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="../../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../../assets/logo.png" alt="QuantumToolbox logo." class="navbar-logo">
+    <img src="../../assets/logo.png" alt="QuantumToolbox logo." class="navbar-logo light-content">
+    <img src="../../assets/logo.png" alt="QuantumToolbox logo." class="navbar-logo dark-content">
     </a>
     <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Tutorials for Quantum Toolbox in Julia</span>
@@ -419,34 +421,34 @@ window.Quarto = {
 <section id="code-demonstration" class="level2">
 <h2 class="anchored" data-anchor-id="code-demonstration">Code demonstration</h2>
 <div id="2" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">using</span> <span class="bu">QuantumToolbox</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">using</span> <span class="bu">QuantumToolbox</span></span>
 <span id="cb1-2"><a href="#cb1-2"></a><span class="im">using</span> <span class="bu">CairoMakie</span></span>
 <span id="cb1-3"><a href="#cb1-3"></a></span>
-<span id="cb1-4"><a href="#cb1-4"></a>CairoMakie.<span class="fu">activate!</span>(<span class="kw">type</span> <span class="op">=</span> <span class="st">"svg"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-4"><a href="#cb1-4"></a>CairoMakie.<span class="fu">activate!</span>(<span class="kw">type</span> <span class="op">=</span> <span class="st">"svg"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="4" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1"></a>N <span class="op">=</span> <span class="fl">8</span> <span class="co"># number of spins</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1"></a>N <span class="op">=</span> <span class="fl">8</span> <span class="co"># number of spins</span></span>
 <span id="cb2-2"><a href="#cb2-2"></a>ε<span class="fl">0</span> <span class="op">=</span> <span class="fl">1</span> <span class="co"># energy gap of the spins</span></span>
 <span id="cb2-3"><a href="#cb2-3"></a></span>
-<span id="cb2-4"><a href="#cb2-4"></a>gs <span class="op">=</span> <span class="fu">rand</span>(N<span class="op">-</span><span class="fl">1</span>) <span class="co"># use rand function for the random interaction strengths</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-4"><a href="#cb2-4"></a>gs <span class="op">=</span> <span class="fu">rand</span>(N<span class="op">-</span><span class="fl">1</span>) <span class="co"># use rand function for the random interaction strengths</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>7-element Vector{Float64}:
- 0.1822418544629859
- 0.9301067670641704
- 0.4232944586858969
- 0.653570687125658
- 0.6001517498136072
- 0.977249922952583
- 0.2880845646327115</code></pre>
+ 0.994071654045412
+ 0.4638907643410837
+ 0.7840362313627167
+ 0.7502371643795728
+ 0.5721279100998138
+ 0.6314252266650833
+ 0.6830482072647741</code></pre>
 </div>
 </div>
 <div id="6" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1"></a>H0 <span class="op">=</span> <span class="fu">sum</span>(<span class="fl">1</span><span class="op">:</span>N) <span class="cf">do</span> i</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1"></a>H0 <span class="op">=</span> <span class="fu">sum</span>(<span class="fl">1</span><span class="op">:</span>N) <span class="cf">do</span> i</span>
 <span id="cb4-2"><a href="#cb4-2"></a>    ε<span class="fl">0</span><span class="op">/</span><span class="fl">2</span> <span class="op">*</span> <span class="fu">multisite_operator</span>(<span class="fu">Val</span>(N), i<span class="op">=&gt;</span><span class="fu">sigmaz</span>())</span>
 <span id="cb4-3"><a href="#cb4-3"></a><span class="cf">end</span></span>
 <span id="cb4-4"><a href="#cb4-4"></a></span>
 <span id="cb4-5"><a href="#cb4-5"></a>ψ<span class="fl">0</span> <span class="op">=</span> <span class="fu">kron</span>(<span class="fu">fill</span>(<span class="fu">basis</span>(<span class="fl">2</span>,<span class="fl">1</span>), N)<span class="op">...</span>)</span>
-<span id="cb4-6"><a href="#cb4-6"></a><span class="fu">print</span>(H0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="fu">print</span>(H0)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Quantum Object:   type=Operator()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256, 256)   ishermitian=true
@@ -474,13 +476,13 @@ Quantum Object:   type=Operator()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256, 2
 </div>
 </div>
 <div id="8" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1"></a>Hint <span class="op">=</span> <span class="fu">sum</span>(<span class="fl">1</span><span class="op">:</span>N<span class="op">-</span><span class="fl">1</span>) <span class="cf">do</span> i</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1"></a>Hint <span class="op">=</span> <span class="fu">sum</span>(<span class="fl">1</span><span class="op">:</span>N<span class="op">-</span><span class="fl">1</span>) <span class="cf">do</span> i</span>
 <span id="cb6-2"><a href="#cb6-2"></a>    gs[i] <span class="op">*</span> <span class="fu">multisite_operator</span>(<span class="fu">Val</span>(N), i<span class="op">=&gt;</span><span class="fu">sigmax</span>(), i<span class="op">+</span><span class="fl">1</span><span class="op">=&gt;</span><span class="fu">sigmax</span>())</span>
 <span id="cb6-3"><a href="#cb6-3"></a><span class="cf">end</span></span>
 <span id="cb6-4"><a href="#cb6-4"></a></span>
 <span id="cb6-5"><a href="#cb6-5"></a>H1 <span class="op">=</span> H0 <span class="op">+</span> Hint</span>
 <span id="cb6-6"><a href="#cb6-6"></a></span>
-<span id="cb6-7"><a href="#cb6-7"></a><span class="fu">print</span>(H1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-7"><a href="#cb6-7"></a><span class="fu">print</span>(H1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Quantum Object:   type=Operator()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256, 256)   ishermitian=true
@@ -509,10 +511,10 @@ Quantum Object:   type=Operator()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256, 2
 </div>
 <p>Here, we define the time-dependent Hamiltonian with <code>QuantumObjectEvolution</code>.</p>
 <div id="10" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1"></a>H <span class="op">=</span> <span class="fu">QuantumObjectEvolution</span>((</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1"></a>H <span class="op">=</span> <span class="fu">QuantumObjectEvolution</span>((</span>
 <span id="cb8-2"><a href="#cb8-2"></a>    (H0, (p,t) <span class="op">-&gt;</span> <span class="fl">1</span> <span class="op">-</span> t<span class="op">/</span>p.T),</span>
 <span id="cb8-3"><a href="#cb8-3"></a>    (H1, (p,t) <span class="op">-&gt;</span> t<span class="op">/</span>p.T),</span>
-<span id="cb8-4"><a href="#cb8-4"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-4"><a href="#cb8-4"></a>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>
 Quantum Object Evo.:   type=Operator()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256, 256)   ishermitian=true   isconstant=false
@@ -521,39 +523,39 @@ Quantum Object Evo.:   type=Operator()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(2
 </div>
 <p>We will show below the usage of field <code>p</code> in solving the eigen problems and the dynamics.</p>
 <div id="12" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">function</span> <span class="fu">ψg</span>(H)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">function</span> <span class="fu">ψg</span>(H)</span>
 <span id="cb10-2"><a href="#cb10-2"></a>    _, vecs <span class="op">=</span> <span class="fu">eigenstates</span>(H)</span>
 <span id="cb10-3"><a href="#cb10-3"></a>    <span class="cf">return</span> vecs[<span class="fl">1</span>]</span>
 <span id="cb10-4"><a href="#cb10-4"></a><span class="kw">end</span></span>
 <span id="cb10-5"><a href="#cb10-5"></a></span>
 <span id="cb10-6"><a href="#cb10-6"></a>ψf_truth <span class="op">=</span> <span class="fu">ψg</span>(H1) <span class="op">|&gt;</span> to_sparse</span>
-<span id="cb10-7"><a href="#cb10-7"></a><span class="fu">print</span>(ψf_truth)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-7"><a href="#cb10-7"></a><span class="fu">print</span>(ψf_truth)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Quantum Object:   type=Ket()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256,)
 256-element SparseArrays.SparseVector{ComplexF64, Int64} with 128 stored entries:
-  [1  ]  =  0.00164747+0.0im
-  [4  ]  =  -0.00863105+0.0im
-  [6  ]  =  0.00665867+0.0im
-  [7  ]  =  -0.00239916+0.0im
-  [10 ]  =  -0.00949681+0.0im
-  [11 ]  =  0.00287051+0.0im
-  [13 ]  =  -0.00365882+0.0im
+  [1  ]  =  0.013044+0.0im
+  [4  ]  =  -0.0363268+0.0im
+  [6  ]  =  0.025804+0.0im
+  [7  ]  =  -0.0179856+0.0im
+  [10 ]  =  -0.034355+0.0im
+  [11 ]  =  0.0207282+0.0im
+  [13 ]  =  -0.0328303+0.0im
          ⋮
-  [241]  =  0.042833+0.0im
-  [244]  =  -0.23058+0.0im
-  [246]  =  0.170685+0.0im
-  [247]  =  -0.0592922+0.0im
-  [250]  =  -0.28412+0.0im
-  [251]  =  0.0842515+0.0im
-  [253]  =  -0.109908+0.0im
-  [256]  =  0.649223+0.0im</code></pre>
+  [241]  =  0.0659753+0.0im
+  [244]  =  -0.185469+0.0im
+  [246]  =  0.126474+0.0im
+  [247]  =  -0.0868921+0.0im
+  [250]  =  -0.187216+0.0im
+  [251]  =  0.112005+0.0im
+  [253]  =  -0.181011+0.0im
+  [256]  =  0.540716+0.0im</code></pre>
 </div>
 </div>
 <p>We can see that the truthful ground state we are preparing is indeed very complex.</p>
 <p>For the adiabatic theorem to apply, we have to check for the gap between the ground state and first excited state remaining non-zero throughout the evolution.</p>
 <div id="14" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1"></a>T <span class="op">=</span> <span class="fl">10</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1"></a>T <span class="op">=</span> <span class="fl">10</span></span>
 <span id="cb12-2"><a href="#cb12-2"></a>tlist <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">0.1</span><span class="op">:</span>T</span>
 <span id="cb12-3"><a href="#cb12-3"></a>eigs <span class="op">=</span> <span class="fu">Array</span><span class="dt">{Float64}</span>(<span class="cn">undef</span>, <span class="fu">length</span>(tlist), <span class="fl">2</span><span class="op">^</span>N)</span>
 <span id="cb12-4"><a href="#cb12-4"></a></span>
@@ -562,10 +564,10 @@ Quantum Object:   type=Ket()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256,)
 <span id="cb12-7"><a href="#cb12-7"></a>    <span class="co"># passing `params` and `t` to `H` can yield the `QuantumObject` with `p = params` at time `t`</span></span>
 <span id="cb12-8"><a href="#cb12-8"></a>    vals, _ <span class="op">=</span> <span class="fu">eigenstates</span>(<span class="fu">H</span>(params, t))</span>
 <span id="cb12-9"><a href="#cb12-9"></a>    eigs[idx,<span class="op">:</span>] <span class="op">=</span> vals</span>
-<span id="cb12-10"><a href="#cb12-10"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-10"><a href="#cb12-10"></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="16" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1"></a>fig <span class="op">=</span> <span class="fu">Figure</span>(size<span class="op">=</span>(<span class="fl">900</span>, <span class="fl">400</span>))</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1"></a>fig <span class="op">=</span> <span class="fu">Figure</span>(size<span class="op">=</span>(<span class="fl">900</span>, <span class="fl">400</span>))</span>
 <span id="cb13-2"><a href="#cb13-2"></a>ax <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">1</span>,<span class="fl">1</span>], xticks <span class="op">=</span> (<span class="fl">0</span><span class="op">:</span><span class="fl">0.25</span><span class="op">:</span><span class="fl">1</span>, [<span class="st">"</span><span class="sc">$</span>(t)<span class="st">T"</span> for t <span class="kw">in</span> <span class="fl">0</span><span class="op">:</span><span class="fl">0.25</span><span class="op">:</span><span class="fl">1</span>]))</span>
 <span id="cb13-3"><a href="#cb13-3"></a></span>
 <span id="cb13-4"><a href="#cb13-4"></a><span class="cf">for</span> idx <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">20</span> <span class="co"># only check for the lowest 20 eigenvalues</span></span>
@@ -573,7 +575,7 @@ Quantum Object:   type=Ket()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256,)
 <span id="cb13-6"><a href="#cb13-6"></a>    <span class="fu">lines!</span>(ax, <span class="fu">range</span>(<span class="fl">0</span>,<span class="fl">1</span>,<span class="fu">length</span>(tlist)), eigs[<span class="op">:</span>,idx], label <span class="op">=</span> <span class="fu">string</span>(idx), color <span class="op">=</span> color)</span>
 <span id="cb13-7"><a href="#cb13-7"></a><span class="cf">end</span></span>
 <span id="cb13-8"><a href="#cb13-8"></a></span>
-<span id="cb13-9"><a href="#cb13-9"></a>fig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-9"><a href="#cb13-9"></a>fig</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div>
 <figure class="figure">
@@ -584,13 +586,13 @@ Quantum Object:   type=Ket()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256,)
 </div>
 <p>The plot shows that the gap is nonvanishing and thus validates the evolution. So we proceed to check the expectation value dynamics of the final Hamiltonian and the fidelity dynamics to the truthful ground state throughout the evolution.</p>
 <div id="18" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1"></a>Tlist <span class="op">=</span> <span class="fl">10</span> <span class="op">.^</span> (<span class="fl">0</span><span class="op">:</span><span class="fl">0.25</span><span class="op">:</span><span class="fl">1.25</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1"></a>Tlist <span class="op">=</span> <span class="fl">10</span> <span class="op">.^</span> (<span class="fl">0</span><span class="op">:</span><span class="fl">0.25</span><span class="op">:</span><span class="fl">1.25</span>)</span>
 <span id="cb14-2"><a href="#cb14-2"></a>results <span class="op">=</span> <span class="fu">map</span>(Tlist) <span class="cf">do</span> T </span>
 <span id="cb14-3"><a href="#cb14-3"></a>    tlist <span class="op">=</span> <span class="fu">range</span>(<span class="fl">0</span>,T, <span class="fl">101</span>)</span>
 <span id="cb14-4"><a href="#cb14-4"></a>    params <span class="op">=</span> (T<span class="op">=</span>T,)</span>
 <span id="cb14-5"><a href="#cb14-5"></a>    <span class="fu">sesolve</span>(H, ψ<span class="fl">0</span>, tlist, e_ops <span class="op">=</span> [H1, <span class="fu">ket2dm</span>(ψf_truth)], params<span class="op">=</span>params)</span>
 <span id="cb14-6"><a href="#cb14-6"></a>    <span class="co"># for solving dynamics, we can pass `params` to the keyword argument `params` for its reference</span></span>
-<span id="cb14-7"><a href="#cb14-7"></a><span class="cf">end</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-7"><a href="#cb14-7"></a><span class="cf">end</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)
 Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)
@@ -601,7 +603,7 @@ Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (
 </div>
 </div>
 <div id="20" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1"></a>fig <span class="op">=</span> <span class="fu">Figure</span>(size<span class="op">=</span>(<span class="fl">900</span>, <span class="fl">400</span>))</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1"></a>fig <span class="op">=</span> <span class="fu">Figure</span>(size<span class="op">=</span>(<span class="fl">900</span>, <span class="fl">400</span>))</span>
 <span id="cb16-2"><a href="#cb16-2"></a>axs <span class="op">=</span> <span class="fu">Axis</span>.([fig[<span class="fl">1</span>,<span class="fl">1</span>], fig[<span class="fl">1</span>,<span class="fl">2</span>]])</span>
 <span id="cb16-3"><a href="#cb16-3"></a>axs[<span class="fl">1</span>].title <span class="op">=</span> L<span class="st">"\langle H_f </span><span class="sc">\r</span><span class="st">angle"</span></span>
 <span id="cb16-4"><a href="#cb16-4"></a>axs[<span class="fl">1</span>].xticks <span class="op">=</span> (<span class="fl">0</span><span class="op">:</span><span class="fl">0.25</span><span class="op">:</span><span class="fl">1</span>, [<span class="st">"</span><span class="sc">$</span>(t)<span class="st">T"</span> for t <span class="kw">in</span> <span class="fl">0</span><span class="op">:</span><span class="fl">0.25</span><span class="op">:</span><span class="fl">1</span>])</span>
@@ -617,7 +619,7 @@ Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (
 <span id="cb16-14"><a href="#cb16-14"></a></span>
 <span id="cb16-15"><a href="#cb16-15"></a><span class="fu">Legend</span>(fig[<span class="fl">1</span>,<span class="fl">3</span>], axs[<span class="fl">1</span>], L<span class="st">"T"</span>)</span>
 <span id="cb16-16"><a href="#cb16-16"></a></span>
-<span id="cb16-17"><a href="#cb16-17"></a>fig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb16-17"><a href="#cb16-17"></a>fig</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div>
 <figure class="figure">
@@ -631,7 +633,7 @@ Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (
 <section id="version-information" class="level2">
 <h2 class="anchored" data-anchor-id="version-information">Version Information</h2>
 <div id="22" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1"></a>QuantumToolbox.<span class="fu">versioninfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1"></a>QuantumToolbox.<span class="fu">versioninfo</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
  QuantumToolbox.jl: Quantum Toolbox in Julia
@@ -646,7 +648,7 @@ Julia              Ver. 1.11.6
 QuantumToolbox     Ver. 0.34.1
 SciMLOperators     Ver. 1.7.1
 LinearSolve        Ver. 3.28.0
-OrdinaryDiffEqCore Ver. 1.33.0
+OrdinaryDiffEqCore Ver. 1.34.0
 
 System information:
 ====================================
@@ -730,13 +732,14 @@ Threads  : 4 (on 4 virtual cores)
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

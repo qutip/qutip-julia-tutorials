@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.34">
+<meta name="generator" content="quarto-1.8.24">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -70,18 +70,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../assets/favicon.ico" rel="icon">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-83aa21ed72f0068e2bb8f0090f02f802.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-f0a4794d096e7901d871e43f74665444.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-83aa21ed72f0068e2bb8f0090f02f802.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-f16cd255ecb5ae9510f6a112aa2ee9ab.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-f3afb4d828d77514a78ff08d52625b9d.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-f16cd255ecb5ae9510f6a112aa2ee9ab.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-5a2f0cd714322f9d28070e1678e5b478.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-666874306d53323563f630c4bc2c1354.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-5a2f0cd714322f9d28070e1678e5b478.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-385fe92fe65ca0dffbe5a0daae6f4f31.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-0188f7b1a8634cb5a69946dd3f5eece5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-385fe92fe65ca0dffbe5a0daae6f4f31.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -124,7 +125,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -313,7 +314,8 @@ window.Quarto = {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="../../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../../assets/logo.png" alt="QuantumToolbox logo." class="navbar-logo">
+    <img src="../../assets/logo.png" alt="QuantumToolbox logo." class="navbar-logo light-content">
+    <img src="../../assets/logo.png" alt="QuantumToolbox logo." class="navbar-logo dark-content">
     </a>
     <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Tutorials for Quantum Toolbox in Julia</span>
@@ -429,22 +431,22 @@ window.Quarto = {
 <section id="code-demonstration" class="level2">
 <h2 class="anchored" data-anchor-id="code-demonstration">Code demonstration</h2>
 <div id="2" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">using</span> <span class="bu">QuantumToolbox</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">using</span> <span class="bu">QuantumToolbox</span></span>
 <span id="cb1-2"><a href="#cb1-2"></a><span class="im">using</span> <span class="bu">CairoMakie</span></span>
 <span id="cb1-3"><a href="#cb1-3"></a></span>
-<span id="cb1-4"><a href="#cb1-4"></a>CairoMakie.<span class="fu">activate!</span>(<span class="kw">type</span> <span class="op">=</span> <span class="st">"svg"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-4"><a href="#cb1-4"></a>CairoMakie.<span class="fu">activate!</span>(<span class="kw">type</span> <span class="op">=</span> <span class="st">"svg"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="4" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1"></a>ω <span class="op">=</span> <span class="fl">1</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1"></a>ω <span class="op">=</span> <span class="fl">1</span></span>
 <span id="cb2-2"><a href="#cb2-2"></a>ω<span class="fl">0</span> <span class="op">=</span> <span class="fl">1</span></span>
 <span id="cb2-3"><a href="#cb2-3"></a></span>
 <span id="cb2-4"><a href="#cb2-4"></a>gc <span class="op">=</span> <span class="fu">√</span>(ω<span class="op">/</span>ω<span class="fl">0</span>)<span class="op">/</span><span class="fl">2</span></span>
 <span id="cb2-5"><a href="#cb2-5"></a></span>
-<span id="cb2-6"><a href="#cb2-6"></a>κ <span class="op">=</span> <span class="fl">0.05</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-6"><a href="#cb2-6"></a>κ <span class="op">=</span> <span class="fl">0.05</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Here, we define some functions for later usage.</p>
 <div id="6" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># M: cavity Hilbert space truncation, N: number of atoms</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># M: cavity Hilbert space truncation, N: number of atoms</span></span>
 <span id="cb3-2"><a href="#cb3-2"></a><span class="fu">Jz</span>(M, N) <span class="op">=</span> (<span class="fu">qeye</span>(M) <span class="op">⊗</span> <span class="fu">jmat</span>(N<span class="op">/</span><span class="fl">2</span>, <span class="op">:</span>z))</span>
 <span id="cb3-3"><a href="#cb3-3"></a></span>
 <span id="cb3-4"><a href="#cb3-4"></a><span class="fu">a</span>(M, N) <span class="op">=</span> (<span class="fu">destroy</span>(M) <span class="op">⊗</span> <span class="fu">qeye</span>(N<span class="op">+</span><span class="fl">1</span>))</span>
@@ -462,19 +464,19 @@ window.Quarto = {
 <span id="cb3-16"><a href="#cb3-16"></a>    H1 <span class="op">=</span> <span class="fl">1</span><span class="op">/</span> √N <span class="op">*</span> (a_ <span class="op">+</span> a_<span class="op">'</span>) <span class="op">*</span> (Jp <span class="op">+</span> Jm)</span>
 <span id="cb3-17"><a href="#cb3-17"></a></span>
 <span id="cb3-18"><a href="#cb3-18"></a>    <span class="cf">return</span> (H0 <span class="op">+</span> g <span class="op">*</span> H1)</span>
-<span id="cb3-19"><a href="#cb3-19"></a><span class="kw">end</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-19"><a href="#cb3-19"></a><span class="kw">end</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Take the example of 4 atoms.</p>
 <div id="8" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1"></a>M0, N0 <span class="op">=</span> <span class="fl">16</span>, <span class="fl">4</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1"></a>M0, N0 <span class="op">=</span> <span class="fl">16</span>, <span class="fl">4</span></span>
 <span id="cb4-2"><a href="#cb4-2"></a></span>
 <span id="cb4-3"><a href="#cb4-3"></a><span class="fu">H0</span>(g) <span class="op">=</span> <span class="fu">H</span>(M0, N0, g)</span>
 <span id="cb4-4"><a href="#cb4-4"></a></span>
 <span id="cb4-5"><a href="#cb4-5"></a>a0 <span class="op">=</span> <span class="fu">a</span>(M0, N0)</span>
-<span id="cb4-6"><a href="#cb4-6"></a>Jz0 <span class="op">=</span> <span class="fu">Jz</span>(M0, N0);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-6"><a href="#cb4-6"></a>Jz0 <span class="op">=</span> <span class="fu">Jz</span>(M0, N0);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="10" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1"></a>gs <span class="op">=</span> <span class="fl">0.0</span><span class="op">:</span><span class="fl">0.05</span><span class="op">:</span><span class="fl">1.0</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1"></a>gs <span class="op">=</span> <span class="fl">0.0</span><span class="op">:</span><span class="fl">0.05</span><span class="op">:</span><span class="fl">1.0</span></span>
 <span id="cb5-2"><a href="#cb5-2"></a>ψGs <span class="op">=</span> <span class="fu">map</span>(gs) <span class="cf">do</span> g</span>
 <span id="cb5-3"><a href="#cb5-3"></a>    H <span class="op">=</span> <span class="fu">H0</span>(g)</span>
 <span id="cb5-4"><a href="#cb5-4"></a>    vals, vecs <span class="op">=</span> <span class="fu">eigenstates</span>(H)</span>
@@ -482,10 +484,10 @@ window.Quarto = {
 <span id="cb5-6"><a href="#cb5-6"></a><span class="cf">end</span></span>
 <span id="cb5-7"><a href="#cb5-7"></a></span>
 <span id="cb5-8"><a href="#cb5-8"></a>nvec <span class="op">=</span> <span class="fu">expect</span>(a0<span class="op">'*</span>a0, ψGs)</span>
-<span id="cb5-9"><a href="#cb5-9"></a>Jzvec <span class="op">=</span> <span class="fu">expect</span>(Jz0, ψGs);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-9"><a href="#cb5-9"></a>Jzvec <span class="op">=</span> <span class="fu">expect</span>(Jz0, ψGs);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="12" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1"></a>fig <span class="op">=</span> <span class="fu">Figure</span>(size<span class="op">=</span>(<span class="fl">900</span>, <span class="fl">350</span>))</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1"></a>fig <span class="op">=</span> <span class="fu">Figure</span>(size<span class="op">=</span>(<span class="fl">900</span>, <span class="fl">350</span>))</span>
 <span id="cb6-2"><a href="#cb6-2"></a>axn <span class="op">=</span> <span class="fu">Axis</span>(</span>
 <span id="cb6-3"><a href="#cb6-3"></a> fig[<span class="fl">1</span>,<span class="fl">1</span>],</span>
 <span id="cb6-4"><a href="#cb6-4"></a> xlabel <span class="op">=</span> <span class="st">"interaction strength"</span>,</span>
@@ -499,7 +501,7 @@ window.Quarto = {
 <span id="cb6-12"><a href="#cb6-12"></a><span class="fu">ylims!</span>(<span class="op">-</span>N0<span class="op">/</span><span class="fl">2</span>, N0<span class="op">/</span><span class="fl">2</span>)</span>
 <span id="cb6-13"><a href="#cb6-13"></a><span class="fu">lines!</span>(axn, gs, <span class="fu">real</span>(nvec))</span>
 <span id="cb6-14"><a href="#cb6-14"></a><span class="fu">lines!</span>(axJz, gs, <span class="fu">real</span>(Jzvec))</span>
-<span id="cb6-15"><a href="#cb6-15"></a>fig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-15"><a href="#cb6-15"></a>fig</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div>
 <figure class="figure">
@@ -510,7 +512,7 @@ window.Quarto = {
 </div>
 <p>The expectation value of photon number and <span class="math inline">\(\hat{J}_z\)</span> showed a sudden increment around <span class="math inline">\(g_c\)</span>.</p>
 <div id="14" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># the indices in coupling strength list (gs)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># the indices in coupling strength list (gs)</span></span>
 <span id="cb7-2"><a href="#cb7-2"></a><span class="co"># to display wigner and fock distribution</span></span>
 <span id="cb7-3"><a href="#cb7-3"></a>cases <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">:</span><span class="fl">21</span></span>
 <span id="cb7-4"><a href="#cb7-4"></a></span>
@@ -545,7 +547,7 @@ window.Quarto = {
 <span id="cb7-33"><a href="#cb7-33"></a>ax3.xlabelsize, ax3.ylabelsize <span class="op">=</span> <span class="fl">20</span>, <span class="fl">20</span></span>
 <span id="cb7-34"><a href="#cb7-34"></a><span class="fu">vlines!</span>(ax3, gs[cases], color<span class="op">=:</span>orange, linestyle <span class="op">=</span> <span class="op">:</span>dash, linewidth <span class="op">=</span> <span class="fl">4</span>)</span>
 <span id="cb7-35"><a href="#cb7-35"></a></span>
-<span id="cb7-36"><a href="#cb7-36"></a>fig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-36"><a href="#cb7-36"></a>fig</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div>
 <figure class="figure">
@@ -556,17 +558,17 @@ window.Quarto = {
 </div>
 <p>As <span class="math inline">\(g\)</span> increases, the cavity ground state’s wigner function plot looks more coherent than a thermal state.</p>
 <div id="16" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1"></a>Ns <span class="op">=</span> <span class="fl">8</span><span class="op">:</span><span class="fl">8</span><span class="op">:</span><span class="fl">24</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1"></a>Ns <span class="op">=</span> <span class="fl">8</span><span class="op">:</span><span class="fl">8</span><span class="op">:</span><span class="fl">24</span></span>
 <span id="cb8-2"><a href="#cb8-2"></a>slists <span class="op">=</span> <span class="fu">map</span>(Ns) <span class="cf">do</span> N</span>
 <span id="cb8-3"><a href="#cb8-3"></a>    slist <span class="op">=</span> <span class="fu">map</span>(gs) <span class="cf">do</span> g</span>
 <span id="cb8-4"><a href="#cb8-4"></a>        H_ <span class="op">=</span> <span class="fu">H</span>(M0, N, g)</span>
 <span id="cb8-5"><a href="#cb8-5"></a>        _, vecs <span class="op">=</span> <span class="fu">eigenstates</span>(H_)</span>
 <span id="cb8-6"><a href="#cb8-6"></a>        <span class="fu">entropy_mutual</span>(vecs[<span class="fl">1</span>], <span class="fl">1</span>, <span class="fl">2</span>)</span>
 <span id="cb8-7"><a href="#cb8-7"></a>    <span class="cf">end</span></span>
-<span id="cb8-8"><a href="#cb8-8"></a><span class="cf">end</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-8"><a href="#cb8-8"></a><span class="cf">end</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="18" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1"></a>fig <span class="op">=</span> <span class="fu">Figure</span>(size<span class="op">=</span>(<span class="fl">900</span>, <span class="fl">400</span>))</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1"></a>fig <span class="op">=</span> <span class="fu">Figure</span>(size<span class="op">=</span>(<span class="fl">900</span>, <span class="fl">400</span>))</span>
 <span id="cb9-2"><a href="#cb9-2"></a>ax <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">1</span>,<span class="fl">1</span>])</span>
 <span id="cb9-3"><a href="#cb9-3"></a>ax.xlabel <span class="op">=</span> <span class="st">"coupling strength"</span></span>
 <span id="cb9-4"><a href="#cb9-4"></a>ax.ylabel <span class="op">=</span> <span class="st">"mutual entropy"</span></span>
@@ -576,7 +578,7 @@ window.Quarto = {
 <span id="cb9-8"><a href="#cb9-8"></a><span class="cf">end</span></span>
 <span id="cb9-9"><a href="#cb9-9"></a></span>
 <span id="cb9-10"><a href="#cb9-10"></a><span class="fu">Legend</span>(fig[<span class="fl">1</span>,<span class="fl">2</span>], ax, label <span class="op">=</span> <span class="st">"number of atoms"</span>)</span>
-<span id="cb9-11"><a href="#cb9-11"></a>fig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-11"><a href="#cb9-11"></a>fig</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div>
 <figure class="figure">
@@ -590,7 +592,7 @@ window.Quarto = {
 <section id="version-information" class="level2">
 <h2 class="anchored" data-anchor-id="version-information">Version Information</h2>
 <div id="20" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1"></a>QuantumToolbox.<span class="fu">versioninfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1"></a>QuantumToolbox.<span class="fu">versioninfo</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
  QuantumToolbox.jl: Quantum Toolbox in Julia
@@ -605,7 +607,7 @@ Julia              Ver. 1.11.6
 QuantumToolbox     Ver. 0.34.1
 SciMLOperators     Ver. 1.7.1
 LinearSolve        Ver. 3.28.0
-OrdinaryDiffEqCore Ver. 1.33.0
+OrdinaryDiffEqCore Ver. 1.34.0
 
 System information:
 ====================================
@@ -689,13 +691,14 @@ Threads  : 4 (on 4 virtual cores)
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.34">
+<meta name="generator" content="quarto-1.8.24">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -90,18 +90,19 @@ div.csl-indent {
 <link href="../assets/favicon.ico" rel="icon">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-83aa21ed72f0068e2bb8f0090f02f802.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-f0a4794d096e7901d871e43f74665444.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-83aa21ed72f0068e2bb8f0090f02f802.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-f16cd255ecb5ae9510f6a112aa2ee9ab.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-f3afb4d828d77514a78ff08d52625b9d.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-f16cd255ecb5ae9510f6a112aa2ee9ab.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-5a2f0cd714322f9d28070e1678e5b478.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-666874306d53323563f630c4bc2c1354.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-5a2f0cd714322f9d28070e1678e5b478.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-385fe92fe65ca0dffbe5a0daae6f4f31.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-0188f7b1a8634cb5a69946dd3f5eece5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-385fe92fe65ca0dffbe5a0daae6f4f31.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -144,7 +145,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -333,7 +334,8 @@ window.Quarto = {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../assets/logo.png" alt="QuantumToolbox logo." class="navbar-logo">
+    <img src="../assets/logo.png" alt="QuantumToolbox logo." class="navbar-logo light-content">
+    <img src="../assets/logo.png" alt="QuantumToolbox logo." class="navbar-logo dark-content">
     </a>
     <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Tutorials for Quantum Toolbox in Julia</span>
@@ -441,20 +443,20 @@ H_{\textrm{sf}} &amp;=\sum_{\alpha=\textrm{L},\textrm{R}}\sum_{k}g_{\alpha,k}c_{
 <p>Here, <span class="math inline">\(d\)</span> <span class="math inline">\((d^\dagger)\)</span> annihilates (creates) an electron in the system and <span class="math inline">\(\epsilon\)</span> is the energy of the electron. Furthermore, <span class="math inline">\(c_{\alpha,k}\)</span> <span class="math inline">\((c_{\alpha,k}^{\dagger})\)</span> annihilates (creates) an electron in the state <span class="math inline">\(k\)</span> (with energy <span class="math inline">\(\epsilon_{\alpha,k}\)</span>) of the <span class="math inline">\(\alpha\)</span>-th reservoir.</p>
 <p>Now, we need to build the system Hamiltonian and initial state with the package <a href="https://github.com/qutip/QuantumToolbox.jl"><code>QuantumToolbox.jl</code></a> to construct the operators.</p>
 <div id="2" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">using</span> <span class="bu">HierarchicalEOM</span>  <span class="co"># this automatically loads `QuantumToolbox`</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">using</span> <span class="bu">HierarchicalEOM</span>  <span class="co"># this automatically loads `QuantumToolbox`</span></span>
 <span id="cb1-2"><a href="#cb1-2"></a><span class="im">using</span> <span class="bu">CairoMakie</span>       <span class="co"># for plotting results</span></span>
 <span id="cb1-3"><a href="#cb1-3"></a></span>
-<span id="cb1-4"><a href="#cb1-4"></a>CairoMakie.<span class="fu">activate!</span>(<span class="kw">type</span> <span class="op">=</span> <span class="st">"svg"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-4"><a href="#cb1-4"></a>CairoMakie.<span class="fu">activate!</span>(<span class="kw">type</span> <span class="op">=</span> <span class="st">"svg"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="4" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1"></a>d <span class="op">=</span> <span class="fu">destroy</span>(<span class="fl">2</span>) <span class="co"># annihilation operator of the system electron</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1"></a>d <span class="op">=</span> <span class="fu">destroy</span>(<span class="fl">2</span>) <span class="co"># annihilation operator of the system electron</span></span>
 <span id="cb2-2"><a href="#cb2-2"></a></span>
 <span id="cb2-3"><a href="#cb2-3"></a><span class="co"># The system Hamiltonian</span></span>
 <span id="cb2-4"><a href="#cb2-4"></a>ϵ <span class="op">=</span> <span class="fl">1.0</span> <span class="co"># site energy</span></span>
 <span id="cb2-5"><a href="#cb2-5"></a>Hsys <span class="op">=</span> ϵ <span class="op">*</span> d<span class="op">'</span> <span class="op">*</span> d</span>
 <span id="cb2-6"><a href="#cb2-6"></a></span>
 <span id="cb2-7"><a href="#cb2-7"></a><span class="co"># System initial state</span></span>
-<span id="cb2-8"><a href="#cb2-8"></a>ψ<span class="fl">0</span> <span class="op">=</span> <span class="fu">basis</span>(<span class="fl">2</span>, <span class="fl">0</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-8"><a href="#cb2-8"></a>ψ<span class="fl">0</span> <span class="op">=</span> <span class="fu">basis</span>(<span class="fl">2</span>, <span class="fl">0</span>);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="construct-bath-objects" class="level2">
@@ -468,7 +470,7 @@ H_{\textrm{sf}} &amp;=\sum_{\alpha=\textrm{L},\textrm{R}}\sum_{k}g_{\alpha,k}c_{
 <li>the total number of exponentials for the reservoir <span class="math inline">\(2(N + 1)\)</span></li>
 </ul>
 <div id="6" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1"></a>Γ <span class="op">=</span> <span class="fl">0.01</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1"></a>Γ <span class="op">=</span> <span class="fl">0.01</span></span>
 <span id="cb3-2"><a href="#cb3-2"></a>W <span class="op">=</span> <span class="fl">1</span></span>
 <span id="cb3-3"><a href="#cb3-3"></a>kT <span class="op">=</span> <span class="fl">0.025851991</span></span>
 <span id="cb3-4"><a href="#cb3-4"></a>μL <span class="op">=</span>  <span class="fl">1.0</span> <span class="co"># Left  bath</span></span>
@@ -476,7 +478,7 @@ H_{\textrm{sf}} &amp;=\sum_{\alpha=\textrm{L},\textrm{R}}\sum_{k}g_{\alpha,k}c_{
 <span id="cb3-6"><a href="#cb3-6"></a>N <span class="op">=</span> <span class="fl">2</span></span>
 <span id="cb3-7"><a href="#cb3-7"></a>bath_L <span class="op">=</span> <span class="fu">Fermion_Lorentz_Pade</span>(d, Γ, μL, W, kT, N)</span>
 <span id="cb3-8"><a href="#cb3-8"></a>bath_R <span class="op">=</span> <span class="fu">Fermion_Lorentz_Pade</span>(d, Γ, μR, W, kT, N)</span>
-<span id="cb3-9"><a href="#cb3-9"></a>baths <span class="op">=</span> [bath_L, bath_R]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-9"><a href="#cb3-9"></a>baths <span class="op">=</span> [bath_L, bath_R]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>2-element Vector{FermionBath}:
  HierarchicalEOM.FermionBath object with 6 terms.
@@ -488,8 +490,8 @@ H_{\textrm{sf}} &amp;=\sum_{\alpha=\textrm{L},\textrm{R}}\sum_{k}g_{\alpha,k}c_{
 <section id="construct-heomls-matrix" class="level2">
 <h2 class="anchored" data-anchor-id="construct-heomls-matrix">Construct HEOMLS matrix</h2>
 <div id="8" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1"></a>tier <span class="op">=</span> <span class="fl">5</span></span>
-<span id="cb5-2"><a href="#cb5-2"></a>M <span class="op">=</span> <span class="fu">M_Fermion</span>(Hsys, tier, baths)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1"></a>tier <span class="op">=</span> <span class="fl">5</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>M <span class="op">=</span> <span class="fu">M_Fermion</span>(Hsys, tier, baths)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Preparing block matrices for HEOM Liouvillian superoperator (using 4 threads)...
 Progress: [                              ]   0.1% --- Elapsed Time: 0h 00m 01s (ETA: 0h 26m 25s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 00s)
@@ -507,8 +509,8 @@ MatrixOperator(6344 × 6344)</code></pre>
 <section id="solve-time-evolution-of-ados" class="level2">
 <h2 class="anchored" data-anchor-id="solve-time-evolution-of-ados">Solve time evolution of ADOs</h2>
 <div id="10" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1"></a>tlist <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">0.5</span><span class="op">:</span><span class="fl">100</span></span>
-<span id="cb8-2"><a href="#cb8-2"></a>ados_evolution <span class="op">=</span> <span class="fu">HEOMsolve</span>(M, ψ<span class="fl">0</span>, tlist).ados</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1"></a>tlist <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">0.5</span><span class="op">:</span><span class="fl">100</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a>ados_evolution <span class="op">=</span> <span class="fu">HEOMsolve</span>(M, ψ<span class="fl">0</span>, tlist).ados</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Solving time evolution for ADOs by Ordinary Differential Equations method...
 Progress: [                              ]   0.5% --- Elapsed Time: 0h 00m 02s (ETA: 0h 06m 40s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 02s (ETA: 0h 00m 00s)</code></pre>
@@ -559,7 +561,7 @@ Progress: [                              ]   0.5% --- Elapsed Time: 0h 00m 02s (
 <section id="solve-stationary-state-of-ados" class="level2">
 <h2 class="anchored" data-anchor-id="solve-stationary-state-of-ados">Solve stationary state of ADOs</h2>
 <div id="12" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1"></a>ados_steady <span class="op">=</span> <span class="fu">steadystate</span>(M)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1"></a>ados_steady <span class="op">=</span> <span class="fu">steadystate</span>(M)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Solving steady state for ADOs by linear-solve method...
 Calculating left preconditioner with ilu...[DONE]
@@ -579,7 +581,7 @@ Solving linear problem...[DONE]</code></pre>
 <p>where <span class="math inline">\(e\)</span> represents the value of the elementary charge, and <span class="math inline">\(\mathcal{N}_\alpha=\sum_k c^\dagger_{\alpha,k}c_{\alpha,k}\)</span> is the occupation number operator for the <span class="math inline">\(\alpha\)</span>-fermionic bath.</p>
 <p>Given an ADOs, we provide a function which calculates the current from the <span class="math inline">\(\alpha\)</span>-fermionic bath into the system with the help of <a href="https://qutip.org/HierarchicalEOM.jl/stable/hierarchy_dictionary/#doc-Hierarchy-Dictionary">Hierarchy Dictionary</a>.</p>
 <div id="14" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1"></a><span class="co"># `bathIdx`:  </span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1"></a><span class="co"># `bathIdx`:  </span></span>
 <span id="cb14-2"><a href="#cb14-2"></a><span class="co"># - 1 means 1st bath (bath_L)</span></span>
 <span id="cb14-3"><a href="#cb14-3"></a><span class="co"># - 2 means 2nd bath (bath_R)</span></span>
 <span id="cb14-4"><a href="#cb14-4"></a><span class="kw">function</span> <span class="fu">Ic</span>(ados, M<span class="op">::</span><span class="dt">M_Fermion</span>, bathIdx<span class="op">::</span><span class="dt">Int</span>)</span>
@@ -611,7 +613,7 @@ Solving linear problem...[DONE]</code></pre>
 <span id="cb14-30"><a href="#cb14-30"></a></span>
 <span id="cb14-31"><a href="#cb14-31"></a>    <span class="co"># (e / ħ) * I  [change unit to μA] </span></span>
 <span id="cb14-32"><a href="#cb14-32"></a>    <span class="cf">return</span> <span class="fl">1.519270639695384E15</span> <span class="op">*</span> <span class="fu">real</span>(<span class="fl">1im</span> <span class="op">*</span> I) <span class="op">*</span> eV_to_Joule <span class="op">*</span> <span class="fl">1E6</span></span>
-<span id="cb14-33"><a href="#cb14-33"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-33"><a href="#cb14-33"></a><span class="kw">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>Ic (generic function with 1 method)</code></pre>
 </div>
@@ -620,8 +622,8 @@ Solving linear problem...[DONE]</code></pre>
 <section id="steady-current" class="level2">
 <h2 class="anchored" data-anchor-id="steady-current">steady current</h2>
 <div id="16" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1"></a>Is_L <span class="op">=</span> <span class="fu">ones</span>(<span class="fu">length</span>(tlist)) <span class="op">.*</span> <span class="fu">Ic</span>(ados_steady, M, <span class="fl">1</span>)</span>
-<span id="cb16-2"><a href="#cb16-2"></a>Is_R <span class="op">=</span> <span class="fu">ones</span>(<span class="fu">length</span>(tlist)) <span class="op">.*</span> <span class="fu">Ic</span>(ados_steady, M, <span class="fl">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1"></a>Is_L <span class="op">=</span> <span class="fu">ones</span>(<span class="fu">length</span>(tlist)) <span class="op">.*</span> <span class="fu">Ic</span>(ados_steady, M, <span class="fl">1</span>)</span>
+<span id="cb16-2"><a href="#cb16-2"></a>Is_R <span class="op">=</span> <span class="fu">ones</span>(<span class="fu">length</span>(tlist)) <span class="op">.*</span> <span class="fu">Ic</span>(ados_steady, M, <span class="fl">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>201-element Vector{Float64}:
  -0.04632854328418656
@@ -650,16 +652,16 @@ Solving linear problem...[DONE]</code></pre>
 <section id="time-evolution-current" class="level2">
 <h2 class="anchored" data-anchor-id="time-evolution-current">time evolution current</h2>
 <div id="18" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1"></a>Ie_L <span class="op">=</span> []</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1"></a>Ie_L <span class="op">=</span> []</span>
 <span id="cb18-2"><a href="#cb18-2"></a>Ie_R <span class="op">=</span> []</span>
 <span id="cb18-3"><a href="#cb18-3"></a><span class="cf">for</span> ados <span class="kw">in</span> ados_evolution</span>
 <span id="cb18-4"><a href="#cb18-4"></a>    <span class="fu">push!</span>(Ie_L, <span class="fu">Ic</span>(ados, M, <span class="fl">1</span>))</span>
 <span id="cb18-5"><a href="#cb18-5"></a>    <span class="fu">push!</span>(Ie_R, <span class="fu">Ic</span>(ados, M, <span class="fl">2</span>))</span>
-<span id="cb18-6"><a href="#cb18-6"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb18-6"><a href="#cb18-6"></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>plot the result</p>
 <div id="20" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb19-1"><a href="#cb19-1"></a>fig <span class="op">=</span> <span class="fu">Figure</span>()</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb19-1"><a href="#cb19-1"></a>fig <span class="op">=</span> <span class="fu">Figure</span>()</span>
 <span id="cb19-2"><a href="#cb19-2"></a>ax <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">1</span>, <span class="fl">1</span>], xlabel <span class="op">=</span> <span class="st">"time"</span>, ylabel <span class="op">=</span> <span class="st">"Current"</span>)</span>
 <span id="cb19-3"><a href="#cb19-3"></a><span class="fu">lines!</span>(ax, tlist, Ie_L, label <span class="op">=</span> <span class="st">"Bath L"</span>, color <span class="op">=</span> <span class="op">:</span>blue, linestyle <span class="op">=</span> <span class="op">:</span>solid)</span>
 <span id="cb19-4"><a href="#cb19-4"></a><span class="fu">lines!</span>(ax, tlist, Ie_R, label <span class="op">=</span> <span class="st">"Bath R"</span>, color <span class="op">=</span> <span class="op">:</span>red, linestyle <span class="op">=</span> <span class="op">:</span>solid)</span>
@@ -668,7 +670,7 @@ Solving linear problem...[DONE]</code></pre>
 <span id="cb19-7"><a href="#cb19-7"></a></span>
 <span id="cb19-8"><a href="#cb19-8"></a><span class="fu">axislegend</span>(ax, position <span class="op">=</span> <span class="op">:</span>rt)</span>
 <span id="cb19-9"><a href="#cb19-9"></a></span>
-<span id="cb19-10"><a href="#cb19-10"></a>fig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb19-10"><a href="#cb19-10"></a>fig</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div>
 <figure class="figure">
@@ -681,7 +683,7 @@ Solving linear problem...[DONE]</code></pre>
 <section id="version-information" class="level2">
 <h2 class="anchored" data-anchor-id="version-information">Version Information</h2>
 <div id="22" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb20-1"><a href="#cb20-1"></a>HierarchicalEOM.<span class="fu">versioninfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb20-1"><a href="#cb20-1"></a>HierarchicalEOM.<span class="fu">versioninfo</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
 <pre><span style="font-weight:bold;color:rgb(0,135,0)">                                   __</span>
@@ -709,7 +711,7 @@ HierarchicalEOM    Ver. 2.6.0
 QuantumToolbox     Ver. 0.34.1
 SciMLOperators     Ver. 1.7.1
 LinearSolve        Ver. 3.28.0
-OrdinaryDiffEqCore Ver. 1.33.0
+OrdinaryDiffEqCore Ver. 1.34.0
 
 System information:
 ====================================
@@ -800,13 +802,14 @@ Huang, Yi-Te, Po-Chen Kuo, Neill Lambert, Mauro Cirio, Simon Cross, Shen-Liang Y
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

@@ -80,9 +80,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-f16cd255ecb5ae9510f6a112aa2ee9ab.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-385fe92fe65ca0dffbe5a0daae6f4f31.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-0188f7b1a8634cb5a69946dd3f5eece5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-385fe92fe65ca0dffbe5a0daae6f4f31.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-1cb99e5faa8df9499aa296ac4cd75a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-948526ab9cde9517ac9fd7d69a164a89.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-1cb99e5faa8df9499aa296ac4cd75a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -433,13 +433,13 @@ window.Quarto = {
 <span id="cb2-4"><a href="#cb2-4"></a>gs <span class="op">=</span> <span class="fu">rand</span>(N<span class="op">-</span><span class="fl">1</span>) <span class="co"># use rand function for the random interaction strengths</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>7-element Vector{Float64}:
- 0.7394197429860009
- 0.3321537073336591
- 0.07800680749605593
- 0.21628108481417463
- 0.22441719494174706
- 0.6967477334652611
- 0.6098731253338042</code></pre>
+ 0.13018868995792943
+ 0.6946621962060557
+ 0.0011743314785869208
+ 0.03209347491854653
+ 0.4598520267955212
+ 0.8744769942894174
+ 0.503842793063754</code></pre>
 </div>
 </div>
 <div id="6" class="cell" data-execution_count="1">
@@ -534,22 +534,22 @@ Quantum Object Evo.:   type=Operator()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(2
 <pre><code>
 Quantum Object:   type=Ket()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256,)
 256-element SparseArrays.SparseVector{ComplexF64, Int64} with 128 stored entries:
-  [1  ]  =  0.000479587+0.0im
-  [4  ]  =  -0.00149017+0.0im
-  [6  ]  =  0.000959636+0.0im
-  [7  ]  =  -0.000583723+0.0im
-  [10 ]  =  -0.00387446+0.0im
-  [11 ]  =  0.00201337+0.0im
-  [13 ]  =  -0.00349186+0.0im
+  [1  ]  =  2.84511e-6+0.0im
+  [4  ]  =  -9.94411e-6+0.0im
+  [6  ]  =  6.8902e-6+0.0im
+  [7  ]  =  -3.59561e-6+0.0im
+  [10 ]  =  -1.60857e-5+0.0im
+  [11 ]  =  7.35565e-6+0.0im
+  [13 ]  =  -1.0721e-5+0.0im
          ⋮
-  [241]  =  0.0331969+0.0im
-  [244]  =  -0.103576+0.0im
-  [246]  =  0.0656852+0.0im
-  [247]  =  -0.0396367+0.0im
-  [250]  =  -0.275953+0.0im
-  [251]  =  0.143313+0.0im
-  [253]  =  -0.248836+0.0im
-  [256]  =  0.8223+0.0im</code></pre>
+  [241]  =  0.0577046+0.0im
+  [244]  =  -0.201724+0.0im
+  [246]  =  0.139713+0.0im
+  [247]  =  -0.0728861+0.0im
+  [250]  =  -0.326565+0.0im
+  [251]  =  0.149321+0.0im
+  [253]  =  -0.217661+0.0im
+  [256]  =  0.811847+0.0im</code></pre>
 </div>
 </div>
 <p>We can see that the truthful ground state we are preparing is indeed very complex.</p>

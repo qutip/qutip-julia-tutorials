@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.24">
+<meta name="generator" content="quarto-1.8.25">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -75,9 +75,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-f16cd255ecb5ae9510f6a112aa2ee9ab.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-f3afb4d828d77514a78ff08d52625b9d.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-f16cd255ecb5ae9510f6a112aa2ee9ab.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-a14e345711173c227b21482e2eb4cc70.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-6d7e0e055978adcb0dc3bbe98a6d8351.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-a14e345711173c227b21482e2eb4cc70.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../site_libs/bootstrap/bootstrap-1cb99e5faa8df9499aa296ac4cd75a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
@@ -516,7 +516,7 @@ window.Quarto = {
 <span id="cb8-12"><a href="#cb8-12"></a></span>
 <span id="cb8-13"><a href="#cb8-13"></a><span class="fu">println</span>(<span class="st">"QFI computed for "</span>, <span class="fu">length</span>(ts), <span class="st">" time points"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  9.673995 seconds (15.15 M allocations: 948.310 MiB, 1.93% gc time, 53.77% compilation time)
+<pre><code>  9.779889 seconds (15.15 M allocations: 948.197 MiB, 2.20% gc time, 54.15% compilation time)
 QFI computed for 100 time points</code></pre>
 </div>
 </div>
@@ -557,7 +557,7 @@ Current admin team:
 Package information:
 ====================================
 Julia              Ver. 1.11.7
-QuantumToolbox     Ver. 0.34.1
+QuantumToolbox     Ver. 0.36.0
 SciMLOperators     Ver. 1.7.2
 LinearSolve        Ver. 3.28.0
 OrdinaryDiffEqCore Ver. 1.34.0
@@ -572,6 +572,11 @@ LIBM     : libopenlibm
 LLVM     : libLLVM-16.0.6 (ORCJIT, znver3)
 BLAS     : libopenblas64_.so (ilp64)
 Threads  : 4 (on 4 virtual cores)
+
++---------------------------------------------------+
+| Please cite QuantumToolbox.jl in your publication |
++---------------------------------------------------+
+For your convenience, a bibtex reference can be easily generated using `QuantumToolbox.cite()`.
 </code></pre>
 </div>
 </div>
@@ -583,10 +588,9 @@ Threads  : 4 (on 4 virtual cores)
 <pre><span class="ansi-green-fg ansi-bold">Status</span> `~/work/qutip-julia-tutorials/qutip-julia-tutorials/Project.toml`
   <span class="ansi-bright-black-fg">[13f3f980] </span>CairoMakie v0.15.6
   <span class="ansi-bright-black-fg">[f6369f11] </span>ForwardDiff v1.2.1
-  <span class="ansi-bright-black-fg">[a62dbcb7] </span>HierarchicalEOM v2.6.0
-<span class="ansi-yellow-fg">⌅</span> <span class="ansi-bright-black-fg">[6c2fb7c5] </span>QuantumToolbox v0.34.1
+  <span class="ansi-bright-black-fg">[a62dbcb7] </span>HierarchicalEOM v2.7.0
+  <span class="ansi-bright-black-fg">[6c2fb7c5] </span>QuantumToolbox v0.36.0
   <span class="ansi-bright-black-fg">[4c0109c6] </span>QuartoNotebookRunner v0.17.4
-<span class="ansi-cyan-fg ansi-bold">Info</span> Packages marked with <span class="ansi-yellow-fg">⌅</span> have new versions available but compatibility constraints restrict them from upgrading. To see why use `status --outdated`
 </pre>
 </div>
 </div>

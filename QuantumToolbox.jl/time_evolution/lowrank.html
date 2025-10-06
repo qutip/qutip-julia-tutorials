@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Luca Gravina">
-<meta name="dcterms.date" content="2025-09-29">
+<meta name="dcterms.date" content="2025-10-06">
 
 <title>Low rank master equation – Tutorials for Quantum Toolbox in Julia</title>
 <style>
@@ -414,7 +414,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Last Update</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2025-09-29</p>
+      <p class="date">2025-10-06</p>
     </div>
   </div>
   
@@ -614,7 +614,7 @@ S = -\mathrm{Tr}(\rho \log_2(\rho)),
 <p><code>adj_condition = "variational"</code> selects one of three possible definitions for the control quantity <code>chi</code>. Specifically, the selected option consists in the leakage from the variational manifold and is defined as <span class="math display">\[
 \chi = \operatorname{Tr}(S^{-1} L).
 \]</span></p>
-<p>Finally, <code>Δt</code> specifies the checkpointing interval by which the simulation is rewinded upon the basis expansion.</p>
+<p>Finally, <code>Δt</code> specifies the checkpointing interval by which the simulation is rewound upon the basis expansion.</p>
 <p>Not directly related to the basis expansion, but still important for the stability of the algorithm, are the options <code>atol_inv</code> (the tolerance for the inverse of the overlap matrix) and <code>alg</code> (the ODE solver).</p>
 <p>We now launch the evolution using the <code>lr_mesolve</code> function</p>
 <div id="22" class="cell" data-execution_count="1">

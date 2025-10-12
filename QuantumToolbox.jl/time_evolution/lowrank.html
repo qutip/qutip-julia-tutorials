@@ -457,7 +457,7 @@ window.Quarto = {
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1"></a>Nx, Ny <span class="op">=</span> <span class="fl">2</span>, <span class="fl">3</span></span>
 <span id="cb2-2"><a href="#cb2-2"></a>latt <span class="op">=</span> <span class="fu">Lattice</span>(Nx <span class="op">=</span> Nx, Ny <span class="op">=</span> Ny)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>Lattice{Int64, LinearIndices{2, Tuple{Base.OneTo{Int64}, Base.OneTo{Int64}}}, CartesianIndices{2, Tuple{Base.OneTo{Int64}, Base.OneTo{Int64}}}}(2, 3, 6, [1 3 5; 2 4 6], CartesianIndices((2, 3)))</code></pre>
+<pre><code>Lattice{Int64, LinearIndices{2, Tuple{Base.OneTo{Int64}, Base.OneTo{Int64}}}, CartesianIndices{2, Tuple{Base.OneTo{Int64}, Base.OneTo{Int64}}}}(2, 3, 6, LinearIndices((Base.OneTo(2), Base.OneTo(3))), CartesianIndices((2, 3)))</code></pre>
 </div>
 </div>
 <p>The Hamiltonian of the TFIM reads <span class="math display">\[
@@ -674,11 +674,11 @@ Current admin team:
 
 Package information:
 ====================================
-Julia              Ver. 1.11.7
+Julia              Ver. 1.12.0
 QuantumToolbox     Ver. 0.36.0
-SciMLOperators     Ver. 1.7.2
+SciMLOperators     Ver. 1.9.0
 LinearSolve        Ver. 3.28.0
-OrdinaryDiffEqCore Ver. 1.34.0
+OrdinaryDiffEqCore Ver. 1.36.0
 
 System information:
 ====================================
@@ -687,7 +687,7 @@ CPU      : 4 × AMD EPYC 7763 64-Core Processor
 Memory   : 15.621 GB
 WORD_SIZE: 64
 LIBM     : libopenlibm
-LLVM     : libLLVM-16.0.6 (ORCJIT, znver3)
+LLVM     : libLLVM-18.1.7 (ORCJIT, znver3)
 BLAS     : libopenblas64_.so (ilp64)
 Threads  : 4 (on 4 virtual cores)
 

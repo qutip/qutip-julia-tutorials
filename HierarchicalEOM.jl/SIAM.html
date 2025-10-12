@@ -502,7 +502,7 @@ Quantum Object:   type=Operator()   dims=[2, 2]   size=(4, 4)   ishermitian=true
 <span id="cb6-3"><a href="#cb6-3"></a>M_odd <span class="op">=</span> <span class="fu">M_Fermion</span>(Hsys, tier, bath_list, ODD)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Preparing block matrices for HEOM Liouvillian superoperator (using 4 threads)...
-Progress: [                              ]   0.0% --- Elapsed Time: 0h 00m 01s (ETA: 0h 38m 44s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 00s)
+Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)
 Constructing matrix...[DONE]
 Preparing block matrices for HEOM Liouvillian superoperator (using 4 threads)...
 Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)
@@ -538,7 +538,7 @@ Solving linear problem...[DONE]</code></pre>
 <span id="cb12-2"><a href="#cb12-2"></a>dos <span class="op">=</span> <span class="fu">DensityOfStates</span>(M_odd, ados_s, d_up, ωlist)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Calculating density of states in frequency domain...
-Progress: [====                          ]  14.3% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 06s)Progress: [=======                       ]  23.8% --- Elapsed Time: 0h 00m 02s (ETA: 0h 00m 06s)Progress: [==========                    ]  33.3% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 06s)Progress: [============                  ]  42.9% --- Elapsed Time: 0h 00m 05s (ETA: 0h 00m 06s)Progress: [===============               ]  52.4% --- Elapsed Time: 0h 00m 06s (ETA: 0h 00m 05s)Progress: [==================            ]  61.9% --- Elapsed Time: 0h 00m 07s (ETA: 0h 00m 04s)Progress: [=====================         ]  71.4% --- Elapsed Time: 0h 00m 09s (ETA: 0h 00m 03s)Progress: [========================      ]  81.0% --- Elapsed Time: 0h 00m 10s (ETA: 0h 00m 02s)Progress: [===========================   ]  90.5% --- Elapsed Time: 0h 00m 11s (ETA: 0h 00m 01s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 12s (ETA: 0h 00m 00s)
+Progress: [====                          ]  14.3% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 06s)Progress: [=======                       ]  23.8% --- Elapsed Time: 0h 00m 02s (ETA: 0h 00m 06s)Progress: [==========                    ]  33.3% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 06s)Progress: [============                  ]  42.9% --- Elapsed Time: 0h 00m 04s (ETA: 0h 00m 05s)Progress: [===============               ]  52.4% --- Elapsed Time: 0h 00m 06s (ETA: 0h 00m 05s)Progress: [==================            ]  61.9% --- Elapsed Time: 0h 00m 07s (ETA: 0h 00m 04s)Progress: [=====================         ]  71.4% --- Elapsed Time: 0h 00m 08s (ETA: 0h 00m 03s)Progress: [=========================     ]  85.7% --- Elapsed Time: 0h 00m 10s (ETA: 0h 00m 01s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 11s (ETA: 0h 00m 00s)
 [DONE]</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
@@ -607,12 +607,12 @@ Other developers:
 
 Package information:
 ====================================
-Julia              Ver. 1.11.7
+Julia              Ver. 1.12.0
 HierarchicalEOM    Ver. 2.7.0
 QuantumToolbox     Ver. 0.36.0
-SciMLOperators     Ver. 1.7.2
+SciMLOperators     Ver. 1.9.0
 LinearSolve        Ver. 3.28.0
-OrdinaryDiffEqCore Ver. 1.34.0
+OrdinaryDiffEqCore Ver. 1.36.0
 
 System information:
 ====================================
@@ -621,7 +621,7 @@ CPU      : 4 × AMD EPYC 7763 64-Core Processor
 Memory   : 15.621 GB
 WORD_SIZE: 64
 LIBM     : libopenlibm
-LLVM     : libLLVM-16.0.6 (ORCJIT, znver3)
+LLVM     : libLLVM-18.1.7 (ORCJIT, znver3)
 BLAS     : libopenblas64_.so (ilp64)
 Threads  : 4 (on 4 virtual cores)
 

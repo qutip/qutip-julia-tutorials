@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Li-Xun Cai">
-<meta name="dcterms.date" content="2025-10-06">
+<meta name="dcterms.date" content="2025-10-13">
 
 <title>Adiabatic sweep (with QuantumObjectEvolution) – Tutorials for Quantum Toolbox in Julia</title>
 <style>
@@ -387,7 +387,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Last Update</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2025-10-06</p>
+      <p class="date">2025-10-13</p>
     </div>
   </div>
   
@@ -433,13 +433,13 @@ window.Quarto = {
 <span id="cb2-4"><a href="#cb2-4"></a>gs <span class="op">=</span> <span class="fu">rand</span>(N<span class="op">-</span><span class="fl">1</span>) <span class="co"># use rand function for the random interaction strengths</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>7-element Vector{Float64}:
- 0.022703403934010602
- 0.4139740405231379
- 0.46975577152235026
- 0.09065828654265173
- 0.6724904059724006
- 0.6298597613784013
- 0.007523038658995285</code></pre>
+ 0.8144591779447955
+ 0.8535164786076275
+ 0.7469922451515101
+ 0.7765306845245685
+ 0.46764261784381345
+ 0.8422893835207421
+ 0.20800039541427962</code></pre>
 </div>
 </div>
 <div id="6" class="cell" data-execution_count="1">
@@ -534,22 +534,22 @@ Quantum Object Evo.:   type=Operator()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(2
 <pre><code>
 Quantum Object:   type=Ket()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256,)
 256-element SparseArrays.SparseVector{ComplexF64, Int64} with 128 stored entries:
-  [1  ]  =  3.45659e-6+0.0im
-  [4  ]  =  -0.00078901+0.0im
-  [6  ]  =  0.000417629+0.0im
-  [7  ]  =  -3.92728e-6+0.0im
-  [10 ]  =  -0.000749975+0.0im
-  [11 ]  =  6.07433e-6+0.0im
-  [13 ]  =  -1.01144e-5+0.0im
+  [1  ]  =  0.00460911+0.0im
+  [4  ]  =  -0.0334972+0.0im
+  [6  ]  =  0.0246796+0.0im
+  [7  ]  =  -0.0069195+0.0im
+  [10 ]  =  -0.0382245+0.0im
+  [11 ]  =  0.00849816+0.0im
+  [13 ]  =  -0.0117978+0.0im
          ⋮
-  [241]  =  0.00121415+0.0im
-  [244]  =  -0.277361+0.0im
-  [246]  =  0.146533+0.0im
-  [247]  =  -0.00137532+0.0im
-  [250]  =  -0.264259+0.0im
-  [251]  =  0.00213881+0.0im
-  [253]  =  -0.00356485+0.0im
-  [256]  =  0.855565+0.0im</code></pre>
+  [241]  =  0.0226586+0.0im
+  [244]  =  -0.168005+0.0im
+  [246]  =  0.119614+0.0im
+  [247]  =  -0.0326168+0.0im
+  [250]  =  -0.211625+0.0im
+  [251]  =  0.0464546+0.0im
+  [253]  =  -0.0655579+0.0im
+  [256]  =  0.545488+0.0im</code></pre>
 </div>
 </div>
 <p>We can see that the truthful ground state we are preparing is indeed very complex.</p>
@@ -645,7 +645,7 @@ Current admin team:
 Package information:
 ====================================
 Julia              Ver. 1.12.0
-QuantumToolbox     Ver. 0.36.0
+QuantumToolbox     Ver. 0.37.0
 SciMLOperators     Ver. 1.9.0
 LinearSolve        Ver. 3.28.0
 OrdinaryDiffEqCore Ver. 1.36.0

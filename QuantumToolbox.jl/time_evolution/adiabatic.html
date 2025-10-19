@@ -80,9 +80,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-a14e345711173c227b21482e2eb4cc70.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-1cb99e5faa8df9499aa296ac4cd75a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-948526ab9cde9517ac9fd7d69a164a89.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-1cb99e5faa8df9499aa296ac4cd75a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-973354c78b0c46c67caa67545bc70c40.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-0f4a2b48982acf40193c0a95c6111a13.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-973354c78b0c46c67caa67545bc70c40.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -433,13 +433,13 @@ window.Quarto = {
 <span id="cb2-4"><a href="#cb2-4"></a>gs <span class="op">=</span> <span class="fu">rand</span>(N<span class="op">-</span><span class="fl">1</span>) <span class="co"># use rand function for the random interaction strengths</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>7-element Vector{Float64}:
- 0.8144591779447955
- 0.8535164786076275
- 0.7469922451515101
- 0.7765306845245685
- 0.46764261784381345
- 0.8422893835207421
- 0.20800039541427962</code></pre>
+ 0.6617157101228732
+ 0.937043464586744
+ 0.881512225980099
+ 0.5170959098979474
+ 0.37345482103792127
+ 0.5322334826876439
+ 0.6076037433911696</code></pre>
 </div>
 </div>
 <div id="6" class="cell" data-execution_count="1">
@@ -534,22 +534,22 @@ Quantum Object Evo.:   type=Operator()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(2
 <pre><code>
 Quantum Object:   type=Ket()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256,)
 256-element SparseArrays.SparseVector{ComplexF64, Int64} with 128 stored entries:
-  [1  ]  =  0.00460911+0.0im
-  [4  ]  =  -0.0334972+0.0im
-  [6  ]  =  0.0246796+0.0im
-  [7  ]  =  -0.0069195+0.0im
-  [10 ]  =  -0.0382245+0.0im
-  [11 ]  =  0.00849816+0.0im
-  [13 ]  =  -0.0117978+0.0im
+  [1  ]  =  0.00748286+0.0im
+  [4  ]  =  -0.0235571+0.0im
+  [6  ]  =  0.0147772+0.0im
+  [7  ]  =  -0.00973476-0.0im
+  [10 ]  =  -0.0276897-0.0im
+  [11 ]  =  0.0149587+0.0im
+  [13 ]  =  -0.029012-0.0im
          ⋮
-  [241]  =  0.0226586+0.0im
-  [244]  =  -0.168005+0.0im
-  [246]  =  0.119614+0.0im
-  [247]  =  -0.0326168+0.0im
-  [250]  =  -0.211625+0.0im
-  [251]  =  0.0464546+0.0im
-  [253]  =  -0.0655579+0.0im
-  [256]  =  0.545488+0.0im</code></pre>
+  [241]  =  0.0422421+0.0im
+  [244]  =  -0.134311+0.0im
+  [246]  =  0.0802824+0.0im
+  [247]  =  -0.0518775+0.0im
+  [250]  =  -0.168608+0.0im
+  [251]  =  0.090541+0.0im
+  [253]  =  -0.177877+0.0im
+  [256]  =  0.600559+0.0im</code></pre>
 </div>
 </div>
 <p>We can see that the truthful ground state we are preparing is indeed very complex.</p>
@@ -644,7 +644,7 @@ Current admin team:
 
 Package information:
 ====================================
-Julia              Ver. 1.12.0
+Julia              Ver. 1.12.1
 QuantumToolbox     Ver. 0.37.0
 SciMLOperators     Ver. 1.9.0
 LinearSolve        Ver. 3.28.0
@@ -654,7 +654,7 @@ System information:
 ====================================
 OS       : Linux (x86_64-linux-gnu)
 CPU      : 4 × AMD EPYC 7763 64-Core Processor
-Memory   : 15.621 GB
+Memory   : 15.62 GB
 WORD_SIZE: 64
 LIBM     : libopenlibm
 LLVM     : libLLVM-18.1.7 (ORCJIT, znver3)

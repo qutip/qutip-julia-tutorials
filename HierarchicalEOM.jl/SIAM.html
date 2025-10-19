@@ -100,9 +100,9 @@ div.csl-indent {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-a14e345711173c227b21482e2eb4cc70.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-1cb99e5faa8df9499aa296ac4cd75a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-948526ab9cde9517ac9fd7d69a164a89.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-1cb99e5faa8df9499aa296ac4cd75a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-973354c78b0c46c67caa67545bc70c40.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-0f4a2b48982acf40193c0a95c6111a13.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-973354c78b0c46c67caa67545bc70c40.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -443,6 +443,26 @@ H_{\textrm{sf}} &amp;=\sum_{\sigma=\uparrow,\downarrow}\sum_{k}g_{k}c_{\sigma,k}
 <span id="cb1-2"><a href="#cb1-2"></a><span class="im">using</span> <span class="bu">CairoMakie</span>       <span class="co"># for plotting results</span></span>
 <span id="cb1-3"><a href="#cb1-3"></a></span>
 <span id="cb1-4"><a href="#cb1-4"></a>CairoMakie.<span class="fu">activate!</span>(<span class="kw">type</span> <span class="op">=</span> <span class="st">"svg"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<div class="ansi-escaped-output">
+<pre><span class="ansi-green-fg ansi-bold">Precompiling</span> packages...
+    973.3 ms<span class="ansi-green-fg">  ✓ </span>QuartoNotebookWorkerLaTeXStringsExt<span class="ansi-bright-black-fg"> (serial)</span>
+  1 dependency successfully precompiled in 1 seconds
+<span class="ansi-green-fg ansi-bold">Precompiling</span> packages...
+   2246.6 ms<span class="ansi-green-fg">  ✓ </span>QuartoNotebookWorkerJSONExt<span class="ansi-bright-black-fg"> (serial)</span>
+  1 dependency successfully precompiled in 2 seconds
+<span class="ansi-green-fg ansi-bold">Precompiling</span> packages...
+   1136.6 ms<span class="ansi-green-fg">  ✓ </span>QuartoNotebookWorkerTablesExt<span class="ansi-bright-black-fg"> (serial)</span>
+  1 dependency successfully precompiled in 1 seconds
+<span class="ansi-green-fg ansi-bold">Precompiling</span> packages...
+   6698.6 ms<span class="ansi-green-fg">  ✓ </span>QuartoNotebookWorkerMakieExt<span class="ansi-bright-black-fg"> (serial)</span>
+  1 dependency successfully precompiled in 7 seconds
+<span class="ansi-green-fg ansi-bold">Precompiling</span> packages...
+   5596.5 ms<span class="ansi-green-fg">  ✓ </span>QuartoNotebookWorkerCairoMakieExt<span class="ansi-bright-black-fg"> (serial)</span>
+  1 dependency successfully precompiled in 6 seconds
+</pre>
+</div>
+</div>
 </div>
 <div id="4" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1"></a>ϵ <span class="op">=</span> <span class="op">-</span><span class="fl">5</span></span>
@@ -538,7 +558,7 @@ Solving linear problem...[DONE]</code></pre>
 <span id="cb12-2"><a href="#cb12-2"></a>dos <span class="op">=</span> <span class="fu">DensityOfStates</span>(M_odd, ados_s, d_up, ωlist)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Calculating density of states in frequency domain...
-Progress: [====                          ]  14.3% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 06s)Progress: [========                      ]  28.6% --- Elapsed Time: 0h 00m 02s (ETA: 0h 00m 05s)Progress: [===========                   ]  38.1% --- Elapsed Time: 0h 00m 04s (ETA: 0h 00m 06s)Progress: [==============                ]  47.6% --- Elapsed Time: 0h 00m 05s (ETA: 0h 00m 05s)Progress: [=================             ]  57.1% --- Elapsed Time: 0h 00m 06s (ETA: 0h 00m 04s)Progress: [====================          ]  66.7% --- Elapsed Time: 0h 00m 08s (ETA: 0h 00m 04s)Progress: [======================        ]  76.2% --- Elapsed Time: 0h 00m 09s (ETA: 0h 00m 02s)Progress: [===========================   ]  90.5% --- Elapsed Time: 0h 00m 10s (ETA: 0h 00m 01s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 11s (ETA: 0h 00m 00s)
+Progress: [==                            ]   9.5% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 09s)Progress: [=======                       ]  23.8% --- Elapsed Time: 0h 00m 02s (ETA: 0h 00m 06s)Progress: [==========                    ]  33.3% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 06s)Progress: [============                  ]  42.9% --- Elapsed Time: 0h 00m 05s (ETA: 0h 00m 06s)Progress: [===============               ]  52.4% --- Elapsed Time: 0h 00m 06s (ETA: 0h 00m 05s)Progress: [==================            ]  61.9% --- Elapsed Time: 0h 00m 08s (ETA: 0h 00m 04s)Progress: [=====================         ]  71.4% --- Elapsed Time: 0h 00m 09s (ETA: 0h 00m 03s)Progress: [========================      ]  81.0% --- Elapsed Time: 0h 00m 10s (ETA: 0h 00m 02s)Progress: [============================  ]  95.2% --- Elapsed Time: 0h 00m 12s (ETA: 0h 00m 00s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 12s (ETA: 0h 00m 00s)
 [DONE]</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
@@ -607,7 +627,7 @@ Other developers:
 
 Package information:
 ====================================
-Julia              Ver. 1.12.0
+Julia              Ver. 1.12.1
 HierarchicalEOM    Ver. 2.8.0
 QuantumToolbox     Ver. 0.37.0
 SciMLOperators     Ver. 1.9.0
@@ -618,7 +638,7 @@ System information:
 ====================================
 OS       : Linux (x86_64-linux-gnu)
 CPU      : 4 × AMD EPYC 7763 64-Core Processor
-Memory   : 15.621 GB
+Memory   : 15.62 GB
 WORD_SIZE: 64
 LIBM     : libopenlibm
 LLVM     : libLLVM-18.1.7 (ORCJIT, znver3)

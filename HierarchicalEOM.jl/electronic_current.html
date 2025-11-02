@@ -493,9 +493,14 @@ H_{\textrm{sf}} &amp;=\sum_{\alpha=\textrm{L},\textrm{R}}\sum_{k}g_{\alpha,k}c_{
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1"></a>tier <span class="op">=</span> <span class="fl">5</span></span>
 <span id="cb5-2"><a href="#cb5-2"></a>M <span class="op">=</span> <span class="fu">M_Fermion</span>(Hsys, tier, baths)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Preparing block matrices for HEOM Liouvillian superoperator (using 4 threads)...
-Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)
-Constructing matrix...[DONE]</code></pre>
+<div class="ansi-escaped-output">
+<pre>Preparing block matrices for HEOM Liouvillian superoperator (using 4 threads)...
+
+<span class="ansi-green-fg">[M_Fermion]   0%|                         |  ETA: 0:15:08 ( 0.57  s/it)</span>
+<span class="ansi-green-fg">[M_Fermion] 100%|█████████████████████████| Time: 0:00:01 ( 1.09 ms/it)</span>
+Constructing matrix...[DONE]
+</pre>
+</div>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>Fermion type HEOMLS matrix acting on even-parity ADOs
@@ -509,10 +514,14 @@ MatrixOperator(6344 × 6344)</code></pre>
 <section id="solve-time-evolution-of-ados" class="level2">
 <h2 class="anchored" data-anchor-id="solve-time-evolution-of-ados">Solve time evolution of ADOs</h2>
 <div id="10" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1"></a>tlist <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">0.5</span><span class="op">:</span><span class="fl">100</span></span>
-<span id="cb8-2"><a href="#cb8-2"></a>ados_evolution <span class="op">=</span> <span class="fu">HEOMsolve</span>(M, ψ<span class="fl">0</span>, tlist).ados</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1"></a>tlist <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">0.5</span><span class="op">:</span><span class="fl">100</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a>ados_evolution <span class="op">=</span> <span class="fu">HEOMsolve</span>(M, ψ<span class="fl">0</span>, tlist).ados</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)</code></pre>
+<div class="ansi-escaped-output">
+<pre><span class="ansi-green-fg">[HEOMsolve (ODE)]  75%|██████████████▎    |  ETA: 0:00:00 ( 0.67 ms/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)] 100%|███████████████████| Time: 0:00:00 ( 0.66 ms/it)</span>
+</pre>
+</div>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>201-element Vector{ADOs}:
@@ -560,7 +569,7 @@ MatrixOperator(6344 × 6344)</code></pre>
 <section id="solve-stationary-state-of-ados" class="level2">
 <h2 class="anchored" data-anchor-id="solve-stationary-state-of-ados">Solve stationary state of ADOs</h2>
 <div id="12" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1"></a>ados_steady <span class="op">=</span> <span class="fu">steadystate</span>(M)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1"></a>ados_steady <span class="op">=</span> <span class="fu">steadystate</span>(M)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Solving steady state for ADOs by linear-solve method...
 Calculating left preconditioner with ilu...[DONE]
@@ -580,39 +589,39 @@ Solving linear problem...[DONE]</code></pre>
 <p>where <span class="math inline">\(e\)</span> represents the value of the elementary charge, and <span class="math inline">\(\mathcal{N}_\alpha=\sum_k c^\dagger_{\alpha,k}c_{\alpha,k}\)</span> is the occupation number operator for the <span class="math inline">\(\alpha\)</span>-fermionic bath.</p>
 <p>Given an ADOs, we provide a function which calculates the current from the <span class="math inline">\(\alpha\)</span>-fermionic bath into the system with the help of <a href="https://qutip.org/HierarchicalEOM.jl/stable/hierarchy_dictionary/#doc-Hierarchy-Dictionary">Hierarchy Dictionary</a>.</p>
 <div id="14" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1"></a><span class="co"># `bathIdx`:  </span></span>
-<span id="cb14-2"><a href="#cb14-2"></a><span class="co"># - 1 means 1st bath (bath_L)</span></span>
-<span id="cb14-3"><a href="#cb14-3"></a><span class="co"># - 2 means 2nd bath (bath_R)</span></span>
-<span id="cb14-4"><a href="#cb14-4"></a><span class="kw">function</span> <span class="fu">Ic</span>(ados, M<span class="op">::</span><span class="dt">M_Fermion</span>, bathIdx<span class="op">::</span><span class="dt">Int</span>)</span>
-<span id="cb14-5"><a href="#cb14-5"></a>    <span class="co"># the hierarchy dictionary</span></span>
-<span id="cb14-6"><a href="#cb14-6"></a>    HDict <span class="op">=</span> M.hierarchy</span>
-<span id="cb14-7"><a href="#cb14-7"></a></span>
-<span id="cb14-8"><a href="#cb14-8"></a>    <span class="co"># we need all the indices of ADOs for the first level</span></span>
-<span id="cb14-9"><a href="#cb14-9"></a>    idx_list <span class="op">=</span> HDict.lvl2idx[<span class="fl">1</span>]</span>
-<span id="cb14-10"><a href="#cb14-10"></a>    I <span class="op">=</span> <span class="fl">0.0im</span></span>
-<span id="cb14-11"><a href="#cb14-11"></a>    <span class="cf">for</span> idx <span class="kw">in</span> idx_list</span>
-<span id="cb14-12"><a href="#cb14-12"></a>        ρ<span class="fl">1</span> <span class="op">=</span> ados[idx]  <span class="co"># 1st-level ADO</span></span>
-<span id="cb14-13"><a href="#cb14-13"></a></span>
-<span id="cb14-14"><a href="#cb14-14"></a>        <span class="co"># find the corresponding bath index (α) and exponent term index (k)</span></span>
-<span id="cb14-15"><a href="#cb14-15"></a>        nvec <span class="op">=</span> HDict.idx2nvec[idx]</span>
-<span id="cb14-16"><a href="#cb14-16"></a>        <span class="cf">for</span> (α, k, _) <span class="kw">in</span> <span class="fu">getIndexEnsemble</span>(nvec, HDict.bathPtr)</span>
-<span id="cb14-17"><a href="#cb14-17"></a>            <span class="cf">if</span> α <span class="op">==</span> bathIdx</span>
-<span id="cb14-18"><a href="#cb14-18"></a>                exponent <span class="op">=</span> M.bath[α][k]</span>
-<span id="cb14-19"><a href="#cb14-19"></a>                <span class="cf">if</span> exponent.types <span class="op">==</span> <span class="st">"fA"</span>     <span class="co"># fermion-absorption</span></span>
-<span id="cb14-20"><a href="#cb14-20"></a>                    I <span class="op">+=</span> <span class="fu">tr</span>(exponent.op<span class="op">'</span> <span class="op">*</span> ρ<span class="fl">1</span>)</span>
-<span id="cb14-21"><a href="#cb14-21"></a>                <span class="cf">elseif</span> exponent.types <span class="op">==</span> <span class="st">"fE"</span> <span class="co"># fermion-emission</span></span>
-<span id="cb14-22"><a href="#cb14-22"></a>                    I <span class="op">-=</span> <span class="fu">tr</span>(exponent.op<span class="op">'</span> <span class="op">*</span> ρ<span class="fl">1</span>)</span>
-<span id="cb14-23"><a href="#cb14-23"></a>                <span class="cf">end</span></span>
-<span id="cb14-24"><a href="#cb14-24"></a>                <span class="cf">break</span></span>
-<span id="cb14-25"><a href="#cb14-25"></a>            <span class="cf">end</span></span>
-<span id="cb14-26"><a href="#cb14-26"></a>        <span class="cf">end</span></span>
-<span id="cb14-27"><a href="#cb14-27"></a>    <span class="cf">end</span></span>
-<span id="cb14-28"><a href="#cb14-28"></a></span>
-<span id="cb14-29"><a href="#cb14-29"></a>    eV_to_Joule <span class="op">=</span> <span class="fl">1.60218E-19</span>  <span class="co"># unit conversion</span></span>
-<span id="cb14-30"><a href="#cb14-30"></a></span>
-<span id="cb14-31"><a href="#cb14-31"></a>    <span class="co"># (e / ħ) * I  [change unit to μA] </span></span>
-<span id="cb14-32"><a href="#cb14-32"></a>    <span class="cf">return</span> <span class="fl">1.519270639695384E15</span> <span class="op">*</span> <span class="fu">real</span>(<span class="fl">1im</span> <span class="op">*</span> I) <span class="op">*</span> eV_to_Joule <span class="op">*</span> <span class="fl">1E6</span></span>
-<span id="cb14-33"><a href="#cb14-33"></a><span class="kw">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1"></a><span class="co"># `bathIdx`:  </span></span>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="co"># - 1 means 1st bath (bath_L)</span></span>
+<span id="cb12-3"><a href="#cb12-3"></a><span class="co"># - 2 means 2nd bath (bath_R)</span></span>
+<span id="cb12-4"><a href="#cb12-4"></a><span class="kw">function</span> <span class="fu">Ic</span>(ados, M<span class="op">::</span><span class="dt">M_Fermion</span>, bathIdx<span class="op">::</span><span class="dt">Int</span>)</span>
+<span id="cb12-5"><a href="#cb12-5"></a>    <span class="co"># the hierarchy dictionary</span></span>
+<span id="cb12-6"><a href="#cb12-6"></a>    HDict <span class="op">=</span> M.hierarchy</span>
+<span id="cb12-7"><a href="#cb12-7"></a></span>
+<span id="cb12-8"><a href="#cb12-8"></a>    <span class="co"># we need all the indices of ADOs for the first level</span></span>
+<span id="cb12-9"><a href="#cb12-9"></a>    idx_list <span class="op">=</span> HDict.lvl2idx[<span class="fl">1</span>]</span>
+<span id="cb12-10"><a href="#cb12-10"></a>    I <span class="op">=</span> <span class="fl">0.0im</span></span>
+<span id="cb12-11"><a href="#cb12-11"></a>    <span class="cf">for</span> idx <span class="kw">in</span> idx_list</span>
+<span id="cb12-12"><a href="#cb12-12"></a>        ρ<span class="fl">1</span> <span class="op">=</span> ados[idx]  <span class="co"># 1st-level ADO</span></span>
+<span id="cb12-13"><a href="#cb12-13"></a></span>
+<span id="cb12-14"><a href="#cb12-14"></a>        <span class="co"># find the corresponding bath index (α) and exponent term index (k)</span></span>
+<span id="cb12-15"><a href="#cb12-15"></a>        nvec <span class="op">=</span> HDict.idx2nvec[idx]</span>
+<span id="cb12-16"><a href="#cb12-16"></a>        <span class="cf">for</span> (α, k, _) <span class="kw">in</span> <span class="fu">getIndexEnsemble</span>(nvec, HDict.bathPtr)</span>
+<span id="cb12-17"><a href="#cb12-17"></a>            <span class="cf">if</span> α <span class="op">==</span> bathIdx</span>
+<span id="cb12-18"><a href="#cb12-18"></a>                exponent <span class="op">=</span> M.bath[α][k]</span>
+<span id="cb12-19"><a href="#cb12-19"></a>                <span class="cf">if</span> exponent.types <span class="op">==</span> <span class="st">"fA"</span>     <span class="co"># fermion-absorption</span></span>
+<span id="cb12-20"><a href="#cb12-20"></a>                    I <span class="op">+=</span> <span class="fu">tr</span>(exponent.op<span class="op">'</span> <span class="op">*</span> ρ<span class="fl">1</span>)</span>
+<span id="cb12-21"><a href="#cb12-21"></a>                <span class="cf">elseif</span> exponent.types <span class="op">==</span> <span class="st">"fE"</span> <span class="co"># fermion-emission</span></span>
+<span id="cb12-22"><a href="#cb12-22"></a>                    I <span class="op">-=</span> <span class="fu">tr</span>(exponent.op<span class="op">'</span> <span class="op">*</span> ρ<span class="fl">1</span>)</span>
+<span id="cb12-23"><a href="#cb12-23"></a>                <span class="cf">end</span></span>
+<span id="cb12-24"><a href="#cb12-24"></a>                <span class="cf">break</span></span>
+<span id="cb12-25"><a href="#cb12-25"></a>            <span class="cf">end</span></span>
+<span id="cb12-26"><a href="#cb12-26"></a>        <span class="cf">end</span></span>
+<span id="cb12-27"><a href="#cb12-27"></a>    <span class="cf">end</span></span>
+<span id="cb12-28"><a href="#cb12-28"></a></span>
+<span id="cb12-29"><a href="#cb12-29"></a>    eV_to_Joule <span class="op">=</span> <span class="fl">1.60218E-19</span>  <span class="co"># unit conversion</span></span>
+<span id="cb12-30"><a href="#cb12-30"></a></span>
+<span id="cb12-31"><a href="#cb12-31"></a>    <span class="co"># (e / ħ) * I  [change unit to μA] </span></span>
+<span id="cb12-32"><a href="#cb12-32"></a>    <span class="cf">return</span> <span class="fl">1.519270639695384E15</span> <span class="op">*</span> <span class="fu">real</span>(<span class="fl">1im</span> <span class="op">*</span> I) <span class="op">*</span> eV_to_Joule <span class="op">*</span> <span class="fl">1E6</span></span>
+<span id="cb12-33"><a href="#cb12-33"></a><span class="kw">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>Ic (generic function with 1 method)</code></pre>
 </div>
@@ -621,8 +630,8 @@ Solving linear problem...[DONE]</code></pre>
 <section id="steady-current" class="level2">
 <h2 class="anchored" data-anchor-id="steady-current">steady current</h2>
 <div id="16" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1"></a>Is_L <span class="op">=</span> <span class="fu">ones</span>(<span class="fu">length</span>(tlist)) <span class="op">.*</span> <span class="fu">Ic</span>(ados_steady, M, <span class="fl">1</span>)</span>
-<span id="cb16-2"><a href="#cb16-2"></a>Is_R <span class="op">=</span> <span class="fu">ones</span>(<span class="fu">length</span>(tlist)) <span class="op">.*</span> <span class="fu">Ic</span>(ados_steady, M, <span class="fl">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1"></a>Is_L <span class="op">=</span> <span class="fu">ones</span>(<span class="fu">length</span>(tlist)) <span class="op">.*</span> <span class="fu">Ic</span>(ados_steady, M, <span class="fl">1</span>)</span>
+<span id="cb14-2"><a href="#cb14-2"></a>Is_R <span class="op">=</span> <span class="fu">ones</span>(<span class="fu">length</span>(tlist)) <span class="op">.*</span> <span class="fu">Ic</span>(ados_steady, M, <span class="fl">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>201-element Vector{Float64}:
  -0.04632854328418656
@@ -651,25 +660,25 @@ Solving linear problem...[DONE]</code></pre>
 <section id="time-evolution-current" class="level2">
 <h2 class="anchored" data-anchor-id="time-evolution-current">time evolution current</h2>
 <div id="18" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1"></a>Ie_L <span class="op">=</span> []</span>
-<span id="cb18-2"><a href="#cb18-2"></a>Ie_R <span class="op">=</span> []</span>
-<span id="cb18-3"><a href="#cb18-3"></a><span class="cf">for</span> ados <span class="kw">in</span> ados_evolution</span>
-<span id="cb18-4"><a href="#cb18-4"></a>    <span class="fu">push!</span>(Ie_L, <span class="fu">Ic</span>(ados, M, <span class="fl">1</span>))</span>
-<span id="cb18-5"><a href="#cb18-5"></a>    <span class="fu">push!</span>(Ie_R, <span class="fu">Ic</span>(ados, M, <span class="fl">2</span>))</span>
-<span id="cb18-6"><a href="#cb18-6"></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1"></a>Ie_L <span class="op">=</span> []</span>
+<span id="cb16-2"><a href="#cb16-2"></a>Ie_R <span class="op">=</span> []</span>
+<span id="cb16-3"><a href="#cb16-3"></a><span class="cf">for</span> ados <span class="kw">in</span> ados_evolution</span>
+<span id="cb16-4"><a href="#cb16-4"></a>    <span class="fu">push!</span>(Ie_L, <span class="fu">Ic</span>(ados, M, <span class="fl">1</span>))</span>
+<span id="cb16-5"><a href="#cb16-5"></a>    <span class="fu">push!</span>(Ie_R, <span class="fu">Ic</span>(ados, M, <span class="fl">2</span>))</span>
+<span id="cb16-6"><a href="#cb16-6"></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>plot the result</p>
 <div id="20" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb19-1"><a href="#cb19-1"></a>fig <span class="op">=</span> <span class="fu">Figure</span>()</span>
-<span id="cb19-2"><a href="#cb19-2"></a>ax <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">1</span>, <span class="fl">1</span>], xlabel <span class="op">=</span> <span class="st">"time"</span>, ylabel <span class="op">=</span> <span class="st">"Current"</span>)</span>
-<span id="cb19-3"><a href="#cb19-3"></a><span class="fu">lines!</span>(ax, tlist, Ie_L, label <span class="op">=</span> <span class="st">"Bath L"</span>, color <span class="op">=</span> <span class="op">:</span>blue, linestyle <span class="op">=</span> <span class="op">:</span>solid)</span>
-<span id="cb19-4"><a href="#cb19-4"></a><span class="fu">lines!</span>(ax, tlist, Ie_R, label <span class="op">=</span> <span class="st">"Bath R"</span>, color <span class="op">=</span> <span class="op">:</span>red, linestyle <span class="op">=</span> <span class="op">:</span>solid)</span>
-<span id="cb19-5"><a href="#cb19-5"></a><span class="fu">lines!</span>(ax, tlist, Is_L, label <span class="op">=</span> <span class="st">"Bath L (Steady State)"</span>, color <span class="op">=</span> <span class="op">:</span>blue, linestyle <span class="op">=</span> <span class="op">:</span>dash)</span>
-<span id="cb19-6"><a href="#cb19-6"></a><span class="fu">lines!</span>(ax, tlist, Is_R, label <span class="op">=</span> <span class="st">"Bath R (Steady State)"</span>, color <span class="op">=</span> <span class="op">:</span>red, linestyle <span class="op">=</span> <span class="op">:</span>dash)</span>
-<span id="cb19-7"><a href="#cb19-7"></a></span>
-<span id="cb19-8"><a href="#cb19-8"></a><span class="fu">axislegend</span>(ax, position <span class="op">=</span> <span class="op">:</span>rt)</span>
-<span id="cb19-9"><a href="#cb19-9"></a></span>
-<span id="cb19-10"><a href="#cb19-10"></a>fig</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1"></a>fig <span class="op">=</span> <span class="fu">Figure</span>()</span>
+<span id="cb17-2"><a href="#cb17-2"></a>ax <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">1</span>, <span class="fl">1</span>], xlabel <span class="op">=</span> <span class="st">"time"</span>, ylabel <span class="op">=</span> <span class="st">"Current"</span>)</span>
+<span id="cb17-3"><a href="#cb17-3"></a><span class="fu">lines!</span>(ax, tlist, Ie_L, label <span class="op">=</span> <span class="st">"Bath L"</span>, color <span class="op">=</span> <span class="op">:</span>blue, linestyle <span class="op">=</span> <span class="op">:</span>solid)</span>
+<span id="cb17-4"><a href="#cb17-4"></a><span class="fu">lines!</span>(ax, tlist, Ie_R, label <span class="op">=</span> <span class="st">"Bath R"</span>, color <span class="op">=</span> <span class="op">:</span>red, linestyle <span class="op">=</span> <span class="op">:</span>solid)</span>
+<span id="cb17-5"><a href="#cb17-5"></a><span class="fu">lines!</span>(ax, tlist, Is_L, label <span class="op">=</span> <span class="st">"Bath L (Steady State)"</span>, color <span class="op">=</span> <span class="op">:</span>blue, linestyle <span class="op">=</span> <span class="op">:</span>dash)</span>
+<span id="cb17-6"><a href="#cb17-6"></a><span class="fu">lines!</span>(ax, tlist, Is_R, label <span class="op">=</span> <span class="st">"Bath R (Steady State)"</span>, color <span class="op">=</span> <span class="op">:</span>red, linestyle <span class="op">=</span> <span class="op">:</span>dash)</span>
+<span id="cb17-7"><a href="#cb17-7"></a></span>
+<span id="cb17-8"><a href="#cb17-8"></a><span class="fu">axislegend</span>(ax, position <span class="op">=</span> <span class="op">:</span>rt)</span>
+<span id="cb17-9"><a href="#cb17-9"></a></span>
+<span id="cb17-10"><a href="#cb17-10"></a>fig</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div>
 <figure class="figure">
@@ -682,7 +691,7 @@ Solving linear problem...[DONE]</code></pre>
 <section id="version-information" class="level2">
 <h2 class="anchored" data-anchor-id="version-information">Version Information</h2>
 <div id="22" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb20-1"><a href="#cb20-1"></a>HierarchicalEOM.<span class="fu">versioninfo</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1"></a>HierarchicalEOM.<span class="fu">versioninfo</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
 <pre><span style="font-weight:bold;color:rgb(0,135,0)">                                   __</span>
@@ -706,8 +715,8 @@ Other developers:
 Package information:
 ====================================
 Julia              Ver. 1.12.1
-HierarchicalEOM    Ver. 2.8.0
-QuantumToolbox     Ver. 0.37.0
+HierarchicalEOM    Ver. 2.9.0
+QuantumToolbox     Ver. 0.38.1
 SciMLOperators     Ver. 1.9.0
 LinearSolve        Ver. 3.28.0
 OrdinaryDiffEqCore Ver. 1.36.0

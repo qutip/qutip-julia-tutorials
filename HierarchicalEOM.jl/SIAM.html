@@ -446,10 +446,10 @@ H_{\textrm{sf}} &amp;=\sum_{\sigma=\uparrow,\downarrow}\sum_{k}g_{k}c_{\sigma,k}
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
 <pre><span class="ansi-green-fg ansi-bold">Precompiling</span> packages...
-   7212.3 ms<span class="ansi-green-fg">  ✓ </span>QuartoNotebookWorkerMakieExt<span class="ansi-bright-black-fg"> (serial)</span>
+   7371.9 ms<span class="ansi-green-fg">  ✓ </span>QuartoNotebookWorkerMakieExt<span class="ansi-bright-black-fg"> (serial)</span>
   1 dependency successfully precompiled in 7 seconds
 <span class="ansi-green-fg ansi-bold">Precompiling</span> packages...
-   5111.1 ms<span class="ansi-green-fg">  ✓ </span>QuartoNotebookWorkerCairoMakieExt<span class="ansi-bright-black-fg"> (serial)</span>
+   5253.0 ms<span class="ansi-green-fg">  ✓ </span>QuartoNotebookWorkerCairoMakieExt<span class="ansi-bright-black-fg"> (serial)</span>
   1 dependency successfully precompiled in 5 seconds
 </pre>
 </div>
@@ -512,12 +512,19 @@ Quantum Object:   type=Operator()   dims=[2, 2]   size=(4, 4)   ishermitian=true
 <span id="cb6-2"><a href="#cb6-2"></a>M_even <span class="op">=</span> <span class="fu">M_Fermion</span>(Hsys, tier, bath_list)</span>
 <span id="cb6-3"><a href="#cb6-3"></a>M_odd <span class="op">=</span> <span class="fu">M_Fermion</span>(Hsys, tier, bath_list, ODD)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Preparing block matrices for HEOM Liouvillian superoperator (using 4 threads)...
-Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)
+<div class="ansi-escaped-output">
+<pre>Preparing block matrices for HEOM Liouvillian superoperator (using 4 threads)...
+
+<span class="ansi-green-fg">[M_Fermion]   0%|                         |  ETA: 0:21:02 ( 0.54  s/it)</span>
+<span class="ansi-green-fg">[M_Fermion] 100%|█████████████████████████| Time: 0:00:01 ( 0.76 ms/it)</span>
 Constructing matrix...[DONE]
 Preparing block matrices for HEOM Liouvillian superoperator (using 4 threads)...
-Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)
-Constructing matrix...[DONE]</code></pre>
+
+<span class="ansi-green-fg">[M_Fermion]   0%|                         |  ETA: 0:01:57 (50.29 ms/it)</span>
+<span class="ansi-green-fg">[M_Fermion] 100%|█████████████████████████| Time: 0:00:00 (68.76 μs/it)</span>
+Constructing matrix...[DONE]
+</pre>
+</div>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>Fermion type HEOMLS matrix acting on odd-parity ADOs
@@ -531,7 +538,7 @@ MatrixOperator(37200 × 37200)</code></pre>
 <section id="solve-stationary-state-of-ados" class="level2">
 <h2 class="anchored" data-anchor-id="solve-stationary-state-of-ados">Solve stationary state of ADOs</h2>
 <div id="10" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1"></a>ados_s <span class="op">=</span> <span class="fu">steadystate</span>(M_even)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1"></a>ados_s <span class="op">=</span> <span class="fu">steadystate</span>(M_even)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Solving steady state for ADOs by linear-solve method...
 Calculating left preconditioner with ilu...[DONE]
@@ -545,12 +552,32 @@ Solving linear problem...[DONE]</code></pre>
 <section id="calculate-density-of-states-dos" class="level2">
 <h2 class="anchored" data-anchor-id="calculate-density-of-states-dos">Calculate density of states (DOS)</h2>
 <div id="12" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1"></a>ωlist <span class="op">=</span> <span class="op">-</span><span class="fl">10</span><span class="op">:</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span></span>
-<span id="cb12-2"><a href="#cb12-2"></a>dos <span class="op">=</span> <span class="fu">DensityOfStates</span>(M_odd, ados_s, d_up, ωlist)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1"></a>ωlist <span class="op">=</span> <span class="op">-</span><span class="fl">10</span><span class="op">:</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a>dos <span class="op">=</span> <span class="fu">DensityOfStates</span>(M_odd, ados_s, d_up, ωlist)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Calculating density of states in frequency domain...
-Progress: [==                            ]   9.5% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 09s)Progress: [=======                       ]  23.8% --- Elapsed Time: 0h 00m 02s (ETA: 0h 00m 06s)Progress: [==========                    ]  33.3% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 06s)Progress: [============                  ]  42.9% --- Elapsed Time: 0h 00m 05s (ETA: 0h 00m 06s)Progress: [===============               ]  52.4% --- Elapsed Time: 0h 00m 06s (ETA: 0h 00m 05s)Progress: [==================            ]  61.9% --- Elapsed Time: 0h 00m 07s (ETA: 0h 00m 04s)Progress: [=====================         ]  71.4% --- Elapsed Time: 0h 00m 09s (ETA: 0h 00m 03s)Progress: [========================      ]  81.0% --- Elapsed Time: 0h 00m 10s (ETA: 0h 00m 02s)Progress: [============================  ]  95.2% --- Elapsed Time: 0h 00m 11s (ETA: 0h 00m 00s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 11s (ETA: 0h 00m 00s)
-[DONE]</code></pre>
+<div class="ansi-escaped-output">
+<pre><span class="ansi-green-fg">[DensityOfStates]  10%|█▊                 |  ETA: 0:00:10 ( 0.53  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  14%|██▊                |  ETA: 0:00:09 ( 0.50  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  19%|███▋               |  ETA: 0:00:08 ( 0.50  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  24%|████▌              |  ETA: 0:00:09 ( 0.55  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  29%|█████▍             |  ETA: 0:00:08 ( 0.55  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  33%|██████▍            |  ETA: 0:00:08 ( 0.56  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  38%|███████▎           |  ETA: 0:00:07 ( 0.56  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  43%|████████▏          |  ETA: 0:00:07 ( 0.60  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  48%|█████████          |  ETA: 0:00:07 ( 0.61  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  52%|██████████         |  ETA: 0:00:06 ( 0.61  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  57%|██████████▉        |  ETA: 0:00:06 ( 0.62  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  62%|███████████▊       |  ETA: 0:00:05 ( 0.64  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  67%|████████████▋      |  ETA: 0:00:04 ( 0.64  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  71%|█████████████▋     |  ETA: 0:00:04 ( 0.63  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  76%|██████████████▌    |  ETA: 0:00:03 ( 0.63  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  81%|███████████████▍   |  ETA: 0:00:03 ( 0.64  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  86%|████████████████▎  |  ETA: 0:00:02 ( 0.63  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  90%|█████████████████▎ |  ETA: 0:00:01 ( 0.62  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  95%|██████████████████▏|  ETA: 0:00:01 ( 0.60  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates] 100%|███████████████████| Time: 0:00:12 ( 0.60  s/it)</span>
+</pre>
+</div>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>21-element Vector{Float64}:
@@ -578,11 +605,11 @@ Progress: [==                            ]   9.5% --- Elapsed Time: 0h 00m 01s (
 </div>
 <p>plot the results</p>
 <div id="14" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1"></a>fig <span class="op">=</span> <span class="fu">Figure</span>()</span>
-<span id="cb15-2"><a href="#cb15-2"></a>ax <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">1</span>, <span class="fl">1</span>], xlabel <span class="op">=</span> L<span class="st">"\omega"</span>)</span>
-<span id="cb15-3"><a href="#cb15-3"></a><span class="fu">lines!</span>(ax, ωlist, dos)</span>
-<span id="cb15-4"><a href="#cb15-4"></a></span>
-<span id="cb15-5"><a href="#cb15-5"></a>fig</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1"></a>fig <span class="op">=</span> <span class="fu">Figure</span>()</span>
+<span id="cb13-2"><a href="#cb13-2"></a>ax <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">1</span>, <span class="fl">1</span>], xlabel <span class="op">=</span> L<span class="st">"\omega"</span>)</span>
+<span id="cb13-3"><a href="#cb13-3"></a><span class="fu">lines!</span>(ax, ωlist, dos)</span>
+<span id="cb13-4"><a href="#cb13-4"></a></span>
+<span id="cb13-5"><a href="#cb13-5"></a>fig</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div>
 <figure class="figure">
@@ -595,7 +622,7 @@ Progress: [==                            ]   9.5% --- Elapsed Time: 0h 00m 01s (
 <section id="version-information" class="level2">
 <h2 class="anchored" data-anchor-id="version-information">Version Information</h2>
 <div id="16" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1"></a>HierarchicalEOM.<span class="fu">versioninfo</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1"></a>HierarchicalEOM.<span class="fu">versioninfo</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
 <pre><span style="font-weight:bold;color:rgb(0,135,0)">                                   __</span>
@@ -619,8 +646,8 @@ Other developers:
 Package information:
 ====================================
 Julia              Ver. 1.12.1
-HierarchicalEOM    Ver. 2.8.0
-QuantumToolbox     Ver. 0.37.0
+HierarchicalEOM    Ver. 2.9.0
+QuantumToolbox     Ver. 0.38.1
 SciMLOperators     Ver. 1.9.0
 LinearSolve        Ver. 3.28.0
 OrdinaryDiffEqCore Ver. 1.36.0

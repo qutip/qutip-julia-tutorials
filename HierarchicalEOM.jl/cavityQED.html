@@ -522,10 +522,15 @@ H_{\textrm{sb}}   &amp;=(a+a^\dagger)\sum_{k}g_{k}(b_k + b_k^{\dagger}).
 <span id="cb6-4"><a href="#cb6-4"></a>M_Heom <span class="op">=</span> <span class="fu">M_Boson</span>(H_s, tier, threshold <span class="op">=</span> <span class="fl">1e-6</span>, Bath)</span>
 <span id="cb6-5"><a href="#cb6-5"></a>M_Heom <span class="op">=</span> <span class="fu">addBosonDissipator</span>(M_Heom, J_pump)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Checking the importance value for each ADOs...[DONE]
+<div class="ansi-escaped-output">
+<pre>Checking the importance value for each ADOs...[DONE]
 Preparing block matrices for HEOM Liouvillian superoperator (using 4 threads)...
-Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)
-Constructing matrix...[DONE]</code></pre>
+
+<span class="ansi-green-fg">[M_Boson]   2%|▌                          |  ETA: 0:00:53 ( 0.55  s/it)</span>
+<span class="ansi-green-fg">[M_Boson] 100%|███████████████████████████| Time: 0:00:01 (14.63 ms/it)</span>
+Constructing matrix...[DONE]
+</pre>
+</div>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>Boson type HEOMLS matrix acting on even-parity ADOs
@@ -539,10 +544,27 @@ MatrixOperator(3492 × 3492)</code></pre>
 <section id="solve-time-evolution-of-ados" class="level2">
 <h2 class="anchored" data-anchor-id="solve-time-evolution-of-ados">Solve time evolution of ADOs</h2>
 <div id="12" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1"></a>t_list <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">1</span><span class="op">:</span><span class="fl">500</span></span>
-<span id="cb9-2"><a href="#cb9-2"></a>sol_H <span class="op">=</span> <span class="fu">HEOMsolve</span>(M_Heom, ψ<span class="fl">0</span>, t_list; e_ops <span class="op">=</span> [σz, a<span class="op">'</span> <span class="op">*</span> a])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1"></a>t_list <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">1</span><span class="op">:</span><span class="fl">500</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a>sol_H <span class="op">=</span> <span class="fu">HEOMsolve</span>(M_Heom, ψ<span class="fl">0</span>, t_list; e_ops <span class="op">=</span> [σz, a<span class="op">'</span> <span class="op">*</span> a])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Progress: [                              ]   0.2% --- Elapsed Time: 0h 00m 02s (ETA: 0h 16m 40s)Progress: [=====================         ]  72.1% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 01s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 00s)</code></pre>
+<div class="ansi-escaped-output">
+<pre><span class="ansi-green-fg">[HEOMsolve (ODE)]   0%|▏                  |  ETA: 0:09:37 ( 1.16  s/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)]   8%|█▌                 |  ETA: 0:00:29 (63.52 ms/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)]  15%|██▊                |  ETA: 0:00:15 (33.98 ms/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)]  22%|████▏              |  ETA: 0:00:09 (23.78 ms/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)]  29%|█████▌             |  ETA: 0:00:07 (18.61 ms/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)]  36%|██████▉            |  ETA: 0:00:05 (15.49 ms/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)]  44%|████████▎          |  ETA: 0:00:04 (13.40 ms/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)]  51%|█████████▋         |  ETA: 0:00:03 (11.89 ms/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)]  58%|███████████        |  ETA: 0:00:02 (10.77 ms/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)]  65%|████████████▍      |  ETA: 0:00:02 ( 9.89 ms/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)]  72%|█████████████▊     |  ETA: 0:00:01 ( 9.18 ms/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)]  79%|███████████████▏   |  ETA: 0:00:01 ( 8.61 ms/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)]  87%|████████████████▌  |  ETA: 0:00:01 ( 8.13 ms/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)]  94%|█████████████████▉ |  ETA: 0:00:00 ( 7.72 ms/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)] 100%|███████████████████| Time: 0:00:03 ( 7.41 ms/it)</span>
+</pre>
+</div>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>Solution of hierarchical EOM
@@ -561,7 +583,7 @@ reltol = 1.0e-6</code></pre>
 <section id="solve-stationary-state-of-ados" class="level2">
 <h2 class="anchored" data-anchor-id="solve-stationary-state-of-ados">Solve stationary state of ADOs</h2>
 <div id="14" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1"></a>steady_H <span class="op">=</span> <span class="fu">steadystate</span>(M_Heom);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1"></a>steady_H <span class="op">=</span> <span class="fu">steadystate</span>(M_Heom);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Solving steady state for ADOs by linear-solve method...
 Calculating left preconditioner with ilu...[DONE]
@@ -573,35 +595,35 @@ Solving linear problem...[DONE]</code></pre>
 <h2 class="anchored" data-anchor-id="expectation-values">Expectation values</h2>
 <p>observable of atom: <span class="math inline">\(\sigma_z\)</span></p>
 <div id="16" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1"></a>σz_evo_H <span class="op">=</span> <span class="fu">real</span>(sol_H.expect[<span class="fl">1</span>, <span class="op">:</span>])</span>
-<span id="cb14-2"><a href="#cb14-2"></a>σz_steady_H <span class="op">=</span> <span class="fu">expect</span>(σz, steady_H)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1"></a>σz_evo_H <span class="op">=</span> <span class="fu">real</span>(sol_H.expect[<span class="fl">1</span>, <span class="op">:</span>])</span>
+<span id="cb12-2"><a href="#cb12-2"></a>σz_steady_H <span class="op">=</span> <span class="fu">expect</span>(σz, steady_H)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>-0.3731173931111374</code></pre>
 </div>
 </div>
 <p>observable of cavity: <span class="math inline">\(a^\dagger a\)</span> (average photon number)</p>
 <div id="18" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1"></a>np_evo_H <span class="op">=</span> <span class="fu">real</span>(sol_H.expect[<span class="fl">2</span>, <span class="op">:</span>])</span>
-<span id="cb16-2"><a href="#cb16-2"></a>np_steady_H <span class="op">=</span> <span class="fu">expect</span>(a<span class="op">'</span> <span class="op">*</span> a, steady_H)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1"></a>np_evo_H <span class="op">=</span> <span class="fu">real</span>(sol_H.expect[<span class="fl">2</span>, <span class="op">:</span>])</span>
+<span id="cb14-2"><a href="#cb14-2"></a>np_steady_H <span class="op">=</span> <span class="fu">expect</span>(a<span class="op">'</span> <span class="op">*</span> a, steady_H)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>0.43121301583085037</code></pre>
 </div>
 </div>
 <p>plot results</p>
 <div id="20" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1"></a>fig <span class="op">=</span> <span class="fu">Figure</span>()</span>
-<span id="cb18-2"><a href="#cb18-2"></a></span>
-<span id="cb18-3"><a href="#cb18-3"></a>ax1 <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">1</span>, <span class="fl">1</span>], xlabel <span class="op">=</span> L<span class="st">"t"</span>)</span>
-<span id="cb18-4"><a href="#cb18-4"></a><span class="fu">lines!</span>(ax1, t_list, σz_evo_H, label <span class="op">=</span> L<span class="st">"\langle \sigma_z </span><span class="sc">\r</span><span class="st">angle"</span>, linestyle <span class="op">=</span> <span class="op">:</span>solid)</span>
-<span id="cb18-5"><a href="#cb18-5"></a><span class="fu">lines!</span>(ax1, t_list, <span class="fu">ones</span>(<span class="fu">length</span>(t_list)) <span class="op">.*</span> σz_steady_H, label <span class="op">=</span> L<span class="st">"\langle \sigma_z </span><span class="sc">\r</span><span class="st">angle ~~(</span><span class="sc">\t</span><span class="st">extrm{steady})"</span>, linestyle <span class="op">=</span> <span class="op">:</span>dash)</span>
-<span id="cb18-6"><a href="#cb18-6"></a><span class="fu">axislegend</span>(ax1, position <span class="op">=</span> <span class="op">:</span>rt)</span>
-<span id="cb18-7"><a href="#cb18-7"></a></span>
-<span id="cb18-8"><a href="#cb18-8"></a>ax2 <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">2</span>, <span class="fl">1</span>], xlabel <span class="op">=</span> L<span class="st">"t"</span>)</span>
-<span id="cb18-9"><a href="#cb18-9"></a><span class="fu">lines!</span>(ax2, t_list, np_evo_H, label <span class="op">=</span> L<span class="st">"\langle a^\dagger a </span><span class="sc">\r</span><span class="st">angle"</span>, linestyle <span class="op">=</span> <span class="op">:</span>solid)</span>
-<span id="cb18-10"><a href="#cb18-10"></a><span class="fu">lines!</span>(ax2, t_list, <span class="fu">ones</span>(<span class="fu">length</span>(t_list)) <span class="op">.*</span> np_steady_H, label <span class="op">=</span> L<span class="st">"\langle a^\dagger a </span><span class="sc">\r</span><span class="st">angle ~~(</span><span class="sc">\t</span><span class="st">extrm{steady})"</span>, linestyle <span class="op">=</span> <span class="op">:</span>dash)</span>
-<span id="cb18-11"><a href="#cb18-11"></a><span class="fu">axislegend</span>(ax2, position <span class="op">=</span> <span class="op">:</span>rt)</span>
-<span id="cb18-12"><a href="#cb18-12"></a></span>
-<span id="cb18-13"><a href="#cb18-13"></a>fig</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1"></a>fig <span class="op">=</span> <span class="fu">Figure</span>()</span>
+<span id="cb16-2"><a href="#cb16-2"></a></span>
+<span id="cb16-3"><a href="#cb16-3"></a>ax1 <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">1</span>, <span class="fl">1</span>], xlabel <span class="op">=</span> L<span class="st">"t"</span>)</span>
+<span id="cb16-4"><a href="#cb16-4"></a><span class="fu">lines!</span>(ax1, t_list, σz_evo_H, label <span class="op">=</span> L<span class="st">"\langle \sigma_z </span><span class="sc">\r</span><span class="st">angle"</span>, linestyle <span class="op">=</span> <span class="op">:</span>solid)</span>
+<span id="cb16-5"><a href="#cb16-5"></a><span class="fu">lines!</span>(ax1, t_list, <span class="fu">ones</span>(<span class="fu">length</span>(t_list)) <span class="op">.*</span> σz_steady_H, label <span class="op">=</span> L<span class="st">"\langle \sigma_z </span><span class="sc">\r</span><span class="st">angle ~~(</span><span class="sc">\t</span><span class="st">extrm{steady})"</span>, linestyle <span class="op">=</span> <span class="op">:</span>dash)</span>
+<span id="cb16-6"><a href="#cb16-6"></a><span class="fu">axislegend</span>(ax1, position <span class="op">=</span> <span class="op">:</span>rt)</span>
+<span id="cb16-7"><a href="#cb16-7"></a></span>
+<span id="cb16-8"><a href="#cb16-8"></a>ax2 <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">2</span>, <span class="fl">1</span>], xlabel <span class="op">=</span> L<span class="st">"t"</span>)</span>
+<span id="cb16-9"><a href="#cb16-9"></a><span class="fu">lines!</span>(ax2, t_list, np_evo_H, label <span class="op">=</span> L<span class="st">"\langle a^\dagger a </span><span class="sc">\r</span><span class="st">angle"</span>, linestyle <span class="op">=</span> <span class="op">:</span>solid)</span>
+<span id="cb16-10"><a href="#cb16-10"></a><span class="fu">lines!</span>(ax2, t_list, <span class="fu">ones</span>(<span class="fu">length</span>(t_list)) <span class="op">.*</span> np_steady_H, label <span class="op">=</span> L<span class="st">"\langle a^\dagger a </span><span class="sc">\r</span><span class="st">angle ~~(</span><span class="sc">\t</span><span class="st">extrm{steady})"</span>, linestyle <span class="op">=</span> <span class="op">:</span>dash)</span>
+<span id="cb16-11"><a href="#cb16-11"></a><span class="fu">axislegend</span>(ax2, position <span class="op">=</span> <span class="op">:</span>rt)</span>
+<span id="cb16-12"><a href="#cb16-12"></a></span>
+<span id="cb16-13"><a href="#cb16-13"></a>fig</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div>
 <figure class="figure">
@@ -614,19 +636,196 @@ Solving linear problem...[DONE]</code></pre>
 <section id="power-spectrum" class="level2">
 <h2 class="anchored" data-anchor-id="power-spectrum">Power spectrum</h2>
 <div id="22" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb19-1"><a href="#cb19-1"></a>ω_list <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">0.01</span><span class="op">:</span><span class="fl">3</span></span>
-<span id="cb19-2"><a href="#cb19-2"></a>psd_H <span class="op">=</span> <span class="fu">PowerSpectrum</span>(M_Heom, steady_H, a, ω_list)</span>
-<span id="cb19-3"><a href="#cb19-3"></a></span>
-<span id="cb19-4"><a href="#cb19-4"></a><span class="co"># plot</span></span>
-<span id="cb19-5"><a href="#cb19-5"></a>fig <span class="op">=</span> <span class="fu">Figure</span>()</span>
-<span id="cb19-6"><a href="#cb19-6"></a>ax <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">1</span>, <span class="fl">1</span>], xlabel <span class="op">=</span> L<span class="st">"\omega"</span>)</span>
-<span id="cb19-7"><a href="#cb19-7"></a><span class="fu">lines!</span>(ax, ω_list, psd_H)</span>
-<span id="cb19-8"><a href="#cb19-8"></a></span>
-<span id="cb19-9"><a href="#cb19-9"></a>fig</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1"></a>ω_list <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">0.01</span><span class="op">:</span><span class="fl">3</span></span>
+<span id="cb17-2"><a href="#cb17-2"></a>psd_H <span class="op">=</span> <span class="fu">PowerSpectrum</span>(M_Heom, steady_H, a, ω_list)</span>
+<span id="cb17-3"><a href="#cb17-3"></a></span>
+<span id="cb17-4"><a href="#cb17-4"></a><span class="co"># plot</span></span>
+<span id="cb17-5"><a href="#cb17-5"></a>fig <span class="op">=</span> <span class="fu">Figure</span>()</span>
+<span id="cb17-6"><a href="#cb17-6"></a>ax <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">1</span>, <span class="fl">1</span>], xlabel <span class="op">=</span> L<span class="st">"\omega"</span>)</span>
+<span id="cb17-7"><a href="#cb17-7"></a><span class="fu">lines!</span>(ax, ω_list, psd_H)</span>
+<span id="cb17-8"><a href="#cb17-8"></a></span>
+<span id="cb17-9"><a href="#cb17-9"></a>fig</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Calculating power spectrum in frequency domain...
-Progress: [=                             ]   3.5% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 27s)Progress: [==                            ]   8.0% --- Elapsed Time: 0h 00m 02s (ETA: 0h 00m 23s)Progress: [===                           ]  12.4% --- Elapsed Time: 0h 00m 03s (ETA: 0h 00m 21s)Progress: [=====                         ]  16.9% --- Elapsed Time: 0h 00m 04s (ETA: 0h 00m 19s)Progress: [======                        ]  21.4% --- Elapsed Time: 0h 00m 05s (ETA: 0h 00m 18s)Progress: [=======                       ]  25.4% --- Elapsed Time: 0h 00m 06s (ETA: 0h 00m 17s)Progress: [========                      ]  29.4% --- Elapsed Time: 0h 00m 07s (ETA: 0h 00m 16s)Progress: [=========                     ]  32.8% --- Elapsed Time: 0h 00m 08s (ETA: 0h 00m 16s)Progress: [==========                    ]  36.3% --- Elapsed Time: 0h 00m 09s (ETA: 0h 00m 15s)Progress: [===========                   ]  39.3% --- Elapsed Time: 0h 00m 10s (ETA: 0h 00m 15s)Progress: [============                  ]  41.8% --- Elapsed Time: 0h 00m 11s (ETA: 0h 00m 15s)Progress: [=============                 ]  44.3% --- Elapsed Time: 0h 00m 12s (ETA: 0h 00m 15s)Progress: [==============                ]  46.8% --- Elapsed Time: 0h 00m 13s (ETA: 0h 00m 14s)Progress: [==============                ]  49.3% --- Elapsed Time: 0h 00m 15s (ETA: 0h 00m 15s)Progress: [===============               ]  51.7% --- Elapsed Time: 0h 00m 16s (ETA: 0h 00m 14s)Progress: [================              ]  54.2% --- Elapsed Time: 0h 00m 17s (ETA: 0h 00m 14s)Progress: [=================             ]  56.7% --- Elapsed Time: 0h 00m 18s (ETA: 0h 00m 13s)Progress: [=================             ]  59.2% --- Elapsed Time: 0h 00m 19s (ETA: 0h 00m 13s)Progress: [==================            ]  62.2% --- Elapsed Time: 0h 00m 20s (ETA: 0h 00m 12s)Progress: [===================           ]  65.7% --- Elapsed Time: 0h 00m 21s (ETA: 0h 00m 10s)Progress: [====================          ]  69.7% --- Elapsed Time: 0h 00m 22s (ETA: 0h 00m 09s)Progress: [======================        ]  74.1% --- Elapsed Time: 0h 00m 23s (ETA: 0h 00m 08s)Progress: [=======================       ]  79.6% --- Elapsed Time: 0h 00m 25s (ETA: 0h 00m 06s)Progress: [=========================     ]  85.6% --- Elapsed Time: 0h 00m 26s (ETA: 0h 00m 04s)Progress: [===========================   ]  92.0% --- Elapsed Time: 0h 00m 27s (ETA: 0h 00m 02s)Progress: [============================= ]  99.0% --- Elapsed Time: 0h 00m 28s (ETA: 0h 00m 00s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 28s (ETA: 0h 00m 00s)
-[DONE]</code></pre>
+<div class="ansi-escaped-output">
+<pre><span class="ansi-green-fg">[PowerSpectrum]   1%|▎                    |  ETA: 0:00:25 ( 0.12  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]   1%|▍                    |  ETA: 0:00:25 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]   2%|▍                    |  ETA: 0:00:24 ( 0.12  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]   2%|▌                    |  ETA: 0:00:23 ( 0.12  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]   3%|▋                    |  ETA: 0:00:25 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]   3%|▊                    |  ETA: 0:00:25 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]   4%|▉                    |  ETA: 0:00:30 ( 0.15  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]   4%|█                    |  ETA: 0:00:29 ( 0.15  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]   5%|█                    |  ETA: 0:00:28 ( 0.15  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]   5%|█▏                   |  ETA: 0:00:27 ( 0.14  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]   6%|█▎                   |  ETA: 0:00:27 ( 0.14  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]   6%|█▍                   |  ETA: 0:00:26 ( 0.14  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]   7%|█▌                   |  ETA: 0:00:26 ( 0.14  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]   7%|█▋                   |  ETA: 0:00:25 ( 0.14  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]   8%|█▋                   |  ETA: 0:00:25 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]   8%|█▊                   |  ETA: 0:00:25 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]   9%|█▉                   |  ETA: 0:00:24 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]   9%|██                   |  ETA: 0:00:24 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  10%|██▏                  |  ETA: 0:00:24 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  10%|██▎                  |  ETA: 0:00:23 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  11%|██▎                  |  ETA: 0:00:23 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  11%|██▍                  |  ETA: 0:00:23 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  12%|██▌                  |  ETA: 0:00:23 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  12%|██▋                  |  ETA: 0:00:22 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  13%|██▊                  |  ETA: 0:00:22 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  13%|██▉                  |  ETA: 0:00:22 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  14%|██▉                  |  ETA: 0:00:22 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  14%|███                  |  ETA: 0:00:22 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  15%|███▏                 |  ETA: 0:00:21 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  15%|███▎                 |  ETA: 0:00:21 ( 0.12  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  16%|███▍                 |  ETA: 0:00:21 ( 0.12  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  16%|███▌                 |  ETA: 0:00:21 ( 0.12  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  17%|███▌                 |  ETA: 0:00:21 ( 0.12  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  17%|███▋                 |  ETA: 0:00:21 ( 0.12  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  18%|███▊                 |  ETA: 0:00:20 ( 0.12  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  18%|███▉                 |  ETA: 0:00:20 ( 0.12  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  19%|████                 |  ETA: 0:00:20 ( 0.12  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  19%|████▏                |  ETA: 0:00:20 ( 0.12  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  20%|████▏                |  ETA: 0:00:20 ( 0.12  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  20%|████▎                |  ETA: 0:00:20 ( 0.12  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  21%|████▍                |  ETA: 0:00:20 ( 0.12  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  21%|████▌                |  ETA: 0:00:20 ( 0.12  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  22%|████▋                |  ETA: 0:00:19 ( 0.12  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  22%|████▊                |  ETA: 0:00:19 ( 0.12  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  23%|████▊                |  ETA: 0:00:19 ( 0.12  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  23%|████▉                |  ETA: 0:00:19 ( 0.12  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  24%|█████                |  ETA: 0:00:19 ( 0.12  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  24%|█████▏               |  ETA: 0:00:19 ( 0.12  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  25%|█████▎               |  ETA: 0:00:19 ( 0.12  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  25%|█████▍               |  ETA: 0:00:19 ( 0.12  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  26%|█████▍               |  ETA: 0:00:19 ( 0.12  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  26%|█████▌               |  ETA: 0:00:18 ( 0.12  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  27%|█████▋               |  ETA: 0:00:18 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  27%|█████▊               |  ETA: 0:00:18 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  28%|█████▉               |  ETA: 0:00:18 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  28%|██████               |  ETA: 0:00:18 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  29%|██████               |  ETA: 0:00:18 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  29%|██████▏              |  ETA: 0:00:18 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  30%|██████▎              |  ETA: 0:00:18 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  30%|██████▍              |  ETA: 0:00:18 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  31%|██████▌              |  ETA: 0:00:18 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  31%|██████▋              |  ETA: 0:00:18 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  32%|██████▋              |  ETA: 0:00:18 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  32%|██████▊              |  ETA: 0:00:18 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  33%|██████▉              |  ETA: 0:00:17 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  33%|███████              |  ETA: 0:00:17 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  34%|███████▏             |  ETA: 0:00:17 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  34%|███████▎             |  ETA: 0:00:17 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  35%|███████▍             |  ETA: 0:00:17 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  35%|███████▍             |  ETA: 0:00:17 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  36%|███████▌             |  ETA: 0:00:17 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  36%|███████▋             |  ETA: 0:00:17 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  37%|███████▊             |  ETA: 0:00:17 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  37%|███████▉             |  ETA: 0:00:17 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  38%|████████             |  ETA: 0:00:17 ( 0.14  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  38%|████████             |  ETA: 0:00:17 ( 0.14  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  39%|████████▏            |  ETA: 0:00:17 ( 0.14  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  39%|████████▎            |  ETA: 0:00:17 ( 0.14  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  40%|████████▍            |  ETA: 0:00:17 ( 0.14  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  40%|████████▌            |  ETA: 0:00:17 ( 0.14  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  41%|████████▋            |  ETA: 0:00:17 ( 0.14  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  41%|████████▋            |  ETA: 0:00:17 ( 0.14  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  42%|████████▊            |  ETA: 0:00:17 ( 0.14  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  42%|████████▉            |  ETA: 0:00:17 ( 0.14  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  43%|█████████            |  ETA: 0:00:17 ( 0.14  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  43%|█████████▏           |  ETA: 0:00:17 ( 0.15  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  44%|█████████▎           |  ETA: 0:00:17 ( 0.15  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  44%|█████████▎           |  ETA: 0:00:17 ( 0.15  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  45%|█████████▍           |  ETA: 0:00:17 ( 0.15  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  45%|█████████▌           |  ETA: 0:00:16 ( 0.15  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  46%|█████████▋           |  ETA: 0:00:16 ( 0.15  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  46%|█████████▊           |  ETA: 0:00:16 ( 0.15  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  47%|█████████▉           |  ETA: 0:00:16 ( 0.15  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  47%|█████████▉           |  ETA: 0:00:16 ( 0.15  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  48%|██████████           |  ETA: 0:00:16 ( 0.15  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  48%|██████████▏          |  ETA: 0:00:16 ( 0.16  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  49%|██████████▎          |  ETA: 0:00:16 ( 0.16  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  49%|██████████▍          |  ETA: 0:00:16 ( 0.16  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  50%|██████████▌          |  ETA: 0:00:16 ( 0.16  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  50%|██████████▌          |  ETA: 0:00:16 ( 0.16  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  51%|██████████▋          |  ETA: 0:00:16 ( 0.16  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  51%|██████████▊          |  ETA: 0:00:16 ( 0.16  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  52%|██████████▉          |  ETA: 0:00:16 ( 0.16  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  52%|███████████          |  ETA: 0:00:16 ( 0.16  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  53%|███████████▏         |  ETA: 0:00:15 ( 0.16  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  53%|███████████▏         |  ETA: 0:00:15 ( 0.16  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  54%|███████████▎         |  ETA: 0:00:15 ( 0.16  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  54%|███████████▍         |  ETA: 0:00:15 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  55%|███████████▌         |  ETA: 0:00:15 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  55%|███████████▋         |  ETA: 0:00:15 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  56%|███████████▊         |  ETA: 0:00:15 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  56%|███████████▊         |  ETA: 0:00:15 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  57%|███████████▉         |  ETA: 0:00:15 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  57%|████████████         |  ETA: 0:00:15 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  58%|████████████▏        |  ETA: 0:00:14 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  58%|████████████▎        |  ETA: 0:00:14 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  59%|████████████▍        |  ETA: 0:00:14 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  59%|████████████▍        |  ETA: 0:00:14 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  60%|████████████▌        |  ETA: 0:00:14 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  60%|████████████▋        |  ETA: 0:00:14 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  61%|████████████▊        |  ETA: 0:00:13 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  61%|████████████▉        |  ETA: 0:00:13 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  62%|█████████████        |  ETA: 0:00:13 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  62%|█████████████        |  ETA: 0:00:13 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  63%|█████████████▏       |  ETA: 0:00:13 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  63%|█████████████▎       |  ETA: 0:00:13 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  64%|█████████████▍       |  ETA: 0:00:12 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  64%|█████████████▌       |  ETA: 0:00:12 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  65%|█████████████▋       |  ETA: 0:00:12 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  65%|█████████████▋       |  ETA: 0:00:12 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  66%|█████████████▊       |  ETA: 0:00:12 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  66%|█████████████▉       |  ETA: 0:00:12 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  67%|██████████████       |  ETA: 0:00:11 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  67%|██████████████▏      |  ETA: 0:00:11 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  68%|██████████████▎      |  ETA: 0:00:11 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  68%|██████████████▍      |  ETA: 0:00:11 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  69%|██████████████▍      |  ETA: 0:00:11 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  69%|██████████████▌      |  ETA: 0:00:10 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  70%|██████████████▋      |  ETA: 0:00:10 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  70%|██████████████▊      |  ETA: 0:00:10 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  71%|██████████████▉      |  ETA: 0:00:10 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  71%|███████████████      |  ETA: 0:00:10 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  72%|███████████████      |  ETA: 0:00:10 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  72%|███████████████▏     |  ETA: 0:00:09 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  73%|███████████████▎     |  ETA: 0:00:09 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  73%|███████████████▍     |  ETA: 0:00:09 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  74%|███████████████▌     |  ETA: 0:00:09 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  74%|███████████████▋     |  ETA: 0:00:09 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  75%|███████████████▋     |  ETA: 0:00:08 ( 0.16  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  75%|███████████████▊     |  ETA: 0:00:08 ( 0.16  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  76%|███████████████▉     |  ETA: 0:00:08 ( 0.16  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  76%|████████████████     |  ETA: 0:00:08 ( 0.16  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  77%|████████████████▏    |  ETA: 0:00:08 ( 0.16  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  77%|████████████████▎    |  ETA: 0:00:07 ( 0.16  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  78%|████████████████▍    |  ETA: 0:00:07 ( 0.16  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  79%|████████████████▋    |  ETA: 0:00:07 ( 0.16  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  80%|████████████████▉    |  ETA: 0:00:06 ( 0.16  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  81%|█████████████████    |  ETA: 0:00:06 ( 0.16  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  82%|█████████████████▎   |  ETA: 0:00:06 ( 0.16  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  83%|█████████████████▌   |  ETA: 0:00:05 ( 0.16  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  84%|█████████████████▋   |  ETA: 0:00:05 ( 0.16  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  85%|█████████████████▉   |  ETA: 0:00:05 ( 0.16  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  86%|██████████████████▏  |  ETA: 0:00:04 ( 0.16  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  87%|██████████████████▎  |  ETA: 0:00:04 ( 0.15  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  88%|██████████████████▌  |  ETA: 0:00:04 ( 0.15  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  89%|██████████████████▊  |  ETA: 0:00:03 ( 0.15  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  90%|██████████████████▉  |  ETA: 0:00:03 ( 0.15  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  91%|███████████████████▏ |  ETA: 0:00:03 ( 0.15  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  92%|███████████████████▍ |  ETA: 0:00:02 ( 0.15  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  93%|███████████████████▌ |  ETA: 0:00:02 ( 0.15  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  94%|███████████████████▊ |  ETA: 0:00:02 ( 0.15  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  95%|████████████████████ |  ETA: 0:00:01 ( 0.15  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  96%|████████████████████▏|  ETA: 0:00:01 ( 0.15  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  97%|████████████████████▍|  ETA: 0:00:01 ( 0.15  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  98%|████████████████████▋|  ETA: 0:00:01 ( 0.15  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  99%|████████████████████▊|  ETA: 0:00:00 ( 0.15  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum] 100%|█████████████████████| Time: 0:00:29 ( 0.14  s/it)</span>
+</pre>
+</div>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div>
@@ -641,60 +840,63 @@ Progress: [=                             ]   3.5% --- Elapsed Time: 0h 00m 01s (
 <h2 class="anchored" data-anchor-id="compare-with-master-eq.-approach">Compare with Master Eq. approach</h2>
 <p>The Lindblad master equations which describes the cavity couples to an extra bosonic reservoir with <a href="https://qutip.org/HierarchicalEOM.jl/stable/bath_boson/Boson_Drude_Lorentz/#Boson-Drude-Lorentz">Drude-Lorentzian spectral density</a> is given by</p>
 <div id="24" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb21-1"><a href="#cb21-1"></a><span class="co"># Drude_Lorentzian spectral density</span></span>
-<span id="cb21-2"><a href="#cb21-2"></a><span class="fu">Drude_Lorentz</span>(ω, Γ, W) <span class="op">=</span> <span class="fl">4</span> <span class="op">*</span> Γ <span class="op">*</span> W <span class="op">*</span> ω <span class="op">/</span> ((ω)<span class="op">^</span><span class="fl">2</span> <span class="op">+</span> (W)<span class="op">^</span><span class="fl">2</span>)</span>
-<span id="cb21-3"><a href="#cb21-3"></a></span>
-<span id="cb21-4"><a href="#cb21-4"></a><span class="co"># Bose-Einstein distribution</span></span>
-<span id="cb21-5"><a href="#cb21-5"></a><span class="fu">n_b</span>(ω, kT) <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> (<span class="fu">exp</span>(ω <span class="op">/</span> kT) <span class="op">-</span> <span class="fl">1</span>)</span>
-<span id="cb21-6"><a href="#cb21-6"></a></span>
-<span id="cb21-7"><a href="#cb21-7"></a><span class="co"># build the jump operators</span></span>
-<span id="cb21-8"><a href="#cb21-8"></a>jump_op <span class="op">=</span> [</span>
-<span id="cb21-9"><a href="#cb21-9"></a>    <span class="fu">sqrt</span>(<span class="fu">Drude_Lorentz</span>(ωc, Γ, W) <span class="op">*</span> (<span class="fu">n_b</span>(ωc, kT) <span class="op">+</span> <span class="fl">1</span>)) <span class="op">*</span> a,</span>
-<span id="cb21-10"><a href="#cb21-10"></a>    <span class="fu">sqrt</span>(<span class="fu">Drude_Lorentz</span>(ωc, Γ, W) <span class="op">*</span> (<span class="fu">n_b</span>(ωc, kT)))     <span class="op">*</span> a<span class="op">'</span>,</span>
-<span id="cb21-11"><a href="#cb21-11"></a>    J_pump</span>
-<span id="cb21-12"><a href="#cb21-12"></a>];</span>
-<span id="cb21-13"><a href="#cb21-13"></a></span>
-<span id="cb21-14"><a href="#cb21-14"></a><span class="co"># construct the HEOMLS matrix for master equation</span></span>
-<span id="cb21-15"><a href="#cb21-15"></a>M_master <span class="op">=</span> <span class="fu">M_S</span>(H_s)</span>
-<span id="cb21-16"><a href="#cb21-16"></a>M_master <span class="op">=</span> <span class="fu">addBosonDissipator</span>(M_master, jump_op)</span>
-<span id="cb21-17"><a href="#cb21-17"></a></span>
-<span id="cb21-18"><a href="#cb21-18"></a><span class="co"># time evolution</span></span>
-<span id="cb21-19"><a href="#cb21-19"></a>sol_M <span class="op">=</span> <span class="fu">HEOMsolve</span>(M_master, ψ<span class="fl">0</span>, t_list; e_ops <span class="op">=</span> [σz, a<span class="op">'</span> <span class="op">*</span> a]);</span>
-<span id="cb21-20"><a href="#cb21-20"></a></span>
-<span id="cb21-21"><a href="#cb21-21"></a><span class="co"># steady state</span></span>
-<span id="cb21-22"><a href="#cb21-22"></a>steady_M <span class="op">=</span> <span class="fu">steadystate</span>(M_master);</span>
-<span id="cb21-23"><a href="#cb21-23"></a></span>
-<span id="cb21-24"><a href="#cb21-24"></a><span class="co"># expectation value of σz</span></span>
-<span id="cb21-25"><a href="#cb21-25"></a>σz_evo_M <span class="op">=</span> <span class="fu">real</span>(sol_M.expect[<span class="fl">1</span>, <span class="op">:</span>])</span>
-<span id="cb21-26"><a href="#cb21-26"></a>σz_steady_M <span class="op">=</span> <span class="fu">expect</span>(σz, steady_M)</span>
-<span id="cb21-27"><a href="#cb21-27"></a></span>
-<span id="cb21-28"><a href="#cb21-28"></a><span class="co"># average photon number</span></span>
-<span id="cb21-29"><a href="#cb21-29"></a>np_evo_M <span class="op">=</span> <span class="fu">real</span>(sol_M.expect[<span class="fl">2</span>, <span class="op">:</span>])</span>
-<span id="cb21-30"><a href="#cb21-30"></a>np_steady_M <span class="op">=</span> <span class="fu">expect</span>(a<span class="op">'</span> <span class="op">*</span> a, steady_M);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1"></a><span class="co"># Drude_Lorentzian spectral density</span></span>
+<span id="cb18-2"><a href="#cb18-2"></a><span class="fu">Drude_Lorentz</span>(ω, Γ, W) <span class="op">=</span> <span class="fl">4</span> <span class="op">*</span> Γ <span class="op">*</span> W <span class="op">*</span> ω <span class="op">/</span> ((ω)<span class="op">^</span><span class="fl">2</span> <span class="op">+</span> (W)<span class="op">^</span><span class="fl">2</span>)</span>
+<span id="cb18-3"><a href="#cb18-3"></a></span>
+<span id="cb18-4"><a href="#cb18-4"></a><span class="co"># Bose-Einstein distribution</span></span>
+<span id="cb18-5"><a href="#cb18-5"></a><span class="fu">n_b</span>(ω, kT) <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> (<span class="fu">exp</span>(ω <span class="op">/</span> kT) <span class="op">-</span> <span class="fl">1</span>)</span>
+<span id="cb18-6"><a href="#cb18-6"></a></span>
+<span id="cb18-7"><a href="#cb18-7"></a><span class="co"># build the jump operators</span></span>
+<span id="cb18-8"><a href="#cb18-8"></a>jump_op <span class="op">=</span> [</span>
+<span id="cb18-9"><a href="#cb18-9"></a>    <span class="fu">sqrt</span>(<span class="fu">Drude_Lorentz</span>(ωc, Γ, W) <span class="op">*</span> (<span class="fu">n_b</span>(ωc, kT) <span class="op">+</span> <span class="fl">1</span>)) <span class="op">*</span> a,</span>
+<span id="cb18-10"><a href="#cb18-10"></a>    <span class="fu">sqrt</span>(<span class="fu">Drude_Lorentz</span>(ωc, Γ, W) <span class="op">*</span> (<span class="fu">n_b</span>(ωc, kT)))     <span class="op">*</span> a<span class="op">'</span>,</span>
+<span id="cb18-11"><a href="#cb18-11"></a>    J_pump</span>
+<span id="cb18-12"><a href="#cb18-12"></a>];</span>
+<span id="cb18-13"><a href="#cb18-13"></a></span>
+<span id="cb18-14"><a href="#cb18-14"></a><span class="co"># construct the HEOMLS matrix for master equation</span></span>
+<span id="cb18-15"><a href="#cb18-15"></a>M_master <span class="op">=</span> <span class="fu">M_S</span>(H_s)</span>
+<span id="cb18-16"><a href="#cb18-16"></a>M_master <span class="op">=</span> <span class="fu">addBosonDissipator</span>(M_master, jump_op)</span>
+<span id="cb18-17"><a href="#cb18-17"></a></span>
+<span id="cb18-18"><a href="#cb18-18"></a><span class="co"># time evolution</span></span>
+<span id="cb18-19"><a href="#cb18-19"></a>sol_M <span class="op">=</span> <span class="fu">HEOMsolve</span>(M_master, ψ<span class="fl">0</span>, t_list; e_ops <span class="op">=</span> [σz, a<span class="op">'</span> <span class="op">*</span> a]);</span>
+<span id="cb18-20"><a href="#cb18-20"></a></span>
+<span id="cb18-21"><a href="#cb18-21"></a><span class="co"># steady state</span></span>
+<span id="cb18-22"><a href="#cb18-22"></a>steady_M <span class="op">=</span> <span class="fu">steadystate</span>(M_master);</span>
+<span id="cb18-23"><a href="#cb18-23"></a></span>
+<span id="cb18-24"><a href="#cb18-24"></a><span class="co"># expectation value of σz</span></span>
+<span id="cb18-25"><a href="#cb18-25"></a>σz_evo_M <span class="op">=</span> <span class="fu">real</span>(sol_M.expect[<span class="fl">1</span>, <span class="op">:</span>])</span>
+<span id="cb18-26"><a href="#cb18-26"></a>σz_steady_M <span class="op">=</span> <span class="fu">expect</span>(σz, steady_M)</span>
+<span id="cb18-27"><a href="#cb18-27"></a></span>
+<span id="cb18-28"><a href="#cb18-28"></a><span class="co"># average photon number</span></span>
+<span id="cb18-29"><a href="#cb18-29"></a>np_evo_M <span class="op">=</span> <span class="fu">real</span>(sol_M.expect[<span class="fl">2</span>, <span class="op">:</span>])</span>
+<span id="cb18-30"><a href="#cb18-30"></a>np_steady_M <span class="op">=</span> <span class="fu">expect</span>(a<span class="op">'</span> <span class="op">*</span> a, steady_M);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Constructing Liouville-von Neumann superoperator...
-[DONE]
-Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)
+<div class="ansi-escaped-output">
+<pre>Constructing Liouville-von Neumann superoperator...[DONE]
+
+<span class="ansi-green-fg">[HEOMsolve (ODE)] 100%|███████████████████| Time: 0:00:00 ( 0.10 ms/it)</span>
 Solving steady state for ADOs by linear-solve method...
 Calculating left preconditioner with ilu...[DONE]
-Solving linear problem...[DONE]</code></pre>
+Solving linear problem...[DONE]
+</pre>
+</div>
 </div>
 </div>
 <p>plot results</p>
 <div id="26" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb23-1"><a href="#cb23-1"></a>fig <span class="op">=</span> <span class="fu">Figure</span>()</span>
-<span id="cb23-2"><a href="#cb23-2"></a></span>
-<span id="cb23-3"><a href="#cb23-3"></a>ax1 <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">1</span>, <span class="fl">1</span>], xlabel <span class="op">=</span> L<span class="st">"t"</span>)</span>
-<span id="cb23-4"><a href="#cb23-4"></a><span class="fu">lines!</span>(ax1, t_list, σz_evo_M, label <span class="op">=</span> L<span class="st">"\langle \sigma_z </span><span class="sc">\r</span><span class="st">angle"</span>, linestyle <span class="op">=</span> <span class="op">:</span>solid)</span>
-<span id="cb23-5"><a href="#cb23-5"></a><span class="fu">lines!</span>(ax1, t_list, <span class="fu">ones</span>(<span class="fu">length</span>(t_list)) <span class="op">.*</span> σz_steady_M, label <span class="op">=</span> L<span class="st">"\langle \sigma_z </span><span class="sc">\r</span><span class="st">angle ~~(</span><span class="sc">\t</span><span class="st">extrm{steady})"</span>, linestyle <span class="op">=</span> <span class="op">:</span>dash)</span>
-<span id="cb23-6"><a href="#cb23-6"></a><span class="fu">axislegend</span>(ax1, position <span class="op">=</span> <span class="op">:</span>rt)</span>
-<span id="cb23-7"><a href="#cb23-7"></a></span>
-<span id="cb23-8"><a href="#cb23-8"></a>ax2 <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">2</span>, <span class="fl">1</span>], xlabel <span class="op">=</span> L<span class="st">"t"</span>)</span>
-<span id="cb23-9"><a href="#cb23-9"></a><span class="fu">lines!</span>(ax2, t_list, np_evo_M, label <span class="op">=</span> L<span class="st">"\langle a^\dagger a </span><span class="sc">\r</span><span class="st">angle"</span>, linestyle <span class="op">=</span> <span class="op">:</span>solid)</span>
-<span id="cb23-10"><a href="#cb23-10"></a><span class="fu">lines!</span>(ax2, t_list, <span class="fu">ones</span>(<span class="fu">length</span>(t_list)) <span class="op">.*</span> np_steady_M, label <span class="op">=</span> L<span class="st">"\langle a^\dagger a </span><span class="sc">\r</span><span class="st">angle ~~(</span><span class="sc">\t</span><span class="st">extrm{steady})"</span>, linestyle <span class="op">=</span> <span class="op">:</span>dash)</span>
-<span id="cb23-11"><a href="#cb23-11"></a><span class="fu">axislegend</span>(ax2, position <span class="op">=</span> <span class="op">:</span>rt)</span>
-<span id="cb23-12"><a href="#cb23-12"></a></span>
-<span id="cb23-13"><a href="#cb23-13"></a>fig</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb19-1"><a href="#cb19-1"></a>fig <span class="op">=</span> <span class="fu">Figure</span>()</span>
+<span id="cb19-2"><a href="#cb19-2"></a></span>
+<span id="cb19-3"><a href="#cb19-3"></a>ax1 <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">1</span>, <span class="fl">1</span>], xlabel <span class="op">=</span> L<span class="st">"t"</span>)</span>
+<span id="cb19-4"><a href="#cb19-4"></a><span class="fu">lines!</span>(ax1, t_list, σz_evo_M, label <span class="op">=</span> L<span class="st">"\langle \sigma_z </span><span class="sc">\r</span><span class="st">angle"</span>, linestyle <span class="op">=</span> <span class="op">:</span>solid)</span>
+<span id="cb19-5"><a href="#cb19-5"></a><span class="fu">lines!</span>(ax1, t_list, <span class="fu">ones</span>(<span class="fu">length</span>(t_list)) <span class="op">.*</span> σz_steady_M, label <span class="op">=</span> L<span class="st">"\langle \sigma_z </span><span class="sc">\r</span><span class="st">angle ~~(</span><span class="sc">\t</span><span class="st">extrm{steady})"</span>, linestyle <span class="op">=</span> <span class="op">:</span>dash)</span>
+<span id="cb19-6"><a href="#cb19-6"></a><span class="fu">axislegend</span>(ax1, position <span class="op">=</span> <span class="op">:</span>rt)</span>
+<span id="cb19-7"><a href="#cb19-7"></a></span>
+<span id="cb19-8"><a href="#cb19-8"></a>ax2 <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">2</span>, <span class="fl">1</span>], xlabel <span class="op">=</span> L<span class="st">"t"</span>)</span>
+<span id="cb19-9"><a href="#cb19-9"></a><span class="fu">lines!</span>(ax2, t_list, np_evo_M, label <span class="op">=</span> L<span class="st">"\langle a^\dagger a </span><span class="sc">\r</span><span class="st">angle"</span>, linestyle <span class="op">=</span> <span class="op">:</span>solid)</span>
+<span id="cb19-10"><a href="#cb19-10"></a><span class="fu">lines!</span>(ax2, t_list, <span class="fu">ones</span>(<span class="fu">length</span>(t_list)) <span class="op">.*</span> np_steady_M, label <span class="op">=</span> L<span class="st">"\langle a^\dagger a </span><span class="sc">\r</span><span class="st">angle ~~(</span><span class="sc">\t</span><span class="st">extrm{steady})"</span>, linestyle <span class="op">=</span> <span class="op">:</span>dash)</span>
+<span id="cb19-11"><a href="#cb19-11"></a><span class="fu">axislegend</span>(ax2, position <span class="op">=</span> <span class="op">:</span>rt)</span>
+<span id="cb19-12"><a href="#cb19-12"></a></span>
+<span id="cb19-13"><a href="#cb19-13"></a>fig</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div>
 <figure class="figure">
@@ -705,19 +907,20 @@ Solving linear problem...[DONE]</code></pre>
 </div>
 <p>We can also calculate the power spectrum</p>
 <div id="28" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb24-1"><a href="#cb24-1"></a>ω_list <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">0.01</span><span class="op">:</span><span class="fl">3</span></span>
-<span id="cb24-2"><a href="#cb24-2"></a>psd_M <span class="op">=</span> <span class="fu">PowerSpectrum</span>(M_master, steady_M, a, ω_list)</span>
-<span id="cb24-3"><a href="#cb24-3"></a></span>
-<span id="cb24-4"><a href="#cb24-4"></a><span class="co"># plot</span></span>
-<span id="cb24-5"><a href="#cb24-5"></a>fig <span class="op">=</span> <span class="fu">Figure</span>(size <span class="op">=</span> (<span class="fl">500</span>, <span class="fl">350</span>))</span>
-<span id="cb24-6"><a href="#cb24-6"></a>ax <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">1</span>, <span class="fl">1</span>], xlabel <span class="op">=</span> L<span class="st">"\omega"</span>)</span>
-<span id="cb24-7"><a href="#cb24-7"></a><span class="fu">lines!</span>(ax, ω_list, psd_M)</span>
-<span id="cb24-8"><a href="#cb24-8"></a></span>
-<span id="cb24-9"><a href="#cb24-9"></a>fig</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb20-1"><a href="#cb20-1"></a>ω_list <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">0.01</span><span class="op">:</span><span class="fl">3</span></span>
+<span id="cb20-2"><a href="#cb20-2"></a>psd_M <span class="op">=</span> <span class="fu">PowerSpectrum</span>(M_master, steady_M, a, ω_list)</span>
+<span id="cb20-3"><a href="#cb20-3"></a></span>
+<span id="cb20-4"><a href="#cb20-4"></a><span class="co"># plot</span></span>
+<span id="cb20-5"><a href="#cb20-5"></a>fig <span class="op">=</span> <span class="fu">Figure</span>(size <span class="op">=</span> (<span class="fl">500</span>, <span class="fl">350</span>))</span>
+<span id="cb20-6"><a href="#cb20-6"></a>ax <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">1</span>, <span class="fl">1</span>], xlabel <span class="op">=</span> L<span class="st">"\omega"</span>)</span>
+<span id="cb20-7"><a href="#cb20-7"></a><span class="fu">lines!</span>(ax, ω_list, psd_M)</span>
+<span id="cb20-8"><a href="#cb20-8"></a></span>
+<span id="cb20-9"><a href="#cb20-9"></a>fig</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Calculating power spectrum in frequency domain...
-Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)
-[DONE]</code></pre>
+<div class="ansi-escaped-output">
+<pre><span class="ansi-green-fg">[PowerSpectrum] 100%|█████████████████████| Time: 0:00:00 (10.81 μs/it)</span>
+</pre>
+</div>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div>
@@ -732,7 +935,7 @@ Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (
 <section id="version-information" class="level2">
 <h2 class="anchored" data-anchor-id="version-information">Version Information</h2>
 <div id="30" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb26-1"><a href="#cb26-1"></a>HierarchicalEOM.<span class="fu">versioninfo</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb21-1"><a href="#cb21-1"></a>HierarchicalEOM.<span class="fu">versioninfo</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
 <pre><span style="font-weight:bold;color:rgb(0,135,0)">                                   __</span>
@@ -756,8 +959,8 @@ Other developers:
 Package information:
 ====================================
 Julia              Ver. 1.12.1
-HierarchicalEOM    Ver. 2.8.0
-QuantumToolbox     Ver. 0.37.0
+HierarchicalEOM    Ver. 2.9.0
+QuantumToolbox     Ver. 0.38.1
 SciMLOperators     Ver. 1.9.0
 LinearSolve        Ver. 3.28.0
 OrdinaryDiffEqCore Ver. 1.36.0

@@ -492,7 +492,11 @@ Quantum Object:   type=Operator()   dims=[2, 2]   size=(4, 4)   ishermitian=true
 <span id="cb4-12"><a href="#cb4-12"></a>sol <span class="op">=</span> <span class="fu">sesolve</span>(Htot , ψ<span class="fl">0</span>, tlist; e_ops <span class="op">=</span> eop_ls)</span>
 <span id="cb4-13"><a href="#cb4-13"></a>sol</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Progress: [                              ]   0.2% --- Elapsed Time: 0h 00m 02s (ETA: 0h 13m 20s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 02s (ETA: 0h 00m 00s)</code></pre>
+<div class="ansi-escaped-output">
+<pre><span class="ansi-green-fg">[sesolve]   0%|▏                          |  ETA: 0:09:59 ( 1.50  s/it)</span>
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:03 ( 7.73 ms/it)</span>
+</pre>
+</div>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>Solution of time evolution
@@ -507,21 +511,21 @@ reltol = 1.0e-6</code></pre>
 </div>
 <p>Compare the dynamics of <span class="math inline">\(| e \rangle\langle e|\)</span> alongside <span class="math inline">\(a^\dagger a\)</span></p>
 <div id="8" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1"></a>n <span class="op">=</span> <span class="fu">real</span>.(sol.expect[<span class="fl">1</span>, <span class="op">:</span>])</span>
-<span id="cb7-2"><a href="#cb7-2"></a><span class="cn">e</span> <span class="op">=</span> <span class="fu">real</span>.(sol.expect[<span class="fl">2</span>, <span class="op">:</span>])</span>
-<span id="cb7-3"><a href="#cb7-3"></a>fig_se <span class="op">=</span> <span class="fu">Figure</span>()</span>
-<span id="cb7-4"><a href="#cb7-4"></a>ax_se <span class="op">=</span> <span class="fu">Axis</span>(</span>
-<span id="cb7-5"><a href="#cb7-5"></a>    fig_se[<span class="fl">1</span>, <span class="fl">1</span>],</span>
-<span id="cb7-6"><a href="#cb7-6"></a>    xlabel <span class="op">=</span> L<span class="st">"time </span><span class="sc">$</span><span class="st">[1/\</span>omega_a<span class="st">]</span><span class="sc">$</span><span class="st">", </span></span>
-<span id="cb7-7"><a href="#cb7-7"></a><span class="st">    </span>ylabel<span class="st"> = "</span>expectation value<span class="st">", </span></span>
-<span id="cb7-8"><a href="#cb7-8"></a>    xlabelsize <span class="op">=</span> <span class="fl">15</span>, </span>
-<span id="cb7-9"><a href="#cb7-9"></a>    ylabelsize <span class="op">=</span> <span class="fl">15</span>,</span>
-<span id="cb7-10"><a href="#cb7-10"></a>)</span>
-<span id="cb7-11"><a href="#cb7-11"></a><span class="fu">xlims!</span>(ax_se, <span class="fl">0</span>, <span class="fl">400</span>)</span>
-<span id="cb7-12"><a href="#cb7-12"></a><span class="fu">lines!</span>(ax_se, tlist, n, label <span class="op">=</span> L<span class="st">"</span><span class="sc">$</span><span class="st">\</span>langle<span class="st"> a^\dagger a </span><span class="sc">\r</span><span class="st">angle</span><span class="sc">$</span><span class="st">")</span></span>
-<span id="cb7-13"><a href="#cb7-13"></a>lines<span class="st">!(ax_se, tlist, e, label = L"</span><span class="op">$</span>P_e<span class="op">$</span><span class="st">")</span></span>
-<span id="cb7-14"><a href="#cb7-14"></a><span class="fu">axislegend</span>(ax_se; position <span class="op">=</span> <span class="op">:</span>rt, labelsize <span class="op">=</span> <span class="fl">15</span>)</span>
-<span id="cb7-15"><a href="#cb7-15"></a>fig_se</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1"></a>n <span class="op">=</span> <span class="fu">real</span>.(sol.expect[<span class="fl">1</span>, <span class="op">:</span>])</span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="cn">e</span> <span class="op">=</span> <span class="fu">real</span>.(sol.expect[<span class="fl">2</span>, <span class="op">:</span>])</span>
+<span id="cb6-3"><a href="#cb6-3"></a>fig_se <span class="op">=</span> <span class="fu">Figure</span>()</span>
+<span id="cb6-4"><a href="#cb6-4"></a>ax_se <span class="op">=</span> <span class="fu">Axis</span>(</span>
+<span id="cb6-5"><a href="#cb6-5"></a>    fig_se[<span class="fl">1</span>, <span class="fl">1</span>],</span>
+<span id="cb6-6"><a href="#cb6-6"></a>    xlabel <span class="op">=</span> L<span class="st">"time </span><span class="sc">$</span><span class="st">[1/\</span>omega_a<span class="st">]</span><span class="sc">$</span><span class="st">", </span></span>
+<span id="cb6-7"><a href="#cb6-7"></a><span class="st">    </span>ylabel<span class="st"> = "</span>expectation value<span class="st">", </span></span>
+<span id="cb6-8"><a href="#cb6-8"></a>    xlabelsize <span class="op">=</span> <span class="fl">15</span>, </span>
+<span id="cb6-9"><a href="#cb6-9"></a>    ylabelsize <span class="op">=</span> <span class="fl">15</span>,</span>
+<span id="cb6-10"><a href="#cb6-10"></a>)</span>
+<span id="cb6-11"><a href="#cb6-11"></a><span class="fu">xlims!</span>(ax_se, <span class="fl">0</span>, <span class="fl">400</span>)</span>
+<span id="cb6-12"><a href="#cb6-12"></a><span class="fu">lines!</span>(ax_se, tlist, n, label <span class="op">=</span> L<span class="st">"</span><span class="sc">$</span><span class="st">\</span>langle<span class="st"> a^\dagger a </span><span class="sc">\r</span><span class="st">angle</span><span class="sc">$</span><span class="st">")</span></span>
+<span id="cb6-13"><a href="#cb6-13"></a>lines<span class="st">!(ax_se, tlist, e, label = L"</span><span class="op">$</span>P_e<span class="op">$</span><span class="st">")</span></span>
+<span id="cb6-14"><a href="#cb6-14"></a><span class="fu">axislegend</span>(ax_se; position <span class="op">=</span> <span class="op">:</span>rt, labelsize <span class="op">=</span> <span class="fl">15</span>)</span>
+<span id="cb6-15"><a href="#cb6-15"></a>fig_se</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div>
 <figure class="figure">
@@ -593,30 +597,32 @@ reltol = 1.0e-6</code></pre>
 <h3 class="anchored" data-anchor-id="solve-for-evolutions-in-dissipative-case">Solve for evolutions in dissipative case</h3>
 <p>We can now define variables in <code>julia</code> and solve the evolution of dissipative JC model</p>
 <div id="10" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1"></a><span class="co"># Collapse operators for interaction with the environment with variable dissipation rates </span></span>
-<span id="cb8-2"><a href="#cb8-2"></a><span class="co"># and thermal energy of the environment. `n_thermal()` gives Bose-Einstein distribution</span></span>
-<span id="cb8-3"><a href="#cb8-3"></a><span class="fu">cop_ls</span>(_γ, _κ, _KT) <span class="op">=</span> (</span>
-<span id="cb8-4"><a href="#cb8-4"></a>    <span class="fu">√</span>(_κ <span class="op">*</span> <span class="fu">n_thermal</span>(ωc, _KT)) <span class="op">*</span> a<span class="op">'</span>, </span>
-<span id="cb8-5"><a href="#cb8-5"></a>    <span class="fu">√</span>(_κ <span class="op">*</span> (<span class="fl">1</span> <span class="op">+</span> <span class="fu">n_thermal</span>(ωc, _KT))) <span class="op">*</span> a, </span>
-<span id="cb8-6"><a href="#cb8-6"></a>    <span class="fu">√</span>(_γ <span class="op">*</span> <span class="fu">n_thermal</span>(ωa, _KT)) <span class="op">*</span> σ<span class="ch">', </span></span>
-<span id="cb8-7"><a href="#cb8-7"></a>    <span class="fu">√</span>(_γ <span class="op">*</span> (<span class="fl">1</span> <span class="op">+</span> <span class="fu">n_thermal</span>(ωa, _KT))) <span class="op">*</span> σ, </span>
-<span id="cb8-8"><a href="#cb8-8"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># Collapse operators for interaction with the environment with variable dissipation rates </span></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="co"># and thermal energy of the environment. `n_thermal()` gives Bose-Einstein distribution</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="fu">cop_ls</span>(_γ, _κ, _KT) <span class="op">=</span> (</span>
+<span id="cb7-4"><a href="#cb7-4"></a>    <span class="fu">√</span>(_κ <span class="op">*</span> <span class="fu">n_thermal</span>(ωc, _KT)) <span class="op">*</span> a<span class="op">'</span>, </span>
+<span id="cb7-5"><a href="#cb7-5"></a>    <span class="fu">√</span>(_κ <span class="op">*</span> (<span class="fl">1</span> <span class="op">+</span> <span class="fu">n_thermal</span>(ωc, _KT))) <span class="op">*</span> a, </span>
+<span id="cb7-6"><a href="#cb7-6"></a>    <span class="fu">√</span>(_γ <span class="op">*</span> <span class="fu">n_thermal</span>(ωa, _KT)) <span class="op">*</span> σ<span class="ch">', </span></span>
+<span id="cb7-7"><a href="#cb7-7"></a>    <span class="fu">√</span>(_γ <span class="op">*</span> (<span class="fl">1</span> <span class="op">+</span> <span class="fu">n_thermal</span>(ωa, _KT))) <span class="op">*</span> σ, </span>
+<span id="cb7-8"><a href="#cb7-8"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>cop_ls (generic function with 1 method)</code></pre>
 </div>
 </div>
 <div id="12" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1"></a><span class="co"># use the same ψ0, tlist, and eop_ls from isolated case</span></span>
-<span id="cb10-2"><a href="#cb10-2"></a>γ <span class="op">=</span> <span class="fl">4e-3</span></span>
-<span id="cb10-3"><a href="#cb10-3"></a>κ <span class="op">=</span> <span class="fl">7e-3</span></span>
-<span id="cb10-4"><a href="#cb10-4"></a>KT <span class="op">=</span> <span class="fl">0</span> <span class="co"># thermal field at zero temperature</span></span>
-<span id="cb10-5"><a href="#cb10-5"></a></span>
-<span id="cb10-6"><a href="#cb10-6"></a><span class="co"># `mesolve()` only has one additional keyword argument `c_ops` from `sesolve()`</span></span>
-<span id="cb10-7"><a href="#cb10-7"></a>sol_me  <span class="op">=</span> <span class="fu">mesolve</span>(Htot,  ψ<span class="fl">0</span>, tlist, <span class="fu">cop_ls</span>(γ, κ, KT), e_ops <span class="op">=</span> eop_ls)</span>
-<span id="cb10-8"><a href="#cb10-8"></a></span>
-<span id="cb10-9"><a href="#cb10-9"></a><span class="fu">print</span>(sol_me)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># use the same ψ0, tlist, and eop_ls from isolated case</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a>γ <span class="op">=</span> <span class="fl">4e-3</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a>κ <span class="op">=</span> <span class="fl">7e-3</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a>KT <span class="op">=</span> <span class="fl">0</span> <span class="co"># thermal field at zero temperature</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a></span>
+<span id="cb9-6"><a href="#cb9-6"></a><span class="co"># `mesolve()` only has one additional keyword argument `c_ops` from `sesolve()`</span></span>
+<span id="cb9-7"><a href="#cb9-7"></a>sol_me  <span class="op">=</span> <span class="fu">mesolve</span>(Htot,  ψ<span class="fl">0</span>, tlist, <span class="fu">cop_ls</span>(γ, κ, KT), e_ops <span class="op">=</span> eop_ls)</span>
+<span id="cb9-8"><a href="#cb9-8"></a></span>
+<span id="cb9-9"><a href="#cb9-9"></a><span class="fu">print</span>(sol_me)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Progress: [                              ]   0.2% --- Elapsed Time: 0h 00m 01s (ETA: 0h 06m 40s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 00s)
+<div class="ansi-escaped-output">
+<pre><span class="ansi-green-fg">[mesolve]   0%|▏                          |  ETA: 0:04:02 ( 0.61  s/it)</span>
+<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:01 ( 3.02 ms/it)</span>
 Solution of time evolution
 (return code: Success)
 --------------------------
@@ -624,25 +630,27 @@ num_states = 1
 num_expect = 2
 ODE alg.: OrdinaryDiffEqTsit5.Tsit5{typeof(OrdinaryDiffEqCore.trivial_limiter!), typeof(OrdinaryDiffEqCore.trivial_limiter!), Static.False}(OrdinaryDiffEqCore.trivial_limiter!, OrdinaryDiffEqCore.trivial_limiter!, static(false))
 abstol = 1.0e-8
-reltol = 1.0e-6</code></pre>
+reltol = 1.0e-6
+</pre>
+</div>
 </div>
 </div>
 <div id="14" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1"></a>n_me <span class="op">=</span> <span class="fu">real</span>.(sol_me.expect[<span class="fl">1</span>, <span class="op">:</span>])</span>
-<span id="cb12-2"><a href="#cb12-2"></a>e_me <span class="op">=</span> <span class="fu">real</span>.(sol_me.expect[<span class="fl">2</span>, <span class="op">:</span>])</span>
-<span id="cb12-3"><a href="#cb12-3"></a></span>
-<span id="cb12-4"><a href="#cb12-4"></a>fig_me <span class="op">=</span> <span class="fu">Figure</span>()</span>
-<span id="cb12-5"><a href="#cb12-5"></a>ax_me <span class="op">=</span> <span class="fu">Axis</span>(</span>
-<span id="cb12-6"><a href="#cb12-6"></a>    fig_me[<span class="fl">1</span>, <span class="fl">1</span>],</span>
-<span id="cb12-7"><a href="#cb12-7"></a>    xlabel <span class="op">=</span> L<span class="st">"time </span><span class="sc">$</span><span class="st">[1/\</span>omega_a<span class="st">]</span><span class="sc">$</span><span class="st">", </span></span>
-<span id="cb12-8"><a href="#cb12-8"></a><span class="st">    </span>ylabel<span class="st"> = "</span>expectation value<span class="st">", </span></span>
-<span id="cb12-9"><a href="#cb12-9"></a>    xlabelsize <span class="op">=</span> <span class="fl">15</span>, </span>
-<span id="cb12-10"><a href="#cb12-10"></a>    ylabelsize <span class="op">=</span> <span class="fl">15</span>,</span>
-<span id="cb12-11"><a href="#cb12-11"></a>)</span>
-<span id="cb12-12"><a href="#cb12-12"></a><span class="fu">lines!</span>(ax_me, tlist, n_me, label <span class="op">=</span> L<span class="st">"\langle a^\dagger a </span><span class="sc">\r</span><span class="st">angle"</span>)</span>
-<span id="cb12-13"><a href="#cb12-13"></a><span class="fu">lines!</span>(ax_me, tlist, e_me, label <span class="op">=</span> L<span class="st">"</span><span class="sc">$</span>P_e<span class="sc">$</span><span class="st">")</span></span>
-<span id="cb12-14"><a href="#cb12-14"></a>axislegend<span class="st">(ax_me; position = :rt, labelsize = 15)</span></span>
-<span id="cb12-15"><a href="#cb12-15"></a>fig_me</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1"></a>n_me <span class="op">=</span> <span class="fu">real</span>.(sol_me.expect[<span class="fl">1</span>, <span class="op">:</span>])</span>
+<span id="cb10-2"><a href="#cb10-2"></a>e_me <span class="op">=</span> <span class="fu">real</span>.(sol_me.expect[<span class="fl">2</span>, <span class="op">:</span>])</span>
+<span id="cb10-3"><a href="#cb10-3"></a></span>
+<span id="cb10-4"><a href="#cb10-4"></a>fig_me <span class="op">=</span> <span class="fu">Figure</span>()</span>
+<span id="cb10-5"><a href="#cb10-5"></a>ax_me <span class="op">=</span> <span class="fu">Axis</span>(</span>
+<span id="cb10-6"><a href="#cb10-6"></a>    fig_me[<span class="fl">1</span>, <span class="fl">1</span>],</span>
+<span id="cb10-7"><a href="#cb10-7"></a>    xlabel <span class="op">=</span> L<span class="st">"time </span><span class="sc">$</span><span class="st">[1/\</span>omega_a<span class="st">]</span><span class="sc">$</span><span class="st">", </span></span>
+<span id="cb10-8"><a href="#cb10-8"></a><span class="st">    </span>ylabel<span class="st"> = "</span>expectation value<span class="st">", </span></span>
+<span id="cb10-9"><a href="#cb10-9"></a>    xlabelsize <span class="op">=</span> <span class="fl">15</span>, </span>
+<span id="cb10-10"><a href="#cb10-10"></a>    ylabelsize <span class="op">=</span> <span class="fl">15</span>,</span>
+<span id="cb10-11"><a href="#cb10-11"></a>)</span>
+<span id="cb10-12"><a href="#cb10-12"></a><span class="fu">lines!</span>(ax_me, tlist, n_me, label <span class="op">=</span> L<span class="st">"\langle a^\dagger a </span><span class="sc">\r</span><span class="st">angle"</span>)</span>
+<span id="cb10-13"><a href="#cb10-13"></a><span class="fu">lines!</span>(ax_me, tlist, e_me, label <span class="op">=</span> L<span class="st">"</span><span class="sc">$</span>P_e<span class="sc">$</span><span class="st">")</span></span>
+<span id="cb10-14"><a href="#cb10-14"></a>axislegend<span class="st">(ax_me; position = :rt, labelsize = 15)</span></span>
+<span id="cb10-15"><a href="#cb10-15"></a>fig_me</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div>
 <figure class="figure">
@@ -653,24 +661,27 @@ reltol = 1.0e-6</code></pre>
 </div>
 <p>From the above example, one can see that the dissipative system is losing energy over time and asymptoting to zero. We can further consider the thermal field with finite temperature.</p>
 <div id="16" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1"></a>sol_me_  <span class="op">=</span> <span class="fu">mesolve</span>(Htot,  ψ<span class="fl">0</span>, tlist, <span class="fu">cop_ls</span>(γ, κ, <span class="fl">0.3</span> <span class="op">*</span> ωa), e_ops <span class="op">=</span> eop_ls) <span class="co"># replace KT with finite temperature</span></span>
-<span id="cb13-2"><a href="#cb13-2"></a></span>
-<span id="cb13-3"><a href="#cb13-3"></a>n_me_ <span class="op">=</span> <span class="fu">real</span>.(sol_me_.expect[<span class="fl">1</span>, <span class="op">:</span>])</span>
-<span id="cb13-4"><a href="#cb13-4"></a>e_me_ <span class="op">=</span> <span class="fu">real</span>.(sol_me_.expect[<span class="fl">2</span>, <span class="op">:</span>])</span>
-<span id="cb13-5"><a href="#cb13-5"></a>fig_me_ <span class="op">=</span> <span class="fu">Figure</span>()</span>
-<span id="cb13-6"><a href="#cb13-6"></a>ax_me_ <span class="op">=</span> <span class="fu">Axis</span>(</span>
-<span id="cb13-7"><a href="#cb13-7"></a>    fig_me_[<span class="fl">1</span>, <span class="fl">1</span>],</span>
-<span id="cb13-8"><a href="#cb13-8"></a>    xlabel <span class="op">=</span> L<span class="st">"time </span><span class="sc">$</span><span class="st">[1/\</span>omega_a<span class="st">]</span><span class="sc">$</span><span class="st">", </span></span>
-<span id="cb13-9"><a href="#cb13-9"></a><span class="st">    </span>ylabel<span class="st"> = "</span>expectation value<span class="st">", </span></span>
-<span id="cb13-10"><a href="#cb13-10"></a>    xlabelsize <span class="op">=</span> <span class="fl">15</span>, </span>
-<span id="cb13-11"><a href="#cb13-11"></a>    ylabelsize <span class="op">=</span> <span class="fl">15</span>,</span>
-<span id="cb13-12"><a href="#cb13-12"></a>)</span>
-<span id="cb13-13"><a href="#cb13-13"></a><span class="fu">lines!</span>(ax_me_, tlist, n_me_, label <span class="op">=</span> L<span class="st">"\langle a^\dagger a </span><span class="sc">\r</span><span class="st">angle"</span>)</span>
-<span id="cb13-14"><a href="#cb13-14"></a><span class="fu">lines!</span>(ax_me_, tlist, e_me_, label <span class="op">=</span> L<span class="st">"</span><span class="sc">$</span>P_e<span class="sc">$</span><span class="st">")</span></span>
-<span id="cb13-15"><a href="#cb13-15"></a>axislegend<span class="st">(ax_me_; position = :rt, labelsize = 15)</span></span>
-<span id="cb13-16"><a href="#cb13-16"></a>fig_me_</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1"></a>sol_me_  <span class="op">=</span> <span class="fu">mesolve</span>(Htot,  ψ<span class="fl">0</span>, tlist, <span class="fu">cop_ls</span>(γ, κ, <span class="fl">0.3</span> <span class="op">*</span> ωa), e_ops <span class="op">=</span> eop_ls) <span class="co"># replace KT with finite temperature</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a></span>
+<span id="cb11-3"><a href="#cb11-3"></a>n_me_ <span class="op">=</span> <span class="fu">real</span>.(sol_me_.expect[<span class="fl">1</span>, <span class="op">:</span>])</span>
+<span id="cb11-4"><a href="#cb11-4"></a>e_me_ <span class="op">=</span> <span class="fu">real</span>.(sol_me_.expect[<span class="fl">2</span>, <span class="op">:</span>])</span>
+<span id="cb11-5"><a href="#cb11-5"></a>fig_me_ <span class="op">=</span> <span class="fu">Figure</span>()</span>
+<span id="cb11-6"><a href="#cb11-6"></a>ax_me_ <span class="op">=</span> <span class="fu">Axis</span>(</span>
+<span id="cb11-7"><a href="#cb11-7"></a>    fig_me_[<span class="fl">1</span>, <span class="fl">1</span>],</span>
+<span id="cb11-8"><a href="#cb11-8"></a>    xlabel <span class="op">=</span> L<span class="st">"time </span><span class="sc">$</span><span class="st">[1/\</span>omega_a<span class="st">]</span><span class="sc">$</span><span class="st">", </span></span>
+<span id="cb11-9"><a href="#cb11-9"></a><span class="st">    </span>ylabel<span class="st"> = "</span>expectation value<span class="st">", </span></span>
+<span id="cb11-10"><a href="#cb11-10"></a>    xlabelsize <span class="op">=</span> <span class="fl">15</span>, </span>
+<span id="cb11-11"><a href="#cb11-11"></a>    ylabelsize <span class="op">=</span> <span class="fl">15</span>,</span>
+<span id="cb11-12"><a href="#cb11-12"></a>)</span>
+<span id="cb11-13"><a href="#cb11-13"></a><span class="fu">lines!</span>(ax_me_, tlist, n_me_, label <span class="op">=</span> L<span class="st">"\langle a^\dagger a </span><span class="sc">\r</span><span class="st">angle"</span>)</span>
+<span id="cb11-14"><a href="#cb11-14"></a><span class="fu">lines!</span>(ax_me_, tlist, e_me_, label <span class="op">=</span> L<span class="st">"</span><span class="sc">$</span>P_e<span class="sc">$</span><span class="st">")</span></span>
+<span id="cb11-15"><a href="#cb11-15"></a>axislegend<span class="st">(ax_me_; position = :rt, labelsize = 15)</span></span>
+<span id="cb11-16"><a href="#cb11-16"></a>fig_me_</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)</code></pre>
+<div class="ansi-escaped-output">
+<pre><span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 1.53 μs/it)</span>
+</pre>
+</div>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div>
@@ -686,8 +697,8 @@ reltol = 1.0e-6</code></pre>
 <section id="version-information" class="level2">
 <h2 class="anchored" data-anchor-id="version-information">Version Information</h2>
 <div id="18" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1"></a><span class="im">import</span> <span class="bu">QuantumToolbox</span></span>
-<span id="cb15-2"><a href="#cb15-2"></a>QuantumToolbox.<span class="fu">versioninfo</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1"></a><span class="im">import</span> <span class="bu">QuantumToolbox</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a>QuantumToolbox.<span class="fu">versioninfo</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
  QuantumToolbox.jl: Quantum Toolbox in Julia
@@ -699,7 +710,7 @@ Current admin team:
 Package information:
 ====================================
 Julia              Ver. 1.12.1
-QuantumToolbox     Ver. 0.37.0
+QuantumToolbox     Ver. 0.38.1
 SciMLOperators     Ver. 1.9.0
 LinearSolve        Ver. 3.28.0
 OrdinaryDiffEqCore Ver. 1.36.0

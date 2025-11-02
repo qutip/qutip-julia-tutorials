@@ -433,13 +433,13 @@ window.Quarto = {
 <span id="cb2-4"><a href="#cb2-4"></a>gs <span class="op">=</span> <span class="fu">rand</span>(N<span class="op">-</span><span class="fl">1</span>) <span class="co"># use rand function for the random interaction strengths</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>7-element Vector{Float64}:
- 0.6349357808239343
- 0.28691968297714276
- 0.48133444857158003
- 0.4591546242063127
- 0.7905164584327935
- 0.08987711143187704
- 0.607198967033695</code></pre>
+ 0.14201249357912515
+ 0.9471249635210334
+ 0.3448781218510253
+ 0.807053766125541
+ 0.4587276883474195
+ 0.0419542195629341
+ 0.6484578555101486</code></pre>
 </div>
 </div>
 <div id="6" class="cell" data-execution_count="1">
@@ -534,22 +534,22 @@ Quantum Object Evo.:   type=Operator()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(2
 <pre><code>
 Quantum Object:   type=Ket()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256,)
 256-element SparseArrays.SparseVector{ComplexF64, Int64} with 128 stored entries:
-  [1  ]  =  0.00616594+0.0im
-  [4  ]  =  -0.0219334+0.0im
-  [6  ]  =  0.00261596+0.0im
-  [7  ]  =  -0.0017145-0.0im
-  [10 ]  =  -0.00349366+0.0im
-  [11 ]  =  0.00202441+0.0im
-  [13 ]  =  -0.0164809+0.0im
+  [1  ]  =  0.00135063+0.0im
+  [4  ]  =  -0.00455926+0.0im
+  [6  ]  =  0.000318698+0.0im
+  [7  ]  =  -0.000229302+0.0im
+  [10 ]  =  -0.000440405+0.0im
+  [11 ]  =  0.000260492+0.0im
+  [13 ]  =  -0.00492216+0.0im
          ⋮
-  [241]  =  0.0795924+0.0im
-  [244]  =  -0.283225+0.0im
-  [246]  =  0.0322084+0.0im
-  [247]  =  -0.0207628+0.0im
-  [250]  =  -0.0457147+0.0im
-  [251]  =  0.0262272+0.0im
-  [253]  =  -0.219681+0.0im
-  [256]  =  0.783033+0.0im</code></pre>
+  [241]  =  0.0549254+0.0im
+  [244]  =  -0.185462+0.0im
+  [246]  =  0.0111187+0.0im
+  [247]  =  -0.00765809+0.0im
+  [250]  =  -0.0192977+0.0im
+  [251]  =  0.0111685+0.0im
+  [253]  =  -0.224221+0.0im
+  [256]  =  0.757536+0.0im</code></pre>
 </div>
 </div>
 <p>We can see that the truthful ground state we are preparing is indeed very complex.</p>
@@ -594,32 +594,40 @@ Quantum Object:   type=Ket()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256,)
 <span id="cb14-6"><a href="#cb14-6"></a>    <span class="co"># for solving dynamics, we can pass `params` to the keyword argument `params` for its reference</span></span>
 <span id="cb14-7"><a href="#cb14-7"></a><span class="cf">end</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)
-Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)
-Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)
-Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)
-Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)
-Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)</code></pre>
+<div class="ansi-escaped-output">
+<pre><span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.19 ms/it)</span>
+
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (33.52 μs/it)</span>
+
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (38.39 μs/it)</span>
+
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (47.61 μs/it)</span>
+
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (60.42 μs/it)</span>
+
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (86.32 μs/it)</span>
+</pre>
+</div>
 </div>
 </div>
 <div id="20" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1"></a>fig <span class="op">=</span> <span class="fu">Figure</span>(size<span class="op">=</span>(<span class="fl">900</span>, <span class="fl">400</span>))</span>
-<span id="cb16-2"><a href="#cb16-2"></a>axs <span class="op">=</span> <span class="fu">Axis</span>.([fig[<span class="fl">1</span>,<span class="fl">1</span>], fig[<span class="fl">1</span>,<span class="fl">2</span>]])</span>
-<span id="cb16-3"><a href="#cb16-3"></a>axs[<span class="fl">1</span>].title <span class="op">=</span> L<span class="st">"\langle H_f </span><span class="sc">\r</span><span class="st">angle"</span></span>
-<span id="cb16-4"><a href="#cb16-4"></a>axs[<span class="fl">1</span>].xticks <span class="op">=</span> (<span class="fl">0</span><span class="op">:</span><span class="fl">0.25</span><span class="op">:</span><span class="fl">1</span>, [<span class="st">"</span><span class="sc">$</span>(t)<span class="st">T"</span> for t <span class="kw">in</span> <span class="fl">0</span><span class="op">:</span><span class="fl">0.25</span><span class="op">:</span><span class="fl">1</span>])</span>
-<span id="cb16-5"><a href="#cb16-5"></a>axs[<span class="fl">2</span>].title <span class="op">=</span> L<span class="st">"|\langle \psi_G^f |\psi(t)</span><span class="sc">\r</span><span class="st">angle|^2"</span></span>
-<span id="cb16-6"><a href="#cb16-6"></a>axs[<span class="fl">2</span>].xticks <span class="op">=</span> (<span class="fl">0</span><span class="op">:</span><span class="fl">0.25</span><span class="op">:</span><span class="fl">1</span>, [<span class="st">"</span><span class="sc">$</span>(t)<span class="st">T"</span> for t <span class="kw">in</span> <span class="fl">0</span><span class="op">:</span><span class="fl">0.25</span><span class="op">:</span><span class="fl">1</span>])</span>
-<span id="cb16-7"><a href="#cb16-7"></a></span>
-<span id="cb16-8"><a href="#cb16-8"></a><span class="cf">for</span> ax_idx <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, T_idx <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu">length</span>(Tlist)</span>
-<span id="cb16-9"><a href="#cb16-9"></a>    T <span class="op">=</span> Tlist[T_idx]</span>
-<span id="cb16-10"><a href="#cb16-10"></a>    exps <span class="op">=</span> results[T_idx].expect</span>
-<span id="cb16-11"><a href="#cb16-11"></a>    tlist <span class="op">=</span> <span class="fu">range</span>(<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">101</span>)</span>
-<span id="cb16-12"><a href="#cb16-12"></a>    <span class="fu">lines!</span>(axs[ax_idx], tlist, <span class="fu">real</span>(exps[ax_idx,<span class="op">:</span>]), label <span class="op">=</span> L<span class="st">"10^{%</span><span class="sc">$</span>(<span class="fu">string</span>(<span class="fu">log10</span>(T)))<span class="st">}"</span>)</span>
-<span id="cb16-13"><a href="#cb16-13"></a><span class="cf">end</span></span>
-<span id="cb16-14"><a href="#cb16-14"></a></span>
-<span id="cb16-15"><a href="#cb16-15"></a><span class="fu">Legend</span>(fig[<span class="fl">1</span>,<span class="fl">3</span>], axs[<span class="fl">1</span>], L<span class="st">"T"</span>)</span>
-<span id="cb16-16"><a href="#cb16-16"></a></span>
-<span id="cb16-17"><a href="#cb16-17"></a>fig</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1"></a>fig <span class="op">=</span> <span class="fu">Figure</span>(size<span class="op">=</span>(<span class="fl">900</span>, <span class="fl">400</span>))</span>
+<span id="cb15-2"><a href="#cb15-2"></a>axs <span class="op">=</span> <span class="fu">Axis</span>.([fig[<span class="fl">1</span>,<span class="fl">1</span>], fig[<span class="fl">1</span>,<span class="fl">2</span>]])</span>
+<span id="cb15-3"><a href="#cb15-3"></a>axs[<span class="fl">1</span>].title <span class="op">=</span> L<span class="st">"\langle H_f </span><span class="sc">\r</span><span class="st">angle"</span></span>
+<span id="cb15-4"><a href="#cb15-4"></a>axs[<span class="fl">1</span>].xticks <span class="op">=</span> (<span class="fl">0</span><span class="op">:</span><span class="fl">0.25</span><span class="op">:</span><span class="fl">1</span>, [<span class="st">"</span><span class="sc">$</span>(t)<span class="st">T"</span> for t <span class="kw">in</span> <span class="fl">0</span><span class="op">:</span><span class="fl">0.25</span><span class="op">:</span><span class="fl">1</span>])</span>
+<span id="cb15-5"><a href="#cb15-5"></a>axs[<span class="fl">2</span>].title <span class="op">=</span> L<span class="st">"|\langle \psi_G^f |\psi(t)</span><span class="sc">\r</span><span class="st">angle|^2"</span></span>
+<span id="cb15-6"><a href="#cb15-6"></a>axs[<span class="fl">2</span>].xticks <span class="op">=</span> (<span class="fl">0</span><span class="op">:</span><span class="fl">0.25</span><span class="op">:</span><span class="fl">1</span>, [<span class="st">"</span><span class="sc">$</span>(t)<span class="st">T"</span> for t <span class="kw">in</span> <span class="fl">0</span><span class="op">:</span><span class="fl">0.25</span><span class="op">:</span><span class="fl">1</span>])</span>
+<span id="cb15-7"><a href="#cb15-7"></a></span>
+<span id="cb15-8"><a href="#cb15-8"></a><span class="cf">for</span> ax_idx <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, T_idx <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu">length</span>(Tlist)</span>
+<span id="cb15-9"><a href="#cb15-9"></a>    T <span class="op">=</span> Tlist[T_idx]</span>
+<span id="cb15-10"><a href="#cb15-10"></a>    exps <span class="op">=</span> results[T_idx].expect</span>
+<span id="cb15-11"><a href="#cb15-11"></a>    tlist <span class="op">=</span> <span class="fu">range</span>(<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">101</span>)</span>
+<span id="cb15-12"><a href="#cb15-12"></a>    <span class="fu">lines!</span>(axs[ax_idx], tlist, <span class="fu">real</span>(exps[ax_idx,<span class="op">:</span>]), label <span class="op">=</span> L<span class="st">"10^{%</span><span class="sc">$</span>(<span class="fu">string</span>(<span class="fu">log10</span>(T)))<span class="st">}"</span>)</span>
+<span id="cb15-13"><a href="#cb15-13"></a><span class="cf">end</span></span>
+<span id="cb15-14"><a href="#cb15-14"></a></span>
+<span id="cb15-15"><a href="#cb15-15"></a><span class="fu">Legend</span>(fig[<span class="fl">1</span>,<span class="fl">3</span>], axs[<span class="fl">1</span>], L<span class="st">"T"</span>)</span>
+<span id="cb15-16"><a href="#cb15-16"></a></span>
+<span id="cb15-17"><a href="#cb15-17"></a>fig</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div>
 <figure class="figure">
@@ -633,7 +641,7 @@ Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (
 <section id="version-information" class="level2">
 <h2 class="anchored" data-anchor-id="version-information">Version Information</h2>
 <div id="22" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1"></a>QuantumToolbox.<span class="fu">versioninfo</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1"></a>QuantumToolbox.<span class="fu">versioninfo</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
  QuantumToolbox.jl: Quantum Toolbox in Julia
@@ -645,7 +653,7 @@ Current admin team:
 Package information:
 ====================================
 Julia              Ver. 1.12.1
-QuantumToolbox     Ver. 0.37.0
+QuantumToolbox     Ver. 0.38.1
 SciMLOperators     Ver. 1.9.0
 LinearSolve        Ver. 3.28.0
 OrdinaryDiffEqCore Ver. 1.36.0

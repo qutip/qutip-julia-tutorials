@@ -558,7 +558,11 @@ Quantum Object:   type=Ket()   dims=[2, 2, 2, 2, 2, 2]   size=(64,)
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1"></a>sol_me <span class="op">=</span> <span class="fu">mesolve</span>(H, ρ, tl, c_ops; e_ops <span class="op">=</span> [e_ops<span class="op">...</span>])</span>
 <span id="cb10-2"><a href="#cb10-2"></a>Strue <span class="op">=</span> <span class="fu">entropy_vn</span>(sol_me.states[<span class="kw">end</span>], base<span class="op">=</span><span class="fl">2</span>) <span class="op">/</span> latt.N;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)</code></pre>
+<div class="ansi-escaped-output">
+<pre><span class="ansi-green-fg">[mesolve]  68%|██████████████████▍        |  ETA: 0:00:00 ( 1.47 ms/it)</span>
+<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 3.43 ms/it)</span>
+</pre>
+</div>
 </div>
 </div>
 </section>
@@ -574,40 +578,40 @@ S = -\mathrm{Tr}(\rho \log_2(\rho)),
 \]</span></p>
 <p>To maximize efficiency and minimize memory allocations we make use of preallocated variables stores in the <code>parameters</code> constructor of the solver.</p>
 <div id="18" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw">function</span> <span class="fu">f_purity</span>(p, z, B)</span>
-<span id="cb12-2"><a href="#cb12-2"></a>    N <span class="op">=</span> p.N</span>
-<span id="cb12-3"><a href="#cb12-3"></a>    M <span class="op">=</span> p.M</span>
-<span id="cb12-4"><a href="#cb12-4"></a>    S <span class="op">=</span> p.S</span>
-<span id="cb12-5"><a href="#cb12-5"></a>    T <span class="op">=</span> p.temp_MM</span>
-<span id="cb12-6"><a href="#cb12-6"></a></span>
-<span id="cb12-7"><a href="#cb12-7"></a>    <span class="fu">mul!</span>(T, S, B)</span>
-<span id="cb12-8"><a href="#cb12-8"></a>    <span class="cf">return</span> <span class="fu">tr</span>(T<span class="op">^</span><span class="fl">2</span>)</span>
-<span id="cb12-9"><a href="#cb12-9"></a><span class="kw">end</span></span>
-<span id="cb12-10"><a href="#cb12-10"></a></span>
-<span id="cb12-11"><a href="#cb12-11"></a><span class="kw">function</span> <span class="fu">f_trace</span>(p, z, B)</span>
-<span id="cb12-12"><a href="#cb12-12"></a>    N <span class="op">=</span> p.N</span>
-<span id="cb12-13"><a href="#cb12-13"></a>    M <span class="op">=</span> p.M</span>
-<span id="cb12-14"><a href="#cb12-14"></a>    S <span class="op">=</span> p.S</span>
-<span id="cb12-15"><a href="#cb12-15"></a>    T <span class="op">=</span> p.temp_MM</span>
-<span id="cb12-16"><a href="#cb12-16"></a></span>
-<span id="cb12-17"><a href="#cb12-17"></a>    <span class="fu">mul!</span>(T, S, B)</span>
-<span id="cb12-18"><a href="#cb12-18"></a>    <span class="cf">return</span> <span class="fu">tr</span>(T)</span>
-<span id="cb12-19"><a href="#cb12-19"></a><span class="kw">end</span></span>
-<span id="cb12-20"><a href="#cb12-20"></a></span>
-<span id="cb12-21"><a href="#cb12-21"></a><span class="kw">function</span> <span class="fu">f_entropy</span>(p, z, B)</span>
-<span id="cb12-22"><a href="#cb12-22"></a>    C <span class="op">=</span> p.A0</span>
-<span id="cb12-23"><a href="#cb12-23"></a>    σ <span class="op">=</span> p.Bi</span>
-<span id="cb12-24"><a href="#cb12-24"></a></span>
-<span id="cb12-25"><a href="#cb12-25"></a>    <span class="fu">mul!</span>(C, z, <span class="fu">sqrt</span>(B))</span>
-<span id="cb12-26"><a href="#cb12-26"></a>    <span class="fu">mul!</span>(σ, C<span class="op">'</span>, C)</span>
-<span id="cb12-27"><a href="#cb12-27"></a>    <span class="cf">return</span> <span class="fu">entropy_vn</span>(<span class="fu">Qobj</span>(<span class="fu">Hermitian</span>(σ), <span class="kw">type</span><span class="op">=</span><span class="fu">Operator</span>()), base<span class="op">=</span><span class="fl">2</span>)</span>
-<span id="cb12-28"><a href="#cb12-28"></a><span class="kw">end</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">function</span> <span class="fu">f_purity</span>(p, z, B)</span>
+<span id="cb11-2"><a href="#cb11-2"></a>    N <span class="op">=</span> p.N</span>
+<span id="cb11-3"><a href="#cb11-3"></a>    M <span class="op">=</span> p.M</span>
+<span id="cb11-4"><a href="#cb11-4"></a>    S <span class="op">=</span> p.S</span>
+<span id="cb11-5"><a href="#cb11-5"></a>    T <span class="op">=</span> p.temp_MM</span>
+<span id="cb11-6"><a href="#cb11-6"></a></span>
+<span id="cb11-7"><a href="#cb11-7"></a>    <span class="fu">mul!</span>(T, S, B)</span>
+<span id="cb11-8"><a href="#cb11-8"></a>    <span class="cf">return</span> <span class="fu">tr</span>(T<span class="op">^</span><span class="fl">2</span>)</span>
+<span id="cb11-9"><a href="#cb11-9"></a><span class="kw">end</span></span>
+<span id="cb11-10"><a href="#cb11-10"></a></span>
+<span id="cb11-11"><a href="#cb11-11"></a><span class="kw">function</span> <span class="fu">f_trace</span>(p, z, B)</span>
+<span id="cb11-12"><a href="#cb11-12"></a>    N <span class="op">=</span> p.N</span>
+<span id="cb11-13"><a href="#cb11-13"></a>    M <span class="op">=</span> p.M</span>
+<span id="cb11-14"><a href="#cb11-14"></a>    S <span class="op">=</span> p.S</span>
+<span id="cb11-15"><a href="#cb11-15"></a>    T <span class="op">=</span> p.temp_MM</span>
+<span id="cb11-16"><a href="#cb11-16"></a></span>
+<span id="cb11-17"><a href="#cb11-17"></a>    <span class="fu">mul!</span>(T, S, B)</span>
+<span id="cb11-18"><a href="#cb11-18"></a>    <span class="cf">return</span> <span class="fu">tr</span>(T)</span>
+<span id="cb11-19"><a href="#cb11-19"></a><span class="kw">end</span></span>
+<span id="cb11-20"><a href="#cb11-20"></a></span>
+<span id="cb11-21"><a href="#cb11-21"></a><span class="kw">function</span> <span class="fu">f_entropy</span>(p, z, B)</span>
+<span id="cb11-22"><a href="#cb11-22"></a>    C <span class="op">=</span> p.A0</span>
+<span id="cb11-23"><a href="#cb11-23"></a>    σ <span class="op">=</span> p.Bi</span>
+<span id="cb11-24"><a href="#cb11-24"></a></span>
+<span id="cb11-25"><a href="#cb11-25"></a>    <span class="fu">mul!</span>(C, z, <span class="fu">sqrt</span>(B))</span>
+<span id="cb11-26"><a href="#cb11-26"></a>    <span class="fu">mul!</span>(σ, C<span class="op">'</span>, C)</span>
+<span id="cb11-27"><a href="#cb11-27"></a>    <span class="cf">return</span> <span class="fu">entropy_vn</span>(<span class="fu">Qobj</span>(<span class="fu">Hermitian</span>(σ), <span class="kw">type</span><span class="op">=</span><span class="fu">Operator</span>()), base<span class="op">=</span><span class="fl">2</span>)</span>
+<span id="cb11-28"><a href="#cb11-28"></a><span class="kw">end</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>A critical aspect of the LR truncation is the possibility to dynamically adjust the dimension of the basis throughout the system’s evolution <span class="math inline">\(M=M(t)\)</span>. This adaptability is essential for accommodating changes in the system’s entropy over time.</p>
 <p>To adapt the dimension of the low-rank basis, we look at a control parameter <span class="math inline">\(\chi\)</span> that is positively correlated with the entropy of the system and provides a measure of the quality of the low-rank approximation. When <span class="math inline">\(\chi\)</span> exceeds a certain threshold, the dimension of the low-rank basis is increased by one.</p>
 <p>The options below specify how the dimension of the low-rank basis is adjusted during the evolution.</p>
 <div id="20" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1"></a>opt <span class="op">=</span> (err_max <span class="op">=</span> <span class="fl">1e-3</span>, p0 <span class="op">=</span> <span class="fl">0.0</span>, atol_inv <span class="op">=</span> <span class="fl">1e-6</span>, adj_condition <span class="op">=</span> <span class="st">"variational"</span>, Δt <span class="op">=</span> <span class="fl">0.0</span>);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1"></a>opt <span class="op">=</span> (err_max <span class="op">=</span> <span class="fl">1e-3</span>, p0 <span class="op">=</span> <span class="fl">0.0</span>, atol_inv <span class="op">=</span> <span class="fl">1e-6</span>, adj_condition <span class="op">=</span> <span class="st">"variational"</span>, Δt <span class="op">=</span> <span class="fl">0.0</span>);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><code>err_max</code> is the maximum error allowed in the time evolution of the density matrix.</p>
 <p><code>p0</code> is the initial population with which the new state is added to the basis after crossing the threshold.</p>
@@ -618,38 +622,38 @@ S = -\mathrm{Tr}(\rho \log_2(\rho)),
 <p>Not directly related to the basis expansion, but still important for the stability of the algorithm, are the options <code>atol_inv</code> (the tolerance for the inverse of the overlap matrix) and <code>alg</code> (the ODE solver).</p>
 <p>We now launch the evolution using the <code>lr_mesolve</code> function</p>
 <div id="22" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1"></a>sol_lr <span class="op">=</span> <span class="fu">lr_mesolve</span>(H, z, B, tl, c_ops; e_ops <span class="op">=</span> e_ops, f_ops <span class="op">=</span> (f_purity, f_entropy, f_trace), opt <span class="op">=</span> opt);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1"></a>sol_lr <span class="op">=</span> <span class="fu">lr_mesolve</span>(H, z, B, tl, c_ops; e_ops <span class="op">=</span> e_ops, f_ops <span class="op">=</span> (f_purity, f_entropy, f_trace), opt <span class="op">=</span> opt);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Progress: 2%Progress: 3%Progress: 4%Progress: 5%Progress: 6%Progress: 7%Progress: 8%Progress: 9%Progress: 10%Progress: 11%Progress: 12%Progress: 13%Progress: 14%Progress: 15%Progress: 16%Progress: 17%Progress: 18%Progress: 19%Progress: 20%Progress: 21%Progress: 22%Progress: 23%Progress: 24%Progress: 25%Progress: 26%Progress: 27%Progress: 28%Progress: 29%Progress: 30%Progress: 31%Progress: 32%Progress: 33%Progress: 34%Progress: 35%Progress: 36%Progress: 37%Progress: 38%Progress: 39%Progress: 40%Progress: 41%Progress: 42%Progress: 43%Progress: 44%Progress: 45%Progress: 46%Progress: 47%Progress: 48%Progress: 49%Progress: 50%Progress: 51%Progress: 52%Progress: 53%Progress: 54%Progress: 55%Progress: 56%Progress: 57%Progress: 58%Progress: 59%Progress: 60%Progress: 61%Progress: 62%Progress: 63%Progress: 64%Progress: 65%Progress: 66%Progress: 67%Progress: 68%Progress: 69%Progress: 70%Progress: 71%Progress: 72%Progress: 73%Progress: 74%Progress: 75%Progress: 76%Progress: 77%Progress: 78%Progress: 79%Progress: 80%Progress: 81%Progress: 82%Progress: 83%Progress: 84%Progress: 85%Progress: 86%Progress: 87%Progress: 88%Progress: 89%Progress: 90%Progress: 91%Progress: 92%Progress: 93%Progress: 94%Progress: 95%Progress: 96%Progress: 97%Progress: 98%Progress: 99%Progress: 100%</code></pre>
 </div>
 </div>
 <p>We can now compare the results of the low-rank evolution with the full evolution.</p>
 <div id="24" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1"></a>m_me <span class="op">=</span> <span class="fu">real</span>(sol_me.expect[<span class="fl">3</span>, <span class="op">:</span>]) <span class="op">/</span> Nx <span class="op">/</span> Ny</span>
-<span id="cb16-2"><a href="#cb16-2"></a>m_lr <span class="op">=</span> <span class="fu">real</span>(sol_lr.expect[<span class="fl">3</span>, <span class="op">:</span>]) <span class="op">/</span> Nx <span class="op">/</span> Ny</span>
-<span id="cb16-3"><a href="#cb16-3"></a></span>
-<span id="cb16-4"><a href="#cb16-4"></a>fig <span class="op">=</span> <span class="fu">Figure</span>(size <span class="op">=</span> (<span class="fl">900</span>, <span class="fl">400</span>), fontsize <span class="op">=</span> <span class="fl">15</span>)</span>
-<span id="cb16-5"><a href="#cb16-5"></a>ax <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">1</span>, <span class="fl">1</span>], xlabel <span class="op">=</span> L<span class="st">"\gamma t"</span>, ylabel <span class="op">=</span> L<span class="st">"M_{z}"</span>, xlabelsize <span class="op">=</span> <span class="fl">20</span>, ylabelsize <span class="op">=</span> <span class="fl">20</span>)</span>
-<span id="cb16-6"><a href="#cb16-6"></a><span class="fu">lines!</span>(ax, tl, m_lr, label <span class="op">=</span> L<span class="st">"LR </span><span class="sc">$</span><span class="st">[</span>M<span class="st">=M(t)]</span><span class="sc">$</span><span class="st">", </span>linewidth<span class="st"> = 2)</span></span>
-<span id="cb16-7"><a href="#cb16-7"></a><span class="fu">lines!</span>(ax, tl, m_me, label <span class="op">=</span> <span class="st">"Fock"</span>, linewidth <span class="op">=</span> <span class="fl">2</span>, linestyle <span class="op">=</span> <span class="op">:</span>dash)</span>
-<span id="cb16-8"><a href="#cb16-8"></a><span class="fu">axislegend</span>(ax, position <span class="op">=</span> <span class="op">:</span>rb)</span>
-<span id="cb16-9"><a href="#cb16-9"></a></span>
-<span id="cb16-10"><a href="#cb16-10"></a>ax2 <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">1</span>, <span class="fl">2</span>], xlabel <span class="op">=</span> L<span class="st">"\gamma t"</span>, ylabel <span class="op">=</span> <span class="st">"Value"</span>, xlabelsize <span class="op">=</span> <span class="fl">20</span>, ylabelsize <span class="op">=</span> <span class="fl">20</span>)</span>
-<span id="cb16-11"><a href="#cb16-11"></a><span class="fu">lines!</span>(ax2, tl, <span class="fl">1</span> <span class="op">.-</span> <span class="fu">real</span>(sol_lr.fexpect[<span class="fl">1</span>, <span class="op">:</span>]), label <span class="op">=</span> L<span class="st">"</span><span class="sc">$</span><span class="st">1-</span>P<span class="sc">$</span><span class="st">", </span>linewidth<span class="st"> = 2)</span></span>
-<span id="cb16-12"><a href="#cb16-12"></a><span class="fu">lines!</span>(</span>
-<span id="cb16-13"><a href="#cb16-13"></a>    ax2,</span>
-<span id="cb16-14"><a href="#cb16-14"></a>    tl,</span>
-<span id="cb16-15"><a href="#cb16-15"></a>    <span class="fl">1</span> <span class="op">.-</span> <span class="fu">real</span>(sol_lr.fexpect[<span class="fl">3</span>, <span class="op">:</span>]),</span>
-<span id="cb16-16"><a href="#cb16-16"></a>    label <span class="op">=</span> L<span class="st">"</span><span class="sc">$</span><span class="st">1-\</span>mathrm<span class="st">{Tr}(</span><span class="sc">\r</span><span class="st">ho)</span><span class="sc">$</span><span class="st">",</span></span>
-<span id="cb16-17"><a href="#cb16-17"></a><span class="st">    </span>linewidth<span class="st"> = 2,</span></span>
-<span id="cb16-18"><a href="#cb16-18"></a>    linestyle <span class="op">=</span> <span class="op">:</span>dash,</span>
-<span id="cb16-19"><a href="#cb16-19"></a>    color <span class="op">=</span> <span class="op">:</span>orange,</span>
-<span id="cb16-20"><a href="#cb16-20"></a>)</span>
-<span id="cb16-21"><a href="#cb16-21"></a><span class="fu">lines!</span>(ax2, tl, <span class="fu">real</span>(sol_lr.fexpect[<span class="fl">2</span>, <span class="op">:</span>]) <span class="op">/</span> Nx <span class="op">/</span> Ny, color <span class="op">=</span> <span class="op">:</span>blue, label <span class="op">=</span> L<span class="st">"S"</span>, linewidth <span class="op">=</span> <span class="fl">2</span>)</span>
-<span id="cb16-22"><a href="#cb16-22"></a><span class="fu">hlines!</span>(ax2, [Strue], color <span class="op">=</span> <span class="op">:</span>blue, linestyle <span class="op">=</span> <span class="op">:</span>dash, linewidth <span class="op">=</span> <span class="fl">2</span>, label <span class="op">=</span> L<span class="st">"S^{\,\mathrm{true}}_{\mathrm{ss}}"</span>)</span>
-<span id="cb16-23"><a href="#cb16-23"></a><span class="fu">axislegend</span>(ax2, position <span class="op">=</span> <span class="op">:</span>rb)</span>
-<span id="cb16-24"><a href="#cb16-24"></a></span>
-<span id="cb16-25"><a href="#cb16-25"></a>fig</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1"></a>m_me <span class="op">=</span> <span class="fu">real</span>(sol_me.expect[<span class="fl">3</span>, <span class="op">:</span>]) <span class="op">/</span> Nx <span class="op">/</span> Ny</span>
+<span id="cb15-2"><a href="#cb15-2"></a>m_lr <span class="op">=</span> <span class="fu">real</span>(sol_lr.expect[<span class="fl">3</span>, <span class="op">:</span>]) <span class="op">/</span> Nx <span class="op">/</span> Ny</span>
+<span id="cb15-3"><a href="#cb15-3"></a></span>
+<span id="cb15-4"><a href="#cb15-4"></a>fig <span class="op">=</span> <span class="fu">Figure</span>(size <span class="op">=</span> (<span class="fl">900</span>, <span class="fl">400</span>), fontsize <span class="op">=</span> <span class="fl">15</span>)</span>
+<span id="cb15-5"><a href="#cb15-5"></a>ax <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">1</span>, <span class="fl">1</span>], xlabel <span class="op">=</span> L<span class="st">"\gamma t"</span>, ylabel <span class="op">=</span> L<span class="st">"M_{z}"</span>, xlabelsize <span class="op">=</span> <span class="fl">20</span>, ylabelsize <span class="op">=</span> <span class="fl">20</span>)</span>
+<span id="cb15-6"><a href="#cb15-6"></a><span class="fu">lines!</span>(ax, tl, m_lr, label <span class="op">=</span> L<span class="st">"LR </span><span class="sc">$</span><span class="st">[</span>M<span class="st">=M(t)]</span><span class="sc">$</span><span class="st">", </span>linewidth<span class="st"> = 2)</span></span>
+<span id="cb15-7"><a href="#cb15-7"></a><span class="fu">lines!</span>(ax, tl, m_me, label <span class="op">=</span> <span class="st">"Fock"</span>, linewidth <span class="op">=</span> <span class="fl">2</span>, linestyle <span class="op">=</span> <span class="op">:</span>dash)</span>
+<span id="cb15-8"><a href="#cb15-8"></a><span class="fu">axislegend</span>(ax, position <span class="op">=</span> <span class="op">:</span>rb)</span>
+<span id="cb15-9"><a href="#cb15-9"></a></span>
+<span id="cb15-10"><a href="#cb15-10"></a>ax2 <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">1</span>, <span class="fl">2</span>], xlabel <span class="op">=</span> L<span class="st">"\gamma t"</span>, ylabel <span class="op">=</span> <span class="st">"Value"</span>, xlabelsize <span class="op">=</span> <span class="fl">20</span>, ylabelsize <span class="op">=</span> <span class="fl">20</span>)</span>
+<span id="cb15-11"><a href="#cb15-11"></a><span class="fu">lines!</span>(ax2, tl, <span class="fl">1</span> <span class="op">.-</span> <span class="fu">real</span>(sol_lr.fexpect[<span class="fl">1</span>, <span class="op">:</span>]), label <span class="op">=</span> L<span class="st">"</span><span class="sc">$</span><span class="st">1-</span>P<span class="sc">$</span><span class="st">", </span>linewidth<span class="st"> = 2)</span></span>
+<span id="cb15-12"><a href="#cb15-12"></a><span class="fu">lines!</span>(</span>
+<span id="cb15-13"><a href="#cb15-13"></a>    ax2,</span>
+<span id="cb15-14"><a href="#cb15-14"></a>    tl,</span>
+<span id="cb15-15"><a href="#cb15-15"></a>    <span class="fl">1</span> <span class="op">.-</span> <span class="fu">real</span>(sol_lr.fexpect[<span class="fl">3</span>, <span class="op">:</span>]),</span>
+<span id="cb15-16"><a href="#cb15-16"></a>    label <span class="op">=</span> L<span class="st">"</span><span class="sc">$</span><span class="st">1-\</span>mathrm<span class="st">{Tr}(</span><span class="sc">\r</span><span class="st">ho)</span><span class="sc">$</span><span class="st">",</span></span>
+<span id="cb15-17"><a href="#cb15-17"></a><span class="st">    </span>linewidth<span class="st"> = 2,</span></span>
+<span id="cb15-18"><a href="#cb15-18"></a>    linestyle <span class="op">=</span> <span class="op">:</span>dash,</span>
+<span id="cb15-19"><a href="#cb15-19"></a>    color <span class="op">=</span> <span class="op">:</span>orange,</span>
+<span id="cb15-20"><a href="#cb15-20"></a>)</span>
+<span id="cb15-21"><a href="#cb15-21"></a><span class="fu">lines!</span>(ax2, tl, <span class="fu">real</span>(sol_lr.fexpect[<span class="fl">2</span>, <span class="op">:</span>]) <span class="op">/</span> Nx <span class="op">/</span> Ny, color <span class="op">=</span> <span class="op">:</span>blue, label <span class="op">=</span> L<span class="st">"S"</span>, linewidth <span class="op">=</span> <span class="fl">2</span>)</span>
+<span id="cb15-22"><a href="#cb15-22"></a><span class="fu">hlines!</span>(ax2, [Strue], color <span class="op">=</span> <span class="op">:</span>blue, linestyle <span class="op">=</span> <span class="op">:</span>dash, linewidth <span class="op">=</span> <span class="fl">2</span>, label <span class="op">=</span> L<span class="st">"S^{\,\mathrm{true}}_{\mathrm{ss}}"</span>)</span>
+<span id="cb15-23"><a href="#cb15-23"></a><span class="fu">axislegend</span>(ax2, position <span class="op">=</span> <span class="op">:</span>rb)</span>
+<span id="cb15-24"><a href="#cb15-24"></a></span>
+<span id="cb15-25"><a href="#cb15-25"></a>fig</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div>
 <figure class="figure">
@@ -663,7 +667,7 @@ S = -\mathrm{Tr}(\rho \log_2(\rho)),
 <section id="version-information" class="level2">
 <h2 class="anchored" data-anchor-id="version-information">Version Information</h2>
 <div id="26" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1"></a>QuantumToolbox.<span class="fu">versioninfo</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1"></a>QuantumToolbox.<span class="fu">versioninfo</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
  QuantumToolbox.jl: Quantum Toolbox in Julia
@@ -675,7 +679,7 @@ Current admin team:
 Package information:
 ====================================
 Julia              Ver. 1.12.1
-QuantumToolbox     Ver. 0.37.0
+QuantumToolbox     Ver. 0.38.1
 SciMLOperators     Ver. 1.9.0
 LinearSolve        Ver. 3.28.0
 OrdinaryDiffEqCore Ver. 1.36.0

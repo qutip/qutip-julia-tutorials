@@ -560,9 +560,14 @@ Warning
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1"></a>tier <span class="op">=</span> <span class="fl">6</span></span>
 <span id="cb7-2"><a href="#cb7-2"></a>M <span class="op">=</span> <span class="fu">M_Boson</span>(H0, tier, bath)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Preparing block matrices for HEOM Liouvillian superoperator (using 4 threads)...
-Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)
-Constructing matrix...[DONE]</code></pre>
+<div class="ansi-escaped-output">
+<pre>Preparing block matrices for HEOM Liouvillian superoperator (using 4 threads)...
+
+<span class="ansi-green-fg">[M_Boson]   1%|▎                          |  ETA: 0:02:24 ( 0.69  s/it)</span>
+<span class="ansi-green-fg">[M_Boson] 100%|███████████████████████████| Time: 0:00:01 ( 7.71 ms/it)</span>
+Constructing matrix...[DONE]
+</pre>
+</div>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>Boson type HEOMLS matrix acting on even-parity ADOs
@@ -576,9 +581,13 @@ MatrixOperator(840 × 840)</code></pre>
 <section id="time-evolution-with-time-independent-hamiltonian" class="level2">
 <h2 class="anchored" data-anchor-id="time-evolution-with-time-independent-hamiltonian">time evolution with time-independent Hamiltonian</h2>
 <div id="12" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1"></a>noPulseSol <span class="op">=</span> <span class="fu">HEOMsolve</span>(M, ψ<span class="fl">0</span>, tlist; e_ops <span class="op">=</span> [ρ<span class="fl">01</span>]);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1"></a>noPulseSol <span class="op">=</span> <span class="fu">HEOMsolve</span>(M, ψ<span class="fl">0</span>, tlist; e_ops <span class="op">=</span> [ρ<span class="fl">01</span>]);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Progress: [                              ]   0.1% --- Elapsed Time: 0h 00m 02s (ETA: 0h 33m 20s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 02s (ETA: 0h 00m 00s)</code></pre>
+<div class="ansi-escaped-output">
+<pre><span class="ansi-green-fg">[HEOMsolve (ODE)]   0%|                   |  ETA: 0:19:09 ( 1.15  s/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)] 100%|███████████████████| Time: 0:00:02 ( 2.36 ms/it)</span>
+</pre>
+</div>
 </div>
 </div>
 </section>
@@ -586,7 +595,7 @@ MatrixOperator(840 × 840)</code></pre>
 <h2 class="anchored" data-anchor-id="solve-time-evolution-with-time-dependent-hamiltonian">Solve time evolution with time-dependent Hamiltonian</h2>
 <p>We need to provide a <code>QuantumToolbox.QuantumObjectEvolution</code> (named as <code>H_D</code> in this case)</p>
 <div id="14" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1"></a>H_D <span class="op">=</span> <span class="fu">QobjEvo</span>(σx, pulse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1"></a>H_D <span class="op">=</span> <span class="fu">QobjEvo</span>(σx, pulse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>
 Quantum Object Evo.:   type=Operator()   dims=[2]   size=(2, 2)   ishermitian=true   isconstant=false
@@ -595,11 +604,16 @@ ScalarOperator(0.0 + 0.0im) * MatrixOperator(2 × 2)</code></pre>
 </div>
 <p>The keyword argument <code>params</code> in <code>HEOMsolve</code> will be passed to the argument <code>p</code> in user-defined function (<code>pulse</code> in this case) directly:</p>
 <div id="16" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1"></a>fastPulseSol <span class="op">=</span> <span class="fu">HEOMsolve</span>(M, ψ<span class="fl">0</span>, tlist; e_ops <span class="op">=</span> [ρ<span class="fl">01</span>], H_t <span class="op">=</span> H_D, params <span class="op">=</span> fastTuple)</span>
-<span id="cb14-2"><a href="#cb14-2"></a>slowPulseSol <span class="op">=</span> <span class="fu">HEOMsolve</span>(M, ψ<span class="fl">0</span>, tlist; e_ops <span class="op">=</span> [ρ<span class="fl">01</span>], H_t <span class="op">=</span> H_D, params <span class="op">=</span> slowTuple)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1"></a>fastPulseSol <span class="op">=</span> <span class="fu">HEOMsolve</span>(M, ψ<span class="fl">0</span>, tlist; e_ops <span class="op">=</span> [ρ<span class="fl">01</span>], H_t <span class="op">=</span> H_D, params <span class="op">=</span> fastTuple)</span>
+<span id="cb12-2"><a href="#cb12-2"></a>slowPulseSol <span class="op">=</span> <span class="fu">HEOMsolve</span>(M, ψ<span class="fl">0</span>, tlist; e_ops <span class="op">=</span> [ρ<span class="fl">01</span>], H_t <span class="op">=</span> H_D, params <span class="op">=</span> slowTuple)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Progress: [                              ]   0.1% --- Elapsed Time: 0h 00m 01s (ETA: 0h 16m 40s)Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 01s (ETA: 0h 00m 00s)
-Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)</code></pre>
+<div class="ansi-escaped-output">
+<pre><span class="ansi-green-fg">[HEOMsolve (ODE)]   0%|                   |  ETA: 0:15:51 ( 0.95  s/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)] 100%|███████████████████| Time: 0:00:02 ( 2.00 ms/it)</span>
+
+<span class="ansi-green-fg">[HEOMsolve (ODE)] 100%|███████████████████| Time: 0:00:00 (86.72 μs/it)</span>
+</pre>
+</div>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>Solution of hierarchical EOM
@@ -618,15 +632,15 @@ reltol = 1.0e-6</code></pre>
 <section id="plot-the-coherence" class="level2">
 <h2 class="anchored" data-anchor-id="plot-the-coherence">Plot the coherence</h2>
 <div id="18" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1"></a>fig <span class="op">=</span> <span class="fu">Figure</span>()</span>
-<span id="cb17-2"><a href="#cb17-2"></a>ax <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">1</span>, <span class="fl">1</span>], xlabel <span class="op">=</span> L<span class="st">"t"</span>, ylabel <span class="op">=</span> L<span class="st">"</span><span class="sc">\r</span><span class="st">ho_{01}"</span>)</span>
-<span id="cb17-3"><a href="#cb17-3"></a><span class="fu">lines!</span>(ax, tlist, <span class="fu">real</span>(fastPulseSol.expect[<span class="fl">1</span>, <span class="op">:</span>]), label <span class="op">=</span> <span class="st">"Fast Pulse"</span>, linestyle <span class="op">=</span> <span class="op">:</span>solid)</span>
-<span id="cb17-4"><a href="#cb17-4"></a><span class="fu">lines!</span>(ax, tlist, <span class="fu">real</span>(slowPulseSol.expect[<span class="fl">1</span>, <span class="op">:</span>]), label <span class="op">=</span> <span class="st">"Slow Pulse"</span>, linestyle <span class="op">=</span> <span class="op">:</span>dot)</span>
-<span id="cb17-5"><a href="#cb17-5"></a><span class="fu">lines!</span>(ax, tlist, <span class="fu">real</span>(noPulseSol.expect[<span class="fl">1</span>, <span class="op">:</span>]),   label <span class="op">=</span> <span class="st">"no Pulse"</span>,   linestyle <span class="op">=</span> <span class="op">:</span>dash)</span>
-<span id="cb17-6"><a href="#cb17-6"></a></span>
-<span id="cb17-7"><a href="#cb17-7"></a><span class="fu">axislegend</span>(ax, position <span class="op">=</span> <span class="op">:</span>lb)</span>
-<span id="cb17-8"><a href="#cb17-8"></a></span>
-<span id="cb17-9"><a href="#cb17-9"></a>fig</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1"></a>fig <span class="op">=</span> <span class="fu">Figure</span>()</span>
+<span id="cb14-2"><a href="#cb14-2"></a>ax <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">1</span>, <span class="fl">1</span>], xlabel <span class="op">=</span> L<span class="st">"t"</span>, ylabel <span class="op">=</span> L<span class="st">"</span><span class="sc">\r</span><span class="st">ho_{01}"</span>)</span>
+<span id="cb14-3"><a href="#cb14-3"></a><span class="fu">lines!</span>(ax, tlist, <span class="fu">real</span>(fastPulseSol.expect[<span class="fl">1</span>, <span class="op">:</span>]), label <span class="op">=</span> <span class="st">"Fast Pulse"</span>, linestyle <span class="op">=</span> <span class="op">:</span>solid)</span>
+<span id="cb14-4"><a href="#cb14-4"></a><span class="fu">lines!</span>(ax, tlist, <span class="fu">real</span>(slowPulseSol.expect[<span class="fl">1</span>, <span class="op">:</span>]), label <span class="op">=</span> <span class="st">"Slow Pulse"</span>, linestyle <span class="op">=</span> <span class="op">:</span>dot)</span>
+<span id="cb14-5"><a href="#cb14-5"></a><span class="fu">lines!</span>(ax, tlist, <span class="fu">real</span>(noPulseSol.expect[<span class="fl">1</span>, <span class="op">:</span>]),   label <span class="op">=</span> <span class="st">"no Pulse"</span>,   linestyle <span class="op">=</span> <span class="op">:</span>dash)</span>
+<span id="cb14-6"><a href="#cb14-6"></a></span>
+<span id="cb14-7"><a href="#cb14-7"></a><span class="fu">axislegend</span>(ax, position <span class="op">=</span> <span class="op">:</span>lb)</span>
+<span id="cb14-8"><a href="#cb14-8"></a></span>
+<span id="cb14-9"><a href="#cb14-9"></a>fig</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div>
 <figure class="figure">
@@ -639,7 +653,7 @@ reltol = 1.0e-6</code></pre>
 <section id="version-information" class="level2">
 <h2 class="anchored" data-anchor-id="version-information">Version Information</h2>
 <div id="20" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1"></a>HierarchicalEOM.<span class="fu">versioninfo</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1"></a>HierarchicalEOM.<span class="fu">versioninfo</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
 <pre><span style="font-weight:bold;color:rgb(0,135,0)">                                   __</span>
@@ -663,8 +677,8 @@ Other developers:
 Package information:
 ====================================
 Julia              Ver. 1.12.1
-HierarchicalEOM    Ver. 2.8.0
-QuantumToolbox     Ver. 0.37.0
+HierarchicalEOM    Ver. 2.9.0
+QuantumToolbox     Ver. 0.38.1
 SciMLOperators     Ver. 1.9.0
 LinearSolve        Ver. 3.28.0
 OrdinaryDiffEqCore Ver. 1.36.0

@@ -534,7 +534,10 @@ Quantum Object:   type=Operator()   dims=[15]   size=(15, 15)   ishermitian=true
 <span id="cb6-3"><a href="#cb6-3"></a></span>
 <span id="cb6-4"><a href="#cb6-4"></a>result <span class="op">=</span> <span class="fu">mesolve</span>(H, ρ<span class="fl">0</span>, tlist)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Progress: [==============================] 100.0% --- Elapsed Time: 0h 00m 00s (ETA: 0h 00m 00s)</code></pre>
+<div class="ansi-escaped-output">
+<pre><span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 (55.31 μs/it)</span>
+</pre>
+</div>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>Solution of time evolution
@@ -549,12 +552,12 @@ reltol = 1.0e-6</code></pre>
 </div>
 <p>We first check the expectation value dynamics of the number operator <code>n</code> with the two visualization functions we defined previously.</p>
 <div id="10" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1"></a>fig1, ax1 <span class="op">=</span> <span class="fu">plot_variance</span>(n, tlist, result.states)</span>
-<span id="cb9-2"><a href="#cb9-2"></a>ax1.title <span class="op">=</span> L<span class="st">"N"</span></span>
-<span id="cb9-3"><a href="#cb9-3"></a><span class="fu">display</span>(fig1)</span>
-<span id="cb9-4"><a href="#cb9-4"></a></span>
-<span id="cb9-5"><a href="#cb9-5"></a>fig2, ax2 <span class="op">=</span> <span class="fu">plot_Fock_dist</span>(tlist, result.states)</span>
-<span id="cb9-6"><a href="#cb9-6"></a><span class="fu">display</span>(fig2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1"></a>fig1, ax1 <span class="op">=</span> <span class="fu">plot_variance</span>(n, tlist, result.states)</span>
+<span id="cb8-2"><a href="#cb8-2"></a>ax1.title <span class="op">=</span> L<span class="st">"N"</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="fu">display</span>(fig1)</span>
+<span id="cb8-4"><a href="#cb8-4"></a></span>
+<span id="cb8-5"><a href="#cb8-5"></a>fig2, ax2 <span class="op">=</span> <span class="fu">plot_Fock_dist</span>(tlist, result.states)</span>
+<span id="cb8-6"><a href="#cb8-6"></a><span class="fu">display</span>(fig2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -576,12 +579,12 @@ reltol = 1.0e-6</code></pre>
 <p>As expected, the photon number is conserved throughout. Either the expectation value or the Fock distribution are conserved in the nonlinear interaction.</p>
 <p>We now turn to the quadrature operators. The expectation value dynamics of <code>x</code> and <code>p</code> are plotted below.</p>
 <div id="12" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1"></a>titles <span class="op">=</span> [L<span class="st">"x"</span>, L<span class="st">"p"</span>]</span>
-<span id="cb11-2"><a href="#cb11-2"></a><span class="cf">for</span> (idx, op) <span class="kw">in</span> <span class="fu">enumerate</span>([x, p])</span>
-<span id="cb11-3"><a href="#cb11-3"></a>    _fig, _ax <span class="op">=</span> <span class="fu">plot_variance</span>(op, tlist, result.states)</span>
-<span id="cb11-4"><a href="#cb11-4"></a>    _ax.title <span class="op">=</span> titles[idx]</span>
-<span id="cb11-5"><a href="#cb11-5"></a>    <span class="fu">display</span>(_fig)</span>
-<span id="cb11-6"><a href="#cb11-6"></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1"></a>titles <span class="op">=</span> [L<span class="st">"x"</span>, L<span class="st">"p"</span>]</span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="cf">for</span> (idx, op) <span class="kw">in</span> <span class="fu">enumerate</span>([x, p])</span>
+<span id="cb10-3"><a href="#cb10-3"></a>    _fig, _ax <span class="op">=</span> <span class="fu">plot_variance</span>(op, tlist, result.states)</span>
+<span id="cb10-4"><a href="#cb10-4"></a>    _ax.title <span class="op">=</span> titles[idx]</span>
+<span id="cb10-5"><a href="#cb10-5"></a>    <span class="fu">display</span>(_fig)</span>
+<span id="cb10-6"><a href="#cb10-6"></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -609,11 +612,11 @@ Coherent states in a harmonic oscillator are known to saturate the uncertainty r
 </ol>
 <p>We can extend the investigation to the Wigner function with the built-in function <a href="https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.plot_wigner"><code>plot_wigner</code></a>.</p>
 <div id="14" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1"></a>idx <span class="op">=</span> <span class="fu">searchsortedfirst</span>(tlist, <span class="cn">π</span><span class="op">/</span>χ) <span class="op">-</span> <span class="fl">1</span></span>
-<span id="cb12-2"><a href="#cb12-2"></a>fig3, ax3, hm3 <span class="op">=</span> <span class="fu">plot_wigner</span>(result.states[idx])</span>
-<span id="cb12-3"><a href="#cb12-3"></a>ax3.title <span class="op">=</span> <span class="st">"χt = </span><span class="sc">$</span>(tlist[idx])<span class="st">"</span></span>
-<span id="cb12-4"><a href="#cb12-4"></a><span class="fu">Colorbar</span>(fig3[<span class="fl">1</span>,<span class="fl">2</span>], hm3)</span>
-<span id="cb12-5"><a href="#cb12-5"></a>fig3</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1"></a>idx <span class="op">=</span> <span class="fu">searchsortedfirst</span>(tlist, <span class="cn">π</span><span class="op">/</span>χ) <span class="op">-</span> <span class="fl">1</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a>fig3, ax3, hm3 <span class="op">=</span> <span class="fu">plot_wigner</span>(result.states[idx])</span>
+<span id="cb11-3"><a href="#cb11-3"></a>ax3.title <span class="op">=</span> <span class="st">"χt = </span><span class="sc">$</span>(tlist[idx])<span class="st">"</span></span>
+<span id="cb11-4"><a href="#cb11-4"></a><span class="fu">Colorbar</span>(fig3[<span class="fl">1</span>,<span class="fl">2</span>], hm3)</span>
+<span id="cb11-5"><a href="#cb11-5"></a>fig3</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div>
 <figure class="figure">
@@ -625,19 +628,19 @@ Coherent states in a harmonic oscillator are known to saturate the uncertainty r
 <p>As the plot revealed, the state at <span class="math inline">\(\chi t = \pi\)</span> is in fact the <a href="https://en.wikipedia.org/wiki/Cat_state#Cat_states_in_single_modes"><strong>cat state</strong></a> for a single mode. One of the main characteristics of the cat state is the superposition of two coherent states with opposite phase.</p>
 <p>The dynamics of the Wigner function offer a powerful phase-space perspective on the quantum state evolution under the Kerr nonlinearity. We again use <code>plot_wigner</code> to setup the initial plot and update frames with the function <a href="https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.wigner"><code>wigner</code></a> to record the dynamics as an animated GIF.</p>
 <div id="16" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1"></a>fig4, ax4, hm4 <span class="op">=</span> <span class="fu">plot_wigner</span>(result.states[<span class="fl">1</span>])</span>
-<span id="cb13-2"><a href="#cb13-2"></a></span>
-<span id="cb13-3"><a href="#cb13-3"></a><span class="fu">Colorbar</span>(fig4[<span class="fl">1</span>,<span class="fl">2</span>], hm4)</span>
-<span id="cb13-4"><a href="#cb13-4"></a></span>
-<span id="cb13-5"><a href="#cb13-5"></a><span class="fu">record</span>(fig4, <span class="st">"kerr_wigner_dyn.gif"</span>, <span class="fl">1</span><span class="op">:</span><span class="fu">length</span>(tlist); framerate<span class="op">=</span><span class="fl">24</span>) <span class="cf">do</span> t</span>
-<span id="cb13-6"><a href="#cb13-6"></a>    wig <span class="op">=</span> <span class="fu">wigner</span>(</span>
-<span id="cb13-7"><a href="#cb13-7"></a>        result.states[t], </span>
-<span id="cb13-8"><a href="#cb13-8"></a>        <span class="fu">range</span>(<span class="op">-</span><span class="fl">7.5</span>, <span class="fl">7.5</span>, <span class="fl">200</span>), </span>
-<span id="cb13-9"><a href="#cb13-9"></a>        <span class="fu">range</span>(<span class="op">-</span><span class="fl">7.5</span>, <span class="fl">7.5</span>, <span class="fl">200</span>)</span>
-<span id="cb13-10"><a href="#cb13-10"></a>        )</span>
-<span id="cb13-11"><a href="#cb13-11"></a>    ax4.title <span class="op">=</span> <span class="st">"χt = "</span> <span class="op">*</span> <span class="fu">string</span>(<span class="fu">round</span>(tlist[t]; digits <span class="op">=</span> <span class="fl">2</span>))</span>
-<span id="cb13-12"><a href="#cb13-12"></a>    hm4[<span class="fl">3</span>] <span class="op">=</span> <span class="fu">transpose</span>(wig)</span>
-<span id="cb13-13"><a href="#cb13-13"></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1"></a>fig4, ax4, hm4 <span class="op">=</span> <span class="fu">plot_wigner</span>(result.states[<span class="fl">1</span>])</span>
+<span id="cb12-2"><a href="#cb12-2"></a></span>
+<span id="cb12-3"><a href="#cb12-3"></a><span class="fu">Colorbar</span>(fig4[<span class="fl">1</span>,<span class="fl">2</span>], hm4)</span>
+<span id="cb12-4"><a href="#cb12-4"></a></span>
+<span id="cb12-5"><a href="#cb12-5"></a><span class="fu">record</span>(fig4, <span class="st">"kerr_wigner_dyn.gif"</span>, <span class="fl">1</span><span class="op">:</span><span class="fu">length</span>(tlist); framerate<span class="op">=</span><span class="fl">24</span>) <span class="cf">do</span> t</span>
+<span id="cb12-6"><a href="#cb12-6"></a>    wig <span class="op">=</span> <span class="fu">wigner</span>(</span>
+<span id="cb12-7"><a href="#cb12-7"></a>        result.states[t], </span>
+<span id="cb12-8"><a href="#cb12-8"></a>        <span class="fu">range</span>(<span class="op">-</span><span class="fl">7.5</span>, <span class="fl">7.5</span>, <span class="fl">200</span>), </span>
+<span id="cb12-9"><a href="#cb12-9"></a>        <span class="fu">range</span>(<span class="op">-</span><span class="fl">7.5</span>, <span class="fl">7.5</span>, <span class="fl">200</span>)</span>
+<span id="cb12-10"><a href="#cb12-10"></a>        )</span>
+<span id="cb12-11"><a href="#cb12-11"></a>    ax4.title <span class="op">=</span> <span class="st">"χt = "</span> <span class="op">*</span> <span class="fu">string</span>(<span class="fu">round</span>(tlist[t]; digits <span class="op">=</span> <span class="fl">2</span>))</span>
+<span id="cb12-12"><a href="#cb12-12"></a>    hm4[<span class="fl">3</span>] <span class="op">=</span> <span class="fu">transpose</span>(wig)</span>
+<span id="cb12-13"><a href="#cb12-13"></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>"kerr_wigner_dyn.gif"</code></pre>
 </div>
@@ -648,7 +651,7 @@ Coherent states in a harmonic oscillator are known to saturate the uncertainty r
 <section id="version-information" class="level2">
 <h2 class="anchored" data-anchor-id="version-information">Version Information</h2>
 <div id="18" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1"></a>QuantumToolbox.<span class="fu">versioninfo</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1"></a>QuantumToolbox.<span class="fu">versioninfo</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
  QuantumToolbox.jl: Quantum Toolbox in Julia
@@ -660,7 +663,7 @@ Current admin team:
 Package information:
 ====================================
 Julia              Ver. 1.12.1
-QuantumToolbox     Ver. 0.37.0
+QuantumToolbox     Ver. 0.38.1
 SciMLOperators     Ver. 1.9.0
 LinearSolve        Ver. 3.28.0
 OrdinaryDiffEqCore Ver. 1.36.0

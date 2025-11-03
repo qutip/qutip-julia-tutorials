@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Li-Xun Cai">
-<meta name="dcterms.date" content="2025-10-13">
+<meta name="dcterms.date" content="2025-11-03">
 
 <title>Adiabatic sweep (with QuantumObjectEvolution) – Tutorials for Quantum Toolbox in Julia</title>
 <style>
@@ -387,7 +387,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Last Update</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2025-10-13</p>
+      <p class="date">2025-11-03</p>
     </div>
   </div>
   
@@ -433,13 +433,13 @@ window.Quarto = {
 <span id="cb2-4"><a href="#cb2-4"></a>gs <span class="op">=</span> <span class="fu">rand</span>(N<span class="op">-</span><span class="fl">1</span>) <span class="co"># use rand function for the random interaction strengths</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>7-element Vector{Float64}:
- 0.14201249357912515
- 0.9471249635210334
- 0.3448781218510253
- 0.807053766125541
- 0.4587276883474195
- 0.0419542195629341
- 0.6484578555101486</code></pre>
+ 0.2393643245306888
+ 0.6674331222974118
+ 0.5839566728210832
+ 0.9145255691110138
+ 0.6439222039554543
+ 0.3489024706644791
+ 0.7357501123159988</code></pre>
 </div>
 </div>
 <div id="6" class="cell" data-execution_count="1">
@@ -534,22 +534,22 @@ Quantum Object Evo.:   type=Operator()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(2
 <pre><code>
 Quantum Object:   type=Ket()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256,)
 256-element SparseArrays.SparseVector{ComplexF64, Int64} with 128 stored entries:
-  [1  ]  =  0.00135063+0.0im
-  [4  ]  =  -0.00455926+0.0im
-  [6  ]  =  0.000318698+0.0im
-  [7  ]  =  -0.000229302+0.0im
-  [10 ]  =  -0.000440405+0.0im
-  [11 ]  =  0.000260492+0.0im
-  [13 ]  =  -0.00492216+0.0im
+  [1  ]  =  0.00435861+0.0im
+  [4  ]  =  -0.0124145+0.0im
+  [6  ]  =  0.00643165+0.0im
+  [7  ]  =  -0.00482883+0.0im
+  [10 ]  =  -0.00744147+0.0im
+  [11 ]  =  0.00488707+0.0im
+  [13 ]  =  -0.0109194+0.0im
          ⋮
-  [241]  =  0.0549254+0.0im
-  [244]  =  -0.185462+0.0im
-  [246]  =  0.0111187+0.0im
-  [247]  =  -0.00765809+0.0im
-  [250]  =  -0.0192977+0.0im
-  [251]  =  0.0111685+0.0im
-  [253]  =  -0.224221+0.0im
-  [256]  =  0.757536+0.0im</code></pre>
+  [241]  =  0.0788255+0.0im
+  [244]  =  -0.226176+0.0im
+  [246]  =  0.108218+0.0im
+  [247]  =  -0.0796033+0.0im
+  [250]  =  -0.143699+0.0im
+  [251]  =  0.0929617+0.0im
+  [253]  =  -0.217586+0.0im
+  [256]  =  0.641817+0.0im</code></pre>
 </div>
 </div>
 <p>We can see that the truthful ground state we are preparing is indeed very complex.</p>
@@ -597,15 +597,15 @@ Quantum Object:   type=Ket()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256,)
 <div class="ansi-escaped-output">
 <pre><span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.19 ms/it)</span>
 
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (33.52 μs/it)</span>
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (34.14 μs/it)</span>
 
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (38.39 μs/it)</span>
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (38.43 μs/it)</span>
 
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (47.61 μs/it)</span>
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (47.13 μs/it)</span>
 
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (60.42 μs/it)</span>
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (63.58 μs/it)</span>
 
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (86.32 μs/it)</span>
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (89.67 μs/it)</span>
 </pre>
 </div>
 </div>

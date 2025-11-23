@@ -535,7 +535,7 @@ Quantum Object:   type=Operator()   dims=[15]   size=(15, 15)   ishermitian=true
 <span id="cb6-4"><a href="#cb6-4"></a>result <span class="op">=</span> <span class="fu">mesolve</span>(H, ρ<span class="fl">0</span>, tlist)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 (57.90 μs/it)</span>
+<pre><span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 (55.49 μs/it)</span>
 </pre>
 </div>
 </div>
@@ -545,7 +545,7 @@ Quantum Object:   type=Operator()   dims=[15]   size=(15, 15)   ishermitian=true
 --------------------------
 num_states = 629
 num_expect = 0
-ODE alg.: OrdinaryDiffEqTsit5.Tsit5{typeof(OrdinaryDiffEqCore.trivial_limiter!), typeof(OrdinaryDiffEqCore.trivial_limiter!), Static.False}(OrdinaryDiffEqCore.trivial_limiter!, OrdinaryDiffEqCore.trivial_limiter!, static(false))
+ODE alg.: OrdinaryDiffEqLowOrderRK.DP5{typeof(OrdinaryDiffEqCore.trivial_limiter!), typeof(OrdinaryDiffEqCore.trivial_limiter!), Static.False}(OrdinaryDiffEqCore.trivial_limiter!, OrdinaryDiffEqCore.trivial_limiter!, static(false))
 abstol = 1.0e-8
 reltol = 1.0e-6</code></pre>
 </div>
@@ -662,9 +662,9 @@ Current admin team:
 
 Package information:
 ====================================
-Julia              Ver. 1.12.1
-QuantumToolbox     Ver. 0.38.1
-SciMLOperators     Ver. 1.11.0
+Julia              Ver. 1.12.2
+QuantumToolbox     Ver. 0.39.1
+SciMLOperators     Ver. 1.13.0
 LinearSolve        Ver. 3.47.0
 OrdinaryDiffEqCore Ver. 1.36.0
 

@@ -497,7 +497,7 @@ H_{\textrm{sf}} &amp;=\sum_{\alpha=\textrm{L},\textrm{R}}\sum_{k}g_{\alpha,k}c_{
 <pre>Preparing block matrices for HEOM Liouvillian superoperator (using 4 threads)...
 
 <span class="ansi-green-fg">[M_Fermion]   0%|                         |  ETA: 0:15:42 ( 0.59  s/it)</span>
-<span class="ansi-green-fg">[M_Fermion] 100%|█████████████████████████| Time: 0:00:01 ( 1.11 ms/it)</span>
+<span class="ansi-green-fg">[M_Fermion] 100%|█████████████████████████| Time: 0:00:01 ( 1.12 ms/it)</span>
 Constructing matrix...[DONE]
 </pre>
 </div>
@@ -518,7 +518,7 @@ MatrixOperator(6344 × 6344)</code></pre>
 <span id="cb7-2"><a href="#cb7-2"></a>ados_evolution <span class="op">=</span> <span class="fu">HEOMsolve</span>(M, ψ<span class="fl">0</span>, tlist).ados</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[HEOMsolve (ODE)]  74%|██████████████     |  ETA: 0:00:00 ( 0.68 ms/it)</span>
+<pre><span class="ansi-green-fg">[HEOMsolve (ODE)]  74%|██████████████▏    |  ETA: 0:00:00 ( 0.67 ms/it)</span>
 <span class="ansi-green-fg">[HEOMsolve (ODE)] 100%|███████████████████| Time: 0:00:00 ( 0.66 ms/it)</span>
 </pre>
 </div>
@@ -571,9 +571,7 @@ MatrixOperator(6344 × 6344)</code></pre>
 <div id="12" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1"></a>ados_steady <span class="op">=</span> <span class="fu">steadystate</span>(M)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Solving steady state for ADOs by linear-solve method...
-Calculating left preconditioner with ilu...[DONE]
-Solving linear problem...[DONE]</code></pre>
+<pre><code>Solving steady state for ADOs by linear-solve method...[DONE]</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>1586 Auxiliary Density Operators with even-parity and (system) dims = [2]</code></pre>
@@ -714,10 +712,10 @@ Other developers:
 
 Package information:
 ====================================
-Julia              Ver. 1.12.1
-HierarchicalEOM    Ver. 2.9.0
-QuantumToolbox     Ver. 0.38.1
-SciMLOperators     Ver. 1.11.0
+Julia              Ver. 1.12.2
+HierarchicalEOM    Ver. 2.10.0
+QuantumToolbox     Ver. 0.39.1
+SciMLOperators     Ver. 1.13.0
 LinearSolve        Ver. 3.47.0
 OrdinaryDiffEqCore Ver. 1.36.0
 

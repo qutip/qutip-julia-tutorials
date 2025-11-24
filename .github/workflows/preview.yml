@@ -19,7 +19,7 @@ jobs:
       pull-requests: write # for GitHub action bot to write messages
     if: ${{ !github.event.pull_request.draft }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
       - uses: julia-actions/setup-julia@v2

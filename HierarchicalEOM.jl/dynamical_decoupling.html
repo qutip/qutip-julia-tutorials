@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Yi-Te Huang">
-<meta name="dcterms.date" content="2025-11-24">
+<meta name="dcterms.date" content="2025-12-01">
 
 <title>Driven systems and dynamical decoupling – Tutorials for Quantum Toolbox in Julia</title>
 <style>
@@ -411,7 +411,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Last Update</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2025-11-24</p>
+      <p class="date">2025-12-01</p>
     </div>
   </div>
   
@@ -563,8 +563,8 @@ Warning
 <div class="ansi-escaped-output">
 <pre>Preparing block matrices for HEOM Liouvillian superoperator (using 4 threads)...
 
-<span class="ansi-green-fg">[M_Boson]   1%|▎                          |  ETA: 0:02:20 ( 0.68  s/it)</span>
-<span class="ansi-green-fg">[M_Boson] 100%|███████████████████████████| Time: 0:00:01 ( 7.55 ms/it)</span>
+<span class="ansi-green-fg">[M_Boson]   1%|▎                          |  ETA: 0:02:21 ( 0.68  s/it)</span>
+<span class="ansi-green-fg">[M_Boson] 100%|███████████████████████████| Time: 0:00:01 ( 7.63 ms/it)</span>
 Constructing matrix...[DONE]
 </pre>
 </div>
@@ -584,8 +584,8 @@ MatrixOperator(840 × 840)</code></pre>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1"></a>noPulseSol <span class="op">=</span> <span class="fu">HEOMsolve</span>(M, ψ<span class="fl">0</span>, tlist; e_ops <span class="op">=</span> [ρ<span class="fl">01</span>]);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[HEOMsolve (ODE)]   0%|                   |  ETA: 0:19:02 ( 1.14  s/it)</span>
-<span class="ansi-green-fg">[HEOMsolve (ODE)] 100%|███████████████████| Time: 0:00:02 ( 2.35 ms/it)</span>
+<pre><span class="ansi-green-fg">[HEOMsolve (ODE)]   0%|                   |  ETA: 0:19:49 ( 1.19  s/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)] 100%|███████████████████| Time: 0:00:02 ( 2.44 ms/it)</span>
 </pre>
 </div>
 </div>
@@ -608,11 +608,11 @@ ScalarOperator(0.0 + 0.0im) * MatrixOperator(2 × 2)</code></pre>
 <span id="cb12-2"><a href="#cb12-2"></a>slowPulseSol <span class="op">=</span> <span class="fu">HEOMsolve</span>(M, ψ<span class="fl">0</span>, tlist; e_ops <span class="op">=</span> [ρ<span class="fl">01</span>], H_t <span class="op">=</span> H_D, params <span class="op">=</span> slowTuple)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[HEOMsolve (ODE)]   0%|                   |  ETA: 0:16:11 ( 0.97  s/it)</span>
-<span class="ansi-green-fg">[HEOMsolve (ODE)]  93%|█████████████████▊ |  ETA: 0:00:00 ( 2.22 ms/it)</span>
-<span class="ansi-green-fg">[HEOMsolve (ODE)] 100%|███████████████████| Time: 0:00:02 ( 2.07 ms/it)</span>
+<pre><span class="ansi-green-fg">[HEOMsolve (ODE)]   0%|                   |  ETA: 0:15:03 ( 0.90  s/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)]  94%|█████████████████▊ |  ETA: 0:00:00 ( 2.06 ms/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)] 100%|███████████████████| Time: 0:00:01 ( 1.94 ms/it)</span>
 
-<span class="ansi-green-fg">[HEOMsolve (ODE)]  89%|████████████████▉  |  ETA: 0:00:00 ( 0.13 ms/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)]  92%|█████████████████▍ |  ETA: 0:00:00 ( 0.13 ms/it)</span>
 <span class="ansi-green-fg">[HEOMsolve (ODE)] 100%|███████████████████| Time: 0:00:00 ( 0.13 ms/it)</span>
 </pre>
 </div>

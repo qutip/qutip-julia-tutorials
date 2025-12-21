@@ -433,13 +433,13 @@ window.Quarto = {
 <span id="cb2-4"><a href="#cb2-4"></a>gs <span class="op">=</span> <span class="fu">rand</span>(N<span class="op">-</span><span class="fl">1</span>) <span class="co"># use rand function for the random interaction strengths</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>7-element Vector{Float64}:
- 0.5317271632059533
- 0.5234836358216869
- 0.03855946401701871
- 0.33135786415934965
- 0.8654777246381993
- 0.07324293324500597
- 0.5196160036479209</code></pre>
+ 0.6520830480257221
+ 0.46868307336404647
+ 0.34902196690224907
+ 0.698159785079089
+ 0.19910332565464062
+ 0.5632369526541623
+ 0.6613009868759548</code></pre>
 </div>
 </div>
 <div id="6" class="cell" data-execution_count="1">
@@ -534,22 +534,22 @@ Quantum Object Evo.:   type=Operator()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(2
 <pre><code>
 Quantum Object:   type=Ket()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256,)
 256-element SparseArrays.SparseVector{ComplexF64, Int64} with 128 stored entries:
-  [1  ]  =  0.000478133+0.0im
-  [4  ]  =  -0.00195122+0.0im
-  [6  ]  =  0.000174965+0.0im
-  [7  ]  =  -0.000102208+0.0im
-  [10 ]  =  -0.000236628-0.0im
-  [11 ]  =  0.000122617+0.0im
-  [13 ]  =  -0.00122542-0.0im
+  [1  ]  =  0.00246436+0.0im
+  [4  ]  =  -0.00718539+0.0im
+  [6  ]  =  0.00484537+0.0im
+  [7  ]  =  -0.00333866-0.0im
+  [10 ]  =  -0.0142714+0.0im
+  [11 ]  =  0.00792313+0.0im
+  [13 ]  =  -0.0157646+0.0im
          ⋮
-  [241]  =  0.0769604+0.0im
-  [244]  =  -0.314152+0.0im
-  [246]  =  0.0268403+0.0im
-  [247]  =  -0.0153411+0.0im
-  [250]  =  -0.0383637+0.0im
-  [251]  =  0.0196204+0.0im
-  [253]  =  -0.2027+0.0im
-  [256]  =  0.828224+0.0im</code></pre>
+  [241]  =  0.0321183+0.0im
+  [244]  =  -0.0952622+0.0im
+  [246]  =  0.0591742+0.0im
+  [247]  =  -0.0395265+0.0im
+  [250]  =  -0.216638+0.0im
+  [251]  =  0.119835+0.0im
+  [253]  =  -0.240312+0.0im
+  [256]  =  0.758584+0.0im</code></pre>
 </div>
 </div>
 <p>We can see that the truthful ground state we are preparing is indeed very complex.</p>
@@ -595,17 +595,17 @@ Quantum Object:   type=Ket()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256,)
 <span id="cb14-7"><a href="#cb14-7"></a><span class="cf">end</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.26 ms/it)</span>
+<pre><span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.25 ms/it)</span>
 
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (85.57 μs/it)</span>
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (86.31 μs/it)</span>
 
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (85.40 μs/it)</span>
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (85.33 μs/it)</span>
 
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (84.66 μs/it)</span>
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (85.97 μs/it)</span>
 
 <span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.14 ms/it)</span>
 
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.15 ms/it)</span>
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.20 ms/it)</span>
 </pre>
 </div>
 </div>
@@ -652,10 +652,10 @@ Current admin team:
 
 Package information:
 ====================================
-Julia              Ver. 1.12.2
+Julia              Ver. 1.12.3
 QuantumToolbox     Ver. 0.39.1
-SciMLOperators     Ver. 1.14.0
-LinearSolve        Ver. 3.51.0
+SciMLOperators     Ver. 1.14.1
+LinearSolve        Ver. 3.54.0
 OrdinaryDiffEqCore Ver. 1.36.0
 
 System information:

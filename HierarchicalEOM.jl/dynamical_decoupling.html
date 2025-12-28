@@ -561,11 +561,13 @@ Warning
 <span id="cb7-2"><a href="#cb7-2"></a>M <span class="op">=</span> <span class="fu">M_Boson</span>(H0, tier, bath)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre>Preparing block matrices for HEOM Liouvillian superoperator (using 4 threads)...
+<pre>Preparing HEOM Liouvillian sparsity structure...
 
-<span class="ansi-green-fg">[M_Boson]   1%|▎                          |  ETA: 0:02:21 ( 0.68  s/it)</span>
-<span class="ansi-green-fg">[M_Boson] 100%|███████████████████████████| Time: 0:00:01 ( 7.59 ms/it)</span>
-Constructing matrix...[DONE]
+<span class="ansi-green-fg">[M_Boson]   1%|▎                          |  ETA: 0:00:13 (64.87 ms/it)</span>
+<span class="ansi-green-fg">[M_Boson] 100%|███████████████████████████| Time: 0:00:00 ( 1.78 ms/it)</span>
+[DONE]
+Combining terms...[DONE]
+Evaluating lazy operations...[DONE]
 </pre>
 </div>
 </div>
@@ -584,8 +586,8 @@ MatrixOperator(840 × 840)</code></pre>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1"></a>noPulseSol <span class="op">=</span> <span class="fu">HEOMsolve</span>(M, ψ<span class="fl">0</span>, tlist; e_ops <span class="op">=</span> [ρ<span class="fl">01</span>]);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[HEOMsolve (ODE)]   0%|                   |  ETA: 0:19:05 ( 1.15  s/it)</span>
-<span class="ansi-green-fg">[HEOMsolve (ODE)] 100%|███████████████████| Time: 0:00:02 ( 2.35 ms/it)</span>
+<pre><span class="ansi-green-fg">[HEOMsolve (ODE)]   0%|                   |  ETA: 0:19:13 ( 1.15  s/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)] 100%|███████████████████| Time: 0:00:02 ( 2.37 ms/it)</span>
 </pre>
 </div>
 </div>
@@ -608,12 +610,12 @@ ScalarOperator(0.0 + 0.0im) * MatrixOperator(2 × 2)</code></pre>
 <span id="cb12-2"><a href="#cb12-2"></a>slowPulseSol <span class="op">=</span> <span class="fu">HEOMsolve</span>(M, ψ<span class="fl">0</span>, tlist; e_ops <span class="op">=</span> [ρ<span class="fl">01</span>], H_t <span class="op">=</span> H_D, params <span class="op">=</span> slowTuple)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[HEOMsolve (ODE)]   0%|                   |  ETA: 0:14:34 ( 0.87  s/it)</span>
-<span class="ansi-green-fg">[HEOMsolve (ODE)]  92%|█████████████████▌ |  ETA: 0:00:00 ( 2.02 ms/it)</span>
-<span class="ansi-green-fg">[HEOMsolve (ODE)] 100%|███████████████████| Time: 0:00:01 ( 1.88 ms/it)</span>
+<pre><span class="ansi-green-fg">[HEOMsolve (ODE)]   0%|                   |  ETA: 0:14:45 ( 0.89  s/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)]  94%|█████████████████▉ |  ETA: 0:00:00 ( 2.02 ms/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)] 100%|███████████████████| Time: 0:00:01 ( 1.90 ms/it)</span>
 
-<span class="ansi-green-fg">[HEOMsolve (ODE)]  91%|█████████████████▍ |  ETA: 0:00:00 ( 0.13 ms/it)</span>
-<span class="ansi-green-fg">[HEOMsolve (ODE)] 100%|███████████████████| Time: 0:00:00 ( 0.13 ms/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)]  73%|██████████████     |  ETA: 0:00:00 ( 0.16 ms/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)] 100%|███████████████████| Time: 0:00:00 ( 0.16 ms/it)</span>
 </pre>
 </div>
 </div>
@@ -679,11 +681,11 @@ Other developers:
 Package information:
 ====================================
 Julia              Ver. 1.12.3
-HierarchicalEOM    Ver. 2.10.0
-QuantumToolbox     Ver. 0.39.1
+HierarchicalEOM    Ver. 2.12.1
+QuantumToolbox     Ver. 0.40.0
 SciMLOperators     Ver. 1.14.1
-LinearSolve        Ver. 3.54.0
-OrdinaryDiffEqCore Ver. 1.36.0
+LinearSolve        Ver. 3.55.0
+OrdinaryDiffEqCore Ver. 2.3.0
 
 System information:
 ====================================

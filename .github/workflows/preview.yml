@@ -34,7 +34,7 @@ jobs:
       - name: Quarto Render
         uses: quarto-dev/quarto-actions/render@v2
       - name: Deploy PR Preview
-        uses: rossjrw/pr-preview-action@v1.6.3
+        uses: rossjrw/pr-preview-action@v1.7.2
         with:
           source-dir: ./_output/
         env:

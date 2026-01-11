@@ -446,10 +446,19 @@ H_{\textrm{sf}} &amp;=\sum_{\sigma=\uparrow,\downarrow}\sum_{k}g_{k}c_{\sigma,k}
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
 <pre><span class="ansi-green-fg ansi-bold">Precompiling</span> packages...
-   7054.7 ms<span class="ansi-green-fg">  ✓ </span>QuartoNotebookWorkerMakieExt<span class="ansi-bright-black-fg"> (serial)</span>
-  1 dependency successfully precompiled in 7 seconds
+    884.2 ms<span class="ansi-green-fg">  ✓ </span>QuartoNotebookWorkerLaTeXStringsExt<span class="ansi-bright-black-fg"> (serial)</span>
+  1 dependency successfully precompiled in 1 seconds
 <span class="ansi-green-fg ansi-bold">Precompiling</span> packages...
-   5183.6 ms<span class="ansi-green-fg">  ✓ </span>QuartoNotebookWorkerCairoMakieExt<span class="ansi-bright-black-fg"> (serial)</span>
+   2039.4 ms<span class="ansi-green-fg">  ✓ </span>QuartoNotebookWorkerJSONExt<span class="ansi-bright-black-fg"> (serial)</span>
+  1 dependency successfully precompiled in 2 seconds
+<span class="ansi-green-fg ansi-bold">Precompiling</span> packages...
+   1041.9 ms<span class="ansi-green-fg">  ✓ </span>QuartoNotebookWorkerTablesExt<span class="ansi-bright-black-fg"> (serial)</span>
+  1 dependency successfully precompiled in 1 seconds
+<span class="ansi-green-fg ansi-bold">Precompiling</span> packages...
+   6239.7 ms<span class="ansi-green-fg">  ✓ </span>QuartoNotebookWorkerMakieExt<span class="ansi-bright-black-fg"> (serial)</span>
+  1 dependency successfully precompiled in 6 seconds
+<span class="ansi-green-fg ansi-bold">Precompiling</span> packages...
+   5309.8 ms<span class="ansi-green-fg">  ✓ </span>QuartoNotebookWorkerCairoMakieExt<span class="ansi-bright-black-fg"> (serial)</span>
   1 dependency successfully precompiled in 5 seconds
 </pre>
 </div>
@@ -515,14 +524,14 @@ Quantum Object:   type=Operator()   dims=[2, 2]   size=(4, 4)   ishermitian=true
 <div class="ansi-escaped-output">
 <pre>Preparing HEOM Liouvillian sparsity structure...
 
-<span class="ansi-green-fg">[M_Fermion]   0%|                         |  ETA: 0:01:57 (50.51 ms/it)</span>
-<span class="ansi-green-fg">[M_Fermion] 100%|█████████████████████████| Time: 0:00:00 ( 0.17 ms/it)</span>
+<span class="ansi-green-fg">[M_Fermion]   0%|                         |  ETA: 0:02:02 (52.39 ms/it)</span>
+<span class="ansi-green-fg">[M_Fermion] 100%|█████████████████████████| Time: 0:00:00 ( 0.16 ms/it)</span>
 [DONE]
 Combining terms...[DONE]
 Evaluating lazy operations...[DONE]
 Preparing HEOM Liouvillian sparsity structure...
 
-<span class="ansi-green-fg">[M_Fermion] 100%|█████████████████████████| Time: 0:00:00 (27.44 μs/it)</span>
+<span class="ansi-green-fg">[M_Fermion] 100%|█████████████████████████| Time: 0:00:00 (28.46 μs/it)</span>
 [DONE]
 Combining terms...[DONE]
 Evaluating lazy operations...[DONE]
@@ -557,26 +566,26 @@ MatrixOperator(37200 × 37200)</code></pre>
 <span id="cb11-2"><a href="#cb11-2"></a>dos <span class="op">=</span> <span class="fu">DensityOfStates</span>(M_odd, ados_s, d_up, ωlist)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[DensityOfStates]  10%|█▊                 |  ETA: 0:00:10 ( 0.52  s/it)</span>
-<span class="ansi-green-fg">[DensityOfStates]  14%|██▊                |  ETA: 0:00:09 ( 0.49  s/it)</span>
-<span class="ansi-green-fg">[DensityOfStates]  19%|███▋               |  ETA: 0:00:08 ( 0.48  s/it)</span>
-<span class="ansi-green-fg">[DensityOfStates]  24%|████▌              |  ETA: 0:00:09 ( 0.54  s/it)</span>
-<span class="ansi-green-fg">[DensityOfStates]  29%|█████▍             |  ETA: 0:00:08 ( 0.54  s/it)</span>
-<span class="ansi-green-fg">[DensityOfStates]  33%|██████▍            |  ETA: 0:00:08 ( 0.54  s/it)</span>
-<span class="ansi-green-fg">[DensityOfStates]  38%|███████▎           |  ETA: 0:00:08 ( 0.58  s/it)</span>
-<span class="ansi-green-fg">[DensityOfStates]  43%|████████▏          |  ETA: 0:00:07 ( 0.59  s/it)</span>
-<span class="ansi-green-fg">[DensityOfStates]  48%|█████████          |  ETA: 0:00:07 ( 0.59  s/it)</span>
-<span class="ansi-green-fg">[DensityOfStates]  52%|██████████         |  ETA: 0:00:06 ( 0.61  s/it)</span>
-<span class="ansi-green-fg">[DensityOfStates]  57%|██████████▉        |  ETA: 0:00:06 ( 0.62  s/it)</span>
-<span class="ansi-green-fg">[DensityOfStates]  62%|███████████▊       |  ETA: 0:00:05 ( 0.62  s/it)</span>
-<span class="ansi-green-fg">[DensityOfStates]  67%|████████████▋      |  ETA: 0:00:04 ( 0.61  s/it)</span>
-<span class="ansi-green-fg">[DensityOfStates]  71%|█████████████▋     |  ETA: 0:00:04 ( 0.63  s/it)</span>
-<span class="ansi-green-fg">[DensityOfStates]  76%|██████████████▌    |  ETA: 0:00:03 ( 0.62  s/it)</span>
-<span class="ansi-green-fg">[DensityOfStates]  81%|███████████████▍   |  ETA: 0:00:02 ( 0.61  s/it)</span>
-<span class="ansi-green-fg">[DensityOfStates]  86%|████████████████▎  |  ETA: 0:00:02 ( 0.60  s/it)</span>
-<span class="ansi-green-fg">[DensityOfStates]  90%|█████████████████▎ |  ETA: 0:00:01 ( 0.59  s/it)</span>
-<span class="ansi-green-fg">[DensityOfStates]  95%|██████████████████▏|  ETA: 0:00:01 ( 0.59  s/it)</span>
-<span class="ansi-green-fg">[DensityOfStates] 100%|███████████████████| Time: 0:00:12 ( 0.58  s/it)</span>
+<pre><span class="ansi-green-fg">[DensityOfStates]  10%|█▊                 |  ETA: 0:00:09 ( 0.48  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  14%|██▊                |  ETA: 0:00:08 ( 0.46  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  19%|███▋               |  ETA: 0:00:08 ( 0.45  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  24%|████▌              |  ETA: 0:00:08 ( 0.50  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  29%|█████▍             |  ETA: 0:00:07 ( 0.50  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  33%|██████▍            |  ETA: 0:00:07 ( 0.50  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  38%|███████▎           |  ETA: 0:00:07 ( 0.51  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  43%|████████▏          |  ETA: 0:00:06 ( 0.54  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  48%|█████████          |  ETA: 0:00:06 ( 0.55  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  52%|██████████         |  ETA: 0:00:06 ( 0.58  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  57%|██████████▉        |  ETA: 0:00:05 ( 0.58  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  62%|███████████▊       |  ETA: 0:00:05 ( 0.58  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  67%|████████████▋      |  ETA: 0:00:04 ( 0.58  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  71%|█████████████▋     |  ETA: 0:00:04 ( 0.59  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  76%|██████████████▌    |  ETA: 0:00:03 ( 0.58  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  81%|███████████████▍   |  ETA: 0:00:02 ( 0.58  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  86%|████████████████▎  |  ETA: 0:00:02 ( 0.58  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  90%|█████████████████▎ |  ETA: 0:00:01 ( 0.57  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  95%|██████████████████▏|  ETA: 0:00:01 ( 0.56  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates] 100%|███████████████████| Time: 0:00:11 ( 0.54  s/it)</span>
 </pre>
 </div>
 </div>
@@ -646,11 +655,11 @@ Other developers:
 
 Package information:
 ====================================
-Julia              Ver. 1.12.3
-HierarchicalEOM    Ver. 2.12.1
+Julia              Ver. 1.12.4
+HierarchicalEOM    Ver. 2.12.2
 QuantumToolbox     Ver. 0.40.0
 SciMLOperators     Ver. 1.14.1
-LinearSolve        Ver. 3.55.0
+LinearSolve        Ver. 3.56.0
 OrdinaryDiffEqCore Ver. 2.3.0
 
 System information:

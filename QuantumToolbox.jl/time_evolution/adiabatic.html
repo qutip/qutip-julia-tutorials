@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.26">
+<meta name="generator" content="quarto-1.8.27">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -75,9 +75,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ac1a48248070c8bfbae4244efd7728e4.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-5fa770aa67c23ef3364642465cd873db.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ac1a48248070c8bfbae4244efd7728e4.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-2a367172f4fe7d9182ebf8e09f85cb4e.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-7fb59815a1c41eec7c034637f0c35ff0.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-2a367172f4fe7d9182ebf8e09f85cb4e.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../site_libs/bootstrap/bootstrap-1cb99e5faa8df9499aa296ac4cd75a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
@@ -433,13 +433,13 @@ window.Quarto = {
 <span id="cb2-4"><a href="#cb2-4"></a>gs <span class="op">=</span> <span class="fu">rand</span>(N<span class="op">-</span><span class="fl">1</span>) <span class="co"># use rand function for the random interaction strengths</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>7-element Vector{Float64}:
- 0.6982828322641201
- 0.09371793573832543
- 0.1625616739314022
- 0.9556610605211783
- 0.1672249505001513
- 0.12144117049111591
- 0.7494080471601628</code></pre>
+ 0.10752950814784668
+ 0.4264325106323621
+ 0.6023346246109846
+ 0.44129495189061163
+ 0.11997934267594024
+ 0.2687051676873369
+ 0.9396682697078471</code></pre>
 </div>
 </div>
 <div id="6" class="cell" data-execution_count="1">
@@ -534,22 +534,22 @@ Quantum Object Evo.:   type=Operator()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(2
 <pre><code>
 Quantum Object:   type=Ket()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256,)
 256-element SparseArrays.SparseVector{ComplexF64, Int64} with 128 stored entries:
-  [1  ]  =  0.000883788+0.0im
-  [4  ]  =  -0.0026297-0.0im
-  [6  ]  =  0.000523042+0.0im
-  [7  ]  =  -0.000395058-0.0im
-  [10 ]  =  -0.00168669+0.0im
-  [11 ]  =  0.00102299+0.0im
-  [13 ]  =  -0.00820416+0.0im
+  [1  ]  =  0.00040589+0.0im
+  [4  ]  =  -0.000995642+0.0im
+  [6  ]  =  0.000395719+0.0im
+  [7  ]  =  -0.000318597+0.0im
+  [10 ]  =  -0.00219547+0.0im
+  [11 ]  =  0.00150454+0.0im
+  [13 ]  =  -0.00575487+0.0im
          ⋮
-  [241]  =  0.0269234+0.0im
-  [244]  =  -0.0802055+0.0im
-  [246]  =  0.0144749+0.0im
-  [247]  =  -0.0106874+0.0im
-  [250]  =  -0.0564142+0.0im
-  [251]  =  0.0341415+0.0im
-  [253]  =  -0.275519+0.0im
-  [256]  =  0.824817+0.0im</code></pre>
+  [241]  =  0.0220126+0.0im
+  [244]  =  -0.0541403+0.0im
+  [246]  =  0.0201619+0.0im
+  [247]  =  -0.0160119+0.0im
+  [250]  =  -0.125399+0.0im
+  [251]  =  0.0858925+0.0im
+  [253]  =  -0.329075+0.0im
+  [256]  =  0.821908+0.0im</code></pre>
 </div>
 </div>
 <p>We can see that the truthful ground state we are preparing is indeed very complex.</p>
@@ -595,17 +595,17 @@ Quantum Object:   type=Ket()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256,)
 <span id="cb14-7"><a href="#cb14-7"></a><span class="cf">end</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.25 ms/it)</span>
+<pre><span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.26 ms/it)</span>
 
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (84.70 μs/it)</span>
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (85.27 μs/it)</span>
 
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (85.47 μs/it)</span>
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (84.40 μs/it)</span>
 
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (84.73 μs/it)</span>
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (84.49 μs/it)</span>
 
 <span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.14 ms/it)</span>
 
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.15 ms/it)</span>
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.21 ms/it)</span>
 </pre>
 </div>
 </div>
@@ -653,9 +653,9 @@ Current admin team:
 Package information:
 ====================================
 Julia              Ver. 1.12.4
-QuantumToolbox     Ver. 0.40.0
+QuantumToolbox     Ver. 0.41.0
 SciMLOperators     Ver. 1.14.1
-LinearSolve        Ver. 3.56.0
+LinearSolve        Ver. 3.57.0
 OrdinaryDiffEqCore Ver. 2.3.0
 
 System information:

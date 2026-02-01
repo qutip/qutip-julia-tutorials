@@ -433,13 +433,13 @@ window.Quarto = {
 <span id="cb2-4"><a href="#cb2-4"></a>gs <span class="op">=</span> <span class="fu">rand</span>(N<span class="op">-</span><span class="fl">1</span>) <span class="co"># use rand function for the random interaction strengths</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>7-element Vector{Float64}:
- 0.9459514357649921
- 0.8952256678949069
- 0.9795161136228875
- 0.5287140295517568
- 0.8052307953915183
- 0.817191679665561
- 0.4459014817013889</code></pre>
+ 0.9976912521549441
+ 0.16806379014113104
+ 0.35082888039432225
+ 0.06451123682604942
+ 0.5160093249464759
+ 0.9180227753101404
+ 0.9695839017952632</code></pre>
 </div>
 </div>
 <div id="6" class="cell" data-execution_count="1">
@@ -534,22 +534,22 @@ Quantum Object Evo.:   type=Operator()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(2
 <pre><code>
 Quantum Object:   type=Ket()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256,)
 256-element SparseArrays.SparseVector{ComplexF64, Int64} with 128 stored entries:
-  [1  ]  =  0.0123898+0.0im
-  [4  ]  =  -0.0464794+0.0im
-  [6  ]  =  0.0332452+0.0im
-  [7  ]  =  -0.0170945+0.0im
-  [10 ]  =  -0.0430172+0.0im
-  [11 ]  =  0.0194432+0.0im
-  [13 ]  =  -0.0256468+0.0im
+  [1  ]  =  0.00662381+0.0im
+  [4  ]  =  -0.0142644+0.0im
+  [6  ]  =  0.0110021+0.0im
+  [7  ]  =  -0.00832917+0.0im
+  [10 ]  =  -0.0224406+0.0im
+  [11 ]  =  0.0155829+0.0im
+  [13 ]  =  -0.0222827+0.0im
          ⋮
-  [241]  =  0.0516478+0.0im
-  [244]  =  -0.195543+0.0im
-  [246]  =  0.136791+0.0im
-  [247]  =  -0.0693968+0.0im
-  [250]  =  -0.188347+0.0im
-  [251]  =  0.0843972+0.0im
-  [253]  =  -0.112952+0.0im
-  [256]  =  0.45719+0.0im</code></pre>
+  [241]  =  0.0918816+0.0im
+  [244]  =  -0.197912+0.0im
+  [246]  =  0.152505+0.0im
+  [247]  =  -0.115418+0.0im
+  [250]  =  -0.311911+0.0im
+  [251]  =  0.216574+0.0im
+  [253]  =  -0.309762+0.0im
+  [256]  =  0.699562+0.0im</code></pre>
 </div>
 </div>
 <p>We can see that the truthful ground state we are preparing is indeed very complex.</p>
@@ -597,11 +597,11 @@ Quantum Object:   type=Ket()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256,)
 <div class="ansi-escaped-output">
 <pre><span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.25 ms/it)</span>
 
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (84.53 μs/it)</span>
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (85.37 μs/it)</span>
 
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (83.71 μs/it)</span>
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (84.40 μs/it)</span>
 
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (85.07 μs/it)</span>
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (83.39 μs/it)</span>
 
 <span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.14 ms/it)</span>
 
@@ -661,11 +661,11 @@ OrdinaryDiffEqCore Ver. 2.3.0
 System information:
 ====================================
 OS       : Linux (x86_64-linux-gnu)
-CPU      : 4 × Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz
-Memory   : 15.619 GB
+CPU      : 4 × AMD EPYC 7763 64-Core Processor
+Memory   : 15.62 GB
 WORD_SIZE: 64
 LIBM     : libopenlibm
-LLVM     : libLLVM-18.1.7 (ORCJIT, icelake-server)
+LLVM     : libLLVM-18.1.7 (ORCJIT, znver3)
 BLAS     : libopenblas64_.so (ilp64)
 Threads  : 4 (on 4 virtual cores)
 

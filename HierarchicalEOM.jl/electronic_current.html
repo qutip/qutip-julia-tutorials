@@ -496,7 +496,7 @@ H_{\textrm{sf}} &amp;=\sum_{\alpha=\textrm{L},\textrm{R}}\sum_{k}g_{\alpha,k}c_{
 <div class="ansi-escaped-output">
 <pre>Preparing HEOM Liouvillian sparsity structure...
 
-<span class="ansi-green-fg">[M_Fermion]   0%|                         |  ETA: 0:01:27 (55.03 ms/it)</span>
+<span class="ansi-green-fg">[M_Fermion]   0%|                         |  ETA: 0:01:26 (54.23 ms/it)</span>
 <span class="ansi-green-fg">[M_Fermion] 100%|█████████████████████████| Time: 0:00:00 ( 0.25 ms/it)</span>
 [DONE]
 Combining terms...[DONE]
@@ -520,8 +520,8 @@ MatrixOperator(6344 × 6344)</code></pre>
 <span id="cb7-2"><a href="#cb7-2"></a>ados_evolution <span class="op">=</span> <span class="fu">HEOMsolve</span>(M, ψ<span class="fl">0</span>, tlist).ados</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[HEOMsolve (ODE)]  73%|█████████████▊     |  ETA: 0:00:00 ( 0.69 ms/it)</span>
-<span class="ansi-green-fg">[HEOMsolve (ODE)] 100%|███████████████████| Time: 0:00:00 ( 0.68 ms/it)</span>
+<pre><span class="ansi-green-fg">[HEOMsolve (ODE)]  74%|██████████████     |  ETA: 0:00:00 ( 0.68 ms/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)] 100%|███████████████████| Time: 0:00:00 ( 0.66 ms/it)</span>
 </pre>
 </div>
 </div>
@@ -724,11 +724,11 @@ OrdinaryDiffEqCore Ver. 2.3.0
 System information:
 ====================================
 OS       : Linux (x86_64-linux-gnu)
-CPU      : 4 × Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz
-Memory   : 15.619 GB
+CPU      : 4 × AMD EPYC 7763 64-Core Processor
+Memory   : 15.62 GB
 WORD_SIZE: 64
 LIBM     : libopenlibm
-LLVM     : libLLVM-18.1.7 (ORCJIT, icelake-server)
+LLVM     : libLLVM-18.1.7 (ORCJIT, znver3)
 BLAS     : libopenblas64_.so (ilp64)
 Threads  : 4 (on 4 virtual cores)
 

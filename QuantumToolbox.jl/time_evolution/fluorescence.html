@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Li-Xun Cai">
-<meta name="dcterms.date" content="2026-01-26">
+<meta name="dcterms.date" content="2026-02-02">
 
 <title>Resonance fluorescence – Tutorials for Quantum Toolbox in Julia</title>
 <style>
@@ -389,7 +389,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Last Update</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2026-01-26</p>
+      <p class="date">2026-02-02</p>
     </div>
   </div>
   
@@ -522,8 +522,8 @@ Quantum Object:   type=SuperOperator()   dims=[2]   size=(4, 4)
 <span id="cb8-2"><a href="#cb8-2"></a>sol <span class="op">=</span> <span class="fu">mesolve</span>(L, ψ<span class="fl">0</span>, tlist, <span class="cn">nothing</span>, e_ops <span class="op">=</span> e_ops)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[mesolve]   1%|▎                          |  ETA: 0:05:18 ( 1.60  s/it)</span>
-<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:03 (17.11 ms/it)</span>
+<pre><span class="ansi-green-fg">[mesolve]   1%|▎                          |  ETA: 0:05:31 ( 1.66  s/it)</span>
+<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:03 (17.84 ms/it)</span>
 </pre>
 </div>
 </div>
@@ -579,11 +579,11 @@ reltol = 1.0e-6</code></pre>
 <span id="cb11-7"><a href="#cb11-7"></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 1.01 μs/it)</span>
+<pre><span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 1.15 μs/it)</span>
 
-<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.85 μs/it)</span>
+<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.86 μs/it)</span>
 
-<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.60 μs/it)</span>
+<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.71 μs/it)</span>
 </pre>
 </div>
 </div>
@@ -662,17 +662,17 @@ reltol = 1.0e-6</code></pre>
 <span id="cb14-26"><a href="#cb14-26"></a>fig4</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 8.11 μs/it)</span>
+<pre><span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 9.06 μs/it)</span>
 
 <span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.28 μs/it)</span>
 
-<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 8.11 μs/it)</span>
+<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 7.87 μs/it)</span>
 
-<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.17 μs/it)</span>
+<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.16 μs/it)</span>
 
-<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 2.86 μs/it)</span>
+<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 4.05 μs/it)</span>
 
-<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.14 μs/it)</span>
+<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.15 μs/it)</span>
 </pre>
 </div>
 </div>
@@ -703,7 +703,7 @@ Package information:
 ====================================
 Julia              Ver. 1.12.4
 QuantumToolbox     Ver. 0.41.0
-SciMLOperators     Ver. 1.14.1
+SciMLOperators     Ver. 1.15.1
 LinearSolve        Ver. 3.57.0
 OrdinaryDiffEqCore Ver. 2.3.0
 

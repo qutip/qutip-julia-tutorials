@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Li-Xun Cai">
-<meta name="dcterms.date" content="2026-01-26">
+<meta name="dcterms.date" content="2026-02-02">
 
 <title>Adiabatic sweep (with QuantumObjectEvolution) – Tutorials for Quantum Toolbox in Julia</title>
 <style>
@@ -387,7 +387,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Last Update</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2026-01-26</p>
+      <p class="date">2026-02-02</p>
     </div>
   </div>
   
@@ -433,13 +433,13 @@ window.Quarto = {
 <span id="cb2-4"><a href="#cb2-4"></a>gs <span class="op">=</span> <span class="fu">rand</span>(N<span class="op">-</span><span class="fl">1</span>) <span class="co"># use rand function for the random interaction strengths</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>7-element Vector{Float64}:
- 0.9976912521549441
- 0.16806379014113104
- 0.35082888039432225
- 0.06451123682604942
- 0.5160093249464759
- 0.9180227753101404
- 0.9695839017952632</code></pre>
+ 0.3753330598728585
+ 0.37716993590338876
+ 0.6466859308980989
+ 0.9909833052594551
+ 0.07365582972965923
+ 0.1013166089111317
+ 0.5341302360333293</code></pre>
 </div>
 </div>
 <div id="6" class="cell" data-execution_count="1">
@@ -534,22 +534,22 @@ Quantum Object Evo.:   type=Operator()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(2
 <pre><code>
 Quantum Object:   type=Ket()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256,)
 256-element SparseArrays.SparseVector{ComplexF64, Int64} with 128 stored entries:
-  [1  ]  =  0.00662381+0.0im
-  [4  ]  =  -0.0142644+0.0im
-  [6  ]  =  0.0110021+0.0im
-  [7  ]  =  -0.00832917+0.0im
-  [10 ]  =  -0.0224406+0.0im
-  [11 ]  =  0.0155829+0.0im
-  [13 ]  =  -0.0222827+0.0im
+  [1  ]  =  0.000659751+0.0im
+  [4  ]  =  -0.0026149+0.0im
+  [6  ]  =  0.000412589+0.0im
+  [7  ]  =  -0.000264758+0.0im
+  [10 ]  =  -0.00286369+0.0im
+  [11 ]  =  0.00135355+0.0im
+  [13 ]  =  -0.0133253+0.0im
          ⋮
-  [241]  =  0.0918816+0.0im
-  [244]  =  -0.197912+0.0im
-  [246]  =  0.152505+0.0im
-  [247]  =  -0.115418+0.0im
-  [250]  =  -0.311911+0.0im
-  [251]  =  0.216574+0.0im
-  [253]  =  -0.309762+0.0im
-  [256]  =  0.699562+0.0im</code></pre>
+  [241]  =  0.00887399+0.0im
+  [244]  =  -0.0352051+0.0im
+  [246]  =  0.00512897+0.0im
+  [247]  =  -0.00320725+0.0im
+  [250]  =  -0.0422318+0.0im
+  [251]  =  0.0199499+0.0im
+  [253]  =  -0.196652+0.0im
+  [256]  =  0.783896+0.0im</code></pre>
 </div>
 </div>
 <p>We can see that the truthful ground state we are preparing is indeed very complex.</p>
@@ -595,17 +595,17 @@ Quantum Object:   type=Ket()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256,)
 <span id="cb14-7"><a href="#cb14-7"></a><span class="cf">end</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.25 ms/it)</span>
+<pre><span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.26 ms/it)</span>
 
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (85.37 μs/it)</span>
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (84.49 μs/it)</span>
 
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (84.40 μs/it)</span>
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (87.59 μs/it)</span>
 
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (83.39 μs/it)</span>
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (84.57 μs/it)</span>
 
 <span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.14 ms/it)</span>
 
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.20 ms/it)</span>
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.21 ms/it)</span>
 </pre>
 </div>
 </div>
@@ -654,7 +654,7 @@ Package information:
 ====================================
 Julia              Ver. 1.12.4
 QuantumToolbox     Ver. 0.41.0
-SciMLOperators     Ver. 1.14.1
+SciMLOperators     Ver. 1.15.1
 LinearSolve        Ver. 3.57.0
 OrdinaryDiffEqCore Ver. 2.3.0
 

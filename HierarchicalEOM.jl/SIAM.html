@@ -100,9 +100,9 @@ div.csl-indent {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-2a367172f4fe7d9182ebf8e09f85cb4e.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-64aecfdaf28a2a0e0d48c81b82caff02.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-eea294e0f30f5f4779076c4894dc1d37.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-64aecfdaf28a2a0e0d48c81b82caff02.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-1cb99e5faa8df9499aa296ac4cd75a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-948526ab9cde9517ac9fd7d69a164a89.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-1cb99e5faa8df9499aa296ac4cd75a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -443,6 +443,17 @@ H_{\textrm{sf}} &amp;=\sum_{\sigma=\uparrow,\downarrow}\sum_{k}g_{k}c_{\sigma,k}
 <span id="cb1-2"><a href="#cb1-2"></a><span class="im">using</span> <span class="bu">CairoMakie</span>       <span class="co"># for plotting results</span></span>
 <span id="cb1-3"><a href="#cb1-3"></a></span>
 <span id="cb1-4"><a href="#cb1-4"></a>CairoMakie.<span class="fu">activate!</span>(<span class="kw">type</span> <span class="op">=</span> <span class="st">"svg"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<div class="ansi-escaped-output">
+<pre><span class="ansi-green-fg ansi-bold">Precompiling</span> packages...
+   7415.4 ms<span class="ansi-green-fg">  ✓ </span>QuartoNotebookWorkerMakieExt<span class="ansi-bright-black-fg"> (serial)</span>
+  1 dependency successfully precompiled in 7 seconds
+<span class="ansi-green-fg ansi-bold">Precompiling</span> packages...
+   5454.1 ms<span class="ansi-green-fg">  ✓ </span>QuartoNotebookWorkerCairoMakieExt<span class="ansi-bright-black-fg"> (serial)</span>
+  1 dependency successfully precompiled in 5 seconds
+</pre>
+</div>
+</div>
 </div>
 <div id="4" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1"></a>ϵ <span class="op">=</span> <span class="op">-</span><span class="fl">5</span></span>
@@ -504,14 +515,14 @@ Quantum Object:   type=Operator()   dims=[2, 2]   size=(4, 4)   ishermitian=true
 <div class="ansi-escaped-output">
 <pre>Preparing HEOM Liouvillian sparsity structure...
 
-<span class="ansi-green-fg">[M_Fermion]   0%|                         |  ETA: 0:02:06 (54.33 ms/it)</span>
+<span class="ansi-green-fg">[M_Fermion]   0%|                         |  ETA: 0:01:59 (51.44 ms/it)</span>
 <span class="ansi-green-fg">[M_Fermion] 100%|█████████████████████████| Time: 0:00:00 ( 0.17 ms/it)</span>
 [DONE]
 Combining terms...[DONE]
 Evaluating lazy operations...[DONE]
 Preparing HEOM Liouvillian sparsity structure...
 
-<span class="ansi-green-fg">[M_Fermion] 100%|█████████████████████████| Time: 0:00:00 (28.68 μs/it)</span>
+<span class="ansi-green-fg">[M_Fermion] 100%|█████████████████████████| Time: 0:00:00 (33.05 μs/it)</span>
 [DONE]
 Combining terms...[DONE]
 Evaluating lazy operations...[DONE]
@@ -546,25 +557,25 @@ MatrixOperator(37200 × 37200)</code></pre>
 <span id="cb11-2"><a href="#cb11-2"></a>dos <span class="op">=</span> <span class="fu">DensityOfStates</span>(M_odd, ados_s, d_up, ωlist)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[DensityOfStates]  10%|█▊                 |  ETA: 0:00:09 ( 0.46  s/it)</span>
-<span class="ansi-green-fg">[DensityOfStates]  14%|██▊                |  ETA: 0:00:09 ( 0.53  s/it)</span>
-<span class="ansi-green-fg">[DensityOfStates]  19%|███▋               |  ETA: 0:00:09 ( 0.52  s/it)</span>
-<span class="ansi-green-fg">[DensityOfStates]  24%|████▌              |  ETA: 0:00:09 ( 0.53  s/it)</span>
-<span class="ansi-green-fg">[DensityOfStates]  29%|█████▍             |  ETA: 0:00:09 ( 0.57  s/it)</span>
-<span class="ansi-green-fg">[DensityOfStates]  33%|██████▍            |  ETA: 0:00:08 ( 0.57  s/it)</span>
-<span class="ansi-green-fg">[DensityOfStates]  38%|███████▎           |  ETA: 0:00:08 ( 0.60  s/it)</span>
-<span class="ansi-green-fg">[DensityOfStates]  43%|████████▏          |  ETA: 0:00:07 ( 0.60  s/it)</span>
-<span class="ansi-green-fg">[DensityOfStates]  48%|█████████          |  ETA: 0:00:07 ( 0.64  s/it)</span>
-<span class="ansi-green-fg">[DensityOfStates]  52%|██████████         |  ETA: 0:00:06 ( 0.64  s/it)</span>
-<span class="ansi-green-fg">[DensityOfStates]  57%|██████████▉        |  ETA: 0:00:06 ( 0.65  s/it)</span>
+<pre><span class="ansi-green-fg">[DensityOfStates]  10%|█▊                 |  ETA: 0:00:08 ( 0.41  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  14%|██▊                |  ETA: 0:00:09 ( 0.49  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  19%|███▋               |  ETA: 0:00:08 ( 0.48  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  24%|████▌              |  ETA: 0:00:09 ( 0.54  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  29%|█████▍             |  ETA: 0:00:08 ( 0.54  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  33%|██████▍            |  ETA: 0:00:08 ( 0.58  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  38%|███████▎           |  ETA: 0:00:08 ( 0.59  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  43%|████████▏          |  ETA: 0:00:07 ( 0.62  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  48%|█████████          |  ETA: 0:00:07 ( 0.65  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  52%|██████████         |  ETA: 0:00:07 ( 0.65  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  57%|██████████▉        |  ETA: 0:00:06 ( 0.67  s/it)</span>
 <span class="ansi-green-fg">[DensityOfStates]  62%|███████████▊       |  ETA: 0:00:05 ( 0.67  s/it)</span>
-<span class="ansi-green-fg">[DensityOfStates]  67%|████████████▋      |  ETA: 0:00:05 ( 0.66  s/it)</span>
-<span class="ansi-green-fg">[DensityOfStates]  71%|█████████████▋     |  ETA: 0:00:04 ( 0.67  s/it)</span>
-<span class="ansi-green-fg">[DensityOfStates]  76%|██████████████▌    |  ETA: 0:00:03 ( 0.66  s/it)</span>
-<span class="ansi-green-fg">[DensityOfStates]  81%|███████████████▍   |  ETA: 0:00:03 ( 0.66  s/it)</span>
-<span class="ansi-green-fg">[DensityOfStates]  86%|████████████████▎  |  ETA: 0:00:02 ( 0.66  s/it)</span>
-<span class="ansi-green-fg">[DensityOfStates]  90%|█████████████████▎ |  ETA: 0:00:01 ( 0.65  s/it)</span>
-<span class="ansi-green-fg">[DensityOfStates]  95%|██████████████████▏|  ETA: 0:00:01 ( 0.65  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  67%|████████████▋      |  ETA: 0:00:05 ( 0.68  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  71%|█████████████▋     |  ETA: 0:00:04 ( 0.68  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  76%|██████████████▌    |  ETA: 0:00:03 ( 0.69  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  81%|███████████████▍   |  ETA: 0:00:03 ( 0.68  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  86%|████████████████▎  |  ETA: 0:00:02 ( 0.68  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  90%|█████████████████▎ |  ETA: 0:00:01 ( 0.66  s/it)</span>
+<span class="ansi-green-fg">[DensityOfStates]  95%|██████████████████▏|  ETA: 0:00:01 ( 0.66  s/it)</span>
 <span class="ansi-green-fg">[DensityOfStates] 100%|███████████████████| Time: 0:00:13 ( 0.64  s/it)</span>
 </pre>
 </div>
@@ -639,7 +650,7 @@ Julia              Ver. 1.12.5
 HierarchicalEOM    Ver. 2.12.3
 QuantumToolbox     Ver. 0.41.0
 SciMLOperators     Ver. 1.15.1
-LinearSolve        Ver. 3.58.0
+LinearSolve        Ver. 3.59.1
 OrdinaryDiffEqCore Ver. 2.3.0
 
 System information:

@@ -80,9 +80,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-2a367172f4fe7d9182ebf8e09f85cb4e.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-64aecfdaf28a2a0e0d48c81b82caff02.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-eea294e0f30f5f4779076c4894dc1d37.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-64aecfdaf28a2a0e0d48c81b82caff02.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-1cb99e5faa8df9499aa296ac4cd75a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-948526ab9cde9517ac9fd7d69a164a89.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-1cb99e5faa8df9499aa296ac4cd75a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -433,13 +433,13 @@ window.Quarto = {
 <span id="cb2-4"><a href="#cb2-4"></a>gs <span class="op">=</span> <span class="fu">rand</span>(N<span class="op">-</span><span class="fl">1</span>) <span class="co"># use rand function for the random interaction strengths</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>7-element Vector{Float64}:
- 0.3605139375565616
- 0.028662670734930118
- 0.4256608164546982
- 0.5515957094601098
- 0.30052813877043116
- 0.9965272424475076
- 0.26574171659414836</code></pre>
+ 0.7469241664782854
+ 0.9623102499345639
+ 0.9450278196895079
+ 0.8989280735181759
+ 0.42019930996694166
+ 0.5002113770108211
+ 0.6632523148651351</code></pre>
 </div>
 </div>
 <div id="6" class="cell" data-execution_count="1">
@@ -534,22 +534,22 @@ Quantum Object Evo.:   type=Operator()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(2
 <pre><code>
 Quantum Object:   type=Ket()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256,)
 256-element SparseArrays.SparseVector{ComplexF64, Int64} with 128 stored entries:
-  [1  ]  =  0.00111022+0.0im
-  [4  ]  =  -0.00640336+0.0im
-  [6  ]  =  0.00487083+0.0im
-  [7  ]  =  -0.0015772-0.0im
-  [10 ]  =  -0.0131167-0.0im
-  [11 ]  =  0.00343879+0.0im
-  [13 ]  =  -0.0047325+0.0im
+  [1  ]  =  0.0107108+0.0im
+  [4  ]  =  -0.0312614+0.0im
+  [6  ]  =  0.0209823+0.0im
+  [7  ]  =  -0.0149776-0.0im
+  [10 ]  =  -0.0290133-0.0im
+  [11 ]  =  0.0171154+0.0im
+  [13 ]  =  -0.0325948-0.0im
          ⋮
-  [241]  =  0.0267855+0.0im
-  [244]  =  -0.156521+0.0im
-  [246]  =  0.116601+0.0im
-  [247]  =  -0.037082+0.0im
-  [250]  =  -0.344243+0.0im
-  [251]  =  0.0899904+0.0im
-  [253]  =  -0.124287+0.0im
-  [256]  =  0.811102+0.0im</code></pre>
+  [241]  =  0.0480805+0.0im
+  [244]  =  -0.141567+0.0im
+  [246]  =  0.0905604+0.0im
+  [247]  =  -0.0637133+0.0im
+  [250]  =  -0.142165+0.0im
+  [251]  =  0.0832089+0.0im
+  [253]  =  -0.161566+0.0im
+  [256]  =  0.507371+0.0im</code></pre>
 </div>
 </div>
 <p>We can see that the truthful ground state we are preparing is indeed very complex.</p>
@@ -597,15 +597,15 @@ Quantum Object:   type=Ket()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256,)
 <div class="ansi-escaped-output">
 <pre><span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.26 ms/it)</span>
 
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (84.75 μs/it)</span>
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (85.46 μs/it)</span>
 
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (83.27 μs/it)</span>
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (85.17 μs/it)</span>
 
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (84.52 μs/it)</span>
-
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.14 ms/it)</span>
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (84.74 μs/it)</span>
 
 <span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.15 ms/it)</span>
+
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.20 ms/it)</span>
 </pre>
 </div>
 </div>
@@ -655,7 +655,7 @@ Package information:
 Julia              Ver. 1.12.5
 QuantumToolbox     Ver. 0.41.0
 SciMLOperators     Ver. 1.15.1
-LinearSolve        Ver. 3.58.0
+LinearSolve        Ver. 3.59.1
 OrdinaryDiffEqCore Ver. 2.3.0
 
 System information:

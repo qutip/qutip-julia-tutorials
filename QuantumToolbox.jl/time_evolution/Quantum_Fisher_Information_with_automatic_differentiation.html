@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Orjan Ameye">
-<meta name="dcterms.date" content="2026-02-16">
+<meta name="dcterms.date" content="2026-02-23">
 
 <title>Quantum Fisher Information – Tutorials for Quantum Toolbox in Julia</title>
 <style>
@@ -389,7 +389,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Last Update</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2026-02-16</p>
+      <p class="date">2026-02-23</p>
     </div>
   </div>
   
@@ -494,7 +494,7 @@ window.Quarto = {
 <span id="cb6-17"><a href="#cb6-17"></a>qfi_final <span class="op">=</span> <span class="fu">compute_fisher_information</span>(ρ, dρ)</span>
 <span id="cb6-18"><a href="#cb6-18"></a><span class="fu">println</span>(<span class="st">"QFI at final time: "</span>, qfi_final)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>QFI at final time: 19795.72214787345</code></pre>
+<pre><code>QFI at final time: 19795.72214790856</code></pre>
 </div>
 </div>
 </section>
@@ -516,7 +516,7 @@ window.Quarto = {
 <span id="cb8-12"><a href="#cb8-12"></a></span>
 <span id="cb8-13"><a href="#cb8-13"></a><span class="fu">println</span>(<span class="st">"QFI computed for "</span>, <span class="fu">length</span>(ts), <span class="st">" time points"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> 10.417241 seconds (18.55 M allocations: 1.030 GiB, 1.06% gc time, 55.10% compilation time)
+<pre><code> 10.513633 seconds (18.82 M allocations: 1.043 GiB, 1.17% gc time, 51.03% compilation time)
 QFI computed for 100 time points</code></pre>
 </div>
 </div>
@@ -557,19 +557,19 @@ Current admin team:
 Package information:
 ====================================
 Julia              Ver. 1.12.5
-QuantumToolbox     Ver. 0.41.0
+QuantumToolbox     Ver. 0.42.0
 SciMLOperators     Ver. 1.15.1
 LinearSolve        Ver. 3.59.1
-OrdinaryDiffEqCore Ver. 2.3.0
+OrdinaryDiffEqCore Ver. 3.9.0
 
 System information:
 ====================================
 OS       : Linux (x86_64-linux-gnu)
-CPU      : 4 × AMD EPYC 7763 64-Core Processor
-Memory   : 15.616 GB
+CPU      : 4 × Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz
+Memory   : 15.619 GB
 WORD_SIZE: 64
 LIBM     : libopenlibm
-LLVM     : libLLVM-18.1.7 (ORCJIT, znver3)
+LLVM     : libLLVM-18.1.7 (ORCJIT, icelake-server)
 BLAS     : libopenblas64_.so (ilp64)
 Threads  : 4 (on 4 virtual cores)
 
@@ -588,8 +588,8 @@ For your convenience, a bibtex reference can be easily generated using `QuantumT
 <pre><span class="ansi-green-fg ansi-bold">Status</span> `~/work/qutip-julia-tutorials/qutip-julia-tutorials/Project.toml`
   <span class="ansi-bright-black-fg">[13f3f980] </span>CairoMakie v0.15.8
   <span class="ansi-bright-black-fg">[f6369f11] </span>ForwardDiff v1.3.2
-  <span class="ansi-bright-black-fg">[a62dbcb7] </span>HierarchicalEOM v2.12.3
-<span class="ansi-yellow-fg">⌅</span> <span class="ansi-bright-black-fg">[6c2fb7c5] </span>QuantumToolbox v0.41.0
+  <span class="ansi-bright-black-fg">[a62dbcb7] </span>HierarchicalEOM v2.12.4
+<span class="ansi-yellow-fg">⌅</span> <span class="ansi-bright-black-fg">[6c2fb7c5] </span>QuantumToolbox v0.42.0
   <span class="ansi-bright-black-fg">[4c0109c6] </span>QuartoNotebookRunner v0.17.4
 <span class="ansi-cyan-fg ansi-bold">Info</span> Packages marked with <span class="ansi-yellow-fg">⌅</span> have new versions available but compatibility constraints restrict them from upgrading. To see why use `status --outdated`
 </pre>

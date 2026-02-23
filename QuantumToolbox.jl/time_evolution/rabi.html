@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Li-Xun Cai">
-<meta name="dcterms.date" content="2026-02-16">
+<meta name="dcterms.date" content="2026-02-23">
 
 <title>Vacuum Rabi oscillation – Tutorials for Quantum Toolbox in Julia</title>
 <style>
@@ -393,7 +393,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Last Update</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2026-02-16</p>
+      <p class="date">2026-02-23</p>
     </div>
   </div>
   
@@ -493,8 +493,8 @@ Quantum Object:   type=Operator()   dims=[2, 2]   size=(4, 4)   ishermitian=true
 <span id="cb4-13"><a href="#cb4-13"></a>sol</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[sesolve]   0%|▏                          |  ETA: 0:16:10 ( 2.43  s/it)</span>
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:04 (12.38 ms/it)</span>
+<pre><span class="ansi-green-fg">[sesolve]   0%|▏                          |  ETA: 0:15:32 ( 2.34  s/it)</span>
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:04 (11.89 ms/it)</span>
 </pre>
 </div>
 </div>
@@ -621,8 +621,8 @@ reltol = 1.0e-6</code></pre>
 <span id="cb9-9"><a href="#cb9-9"></a><span class="fu">print</span>(sol_me)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[mesolve]   0%|▏                          |  ETA: 0:05:46 ( 0.87  s/it)</span>
-<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:01 ( 4.33 ms/it)</span>
+<pre><span class="ansi-green-fg">[mesolve]   0%|▏                          |  ETA: 0:05:24 ( 0.81  s/it)</span>
+<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:01 ( 4.06 ms/it)</span>
 Solution of time evolution
 (return code: Success)
 --------------------------
@@ -679,7 +679,7 @@ reltol = 1.0e-6
 <span id="cb11-16"><a href="#cb11-16"></a>fig_me_</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 1.24 μs/it)</span>
+<pre><span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 1.17 μs/it)</span>
 </pre>
 </div>
 </div>
@@ -710,19 +710,19 @@ Current admin team:
 Package information:
 ====================================
 Julia              Ver. 1.12.5
-QuantumToolbox     Ver. 0.41.0
+QuantumToolbox     Ver. 0.42.0
 SciMLOperators     Ver. 1.15.1
 LinearSolve        Ver. 3.59.1
-OrdinaryDiffEqCore Ver. 2.3.0
+OrdinaryDiffEqCore Ver. 3.9.0
 
 System information:
 ====================================
 OS       : Linux (x86_64-linux-gnu)
-CPU      : 4 × AMD EPYC 7763 64-Core Processor
-Memory   : 15.616 GB
+CPU      : 4 × Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz
+Memory   : 15.619 GB
 WORD_SIZE: 64
 LIBM     : libopenlibm
-LLVM     : libLLVM-18.1.7 (ORCJIT, znver3)
+LLVM     : libLLVM-18.1.7 (ORCJIT, icelake-server)
 BLAS     : libopenblas64_.so (ilp64)
 Threads  : 4 (on 4 virtual cores)
 

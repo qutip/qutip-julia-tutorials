@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Li-Xun Cai">
-<meta name="dcterms.date" content="2026-02-16">
+<meta name="dcterms.date" content="2026-02-23">
 
 <title>Resonance fluorescence – Tutorials for Quantum Toolbox in Julia</title>
 <style>
@@ -389,7 +389,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Last Update</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2026-02-16</p>
+      <p class="date">2026-02-23</p>
     </div>
   </div>
   
@@ -522,8 +522,8 @@ Quantum Object:   type=SuperOperator()   dims=[2]   size=(4, 4)
 <span id="cb8-2"><a href="#cb8-2"></a>sol <span class="op">=</span> <span class="fu">mesolve</span>(L, ψ<span class="fl">0</span>, tlist, <span class="cn">nothing</span>, e_ops <span class="op">=</span> e_ops)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[mesolve]   1%|▎                          |  ETA: 0:05:16 ( 1.59  s/it)</span>
-<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:03 (16.99 ms/it)</span>
+<pre><span class="ansi-green-fg">[mesolve]   1%|▎                          |  ETA: 0:04:56 ( 1.49  s/it)</span>
+<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:03 (15.95 ms/it)</span>
 </pre>
 </div>
 </div>
@@ -581,9 +581,9 @@ reltol = 1.0e-6</code></pre>
 <div class="ansi-escaped-output">
 <pre><span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 1.01 μs/it)</span>
 
-<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.78 μs/it)</span>
+<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.88 μs/it)</span>
 
-<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.61 μs/it)</span>
+<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.58 μs/it)</span>
 </pre>
 </div>
 </div>
@@ -662,15 +662,15 @@ reltol = 1.0e-6</code></pre>
 <span id="cb14-26"><a href="#cb14-26"></a>fig4</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 7.87 μs/it)</span>
+<pre><span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 9.06 μs/it)</span>
 
-<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.29 μs/it)</span>
+<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.28 μs/it)</span>
 
-<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 8.11 μs/it)</span>
+<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 9.06 μs/it)</span>
 
 <span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.17 μs/it)</span>
 
-<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 2.86 μs/it)</span>
+<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 5.96 μs/it)</span>
 
 <span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.15 μs/it)</span>
 </pre>
@@ -702,19 +702,19 @@ Current admin team:
 Package information:
 ====================================
 Julia              Ver. 1.12.5
-QuantumToolbox     Ver. 0.41.0
+QuantumToolbox     Ver. 0.42.0
 SciMLOperators     Ver. 1.15.1
 LinearSolve        Ver. 3.59.1
-OrdinaryDiffEqCore Ver. 2.3.0
+OrdinaryDiffEqCore Ver. 3.9.0
 
 System information:
 ====================================
 OS       : Linux (x86_64-linux-gnu)
-CPU      : 4 × AMD EPYC 7763 64-Core Processor
-Memory   : 15.616 GB
+CPU      : 4 × Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz
+Memory   : 15.619 GB
 WORD_SIZE: 64
 LIBM     : libopenlibm
-LLVM     : libLLVM-18.1.7 (ORCJIT, znver3)
+LLVM     : libLLVM-18.1.7 (ORCJIT, icelake-server)
 BLAS     : libopenblas64_.so (ilp64)
 Threads  : 4 (on 4 virtual cores)
 

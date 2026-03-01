@@ -100,9 +100,9 @@ div.csl-indent {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-2a367172f4fe7d9182ebf8e09f85cb4e.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-1cb99e5faa8df9499aa296ac4cd75a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-948526ab9cde9517ac9fd7d69a164a89.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-1cb99e5faa8df9499aa296ac4cd75a96.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-64aecfdaf28a2a0e0d48c81b82caff02.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-eea294e0f30f5f4779076c4894dc1d37.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-64aecfdaf28a2a0e0d48c81b82caff02.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -563,8 +563,8 @@ Warning
 <div class="ansi-escaped-output">
 <pre>Preparing HEOM Liouvillian sparsity structure...
 
-<span class="ansi-green-fg">[M_Boson]   1%|▎                          |  ETA: 0:00:14 (65.06 ms/it)</span>
-<span class="ansi-green-fg">[M_Boson] 100%|███████████████████████████| Time: 0:00:00 ( 1.76 ms/it)</span>
+<span class="ansi-green-fg">[M_Boson]   1%|▎                          |  ETA: 0:00:14 (65.41 ms/it)</span>
+<span class="ansi-green-fg">[M_Boson] 100%|███████████████████████████| Time: 0:00:00 ( 1.79 ms/it)</span>
 [DONE]
 Combining terms...[DONE]
 Evaluating lazy operations...[DONE]
@@ -586,8 +586,8 @@ MatrixOperator(840 × 840)</code></pre>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1"></a>noPulseSol <span class="op">=</span> <span class="fu">HEOMsolve</span>(M, ψ<span class="fl">0</span>, tlist; e_ops <span class="op">=</span> [ρ<span class="fl">01</span>]);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[HEOMsolve (ODE)]   0%|                   |  ETA: 0:18:48 ( 1.13  s/it)</span>
-<span class="ansi-green-fg">[HEOMsolve (ODE)] 100%|███████████████████| Time: 0:00:02 ( 2.31 ms/it)</span>
+<pre><span class="ansi-green-fg">[HEOMsolve (ODE)]   0%|                   |  ETA: 0:19:40 ( 1.18  s/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)] 100%|███████████████████| Time: 0:00:02 ( 2.42 ms/it)</span>
 </pre>
 </div>
 </div>
@@ -610,11 +610,11 @@ ScalarOperator(0.0 + 0.0im) * MatrixOperator(2 × 2)</code></pre>
 <span id="cb12-2"><a href="#cb12-2"></a>slowPulseSol <span class="op">=</span> <span class="fu">HEOMsolve</span>(M, ψ<span class="fl">0</span>, tlist; e_ops <span class="op">=</span> [ρ<span class="fl">01</span>], H_t <span class="op">=</span> H_D, params <span class="op">=</span> slowTuple)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[HEOMsolve (ODE)]   0%|                   |  ETA: 0:14:08 ( 0.85  s/it)</span>
-<span class="ansi-green-fg">[HEOMsolve (ODE)]  95%|██████████████████▏|  ETA: 0:00:00 ( 1.91 ms/it)</span>
-<span class="ansi-green-fg">[HEOMsolve (ODE)] 100%|███████████████████| Time: 0:00:01 ( 1.83 ms/it)</span>
+<pre><span class="ansi-green-fg">[HEOMsolve (ODE)]   0%|                   |  ETA: 0:14:45 ( 0.89  s/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)]  93%|█████████████████▋ |  ETA: 0:00:00 ( 2.05 ms/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)] 100%|███████████████████| Time: 0:00:01 ( 1.91 ms/it)</span>
 
-<span class="ansi-green-fg">[HEOMsolve (ODE)]  90%|█████████████████  |  ETA: 0:00:00 ( 0.13 ms/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)]  90%|█████████████████▏ |  ETA: 0:00:00 ( 0.13 ms/it)</span>
 <span class="ansi-green-fg">[HEOMsolve (ODE)] 100%|███████████████████| Time: 0:00:00 ( 0.13 ms/it)</span>
 </pre>
 </div>
@@ -684,17 +684,17 @@ Julia              Ver. 1.12.5
 HierarchicalEOM    Ver. 2.12.4
 QuantumToolbox     Ver. 0.42.0
 SciMLOperators     Ver. 1.15.1
-LinearSolve        Ver. 3.59.1
-OrdinaryDiffEqCore Ver. 3.9.0
+LinearSolve        Ver. 3.61.0
+OrdinaryDiffEqCore Ver. 3.11.0
 
 System information:
 ====================================
 OS       : Linux (x86_64-linux-gnu)
-CPU      : 4 × Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz
-Memory   : 15.619 GB
+CPU      : 4 × AMD EPYC 7763 64-Core Processor
+Memory   : 15.616 GB
 WORD_SIZE: 64
 LIBM     : libopenlibm
-LLVM     : libLLVM-18.1.7 (ORCJIT, icelake-server)
+LLVM     : libLLVM-18.1.7 (ORCJIT, znver3)
 BLAS     : libopenblas64_.so (ilp64)
 Threads  : 4 (on 4 virtual cores)
 

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Li-Xun Cai">
-<meta name="dcterms.date" content="2026-02-23">
+<meta name="dcterms.date" content="2026-03-02">
 
 <title>Resonance fluorescence – Tutorials for Quantum Toolbox in Julia</title>
 <style>
@@ -389,7 +389,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Last Update</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2026-02-23</p>
+      <p class="date">2026-03-02</p>
     </div>
   </div>
   
@@ -522,8 +522,8 @@ Quantum Object:   type=SuperOperator()   dims=[2]   size=(4, 4)
 <span id="cb8-2"><a href="#cb8-2"></a>sol <span class="op">=</span> <span class="fu">mesolve</span>(L, ψ<span class="fl">0</span>, tlist, <span class="cn">nothing</span>, e_ops <span class="op">=</span> e_ops)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[mesolve]   1%|▎                          |  ETA: 0:05:14 ( 1.58  s/it)</span>
-<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:03 (16.91 ms/it)</span>
+<pre><span class="ansi-green-fg">[mesolve]   1%|▎                          |  ETA: 0:05:28 ( 1.65  s/it)</span>
+<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:03 (17.64 ms/it)</span>
 </pre>
 </div>
 </div>
@@ -579,11 +579,11 @@ reltol = 1.0e-6</code></pre>
 <span id="cb11-7"><a href="#cb11-7"></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.97 μs/it)</span>
+<pre><span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 1.26 μs/it)</span>
 
-<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.71 μs/it)</span>
+<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.90 μs/it)</span>
 
-<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.60 μs/it)</span>
+<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.74 μs/it)</span>
 </pre>
 </div>
 </div>
@@ -662,17 +662,17 @@ reltol = 1.0e-6</code></pre>
 <span id="cb14-26"><a href="#cb14-26"></a>fig4</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 7.87 μs/it)</span>
+<pre><span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 (11.21 μs/it)</span>
 
-<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.28 μs/it)</span>
+<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.29 μs/it)</span>
 
-<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 8.11 μs/it)</span>
+<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 8.82 μs/it)</span>
 
 <span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.17 μs/it)</span>
 
-<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 3.10 μs/it)</span>
+<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 5.01 μs/it)</span>
 
-<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.15 μs/it)</span>
+<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.17 μs/it)</span>
 </pre>
 </div>
 </div>
@@ -704,17 +704,17 @@ Package information:
 Julia              Ver. 1.12.5
 QuantumToolbox     Ver. 0.42.0
 SciMLOperators     Ver. 1.15.1
-LinearSolve        Ver. 3.61.0
-OrdinaryDiffEqCore Ver. 3.11.0
+LinearSolve        Ver. 3.62.0
+OrdinaryDiffEqCore Ver. 3.12.0
 
 System information:
 ====================================
 OS       : Linux (x86_64-linux-gnu)
-CPU      : 4 × AMD EPYC 7763 64-Core Processor
+CPU      : 4 × AMD EPYC 9V74 80-Core Processor
 Memory   : 15.616 GB
 WORD_SIZE: 64
 LIBM     : libopenlibm
-LLVM     : libLLVM-18.1.7 (ORCJIT, znver3)
+LLVM     : libLLVM-18.1.7 (ORCJIT, znver4)
 BLAS     : libopenblas64_.so (ilp64)
 Threads  : 4 (on 4 virtual cores)
 

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.27">
+<meta name="generator" content="quarto-1.9.36">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -11,6 +11,9 @@
 
 <title>Low rank master equation – Tutorials for Quantum Toolbox in Julia</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -61,7 +64,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
-  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -90,19 +92,18 @@ div.csl-indent {
 <link href="../../assets/favicon.ico" rel="icon">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-2a367172f4fe7d9182ebf8e09f85cb4e.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-7fb59815a1c41eec7c034637f0c35ff0.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-2a367172f4fe7d9182ebf8e09f85cb4e.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e5c0da90bde570b7566f6217e7c63da7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-cea25e2310d9ee8b66de880732a0fbab.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e5c0da90bde570b7566f6217e7c63da7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-64aecfdaf28a2a0e0d48c81b82caff02.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-eea294e0f30f5f4779076c4894dc1d37.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-64aecfdaf28a2a0e0d48c81b82caff02.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-ad6aad2258c68808c14b51a4c3f55587.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-9f2de99c1aaba379fb694a4dadf11ca0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-ad6aad2258c68808c14b51a4c3f55587.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -132,7 +133,7 @@ div.csl-indent {
 }</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -559,8 +560,8 @@ Quantum Object:   type=Ket()   dims=[2, 2, 2, 2, 2, 2]   size=(64,)
 <span id="cb10-2"><a href="#cb10-2"></a>Strue <span class="op">=</span> <span class="fu">entropy_vn</span>(sol_me.states[<span class="kw">end</span>], base<span class="op">=</span><span class="fl">2</span>) <span class="op">/</span> latt.N;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[mesolve]  79%|█████████████████████▍     |  ETA: 0:00:00 ( 1.27 ms/it)</span>
-<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 3.45 ms/it)</span>
+<pre><span class="ansi-green-fg">[mesolve]  61%|████████████████▌          |  ETA: 0:00:00 ( 1.65 ms/it)</span>
+<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 3.55 ms/it)</span>
 </pre>
 </div>
 </div>
@@ -624,7 +625,106 @@ S = -\mathrm{Tr}(\rho \log_2(\rho)),
 <div id="22" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1"></a>sol_lr <span class="op">=</span> <span class="fu">lr_mesolve</span>(H, z, B, tl, c_ops; e_ops <span class="op">=</span> e_ops, f_ops <span class="op">=</span> (f_purity, f_entropy, f_trace), opt <span class="op">=</span> opt);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Progress: 2%Progress: 3%Progress: 4%Progress: 5%Progress: 6%Progress: 7%Progress: 8%Progress: 9%Progress: 10%Progress: 11%Progress: 12%Progress: 13%Progress: 14%Progress: 15%Progress: 16%Progress: 17%Progress: 18%Progress: 19%Progress: 20%Progress: 21%Progress: 22%Progress: 23%Progress: 24%Progress: 25%Progress: 26%Progress: 27%Progress: 28%Progress: 29%Progress: 30%Progress: 31%Progress: 32%Progress: 33%Progress: 34%Progress: 35%Progress: 36%Progress: 37%Progress: 38%Progress: 39%Progress: 40%Progress: 41%Progress: 42%Progress: 43%Progress: 44%Progress: 45%Progress: 46%Progress: 47%Progress: 48%Progress: 49%Progress: 50%Progress: 51%Progress: 52%Progress: 53%Progress: 54%Progress: 55%Progress: 56%Progress: 57%Progress: 58%Progress: 59%Progress: 60%Progress: 61%Progress: 62%Progress: 63%Progress: 64%Progress: 65%Progress: 66%Progress: 67%Progress: 68%Progress: 69%Progress: 70%Progress: 71%Progress: 72%Progress: 73%Progress: 74%Progress: 75%Progress: 76%Progress: 77%Progress: 78%Progress: 79%Progress: 80%Progress: 81%Progress: 82%Progress: 83%Progress: 84%Progress: 85%Progress: 86%Progress: 87%Progress: 88%Progress: 89%Progress: 90%Progress: 91%Progress: 92%Progress: 93%Progress: 94%Progress: 95%Progress: 96%Progress: 97%Progress: 98%Progress: 99%Progress: 100%</code></pre>
+<pre><code>
+Progress: 2%
+Progress: 3%
+Progress: 4%
+Progress: 5%
+Progress: 6%
+Progress: 7%
+Progress: 8%
+Progress: 9%
+Progress: 10%
+Progress: 11%
+Progress: 12%
+Progress: 13%
+Progress: 14%
+Progress: 15%
+Progress: 16%
+Progress: 17%
+Progress: 18%
+Progress: 19%
+Progress: 20%
+Progress: 21%
+Progress: 22%
+Progress: 23%
+Progress: 24%
+Progress: 25%
+Progress: 26%
+Progress: 27%
+Progress: 28%
+Progress: 29%
+Progress: 30%
+Progress: 31%
+Progress: 32%
+Progress: 33%
+Progress: 34%
+Progress: 35%
+Progress: 36%
+Progress: 37%
+Progress: 38%
+Progress: 39%
+Progress: 40%
+Progress: 41%
+Progress: 42%
+Progress: 43%
+Progress: 44%
+Progress: 45%
+Progress: 46%
+Progress: 47%
+Progress: 48%
+Progress: 49%
+Progress: 50%
+Progress: 51%
+Progress: 52%
+Progress: 53%
+Progress: 54%
+Progress: 55%
+Progress: 56%
+Progress: 57%
+Progress: 58%
+Progress: 59%
+Progress: 60%
+Progress: 61%
+Progress: 62%
+Progress: 63%
+Progress: 64%
+Progress: 65%
+Progress: 66%
+Progress: 67%
+Progress: 68%
+Progress: 69%
+Progress: 70%
+Progress: 71%
+Progress: 72%
+Progress: 73%
+Progress: 74%
+Progress: 75%
+Progress: 76%
+Progress: 77%
+Progress: 78%
+Progress: 79%
+Progress: 80%
+Progress: 81%
+Progress: 82%
+Progress: 83%
+Progress: 84%
+Progress: 85%
+Progress: 86%
+Progress: 87%
+Progress: 88%
+Progress: 89%
+Progress: 90%
+Progress: 91%
+Progress: 92%
+Progress: 93%
+Progress: 94%
+Progress: 95%
+Progress: 96%
+Progress: 97%
+Progress: 98%
+Progress: 99%
+Progress: 100%</code></pre>
 </div>
 </div>
 <p>We can now compare the results of the low-rank evolution with the full evolution.</p>
@@ -681,14 +781,14 @@ Package information:
 Julia              Ver. 1.12.5
 QuantumToolbox     Ver. 0.42.0
 SciMLOperators     Ver. 1.15.1
-LinearSolve        Ver. 3.65.0
-OrdinaryDiffEqCore Ver. 3.18.0
+LinearSolve        Ver. 3.66.0
+OrdinaryDiffEqCore Ver. 3.22.0
 
 System information:
 ====================================
 OS       : Linux (x86_64-linux-gnu)
 CPU      : 4 × AMD EPYC 7763 64-Core Processor
-Memory   : 15.62 GB
+Memory   : 15.616 GB
 WORD_SIZE: 64
 LIBM     : libopenlibm
 LLVM     : libLLVM-18.1.7 (ORCJIT, znver3)
@@ -707,7 +807,7 @@ For your convenience, a bibtex reference can be easily generated using `QuantumT
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-gravina2024adaptive" class="csl-entry" role="listitem">
 Gravina, Luca, and Vincenzo Savona. 2024. <span>“<span class="nocase">Adaptive variational low-rank dynamics for open quantum systems</span>.”</span> <em>Phys. Rev. Res.</em> 6 (April): 023072. <a href="https://doi.org/10.1103/PhysRevResearch.6.023072">https://doi.org/10.1103/PhysRevResearch.6.023072</a>.
 </div>

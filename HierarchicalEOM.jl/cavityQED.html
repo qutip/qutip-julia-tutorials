@@ -82,9 +82,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-e5c0da90bde570b7566f6217e7c63da7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ad6aad2258c68808c14b51a4c3f55587.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-9f2de99c1aaba379fb694a4dadf11ca0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-ad6aad2258c68808c14b51a4c3f55587.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-6849cb8dfaf9bcbc449dfe90edcf7fb7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-f9f633a5bdbf9b04c3a0371bb2db7bae.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-6849cb8dfaf9bcbc449dfe90edcf7fb7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -528,8 +528,8 @@ H_{\textrm{sb}}   &amp;=(a+a^\dagger)\sum_{k}g_{k}(b_k + b_k^{\dagger}).
 <pre>Checking the importance value for each ADOs...[DONE]
 Preparing HEOM Liouvillian sparsity structure...
 
-<span class="ansi-green-fg">[M_Boson]   2%|▌                          |  ETA: 0:00:06 (58.84 ms/it)</span>
-<span class="ansi-green-fg">[M_Boson] 100%|███████████████████████████| Time: 0:00:00 ( 3.94 ms/it)</span>
+<span class="ansi-green-fg">[M_Boson]   2%|▌                          |  ETA: 0:00:06 (59.11 ms/it)</span>
+<span class="ansi-green-fg">[M_Boson] 100%|███████████████████████████| Time: 0:00:00 ( 3.70 ms/it)</span>
 [DONE]
 Combining terms...[DONE]
 Evaluating lazy operations...[DONE]
@@ -552,21 +552,21 @@ MatrixOperator(3492 × 3492)</code></pre>
 <span id="cb8-2"><a href="#cb8-2"></a>sol_H <span class="op">=</span> <span class="fu">HEOMsolve</span>(M_Heom, ψ<span class="fl">0</span>, t_list; e_ops <span class="op">=</span> [σz, a<span class="op">'</span> <span class="op">*</span> a])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[HEOMsolve (ODE)]   0%|▏                  |  ETA: 0:10:00 ( 1.20  s/it)</span>
-<span class="ansi-green-fg">[HEOMsolve (ODE)]   8%|█▌                 |  ETA: 0:00:31 (65.95 ms/it)</span>
-<span class="ansi-green-fg">[HEOMsolve (ODE)]  15%|██▊                |  ETA: 0:00:15 (35.24 ms/it)</span>
-<span class="ansi-green-fg">[HEOMsolve (ODE)]  22%|████▏              |  ETA: 0:00:10 (24.62 ms/it)</span>
-<span class="ansi-green-fg">[HEOMsolve (ODE)]  29%|█████▌             |  ETA: 0:00:07 (19.26 ms/it)</span>
-<span class="ansi-green-fg">[HEOMsolve (ODE)]  36%|██████▉            |  ETA: 0:00:05 (16.00 ms/it)</span>
-<span class="ansi-green-fg">[HEOMsolve (ODE)]  44%|████████▎          |  ETA: 0:00:04 (13.82 ms/it)</span>
-<span class="ansi-green-fg">[HEOMsolve (ODE)]  51%|█████████▋         |  ETA: 0:00:03 (12.26 ms/it)</span>
-<span class="ansi-green-fg">[HEOMsolve (ODE)]  58%|███████████        |  ETA: 0:00:02 (11.09 ms/it)</span>
-<span class="ansi-green-fg">[HEOMsolve (ODE)]  65%|████████████▍      |  ETA: 0:00:02 (10.17 ms/it)</span>
-<span class="ansi-green-fg">[HEOMsolve (ODE)]  72%|█████████████▊     |  ETA: 0:00:01 ( 9.44 ms/it)</span>
-<span class="ansi-green-fg">[HEOMsolve (ODE)]  79%|███████████████▏   |  ETA: 0:00:01 ( 8.84 ms/it)</span>
-<span class="ansi-green-fg">[HEOMsolve (ODE)]  87%|████████████████▌  |  ETA: 0:00:01 ( 8.34 ms/it)</span>
-<span class="ansi-green-fg">[HEOMsolve (ODE)]  94%|█████████████████▉ |  ETA: 0:00:00 ( 7.92 ms/it)</span>
-<span class="ansi-green-fg">[HEOMsolve (ODE)] 100%|███████████████████| Time: 0:00:03 ( 7.60 ms/it)</span>
+<pre><span class="ansi-green-fg">[HEOMsolve (ODE)]   0%|▏                  |  ETA: 0:11:03 ( 1.33  s/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)]   8%|█▌                 |  ETA: 0:00:33 (70.71 ms/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)]  15%|██▉                |  ETA: 0:00:16 (37.64 ms/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)]  23%|████▎              |  ETA: 0:00:10 (26.23 ms/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)]  30%|█████▋             |  ETA: 0:00:07 (20.56 ms/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)]  37%|███████            |  ETA: 0:00:05 (17.02 ms/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)]  44%|████████▍          |  ETA: 0:00:04 (14.71 ms/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)]  52%|█████████▉         |  ETA: 0:00:03 (13.01 ms/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)]  59%|███████████▎       |  ETA: 0:00:02 (11.73 ms/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)]  66%|████████████▋      |  ETA: 0:00:02 (10.74 ms/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)]  74%|██████████████     |  ETA: 0:00:01 ( 9.94 ms/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)]  81%|███████████████▍   |  ETA: 0:00:01 ( 9.29 ms/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)]  89%|████████████████▉  |  ETA: 0:00:00 ( 8.74 ms/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)]  96%|██████████████████▎|  ETA: 0:00:00 ( 8.29 ms/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)] 100%|███████████████████| Time: 0:00:04 ( 8.07 ms/it)</span>
 </pre>
 </div>
 </div>
@@ -650,52 +650,52 @@ reltol = 1.0e-6</code></pre>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
 <pre><span class="ansi-green-fg">[PowerSpectrum]   1%|▎                    |  ETA: 0:00:23 ( 0.11  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]   1%|▍                    |  ETA: 0:00:23 ( 0.12  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]   2%|▍                    |  ETA: 0:00:24 ( 0.12  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]   2%|▌                    |  ETA: 0:00:24 ( 0.12  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]   1%|▍                    |  ETA: 0:00:23 ( 0.11  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]   2%|▍                    |  ETA: 0:00:23 ( 0.12  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]   2%|▌                    |  ETA: 0:00:23 ( 0.12  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]   3%|▋                    |  ETA: 0:00:23 ( 0.12  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]   3%|▊                    |  ETA: 0:00:23 ( 0.12  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]   4%|▉                    |  ETA: 0:00:23 ( 0.12  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]   4%|█                    |  ETA: 0:00:23 ( 0.12  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]   5%|█                    |  ETA: 0:00:23 ( 0.12  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]   5%|█▏                   |  ETA: 0:00:23 ( 0.12  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]   4%|█                    |  ETA: 0:00:22 ( 0.12  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]   5%|█                    |  ETA: 0:00:22 ( 0.12  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]   5%|█▏                   |  ETA: 0:00:22 ( 0.12  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]   6%|█▎                   |  ETA: 0:00:22 ( 0.12  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]   6%|█▍                   |  ETA: 0:00:22 ( 0.12  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]   7%|█▌                   |  ETA: 0:00:22 ( 0.12  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]   7%|█▋                   |  ETA: 0:00:22 ( 0.12  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]   8%|█▋                   |  ETA: 0:00:22 ( 0.12  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]   8%|█▊                   |  ETA: 0:00:21 ( 0.12  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]   9%|█▉                   |  ETA: 0:00:21 ( 0.12  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]   9%|██                   |  ETA: 0:00:21 ( 0.12  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  10%|██▏                  |  ETA: 0:00:21 ( 0.12  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  10%|██▎                  |  ETA: 0:00:21 ( 0.12  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]   7%|█▋                   |  ETA: 0:00:25 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]   8%|█▋                   |  ETA: 0:00:24 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]   8%|█▊                   |  ETA: 0:00:24 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]   9%|█▉                   |  ETA: 0:00:24 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]   9%|██                   |  ETA: 0:00:24 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  10%|██▏                  |  ETA: 0:00:23 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  10%|██▎                  |  ETA: 0:00:23 ( 0.13  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  11%|██▎                  |  ETA: 0:00:23 ( 0.13  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  11%|██▍                  |  ETA: 0:00:23 ( 0.13  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  12%|██▌                  |  ETA: 0:00:22 ( 0.13  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  12%|██▋                  |  ETA: 0:00:22 ( 0.13  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  13%|██▊                  |  ETA: 0:00:22 ( 0.13  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  13%|██▉                  |  ETA: 0:00:22 ( 0.13  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  14%|██▉                  |  ETA: 0:00:22 ( 0.13  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  14%|███                  |  ETA: 0:00:22 ( 0.13  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  15%|███▏                 |  ETA: 0:00:21 ( 0.13  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  15%|███▎                 |  ETA: 0:00:21 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  13%|██▉                  |  ETA: 0:00:22 ( 0.12  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  14%|██▉                  |  ETA: 0:00:22 ( 0.12  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  14%|███                  |  ETA: 0:00:21 ( 0.12  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  15%|███▏                 |  ETA: 0:00:21 ( 0.12  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  15%|███▎                 |  ETA: 0:00:21 ( 0.12  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  16%|███▍                 |  ETA: 0:00:21 ( 0.12  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  16%|███▌                 |  ETA: 0:00:21 ( 0.12  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  17%|███▌                 |  ETA: 0:00:21 ( 0.12  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  17%|███▋                 |  ETA: 0:00:21 ( 0.12  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  17%|███▋                 |  ETA: 0:00:20 ( 0.12  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  18%|███▊                 |  ETA: 0:00:20 ( 0.12  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  18%|███▉                 |  ETA: 0:00:20 ( 0.12  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  19%|████                 |  ETA: 0:00:20 ( 0.12  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  19%|████▏                |  ETA: 0:00:20 ( 0.12  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  20%|████▏                |  ETA: 0:00:20 ( 0.12  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  20%|████▎                |  ETA: 0:00:20 ( 0.12  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  21%|████▍                |  ETA: 0:00:20 ( 0.12  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  21%|████▌                |  ETA: 0:00:20 ( 0.12  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  22%|████▋                |  ETA: 0:00:19 ( 0.12  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  22%|████▊                |  ETA: 0:00:19 ( 0.12  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  23%|████▊                |  ETA: 0:00:19 ( 0.12  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  23%|████▉                |  ETA: 0:00:19 ( 0.12  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  24%|█████                |  ETA: 0:00:19 ( 0.12  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  21%|████▍                |  ETA: 0:00:21 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  21%|████▌                |  ETA: 0:00:20 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  22%|████▋                |  ETA: 0:00:20 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  22%|████▊                |  ETA: 0:00:20 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  23%|████▊                |  ETA: 0:00:20 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  23%|████▉                |  ETA: 0:00:20 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  24%|█████                |  ETA: 0:00:20 ( 0.13  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  24%|█████▏               |  ETA: 0:00:20 ( 0.13  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  25%|█████▎               |  ETA: 0:00:20 ( 0.13  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  25%|█████▍               |  ETA: 0:00:19 ( 0.13  s/it)</span>
@@ -716,16 +716,16 @@ reltol = 1.0e-6</code></pre>
 <span class="ansi-green-fg">[PowerSpectrum]  33%|██████▉              |  ETA: 0:00:18 ( 0.13  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  33%|███████              |  ETA: 0:00:18 ( 0.13  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  34%|███████▏             |  ETA: 0:00:18 ( 0.13  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  34%|███████▎             |  ETA: 0:00:18 ( 0.13  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  34%|███████▎             |  ETA: 0:00:18 ( 0.14  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  35%|███████▍             |  ETA: 0:00:18 ( 0.14  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  35%|███████▍             |  ETA: 0:00:18 ( 0.14  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  36%|███████▌             |  ETA: 0:00:18 ( 0.14  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  36%|███████▋             |  ETA: 0:00:18 ( 0.14  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  37%|███████▊             |  ETA: 0:00:17 ( 0.14  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  37%|███████▊             |  ETA: 0:00:18 ( 0.14  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  37%|███████▉             |  ETA: 0:00:18 ( 0.14  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  38%|████████             |  ETA: 0:00:18 ( 0.14  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  38%|████████             |  ETA: 0:00:18 ( 0.14  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  39%|████████▏            |  ETA: 0:00:18 ( 0.14  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  39%|████████▏            |  ETA: 0:00:18 ( 0.15  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  39%|████████▎            |  ETA: 0:00:18 ( 0.15  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  40%|████████▍            |  ETA: 0:00:18 ( 0.15  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  40%|████████▌            |  ETA: 0:00:18 ( 0.15  s/it)</span>
@@ -738,8 +738,8 @@ reltol = 1.0e-6</code></pre>
 <span class="ansi-green-fg">[PowerSpectrum]  44%|█████████▎           |  ETA: 0:00:17 ( 0.15  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  44%|█████████▎           |  ETA: 0:00:17 ( 0.15  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  45%|█████████▍           |  ETA: 0:00:17 ( 0.16  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  45%|█████████▌           |  ETA: 0:00:17 ( 0.16  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  46%|█████████▋           |  ETA: 0:00:17 ( 0.16  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  45%|█████████▌           |  ETA: 0:00:18 ( 0.16  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  46%|█████████▋           |  ETA: 0:00:18 ( 0.16  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  46%|█████████▊           |  ETA: 0:00:17 ( 0.16  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  47%|█████████▉           |  ETA: 0:00:17 ( 0.16  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  47%|█████████▉           |  ETA: 0:00:17 ( 0.16  s/it)</span>
@@ -758,10 +758,10 @@ reltol = 1.0e-6</code></pre>
 <span class="ansi-green-fg">[PowerSpectrum]  54%|███████████▎         |  ETA: 0:00:16 ( 0.17  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  54%|███████████▍         |  ETA: 0:00:16 ( 0.17  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  55%|███████████▌         |  ETA: 0:00:16 ( 0.17  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  55%|███████████▋         |  ETA: 0:00:16 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  55%|███████████▋         |  ETA: 0:00:16 ( 0.18  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  56%|███████████▊         |  ETA: 0:00:16 ( 0.18  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  56%|███████████▊         |  ETA: 0:00:15 ( 0.18  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  57%|███████████▉         |  ETA: 0:00:15 ( 0.18  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  56%|███████████▊         |  ETA: 0:00:16 ( 0.18  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  57%|███████████▉         |  ETA: 0:00:16 ( 0.18  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  57%|████████████         |  ETA: 0:00:15 ( 0.18  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  58%|████████████▏        |  ETA: 0:00:15 ( 0.18  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  58%|████████████▎        |  ETA: 0:00:15 ( 0.18  s/it)</span>
@@ -784,43 +784,42 @@ reltol = 1.0e-6</code></pre>
 <span class="ansi-green-fg">[PowerSpectrum]  67%|██████████████       |  ETA: 0:00:12 ( 0.18  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  67%|██████████████▏      |  ETA: 0:00:12 ( 0.18  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  68%|██████████████▎      |  ETA: 0:00:12 ( 0.18  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  68%|██████████████▍      |  ETA: 0:00:11 ( 0.18  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  68%|██████████████▍      |  ETA: 0:00:12 ( 0.18  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  69%|██████████████▍      |  ETA: 0:00:11 ( 0.18  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  69%|██████████████▌      |  ETA: 0:00:11 ( 0.18  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  70%|██████████████▋      |  ETA: 0:00:11 ( 0.18  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  70%|██████████████▊      |  ETA: 0:00:11 ( 0.18  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  71%|██████████████▉      |  ETA: 0:00:10 ( 0.18  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  71%|██████████████▉      |  ETA: 0:00:11 ( 0.18  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  71%|███████████████      |  ETA: 0:00:10 ( 0.18  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  72%|███████████████      |  ETA: 0:00:10 ( 0.18  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  72%|███████████████▏     |  ETA: 0:00:10 ( 0.18  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  73%|███████████████▎     |  ETA: 0:00:10 ( 0.17  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  73%|███████████████▍     |  ETA: 0:00:09 ( 0.17  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  74%|███████████████▌     |  ETA: 0:00:09 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  73%|███████████████▎     |  ETA: 0:00:10 ( 0.18  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  73%|███████████████▍     |  ETA: 0:00:10 ( 0.18  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  74%|███████████████▌     |  ETA: 0:00:09 ( 0.18  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  74%|███████████████▋     |  ETA: 0:00:09 ( 0.18  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  75%|███████████████▋     |  ETA: 0:00:09 ( 0.17  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  75%|███████████████▊     |  ETA: 0:00:09 ( 0.17  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  76%|███████████████▉     |  ETA: 0:00:09 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  76%|████████████████     |  ETA: 0:00:08 ( 0.17  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  77%|████████████████▏    |  ETA: 0:00:08 ( 0.17  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  77%|████████████████▎    |  ETA: 0:00:08 ( 0.17  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  78%|████████████████▎    |  ETA: 0:00:08 ( 0.17  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  78%|████████████████▍    |  ETA: 0:00:08 ( 0.17  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  79%|████████████████▌    |  ETA: 0:00:07 ( 0.17  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  79%|████████████████▋    |  ETA: 0:00:07 ( 0.17  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  80%|████████████████▉    |  ETA: 0:00:07 ( 0.17  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  81%|█████████████████    |  ETA: 0:00:06 ( 0.17  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  82%|█████████████████▎   |  ETA: 0:00:06 ( 0.17  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  83%|█████████████████▌   |  ETA: 0:00:06 ( 0.17  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  84%|█████████████████▋   |  ETA: 0:00:05 ( 0.17  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  85%|█████████████████▉   |  ETA: 0:00:05 ( 0.17  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  86%|██████████████████▏  |  ETA: 0:00:05 ( 0.16  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  87%|██████████████████▎  |  ETA: 0:00:04 ( 0.16  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  88%|██████████████████▌  |  ETA: 0:00:04 ( 0.16  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  89%|██████████████████▊  |  ETA: 0:00:04 ( 0.16  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  90%|██████████████████▉  |  ETA: 0:00:03 ( 0.16  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  91%|███████████████████▏ |  ETA: 0:00:03 ( 0.16  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  92%|███████████████████▍ |  ETA: 0:00:03 ( 0.16  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  93%|███████████████████▌ |  ETA: 0:00:02 ( 0.16  s/it)</span>
-<span class="ansi-green-fg">[PowerSpectrum]  94%|███████████████████▊ |  ETA: 0:00:02 ( 0.16  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  80%|████████████████▊    |  ETA: 0:00:07 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  81%|████████████████▉    |  ETA: 0:00:07 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  82%|█████████████████▏   |  ETA: 0:00:06 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  83%|█████████████████▍   |  ETA: 0:00:06 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  84%|█████████████████▌   |  ETA: 0:00:05 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  85%|█████████████████▊   |  ETA: 0:00:05 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  85%|█████████████████▉   |  ETA: 0:00:05 ( 0.16  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  86%|██████████████████   |  ETA: 0:00:05 ( 0.17  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  87%|██████████████████▏  |  ETA: 0:00:04 ( 0.16  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  88%|██████████████████▍  |  ETA: 0:00:04 ( 0.16  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  89%|██████████████████▋  |  ETA: 0:00:04 ( 0.16  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  90%|██████████████████▊  |  ETA: 0:00:03 ( 0.16  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  91%|███████████████████  |  ETA: 0:00:03 ( 0.16  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  92%|███████████████████▎ |  ETA: 0:00:03 ( 0.16  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  93%|███████████████████▍ |  ETA: 0:00:02 ( 0.16  s/it)</span>
+<span class="ansi-green-fg">[PowerSpectrum]  94%|███████████████████▋ |  ETA: 0:00:02 ( 0.16  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  95%|███████████████████▉ |  ETA: 0:00:02 ( 0.16  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  96%|████████████████████ |  ETA: 0:00:01 ( 0.16  s/it)</span>
 <span class="ansi-green-fg">[PowerSpectrum]  97%|████████████████████▎|  ETA: 0:00:01 ( 0.16  s/it)</span>
@@ -878,7 +877,7 @@ reltol = 1.0e-6</code></pre>
 <div class="ansi-escaped-output">
 <pre>Constructing Liouville-von Neumann superoperator...[DONE]
 
-<span class="ansi-green-fg">[HEOMsolve (ODE)] 100%|███████████████████| Time: 0:00:00 ( 0.10 ms/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)] 100%|███████████████████| Time: 0:00:00 ( 0.11 ms/it)</span>
 Solving steady state for ADOs by linear-solve method...[DONE]
 </pre>
 </div>
@@ -920,7 +919,7 @@ Solving steady state for ADOs by linear-solve method...[DONE]
 <span id="cb20-9"><a href="#cb20-9"></a>fig</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[PowerSpectrum] 100%|█████████████████████| Time: 0:00:00 (10.65 μs/it)</span>
+<pre><span class="ansi-green-fg">[PowerSpectrum] 100%|█████████████████████| Time: 0:00:00 (10.77 μs/it)</span>
 </pre>
 </div>
 </div>
@@ -964,14 +963,14 @@ Julia              Ver. 1.12.5
 HierarchicalEOM    Ver. 2.12.4
 QuantumToolbox     Ver. 0.42.0
 SciMLOperators     Ver. 1.15.1
-LinearSolve        Ver. 3.66.0
-OrdinaryDiffEqCore Ver. 3.22.0
+LinearSolve        Ver. 3.68.0
+OrdinaryDiffEqCore Ver. 3.23.0
 
 System information:
 ====================================
 OS       : Linux (x86_64-linux-gnu)
 CPU      : 4 × AMD EPYC 7763 64-Core Processor
-Memory   : 15.616 GB
+Memory   : 15.619 GB
 WORD_SIZE: 64
 LIBM     : libopenlibm
 LLVM     : libLLVM-18.1.7 (ORCJIT, znver3)

@@ -497,8 +497,8 @@ H_{\textrm{sf}} &amp;=\sum_{\alpha=\textrm{L},\textrm{R}}\sum_{k}g_{\alpha,k}c_{
 <div class="ansi-escaped-output">
 <pre>Preparing HEOM Liouvillian sparsity structure...
 
-<span class="ansi-green-fg">[M_Fermion]   0%|                         |  ETA: 0:01:24 (53.19 ms/it)</span>
-<span class="ansi-green-fg">[M_Fermion] 100%|█████████████████████████| Time: 0:00:00 ( 0.25 ms/it)</span>
+<span class="ansi-green-fg">[M_Fermion]   0%|                         |  ETA: 0:01:31 (57.56 ms/it)</span>
+<span class="ansi-green-fg">[M_Fermion] 100%|█████████████████████████| Time: 0:00:00 ( 0.26 ms/it)</span>
 [DONE]
 Combining terms...[DONE]
 Evaluating lazy operations...[DONE]
@@ -521,8 +521,8 @@ MatrixOperator(6344 × 6344)</code></pre>
 <span id="cb7-2"><a href="#cb7-2"></a>ados_evolution <span class="op">=</span> <span class="fu">HEOMsolve</span>(M, ψ<span class="fl">0</span>, tlist).ados</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[HEOMsolve (ODE)]  46%|████████▊          |  ETA: 0:00:00 ( 1.09 ms/it)</span>
-<span class="ansi-green-fg">[HEOMsolve (ODE)] 100%|███████████████████| Time: 0:00:00 ( 0.84 ms/it)</span>
+<pre><span class="ansi-green-fg">[HEOMsolve (ODE)]  59%|███████████▎       |  ETA: 0:00:00 ( 0.84 ms/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)] 100%|███████████████████| Time: 0:00:00 ( 0.79 ms/it)</span>
 </pre>
 </div>
 </div>
@@ -718,15 +718,15 @@ Package information:
 Julia              Ver. 1.12.5
 HierarchicalEOM    Ver. 2.12.4
 QuantumToolbox     Ver. 0.42.0
-SciMLOperators     Ver. 1.15.1
-LinearSolve        Ver. 3.68.0
-OrdinaryDiffEqCore Ver. 3.23.0
+SciMLOperators     Ver. 1.16.0
+LinearSolve        Ver. 3.69.0
+OrdinaryDiffEqCore Ver. 3.27.0
 
 System information:
 ====================================
 OS       : Linux (x86_64-linux-gnu)
 CPU      : 4 × AMD EPYC 7763 64-Core Processor
-Memory   : 15.619 GB
+Memory   : 15.615 GB
 WORD_SIZE: 64
 LIBM     : libopenlibm
 LLVM     : libLLVM-18.1.7 (ORCJIT, znver3)

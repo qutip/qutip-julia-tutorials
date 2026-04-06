@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Li-Xun Cai">
-<meta name="dcterms.date" content="2026-03-10">
+<meta name="dcterms.date" content="2026-04-06">
 
 <title>Adiabatic sweep (with QuantumObjectEvolution) – Tutorials for Quantum Toolbox in Julia</title>
 <style>
@@ -389,7 +389,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Last Update</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2026-03-10</p>
+      <p class="date">2026-04-06</p>
     </div>
   </div>
   
@@ -435,13 +435,13 @@ window.Quarto = {
 <span id="cb2-4"><a href="#cb2-4"></a>gs <span class="op">=</span> <span class="fu">rand</span>(N<span class="op">-</span><span class="fl">1</span>) <span class="co"># use rand function for the random interaction strengths</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>7-element Vector{Float64}:
- 0.6676251917665332
- 0.7092962429358103
- 0.06609271217954693
- 0.07420058203278368
- 0.6556243399825165
- 0.08512198939454563
- 0.16576074574132804</code></pre>
+ 0.8545389476708497
+ 0.6202336132733318
+ 0.17881954437361225
+ 0.5082521734019123
+ 0.7994844619204596
+ 0.14190603419248804
+ 0.563726125820864</code></pre>
 </div>
 </div>
 <div id="6" class="cell" data-execution_count="1">
@@ -536,22 +536,22 @@ Quantum Object Evo.:   type=Operator()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(2
 <pre><code>
 Quantum Object:   type=Ket()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256,)
 256-element SparseArrays.SparseVector{ComplexF64, Int64} with 128 stored entries:
-  [1  ]  =  0.000270923+0.0im
-  [4  ]  =  -0.00327836+0.0im
-  [6  ]  =  0.00028332+0.0im
-  [7  ]  =  -5.87986e-5+0.0im
-  [10 ]  =  -0.000510826+0.0im
-  [11 ]  =  9.03385e-5+0.0im
-  [13 ]  =  -0.000901714+0.0im
+  [1  ]  =  0.00362467+0.0im
+  [4  ]  =  -0.0136372+0.0im
+  [6  ]  =  0.00261134+0.0im
+  [7  ]  =  -0.001664+0.0im
+  [10 ]  =  -0.00330081-0.0im
+  [11 ]  =  0.00184156+0.0im
+  [13 ]  =  -0.00926079+0.0im
          ⋮
-  [241]  =  0.0210047+0.0im
-  [244]  =  -0.254181+0.0im
-  [246]  =  0.0218958+0.0im
-  [247]  =  -0.00453131+0.0im
-  [250]  =  -0.0396627+0.0im
-  [251]  =  0.00700692+0.0im
-  [253]  =  -0.0700702+0.0im
-  [256]  =  0.849179+0.0im</code></pre>
+  [241]  =  0.0727265+0.0im
+  [244]  =  -0.274193+0.0im
+  [246]  =  0.0474992+0.0im
+  [247]  =  -0.0290897+0.0im
+  [250]  =  -0.0675394+0.0im
+  [251]  =  0.0367239+0.0im
+  [253]  =  -0.197603+0.0im
+  [256]  =  0.748033+0.0im</code></pre>
 </div>
 </div>
 <p>We can see that the truthful ground state we are preparing is indeed very complex.</p>
@@ -597,14 +597,13 @@ Quantum Object:   type=Ket()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256,)
 <span id="cb14-7"><a href="#cb14-7"></a><span class="cf">end</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[sesolve]  60%|████████████████▎          |  ETA: 0:00:00 ( 1.64 ms/it)</span>
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 ( 1.93 ms/it)</span>
+<pre><span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.94 ms/it)</span>
 
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (86.77 μs/it)</span>
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (86.38 μs/it)</span>
 
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (85.79 μs/it)</span>
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (86.26 μs/it)</span>
 
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (85.49 μs/it)</span>
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (85.41 μs/it)</span>
 
 <span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.14 ms/it)</span>
 

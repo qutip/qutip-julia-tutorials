@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Orjan Ameye">
-<meta name="dcterms.date" content="2026-04-06">
+<meta name="dcterms.date" content="2026-04-15">
 
 <title>Quantum Fisher Information – Tutorials for Quantum Toolbox in Julia</title>
 <style>
@@ -391,7 +391,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Last Update</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2026-04-06</p>
+      <p class="date">2026-04-15</p>
     </div>
   </div>
   
@@ -496,7 +496,7 @@ window.Quarto = {
 <span id="cb6-17"><a href="#cb6-17"></a>qfi_final <span class="op">=</span> <span class="fu">compute_fisher_information</span>(ρ, dρ)</span>
 <span id="cb6-18"><a href="#cb6-18"></a><span class="fu">println</span>(<span class="st">"QFI at final time: "</span>, qfi_final)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>QFI at final time: 19795.718543242696</code></pre>
+<pre><code>QFI at final time: 19795.71854319522</code></pre>
 </div>
 </div>
 </section>
@@ -518,7 +518,7 @@ window.Quarto = {
 <span id="cb8-12"><a href="#cb8-12"></a></span>
 <span id="cb8-13"><a href="#cb8-13"></a><span class="fu">println</span>(<span class="st">"QFI computed for "</span>, <span class="fu">length</span>(ts), <span class="st">" time points"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> 10.607871 seconds (17.11 M allocations: 989.789 MiB, 1.08% gc time, 52.77% compilation time)
+<pre><code>  8.772382 seconds (17.15 M allocations: 991.486 MiB, 1.43% gc time, 54.70% compilation time)
 QFI computed for 100 time points</code></pre>
 </div>
 </div>
@@ -561,8 +561,8 @@ Package information:
 Julia              Ver. 1.12.6
 QuantumToolbox     Ver. 0.42.0
 SciMLOperators     Ver. 1.16.0
-LinearSolve        Ver. 3.72.0
-OrdinaryDiffEqCore Ver. 3.30.0
+LinearSolve        Ver. 3.75.0
+OrdinaryDiffEqCore Ver. 3.31.0
 
 System information:
 ====================================

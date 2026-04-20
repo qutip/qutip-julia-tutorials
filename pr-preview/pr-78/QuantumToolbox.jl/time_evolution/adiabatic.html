@@ -435,13 +435,13 @@ window.Quarto = {
 <span id="cb2-4"><a href="#cb2-4"></a>gs <span class="op">=</span> <span class="fu">rand</span>(N<span class="op">-</span><span class="fl">1</span>) <span class="co"># use rand function for the random interaction strengths</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>7-element Vector{Float64}:
- 0.5428903795450296
- 0.4941208300385822
- 0.5673874564011265
- 0.5204250044449663
- 0.34731706627445214
- 0.853648543080562
- 0.5323848177618324</code></pre>
+ 0.5481773280906725
+ 0.4480442098654609
+ 0.48768554623733706
+ 0.16699197780933195
+ 0.15403170291228796
+ 0.48825749451164435
+ 0.35259698299809883</code></pre>
 </div>
 </div>
 <div id="6" class="cell" data-execution_count="1">
@@ -536,22 +536,22 @@ Quantum Object Evo.:   type=Operator()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(2
 <pre><code>
 Quantum Object:   type=Ket()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256,)
 256-element SparseArrays.SparseVector{ComplexF64, Int64} with 128 stored entries:
-  [1  ]  =  0.0044333+0.0im
-  [4  ]  =  -0.0142994+0.0im
-  [6  ]  =  0.0108814+0.0im
-  [7  ]  =  -0.0062833+0.0im
-  [10 ]  =  -0.0234503+0.0im
-  [11 ]  =  0.011238+0.0im
-  [13 ]  =  -0.0165604+0.0im
+  [1  ]  =  0.000894874+0.0im
+  [4  ]  =  -0.00476344+0.0im
+  [6  ]  =  0.0022297+0.0im
+  [7  ]  =  -0.000908475-0.0im
+  [10 ]  =  -0.0136822+0.0im
+  [11 ]  =  0.00456224+0.0im
+  [13 ]  =  -0.0103159+0.0im
          ⋮
-  [241]  =  0.0473464+0.0im
-  [244]  =  -0.155054+0.0im
-  [246]  =  0.113727+0.0im
-  [247]  =  -0.0642702+0.0im
-  [250]  =  -0.278525+0.0im
-  [251]  =  0.13279+0.0im
-  [253]  =  -0.197316+0.0im
-  [256]  =  0.705305+0.0im</code></pre>
+  [241]  =  0.0131567+0.0im
+  [244]  =  -0.070181+0.0im
+  [246]  =  0.0325349+0.0im
+  [247]  =  -0.0131632+0.0im
+  [250]  =  -0.203948+0.0im
+  [251]  =  0.0679894+0.0im
+  [253]  =  -0.153793+0.0im
+  [256]  =  0.856292+0.0im</code></pre>
 </div>
 </div>
 <p>We can see that the truthful ground state we are preparing is indeed very complex.</p>
@@ -597,17 +597,17 @@ Quantum Object:   type=Ket()   dims=[2, 2, 2, 2, 2, 2, 2, 2]   size=(256,)
 <span id="cb14-7"><a href="#cb14-7"></a><span class="cf">end</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.23 ms/it)</span>
+<pre><span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.27 ms/it)</span>
 
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (60.59 μs/it)</span>
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (85.42 μs/it)</span>
 
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (59.13 μs/it)</span>
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (83.74 μs/it)</span>
 
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (60.27 μs/it)</span>
-
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.10 ms/it)</span>
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (85.01 μs/it)</span>
 
 <span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.14 ms/it)</span>
+
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.20 ms/it)</span>
 </pre>
 </div>
 </div>
@@ -663,11 +663,11 @@ OrdinaryDiffEqCore Ver. 3.33.0
 System information:
 ====================================
 OS       : Linux (x86_64-linux-gnu)
-CPU      : 4 × AMD EPYC 9V74 80-Core Processor
+CPU      : 4 × AMD EPYC 7763 64-Core Processor
 Memory   : 15.615 GB
 WORD_SIZE: 64
 LIBM     : libopenlibm
-LLVM     : libLLVM-18.1.7 (ORCJIT, znver4)
+LLVM     : libLLVM-18.1.7 (ORCJIT, znver3)
 BLAS     : libopenblas64_.so (ilp64)
 Threads  : 4 (on 4 virtual cores)
 

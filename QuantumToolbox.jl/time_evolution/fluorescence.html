@@ -524,8 +524,8 @@ Quantum Object:   type=SuperOperator()   dims=[2]   size=(4, 4)
 <span id="cb8-2"><a href="#cb8-2"></a>sol <span class="op">=</span> <span class="fu">mesolve</span>(L, ψ<span class="fl">0</span>, tlist, <span class="cn">nothing</span>, e_ops <span class="op">=</span> e_ops)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[mesolve]   1%|▎                          |  ETA: 0:07:04 ( 2.13  s/it)</span>
-<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:04 (22.43 ms/it)</span>
+<pre><span class="ansi-green-fg">[mesolve]   1%|▎                          |  ETA: 0:05:31 ( 1.66  s/it)</span>
+<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:03 (17.51 ms/it)</span>
 </pre>
 </div>
 </div>
@@ -581,11 +581,11 @@ reltol = 1.0e-6</code></pre>
 <span id="cb11-7"><a href="#cb11-7"></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 1.14 μs/it)</span>
+<pre><span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 1.03 μs/it)</span>
 
-<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.99 μs/it)</span>
+<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.77 μs/it)</span>
 
-<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.67 μs/it)</span>
+<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.51 μs/it)</span>
 </pre>
 </div>
 </div>
@@ -664,26 +664,26 @@ reltol = 1.0e-6</code></pre>
 <span id="cb14-26"><a href="#cb14-26"></a>fig4</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 (17.17 μs/it)</span>
+<pre><span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 (16.93 μs/it)</span>
 <span class="ansi-yellow-fg ansi-bold">┌ </span><span class="ansi-yellow-fg ansi-bold">Warning: </span>Verbosity toggle: dt_epsilon 
 <span class="ansi-yellow-fg ansi-bold">│ </span> Initial timestep too small (near machine epsilon), using default: dt = 0.0
 <span class="ansi-yellow-fg ansi-bold">└ </span><span class="ansi-bright-black-fg">@ OrdinaryDiffEqCore ~/.julia/packages/OrdinaryDiffEqCore/AvUKo/src/initdt.jl:196</span>
 
-<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.30 μs/it)</span>
+<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.27 μs/it)</span>
 
 <span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 (14.07 μs/it)</span>
 <span class="ansi-yellow-fg ansi-bold">┌ </span><span class="ansi-yellow-fg ansi-bold">Warning: </span>Verbosity toggle: dt_epsilon 
 <span class="ansi-yellow-fg ansi-bold">│ </span> Initial timestep too small (near machine epsilon), using default: dt = 0.0
 <span class="ansi-yellow-fg ansi-bold">└ </span><span class="ansi-bright-black-fg">@ OrdinaryDiffEqCore ~/.julia/packages/OrdinaryDiffEqCore/AvUKo/src/initdt.jl:196</span>
 
-<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.19 μs/it)</span>
+<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.15 μs/it)</span>
 
-<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 6.91 μs/it)</span>
+<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 7.15 μs/it)</span>
 <span class="ansi-yellow-fg ansi-bold">┌ </span><span class="ansi-yellow-fg ansi-bold">Warning: </span>Verbosity toggle: dt_epsilon 
 <span class="ansi-yellow-fg ansi-bold">│ </span> Initial timestep too small (near machine epsilon), using default: dt = 0.0
 <span class="ansi-yellow-fg ansi-bold">└ </span><span class="ansi-bright-black-fg">@ OrdinaryDiffEqCore ~/.julia/packages/OrdinaryDiffEqCore/AvUKo/src/initdt.jl:196</span>
 
-<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.16 μs/it)</span>
+<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.12 μs/it)</span>
 </pre>
 </div>
 </div>
@@ -721,11 +721,11 @@ OrdinaryDiffEqCore Ver. 3.33.0
 System information:
 ====================================
 OS       : Linux (x86_64-linux-gnu)
-CPU      : 4 × AMD EPYC 7763 64-Core Processor
+CPU      : 4 × AMD EPYC 9V74 80-Core Processor
 Memory   : 15.615 GB
 WORD_SIZE: 64
 LIBM     : libopenlibm
-LLVM     : libLLVM-18.1.7 (ORCJIT, znver3)
+LLVM     : libLLVM-18.1.7 (ORCJIT, znver4)
 BLAS     : libopenblas64_.so (ilp64)
 Threads  : 4 (on 4 virtual cores)
 

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Orjan Ameye">
-<meta name="dcterms.date" content="2026-04-15">
+<meta name="dcterms.date" content="2026-04-20">
 
 <title>Quantum Fisher Information – Tutorials for Quantum Toolbox in Julia</title>
 <style>
@@ -391,7 +391,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Last Update</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2026-04-15</p>
+      <p class="date">2026-04-20</p>
     </div>
   </div>
   
@@ -518,7 +518,7 @@ window.Quarto = {
 <span id="cb8-12"><a href="#cb8-12"></a></span>
 <span id="cb8-13"><a href="#cb8-13"></a><span class="fu">println</span>(<span class="st">"QFI computed for "</span>, <span class="fu">length</span>(ts), <span class="st">" time points"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> 12.397889 seconds (20.43 M allocations: 1.147 GiB, 1.18% gc time, 59.14% compilation time)
+<pre><code> 11.932135 seconds (20.43 M allocations: 1.147 GiB, 1.33% gc time, 61.12% compilation time)
 QFI computed for 100 time points</code></pre>
 </div>
 </div>
@@ -567,11 +567,11 @@ OrdinaryDiffEqCore Ver. 3.33.0
 System information:
 ====================================
 OS       : Linux (x86_64-linux-gnu)
-CPU      : 4 × AMD EPYC 9V74 80-Core Processor
+CPU      : 4 × AMD EPYC 7763 64-Core Processor
 Memory   : 15.615 GB
 WORD_SIZE: 64
 LIBM     : libopenlibm
-LLVM     : libLLVM-18.1.7 (ORCJIT, znver4)
+LLVM     : libLLVM-18.1.7 (ORCJIT, znver3)
 BLAS     : libopenblas64_.so (ilp64)
 Threads  : 4 (on 4 virtual cores)
 

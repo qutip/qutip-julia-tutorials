@@ -496,7 +496,7 @@ window.Quarto = {
 <span id="cb6-17"><a href="#cb6-17"></a>qfi_final <span class="op">=</span> <span class="fu">compute_fisher_information</span>(ρ, dρ)</span>
 <span id="cb6-18"><a href="#cb6-18"></a><span class="fu">println</span>(<span class="st">"QFI at final time: "</span>, qfi_final)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>QFI at final time: 19795.71854319522</code></pre>
+<pre><code>QFI at final time: 19795.718543242696</code></pre>
 </div>
 </div>
 </section>
@@ -518,7 +518,7 @@ window.Quarto = {
 <span id="cb8-12"><a href="#cb8-12"></a></span>
 <span id="cb8-13"><a href="#cb8-13"></a><span class="fu">println</span>(<span class="st">"QFI computed for "</span>, <span class="fu">length</span>(ts), <span class="st">" time points"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  9.627978 seconds (20.43 M allocations: 1.147 GiB, 1.66% gc time, 58.80% compilation time)
+<pre><code> 11.846565 seconds (20.40 M allocations: 1.145 GiB, 2.89% gc time, 60.74% compilation time)
 QFI computed for 100 time points</code></pre>
 </div>
 </div>
@@ -560,18 +560,18 @@ Package information:
 ====================================
 Julia              Ver. 1.12.6
 QuantumToolbox     Ver. 0.42.0
-SciMLOperators     Ver. 1.16.0
+SciMLOperators     Ver. 1.17.0
 LinearSolve        Ver. 3.75.0
-OrdinaryDiffEqCore Ver. 3.33.0
+OrdinaryDiffEqCore Ver. 3.33.1
 
 System information:
 ====================================
 OS       : Linux (x86_64-linux-gnu)
-CPU      : 4 × AMD EPYC 9V74 80-Core Processor
+CPU      : 4 × AMD EPYC 7763 64-Core Processor
 Memory   : 15.615 GB
 WORD_SIZE: 64
 LIBM     : libopenlibm
-LLVM     : libLLVM-18.1.7 (ORCJIT, znver4)
+LLVM     : libLLVM-18.1.7 (ORCJIT, znver3)
 BLAS     : libopenblas64_.so (ilp64)
 Threads  : 4 (on 4 virtual cores)
 

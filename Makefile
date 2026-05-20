@@ -4,7 +4,7 @@ QUARTO:=quarto
 default: help
 
 render:
-	${JULIA} --project=@. -e 'import Pkg; Pkg.resolve();'
+	${JULIA} --project=@. -e 'import Pkg; Pkg.update()'
 	${QUARTO} render
 
 preview:

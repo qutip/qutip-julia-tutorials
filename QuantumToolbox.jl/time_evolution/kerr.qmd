@@ -87,7 +87,7 @@ function plot_Fock_dist(tlist, states)
         ylabel = L"t"
     )
 
-    n_col = prod(states[1].dims)
+    n_col = size(states[1], 1) # the Hilbert space dimension
     n_row = length(tlist)
 
     data = zeros(Float64, n_row, n_col)

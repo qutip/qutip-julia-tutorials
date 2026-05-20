@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Yi-Te Huang">
-<meta name="dcterms.date" content="2026-04-20">
+<meta name="dcterms.date" content="2026-05-20">
 
 <title>Driven systems and dynamical decoupling – Tutorials for Quantum Toolbox in Julia</title>
 <style>
@@ -101,9 +101,9 @@ div.csl-indent {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-4e5466e430b1db38349d513585fd1d59.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-eed41322f57ad8166033a1fc1236be3f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-d17bfafa6bd175f246c124845e1f8ae5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-eed41322f57ad8166033a1fc1236be3f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-f2799bbd87cfb2a0d08ee943ede7362e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-954c59ebf5800c67a0235016be1fcb56.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-f2799bbd87cfb2a0d08ee943ede7362e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -412,7 +412,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Last Update</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2026-04-20</p>
+      <p class="date">2026-05-20</p>
     </div>
   </div>
   
@@ -464,7 +464,7 @@ H_{\textrm{sb}}   &amp;=\sigma_z\sum_{k}g_{\alpha,k}(b_k + b_k^{\dagger}).
 <span id="cb2-9"><a href="#cb2-9"></a>ψ<span class="fl">0</span> <span class="op">=</span> (<span class="fu">basis</span>(<span class="fl">2</span>, <span class="fl">0</span>) <span class="op">+</span> <span class="fu">basis</span>(<span class="fl">2</span>, <span class="fl">1</span>)) <span class="op">/</span> √<span class="fl">2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>
-Quantum Object:   type=Ket()   dims=[2]   size=(2,)
+Quantum Object:   type=Ket()   dims=([2], [1])   size=(2,)
 2-element Vector{ComplexF64}:
  0.7071067811865475 + 0.0im
  0.7071067811865475 + 0.0im</code></pre>
@@ -564,8 +564,8 @@ Warning
 <div class="ansi-escaped-output">
 <pre>Preparing HEOM Liouvillian sparsity structure...
 
-<span class="ansi-green-fg">[M_Boson]   1%|▎                          |  ETA: 0:00:13 (64.86 ms/it)</span>
-<span class="ansi-green-fg">[M_Boson] 100%|███████████████████████████| Time: 0:00:00 ( 1.77 ms/it)</span>
+<span class="ansi-green-fg">[M_Boson]   1%|▎                          |  ETA: 0:00:16 (76.44 ms/it)</span>
+<span class="ansi-green-fg">[M_Boson] 100%|███████████████████████████| Time: 0:00:00 ( 2.00 ms/it)</span>
 [DONE]
 Combining terms...[DONE]
 Evaluating lazy operations...[DONE]
@@ -574,7 +574,7 @@ Evaluating lazy operations...[DONE]
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>Boson type HEOMLS matrix acting on even-parity ADOs
-system dims = [2]
+system dims = ([2], [2])
 number of ADOs N = 210
 data =
 MatrixOperator(840 × 840)</code></pre>
@@ -587,8 +587,8 @@ MatrixOperator(840 × 840)</code></pre>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1"></a>noPulseSol <span class="op">=</span> <span class="fu">HEOMsolve</span>(M, ψ<span class="fl">0</span>, tlist; e_ops <span class="op">=</span> [ρ<span class="fl">01</span>]);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[HEOMsolve (ODE)]   0%|                   |  ETA: 0:27:34 ( 1.66  s/it)</span>
-<span class="ansi-green-fg">[HEOMsolve (ODE)] 100%|███████████████████| Time: 0:00:03 ( 3.37 ms/it)</span>
+<pre><span class="ansi-green-fg">[HEOMsolve (ODE)]   0%|                   |  ETA: 0:24:01 ( 1.44  s/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)] 100%|███████████████████| Time: 0:00:02 ( 2.94 ms/it)</span>
 </pre>
 </div>
 </div>
@@ -601,7 +601,7 @@ MatrixOperator(840 × 840)</code></pre>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1"></a>H_D <span class="op">=</span> <span class="fu">QobjEvo</span>(σx, pulse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>
-Quantum Object Evo.:   type=Operator()   dims=[2]   size=(2, 2)   ishermitian=true   isconstant=false
+Quantum Object Evo.:   type=Operator()   dims=([2], [2])   size=(2, 2)   ishermitian=true   isconstant=false
 ScalarOperator(0.0 + 0.0im) * MatrixOperator(2 × 2)</code></pre>
 </div>
 </div>
@@ -611,11 +611,11 @@ ScalarOperator(0.0 + 0.0im) * MatrixOperator(2 × 2)</code></pre>
 <span id="cb12-2"><a href="#cb12-2"></a>slowPulseSol <span class="op">=</span> <span class="fu">HEOMsolve</span>(M, ψ<span class="fl">0</span>, tlist; e_ops <span class="op">=</span> [ρ<span class="fl">01</span>], H_t <span class="op">=</span> H_D, params <span class="op">=</span> slowTuple)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[HEOMsolve (ODE)]   0%|                   |  ETA: 0:24:29 ( 1.47  s/it)</span>
-<span class="ansi-green-fg">[HEOMsolve (ODE)]  92%|█████████████████▍ |  ETA: 0:00:00 ( 3.35 ms/it)</span>
-<span class="ansi-green-fg">[HEOMsolve (ODE)] 100%|███████████████████| Time: 0:00:03 ( 3.07 ms/it)</span>
+<pre><span class="ansi-green-fg">[HEOMsolve (ODE)]   0%|                   |  ETA: 0:16:34 ( 0.99  s/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)]  96%|██████████████████▏|  ETA: 0:00:00 ( 2.21 ms/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)] 100%|███████████████████| Time: 0:00:02 ( 2.12 ms/it)</span>
 
-<span class="ansi-green-fg">[HEOMsolve (ODE)]  89%|████████████████▉  |  ETA: 0:00:00 ( 0.13 ms/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)]  92%|█████████████████▍ |  ETA: 0:00:00 ( 0.13 ms/it)</span>
 <span class="ansi-green-fg">[HEOMsolve (ODE)] 100%|███████████████████| Time: 0:00:00 ( 0.13 ms/it)</span>
 </pre>
 </div>
@@ -628,7 +628,7 @@ Btier = 6
 Ftier = 0
 num_ados   = 1
 num_expect = 1
-ODE alg.: OrdinaryDiffEqLowOrderRK.DP5{typeof(OrdinaryDiffEqCore.trivial_limiter!), typeof(OrdinaryDiffEqCore.trivial_limiter!), Static.False}(OrdinaryDiffEqCore.trivial_limiter!, OrdinaryDiffEqCore.trivial_limiter!, static(false))
+ODE alg.: OrdinaryDiffEqLowOrderRK.DP5{typeof(OrdinaryDiffEqCore.trivial_limiter!), typeof(OrdinaryDiffEqCore.trivial_limiter!), FastBroadcast.Serial}(OrdinaryDiffEqCore.trivial_limiter!, OrdinaryDiffEqCore.trivial_limiter!, FastBroadcast.Serial())
 abstol = 1.0e-8
 reltol = 1.0e-6</code></pre>
 </div>
@@ -682,20 +682,20 @@ Other developers:
 Package information:
 ====================================
 Julia              Ver. 1.12.6
-HierarchicalEOM    Ver. 2.12.4
-QuantumToolbox     Ver. 0.42.0
-SciMLOperators     Ver. 1.17.0
-LinearSolve        Ver. 3.75.0
-OrdinaryDiffEqCore Ver. 3.33.1
+HierarchicalEOM    Ver. 2.15.0
+QuantumToolbox     Ver. 0.47.0
+SciMLOperators     Ver. 1.21.0
+LinearSolve        Ver. 3.80.0
+OrdinaryDiffEqCore Ver. 4.2.1
 
 System information:
 ====================================
 OS       : Linux (x86_64-linux-gnu)
-CPU      : 4 × AMD EPYC 7763 64-Core Processor
+CPU      : 4 × AMD EPYC 9V74 80-Core Processor
 Memory   : 15.615 GB
 WORD_SIZE: 64
 LIBM     : libopenlibm
-LLVM     : libLLVM-18.1.7 (ORCJIT, znver3)
+LLVM     : libLLVM-18.1.7 (ORCJIT, znver4)
 BLAS     : libopenblas64_.so (ilp64)
 Threads  : 4 (on 4 virtual cores)
 

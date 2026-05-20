@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Orjan Ameye">
-<meta name="dcterms.date" content="2026-04-20">
+<meta name="dcterms.date" content="2026-05-20">
 
 <title>Quantum Fisher Information – Tutorials for Quantum Toolbox in Julia</title>
 <style>
@@ -82,9 +82,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-4e5466e430b1db38349d513585fd1d59.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-eed41322f57ad8166033a1fc1236be3f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-d17bfafa6bd175f246c124845e1f8ae5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-eed41322f57ad8166033a1fc1236be3f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-f2799bbd87cfb2a0d08ee943ede7362e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-954c59ebf5800c67a0235016be1fcb56.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-f2799bbd87cfb2a0d08ee943ede7362e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -391,7 +391,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Last Update</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2026-04-20</p>
+      <p class="date">2026-05-20</p>
     </div>
   </div>
   
@@ -518,7 +518,7 @@ window.Quarto = {
 <span id="cb8-12"><a href="#cb8-12"></a></span>
 <span id="cb8-13"><a href="#cb8-13"></a><span class="fu">println</span>(<span class="st">"QFI computed for "</span>, <span class="fu">length</span>(ts), <span class="st">" time points"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> 11.846565 seconds (20.40 M allocations: 1.145 GiB, 2.89% gc time, 60.74% compilation time)
+<pre><code> 11.268434 seconds (19.54 M allocations: 1.089 GiB, 3.11% gc time, 54.97% compilation time)
 QFI computed for 100 time points</code></pre>
 </div>
 </div>
@@ -559,19 +559,19 @@ Current admin team:
 Package information:
 ====================================
 Julia              Ver. 1.12.6
-QuantumToolbox     Ver. 0.42.0
-SciMLOperators     Ver. 1.17.0
-LinearSolve        Ver. 3.75.0
-OrdinaryDiffEqCore Ver. 3.33.1
+QuantumToolbox     Ver. 0.47.0
+SciMLOperators     Ver. 1.21.0
+LinearSolve        Ver. 3.80.0
+OrdinaryDiffEqCore Ver. 4.2.1
 
 System information:
 ====================================
 OS       : Linux (x86_64-linux-gnu)
-CPU      : 4 × AMD EPYC 7763 64-Core Processor
+CPU      : 4 × AMD EPYC 9V74 80-Core Processor
 Memory   : 15.615 GB
 WORD_SIZE: 64
 LIBM     : libopenlibm
-LLVM     : libLLVM-18.1.7 (ORCJIT, znver3)
+LLVM     : libLLVM-18.1.7 (ORCJIT, znver4)
 BLAS     : libopenblas64_.so (ilp64)
 Threads  : 4 (on 4 virtual cores)
 
@@ -588,12 +588,11 @@ For your convenience, a bibtex reference can be easily generated using `QuantumT
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
 <pre><span class="ansi-green-fg ansi-bold">Status</span> `~/work/qutip-julia-tutorials/qutip-julia-tutorials/Project.toml`
-  <span class="ansi-bright-black-fg">[13f3f980] </span>CairoMakie v0.15.9
+  <span class="ansi-bright-black-fg">[13f3f980] </span>CairoMakie v0.15.10
   <span class="ansi-bright-black-fg">[f6369f11] </span>ForwardDiff v1.3.3
-  <span class="ansi-bright-black-fg">[a62dbcb7] </span>HierarchicalEOM v2.12.4
-<span class="ansi-yellow-fg">⌅</span> <span class="ansi-bright-black-fg">[6c2fb7c5] </span>QuantumToolbox v0.42.0
+  <span class="ansi-bright-black-fg">[a62dbcb7] </span>HierarchicalEOM v2.15.0
+  <span class="ansi-bright-black-fg">[6c2fb7c5] </span>QuantumToolbox v0.47.0
   <span class="ansi-bright-black-fg">[4c0109c6] </span>QuartoNotebookRunner v0.18.1
-<span class="ansi-cyan-fg ansi-bold">Info</span> Packages marked with <span class="ansi-yellow-fg">⌅</span> have new versions available but compatibility constraints restrict them from upgrading. To see why use `status --outdated`
 </pre>
 </div>
 </div>

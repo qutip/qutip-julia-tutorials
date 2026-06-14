@@ -101,9 +101,9 @@ div.csl-indent {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-6d40f8af7092f34acea1908532066003.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-4f85c92a6aff3aa93a3a0534d1458cee.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-b0023b47565e4466792223f7e260e634.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-4f85c92a6aff3aa93a3a0534d1458cee.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-05253bac2d98f4ddbb14149dc777cec3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-ab404ed954bf75e3ac213d06a098ddb0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-05253bac2d98f4ddbb14149dc777cec3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -497,8 +497,8 @@ H_{\textrm{sf}} &amp;=\sum_{\alpha=\textrm{L},\textrm{R}}\sum_{k}g_{\alpha,k}c_{
 <div class="ansi-escaped-output">
 <pre>Preparing HEOM Liouvillian sparsity structure...
 
-<span class="ansi-green-fg">[M_Fermion]   0%|▏                        |  ETA: 0:00:44 (27.75 ms/it)</span>
-<span class="ansi-green-fg">[M_Fermion] 100%|█████████████████████████| Time: 0:00:00 ( 0.20 ms/it)</span>
+<span class="ansi-green-fg">[M_Fermion]   0%|                         |  ETA: 0:01:24 (52.80 ms/it)</span>
+<span class="ansi-green-fg">[M_Fermion] 100%|█████████████████████████| Time: 0:00:00 ( 0.24 ms/it)</span>
 [DONE]
 Combining terms...[DONE]
 Evaluating lazy operations...[DONE]
@@ -521,7 +521,8 @@ MatrixOperator(6344 × 6344)</code></pre>
 <span id="cb7-2"><a href="#cb7-2"></a>ados_evolution <span class="op">=</span> <span class="fu">HEOMsolve</span>(M, ψ<span class="fl">0</span>, tlist).ados</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[HEOMsolve (ODE)] 100%|███████████████████| Time: 0:00:00 ( 0.49 ms/it)</span>
+<pre><span class="ansi-green-fg">[HEOMsolve (ODE)]  76%|██████████████▌    |  ETA: 0:00:00 ( 0.66 ms/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)] 100%|███████████████████| Time: 0:00:00 ( 0.65 ms/it)</span>
 </pre>
 </div>
 </div>
@@ -716,19 +717,19 @@ Package information:
 ====================================
 Julia              Ver. 1.12.6
 HierarchicalEOM    Ver. 2.15.0
-QuantumToolbox     Ver. 0.47.0
+QuantumToolbox     Ver. 0.47.1
 SciMLOperators     Ver. 1.22.0
-LinearSolve        Ver. 3.84.0
+LinearSolve        Ver. 3.85.1
 OrdinaryDiffEqCore Ver. 4.3.0
 
 System information:
 ====================================
 OS       : Linux (x86_64-linux-gnu)
-CPU      : 4 × AMD EPYC 9V74 80-Core Processor
+CPU      : 4 × AMD EPYC 7763 64-Core Processor
 Memory   : 15.615 GB
 WORD_SIZE: 64
 LIBM     : libopenlibm
-LLVM     : libLLVM-18.1.7 (ORCJIT, znver4)
+LLVM     : libLLVM-18.1.7 (ORCJIT, znver3)
 BLAS     : libopenblas64_.so (ilp64)
 Threads  : 4 (on 4 virtual cores)
 

@@ -82,9 +82,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-6d40f8af7092f34acea1908532066003.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-4f85c92a6aff3aa93a3a0534d1458cee.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-b0023b47565e4466792223f7e260e634.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-4f85c92a6aff3aa93a3a0534d1458cee.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-05253bac2d98f4ddbb14149dc777cec3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-ab404ed954bf75e3ac213d06a098ddb0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-05253bac2d98f4ddbb14149dc777cec3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -435,13 +435,13 @@ window.Quarto = {
 <span id="cb2-4"><a href="#cb2-4"></a>gs <span class="op">=</span> <span class="fu">rand</span>(N<span class="op">-</span><span class="fl">1</span>) <span class="co"># use rand function for the random interaction strengths</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>7-element Vector{Float64}:
- 0.5082160098677558
- 0.7918780594228478
- 0.19691156901410145
- 0.9302777468900617
- 0.6932823201298143
- 0.38369706530574244
- 0.5508279671618265</code></pre>
+ 0.3511326222999147
+ 0.17790457212332478
+ 0.45466392468190153
+ 0.9060960657599137
+ 0.02754726205519742
+ 0.4320491499678747
+ 0.4010058504947196</code></pre>
 </div>
 </div>
 <div id="6" class="cell" data-execution_count="1">
@@ -536,22 +536,22 @@ Quantum Object Evo.:   type=Operator()   dims=([2, 2, 2, 2, 2, 2, 2, 2], [2, 2, 
 <pre><code>
 Quantum Object:   type=Ket()   dims=([2, 2, 2, 2, 2, 2, 2, 2], [1])   size=(256,)
 256-element SparseArrays.SparseVector{ComplexF64, Int64} with 128 stored entries:
-  [1  ]  =  0.00365559+0.0im
-  [4  ]  =  -0.0129964+0.0im
-  [6  ]  =  0.00663398+0.0im
-  [7  ]  =  -0.00425307+0.0im
-  [10 ]  =  -0.00756698+0.0im
-  [11 ]  =  0.0041636+0.0im
-  [13 ]  =  -0.00845382+0.0im
+  [1  ]  =  0.000151104+0.0im
+  [4  ]  =  -0.000703187-0.0im
+  [6  ]  =  0.000364285+0.0im
+  [7  ]  =  -0.000183135+0.0im
+  [10 ]  =  -0.00767869+0.0im
+  [11 ]  =  0.0028514+0.0im
+  [13 ]  =  -0.00720294+0.0im
          ⋮
-  [241]  =  0.0691584+0.0im
-  [244]  =  -0.249841+0.0im
-  [246]  =  0.113574+0.0im
-  [247]  =  -0.0695379+0.0im
-  [250]  =  -0.157316+0.0im
-  [251]  =  0.083736+0.0im
-  [253]  =  -0.183983+0.0im
-  [256]  =  0.685322+0.0im</code></pre>
+  [241]  =  0.00314728+0.0im
+  [244]  =  -0.0148004+0.0im
+  [246]  =  0.00724312+0.0im
+  [247]  =  -0.003542+0.0im
+  [250]  =  -0.17916+0.0im
+  [251]  =  0.0665247+0.0im
+  [253]  =  -0.168069+0.0im
+  [256]  =  0.838892+0.0im</code></pre>
 </div>
 </div>
 <p>We can see that the truthful ground state we are preparing is indeed very complex.</p>
@@ -597,17 +597,17 @@ Quantum Object:   type=Ket()   dims=([2, 2, 2, 2, 2, 2, 2, 2], [1])   size=(256,
 <span id="cb14-7"><a href="#cb14-7"></a><span class="cf">end</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.19 ms/it)</span>
+<pre><span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.25 ms/it)</span>
 
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (59.64 μs/it)</span>
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (85.99 μs/it)</span>
 
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (59.66 μs/it)</span>
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (84.54 μs/it)</span>
 
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (59.46 μs/it)</span>
-
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.10 ms/it)</span>
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (84.83 μs/it)</span>
 
 <span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.14 ms/it)</span>
+
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.15 ms/it)</span>
 </pre>
 </div>
 </div>
@@ -655,19 +655,19 @@ Current admin team:
 Package information:
 ====================================
 Julia              Ver. 1.12.6
-QuantumToolbox     Ver. 0.47.0
+QuantumToolbox     Ver. 0.47.1
 SciMLOperators     Ver. 1.22.0
-LinearSolve        Ver. 3.84.0
+LinearSolve        Ver. 3.85.1
 OrdinaryDiffEqCore Ver. 4.3.0
 
 System information:
 ====================================
 OS       : Linux (x86_64-linux-gnu)
-CPU      : 4 × AMD EPYC 9V74 80-Core Processor
+CPU      : 4 × AMD EPYC 7763 64-Core Processor
 Memory   : 15.615 GB
 WORD_SIZE: 64
 LIBM     : libopenlibm
-LLVM     : libLLVM-18.1.7 (ORCJIT, znver4)
+LLVM     : libLLVM-18.1.7 (ORCJIT, znver3)
 BLAS     : libopenblas64_.so (ilp64)
 Threads  : 4 (on 4 virtual cores)
 

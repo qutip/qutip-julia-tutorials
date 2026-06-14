@@ -82,9 +82,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-6d40f8af7092f34acea1908532066003.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-4f85c92a6aff3aa93a3a0534d1458cee.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-b0023b47565e4466792223f7e260e634.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-4f85c92a6aff3aa93a3a0534d1458cee.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-05253bac2d98f4ddbb14149dc777cec3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-ab404ed954bf75e3ac213d06a098ddb0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-05253bac2d98f4ddbb14149dc777cec3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -496,7 +496,7 @@ window.Quarto = {
 <span id="cb6-17"><a href="#cb6-17"></a>qfi_final <span class="op">=</span> <span class="fu">compute_fisher_information</span>(ρ, dρ)</span>
 <span id="cb6-18"><a href="#cb6-18"></a><span class="fu">println</span>(<span class="st">"QFI at final time: "</span>, qfi_final)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>QFI at final time: 19795.71854319522</code></pre>
+<pre><code>QFI at final time: 19795.718543242696</code></pre>
 </div>
 </div>
 </section>
@@ -518,7 +518,7 @@ window.Quarto = {
 <span id="cb8-12"><a href="#cb8-12"></a></span>
 <span id="cb8-13"><a href="#cb8-13"></a><span class="fu">println</span>(<span class="st">"QFI computed for "</span>, <span class="fu">length</span>(ts), <span class="st">" time points"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  8.867310 seconds (20.41 M allocations: 1.138 GiB, 1.38% gc time, 54.92% compilation time)
+<pre><code> 10.850874 seconds (20.33 M allocations: 1.133 GiB, 3.02% gc time, 56.88% compilation time)
 QFI computed for 100 time points</code></pre>
 </div>
 </div>
@@ -559,19 +559,19 @@ Current admin team:
 Package information:
 ====================================
 Julia              Ver. 1.12.6
-QuantumToolbox     Ver. 0.47.0
+QuantumToolbox     Ver. 0.47.1
 SciMLOperators     Ver. 1.22.0
-LinearSolve        Ver. 3.84.0
+LinearSolve        Ver. 3.85.1
 OrdinaryDiffEqCore Ver. 4.3.0
 
 System information:
 ====================================
 OS       : Linux (x86_64-linux-gnu)
-CPU      : 4 × AMD EPYC 9V74 80-Core Processor
+CPU      : 4 × AMD EPYC 7763 64-Core Processor
 Memory   : 15.615 GB
 WORD_SIZE: 64
 LIBM     : libopenlibm
-LLVM     : libLLVM-18.1.7 (ORCJIT, znver4)
+LLVM     : libLLVM-18.1.7 (ORCJIT, znver3)
 BLAS     : libopenblas64_.so (ilp64)
 Threads  : 4 (on 4 virtual cores)
 
@@ -589,9 +589,9 @@ For your convenience, a bibtex reference can be easily generated using `QuantumT
 <div class="ansi-escaped-output">
 <pre><span class="ansi-green-fg ansi-bold">Status</span> `~/work/qutip-julia-tutorials/qutip-julia-tutorials/Project.toml`
   <span class="ansi-bright-black-fg">[13f3f980] </span>CairoMakie v0.15.11
-  <span class="ansi-bright-black-fg">[f6369f11] </span>ForwardDiff v1.3.3
+  <span class="ansi-bright-black-fg">[f6369f11] </span>ForwardDiff v1.4.1
   <span class="ansi-bright-black-fg">[a62dbcb7] </span>HierarchicalEOM v2.15.0
-  <span class="ansi-bright-black-fg">[6c2fb7c5] </span>QuantumToolbox v0.47.0
+  <span class="ansi-bright-black-fg">[6c2fb7c5] </span>QuantumToolbox v0.47.1
   <span class="ansi-bright-black-fg">[4c0109c6] </span>QuartoNotebookRunner v0.18.1
 </pre>
 </div>

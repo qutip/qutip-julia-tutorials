@@ -524,8 +524,8 @@ Quantum Object:   type=SuperOperator()   dims=(([2], [2]), ([2], [2]))   size=(4
 <span id="cb8-2"><a href="#cb8-2"></a>sol <span class="op">=</span> <span class="fu">mesolve</span>(L, ψ<span class="fl">0</span>, tlist, <span class="cn">nothing</span>, e_ops <span class="op">=</span> e_ops)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[mesolve]   1%|▎                          |  ETA: 0:05:35 ( 1.69  s/it)</span>
-<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:03 (17.99 ms/it)</span>
+<pre><span class="ansi-green-fg">[mesolve]   1%|▎                          |  ETA: 0:04:37 ( 1.39  s/it)</span>
+<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:02 (14.89 ms/it)</span>
 </pre>
 </div>
 </div>
@@ -581,11 +581,11 @@ reltol = 1.0e-6</code></pre>
 <span id="cb11-7"><a href="#cb11-7"></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.93 μs/it)</span>
+<pre><span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.87 μs/it)</span>
 
-<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.67 μs/it)</span>
+<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.68 μs/it)</span>
 
-<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.52 μs/it)</span>
+<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.42 μs/it)</span>
 </pre>
 </div>
 </div>
@@ -664,11 +664,11 @@ reltol = 1.0e-6</code></pre>
 <span id="cb14-26"><a href="#cb14-26"></a>fig4</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.30 μs/it)</span>
-
-<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.19 μs/it)</span>
+<pre><span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.24 μs/it)</span>
 
 <span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.15 μs/it)</span>
+
+<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.12 μs/it)</span>
 </pre>
 </div>
 </div>
@@ -700,17 +700,17 @@ Package information:
 Julia              Ver. 1.12.6
 QuantumToolbox     Ver. 0.47.1
 SciMLOperators     Ver. 1.22.0
-LinearSolve        Ver. 3.85.1
+LinearSolve        Ver. 3.86.0
 OrdinaryDiffEqCore Ver. 4.3.0
 
 System information:
 ====================================
 OS       : Linux (x86_64-linux-gnu)
-CPU      : 4 × AMD EPYC 7763 64-Core Processor
+CPU      : 4 × AMD EPYC 9V74 80-Core Processor
 Memory   : 15.615 GB
 WORD_SIZE: 64
 LIBM     : libopenlibm
-LLVM     : libLLVM-18.1.7 (ORCJIT, znver3)
+LLVM     : libLLVM-18.1.7 (ORCJIT, znver4)
 BLAS     : libopenblas64_.so (ilp64)
 Threads  : 4 (on 4 virtual cores)
 

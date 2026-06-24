@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Luca Gravina">
-<meta name="dcterms.date" content="2026-05-20">
+<meta name="dcterms.date" content="2026-06-24">
 
 <title>Low rank master equation – Tutorials for Quantum Toolbox in Julia</title>
 <style>
@@ -415,7 +415,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Last Update</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2026-05-20</p>
+      <p class="date">2026-06-24</p>
     </div>
   </div>
   
@@ -560,7 +560,8 @@ Quantum Object:   type=Ket()   dims=([2, 2, 2, 2, 2, 2], [1])   size=(64,)
 <span id="cb10-2"><a href="#cb10-2"></a>Strue <span class="op">=</span> <span class="fu">entropy_vn</span>(sol_me.states[<span class="kw">end</span>], base<span class="op">=</span><span class="fl">2</span>) <span class="op">/</span> latt.N;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.91 ms/it)</span>
+<pre><span class="ansi-green-fg">[mesolve]  79%|█████████████████████▍     |  ETA: 0:00:00 ( 1.27 ms/it)</span>
+<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 3.46 ms/it)</span>
 </pre>
 </div>
 </div>
@@ -778,19 +779,19 @@ Current admin team:
 Package information:
 ====================================
 Julia              Ver. 1.12.6
-QuantumToolbox     Ver. 0.47.1
-SciMLOperators     Ver. 1.22.0
-LinearSolve        Ver. 3.86.0
-OrdinaryDiffEqCore Ver. 4.3.0
+QuantumToolbox     Ver. 0.47.2
+SciMLOperators     Ver. 1.22.1
+LinearSolve        Ver. 3.86.1
+OrdinaryDiffEqCore Ver. 4.4.0
 
 System information:
 ====================================
 OS       : Linux (x86_64-linux-gnu)
-CPU      : 4 × AMD EPYC 9V74 80-Core Processor
+CPU      : 4 × AMD EPYC 7763 64-Core Processor
 Memory   : 15.615 GB
 WORD_SIZE: 64
 LIBM     : libopenlibm
-LLVM     : libLLVM-18.1.7 (ORCJIT, znver4)
+LLVM     : libLLVM-18.1.7 (ORCJIT, znver3)
 BLAS     : libopenblas64_.so (ilp64)
 Threads  : 4 (on 4 virtual cores)
 

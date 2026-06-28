@@ -435,13 +435,13 @@ window.Quarto = {
 <span id="cb2-4"><a href="#cb2-4"></a>gs <span class="op">=</span> <span class="fu">rand</span>(N<span class="op">-</span><span class="fl">1</span>) <span class="co"># use rand function for the random interaction strengths</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>7-element Vector{Float64}:
- 0.9112325449770585
- 0.18149540138490106
- 0.985424159299714
- 0.3067099470938931
- 0.2711579051731168
- 0.8330110951107544
- 0.30030991677798624</code></pre>
+ 0.9304729159607603
+ 0.10294234209902642
+ 0.2269594062144188
+ 0.6251043577867416
+ 0.7363190982870107
+ 0.9455879545970559
+ 0.4085838693887509</code></pre>
 </div>
 </div>
 <div id="6" class="cell" data-execution_count="1">
@@ -536,22 +536,22 @@ Quantum Object Evo.:   type=Operator()   dims=([2, 2, 2, 2, 2, 2, 2, 2], [2, 2, 
 <pre><code>
 Quantum Object:   type=Ket()   dims=([2, 2, 2, 2, 2, 2, 2, 2], [1])   size=(256,)
 256-element SparseArrays.SparseVector{ComplexF64, Int64} with 128 stored entries:
-  [1  ]  =  0.00368177+0.0im
-  [4  ]  =  -0.0201663+0.0im
-  [6  ]  =  0.0137446+0.0im
-  [7  ]  =  -0.00490656+0.0im
-  [10 ]  =  -0.0456742-0.0im
-  [11 ]  =  0.0133148+0.0im
-  [13 ]  =  -0.0203285-0.0im
+  [1  ]  =  0.00368687+0.0im
+  [4  ]  =  -0.0146204+0.0im
+  [6  ]  =  0.0109046+0.0im
+  [7  ]  =  -0.00507742+0.0im
+  [10 ]  =  -0.0153053+0.0im
+  [11 ]  =  0.0062489+0.0im
+  [13 ]  =  -0.00802407+0.0im
          ⋮
-  [241]  =  0.0217184+0.0im
-  [244]  =  -0.119557+0.0im
-  [246]  =  0.0806781+0.0im
-  [247]  =  -0.0285613+0.0im
-  [250]  =  -0.277317+0.0im
-  [251]  =  0.0807706+0.0im
-  [253]  =  -0.123467+0.0im
-  [256]  =  0.74432+0.0im</code></pre>
+  [241]  =  0.0679266+0.0im
+  [244]  =  -0.272627+0.0im
+  [246]  =  0.19843+0.0im
+  [247]  =  -0.0908474+0.0im
+  [250]  =  -0.302096+0.0im
+  [251]  =  0.1222+0.0im
+  [253]  =  -0.15911+0.0im
+  [256]  =  0.685654+0.0im</code></pre>
 </div>
 </div>
 <p>We can see that the truthful ground state we are preparing is indeed very complex.</p>
@@ -599,11 +599,11 @@ Quantum Object:   type=Ket()   dims=([2, 2, 2, 2, 2, 2, 2, 2], [1])   size=(256,
 <div class="ansi-escaped-output">
 <pre><span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.25 ms/it)</span>
 
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (84.05 μs/it)</span>
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (84.49 μs/it)</span>
 
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (83.37 μs/it)</span>
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (84.51 μs/it)</span>
 
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (83.65 μs/it)</span>
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (84.85 μs/it)</span>
 
 <span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.14 ms/it)</span>
 
@@ -657,8 +657,8 @@ Package information:
 Julia              Ver. 1.12.6
 QuantumToolbox     Ver. 0.47.2
 SciMLOperators     Ver. 1.22.1
-LinearSolve        Ver. 3.86.1
-OrdinaryDiffEqCore Ver. 4.4.0
+LinearSolve        Ver. 3.87.0
+OrdinaryDiffEqCore Ver. 4.5.0
 
 System information:
 ====================================

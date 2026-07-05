@@ -435,13 +435,13 @@ window.Quarto = {
 <span id="cb2-4"><a href="#cb2-4"></a>gs <span class="op">=</span> <span class="fu">rand</span>(N<span class="op">-</span><span class="fl">1</span>) <span class="co"># use rand function for the random interaction strengths</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>7-element Vector{Float64}:
- 0.9304729159607603
- 0.10294234209902642
- 0.2269594062144188
- 0.6251043577867416
- 0.7363190982870107
- 0.9455879545970559
- 0.4085838693887509</code></pre>
+ 0.20805071085435567
+ 0.7100819184105236
+ 0.4373981525597296
+ 0.26990294298489637
+ 0.30209116870532404
+ 0.04038758954339816
+ 0.47160928781244016</code></pre>
 </div>
 </div>
 <div id="6" class="cell" data-execution_count="1">
@@ -536,22 +536,22 @@ Quantum Object Evo.:   type=Operator()   dims=([2, 2, 2, 2, 2, 2, 2, 2], [2, 2, 
 <pre><code>
 Quantum Object:   type=Ket()   dims=([2, 2, 2, 2, 2, 2, 2, 2], [1])   size=(256,)
 256-element SparseArrays.SparseVector{ComplexF64, Int64} with 128 stored entries:
-  [1  ]  =  0.00368687+0.0im
-  [4  ]  =  -0.0146204+0.0im
-  [6  ]  =  0.0109046+0.0im
-  [7  ]  =  -0.00507742+0.0im
-  [10 ]  =  -0.0153053+0.0im
-  [11 ]  =  0.0062489+0.0im
-  [13 ]  =  -0.00802407+0.0im
+  [1  ]  =  0.000858771+0.0im
+  [4  ]  =  -0.00383097+0.0im
+  [6  ]  =  0.000182802+0.0im
+  [7  ]  =  -9.77973e-5+0.0im
+  [10 ]  =  -0.000542584+0.0im
+  [11 ]  =  0.000236971+0.0im
+  [13 ]  =  -0.00554975+0.0im
          ⋮
-  [241]  =  0.0679266+0.0im
-  [244]  =  -0.272627+0.0im
-  [246]  =  0.19843+0.0im
-  [247]  =  -0.0908474+0.0im
-  [250]  =  -0.302096+0.0im
-  [251]  =  0.1222+0.0im
-  [253]  =  -0.15911+0.0im
-  [256]  =  0.685654+0.0im</code></pre>
+  [241]  =  0.0293246+0.0im
+  [244]  =  -0.130825+0.0im
+  [246]  =  0.00601049+0.0im
+  [247]  =  -0.00315367+0.0im
+  [250]  =  -0.0189365+0.0im
+  [251]  =  0.00824882+0.0im
+  [253]  =  -0.194269+0.0im
+  [256]  =  0.867035+0.0im</code></pre>
 </div>
 </div>
 <p>We can see that the truthful ground state we are preparing is indeed very complex.</p>
@@ -597,17 +597,17 @@ Quantum Object:   type=Ket()   dims=([2, 2, 2, 2, 2, 2, 2, 2], [1])   size=(256,
 <span id="cb14-7"><a href="#cb14-7"></a><span class="cf">end</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.25 ms/it)</span>
+<pre><span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.27 ms/it)</span>
 
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (84.49 μs/it)</span>
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (85.94 μs/it)</span>
 
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (84.51 μs/it)</span>
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (86.12 μs/it)</span>
 
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (84.85 μs/it)</span>
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (84.29 μs/it)</span>
 
 <span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.14 ms/it)</span>
 
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.20 ms/it)</span>
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.16 ms/it)</span>
 </pre>
 </div>
 </div>
@@ -656,18 +656,18 @@ Package information:
 ====================================
 Julia              Ver. 1.12.6
 QuantumToolbox     Ver. 0.47.2
-SciMLOperators     Ver. 1.22.1
+SciMLOperators     Ver. 1.23.0
 LinearSolve        Ver. 3.87.0
 OrdinaryDiffEqCore Ver. 4.5.0
 
 System information:
 ====================================
 OS       : Linux (x86_64-linux-gnu)
-CPU      : 4 × AMD EPYC 7763 64-Core Processor
-Memory   : 15.615 GB
+CPU      : 4 × INTEL(R) XEON(R) PLATINUM 8573C
+Memory   : 15.614 GB
 WORD_SIZE: 64
 LIBM     : libopenlibm
-LLVM     : libLLVM-18.1.7 (ORCJIT, znver3)
+LLVM     : libLLVM-18.1.7 (ORCJIT, sapphirerapids)
 BLAS     : libopenblas64_.so (ilp64)
 Threads  : 4 (on 4 virtual cores)
 

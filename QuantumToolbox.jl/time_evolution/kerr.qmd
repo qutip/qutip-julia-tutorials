@@ -202,5 +202,5 @@ As the animation progresses, you can observe how the initial Gaussian distributi
 
 ## Version Information
 ```{julia}
-QuantumToolbox.versioninfo()
+QuantumToolbox.versioninfo();
 ```

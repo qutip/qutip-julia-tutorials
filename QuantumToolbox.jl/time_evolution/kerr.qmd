@@ -144,7 +144,7 @@ ax1.title = L"N"
 display(fig1)
 
 fig2, ax2 = plot_Fock_dist(tlist, result.states)
-display(fig2)
+display(fig2);
 ```
 As expected, the photon number is conserved throughout. Either the expectation value or the Fock distribution are conserved in the nonlinear interaction.
 

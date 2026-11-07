@@ -2,22 +2,25 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.11.9">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Yi-Te Huang">
-<meta name="dcterms.date" content="2026-06-24">
+<meta name="dcterms.date" content="2026-11-07">
 
 <title>Electronic Current – Tutorials for Quantum Toolbox in Julia</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -92,18 +95,19 @@ div.csl-indent {
 <link href="../assets/favicon.ico" rel="icon">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-6d40f8af7092f34acea1908532066003.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-cac0433bb97fa58dc0fc6599c25c149a.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-6d40f8af7092f34acea1908532066003.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-c2b08e7e9e4d0725d7c99c9a799ba6e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b64bf133a05c9b35a1c1b0604a81005c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-c2b08e7e9e4d0725d7c99c9a799ba6e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-5bc65a31564587cedfeac77a5e781332.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-b90e5f4530b127d92965d84ef09e0c98.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-5bc65a31564587cedfeac77a5e781332.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-96f700e092a356b7f41d23e583bafb75.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-dcf742954d5ebb968173623917d7d889.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-96f700e092a356b7f41d23e583bafb75.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -133,7 +137,7 @@ div.csl-indent {
 }</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -165,7 +169,7 @@ window.Quarto = {
 <link rel="stylesheet" href="../styles.css">
 </head>
 
-<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-fixed quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -188,6 +192,7 @@ window.Quarto = {
       for (let i=0; i < toggles.length; i++) {
         const toggle = toggles[i];
         if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
           if (alternate) {
             toggle.classList.add("alternate");
           } else {
@@ -217,13 +222,19 @@ window.Quarto = {
       manageTransitions('#quarto-margin-sidebar .nav-link', true);
       // Switch the toggles
       setColorSchemeToggle(alternate)
-      // Hack to workaround the fact that safari doesn't
-      // properly recolor the scrollbar when toggling (#1455)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
       if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
         manageTransitions("body", false);
-        window.scrollTo(0, 1);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
         setTimeout(() => {
-          window.scrollTo(0, 0);
+          window.scrollTo(0, scrollY);
           manageTransitions("body", true);
         }, 40);
       }
@@ -317,6 +328,7 @@ window.Quarto = {
       // Read the current dark / light value
       let toAlternate = !hasAlternateSentinel();
       toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
       setStyleSentinel(toAlternate);
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
       window.dispatchEvent(new Event('resize'));
@@ -331,7 +343,7 @@ window.Quarto = {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark" aria-label="Site">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="../index.html" class="navbar-brand navbar-brand-logo">
@@ -342,8 +354,7 @@ window.Quarto = {
     <span class="navbar-title">Tutorials for Quantum Toolbox in Julia</span>
     </a>
   </div>
-            <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -364,8 +375,9 @@ window.Quarto = {
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
     <a href="https://github.com/qutip/qutip-julia-tutorials" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode" aria-label="Toggle dark mode"><i class="bi"></i></button>
 </div>
+            <div id="quarto-search" class="" title="Search"></div>
       </div> <!-- /container-fluid -->
     </nav>
 </header>
@@ -374,7 +386,7 @@ window.Quarto = {
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
     <h2 id="toc-title">On this page</h2>
    
   <ul>
@@ -392,7 +404,7 @@ window.Quarto = {
 <div class="toc-actions"><ul><li><a href="https://github.com/qutip/qutip-julia-tutorials/edit/main/HierarchicalEOM.jl/electronic_current.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/qutip/qutip-julia-tutorials/blob/main/HierarchicalEOM.jl/electronic_current.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/qutip/qutip-julia-tutorials/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="electronic_current.ipynb" download="electronic_current.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div><div class="quarto-other-links"><h2>Other Links</h2><ul><li><a href="https://mybinder.org/v2/gh/qutip/qutip-julia-tutorials/notebooks/?urlpath=lab/tree/HierarchicalEOM.jl/electronic_current.ipynb"><i class="bi bi-file-code"></i>Run notebook in Binder</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content" tabindex="-1">
 
 
 <header id="title-block-header" class="quarto-title-block default">
@@ -414,7 +426,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Last Update</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2026-06-24</p>
+      <p class="date">2026-11-07</p>
     </div>
   </div>
   
@@ -444,20 +456,20 @@ H_{\textrm{sf}} &amp;=\sum_{\alpha=\textrm{L},\textrm{R}}\sum_{k}g_{\alpha,k}c_{
 <p>Here, <span class="math inline">\(d\)</span> <span class="math inline">\((d^\dagger)\)</span> annihilates (creates) an electron in the system and <span class="math inline">\(\epsilon\)</span> is the energy of the electron. Furthermore, <span class="math inline">\(c_{\alpha,k}\)</span> <span class="math inline">\((c_{\alpha,k}^{\dagger})\)</span> annihilates (creates) an electron in the state <span class="math inline">\(k\)</span> (with energy <span class="math inline">\(\epsilon_{\alpha,k}\)</span>) of the <span class="math inline">\(\alpha\)</span>-th reservoir.</p>
 <p>Now, we need to build the system Hamiltonian and initial state with the package <a href="https://github.com/qutip/QuantumToolbox.jl"><code>QuantumToolbox.jl</code></a> to construct the operators.</p>
 <div id="2" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">using</span> <span class="bu">HierarchicalEOM</span>  <span class="co"># this automatically loads `QuantumToolbox`</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="im">using</span> <span class="bu">CairoMakie</span>       <span class="co"># for plotting results</span></span>
-<span id="cb1-3"><a href="#cb1-3"></a></span>
-<span id="cb1-4"><a href="#cb1-4"></a>CairoMakie.<span class="fu">activate!</span>(<span class="kw">type</span> <span class="op">=</span> <span class="st">"svg"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-label="1"></a><span class="im">using</span> <span class="bu">HierarchicalEOM</span>  <span class="co"># this automatically loads `QuantumToolbox`</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-label="2"></a><span class="im">using</span> <span class="bu">CairoMakie</span>       <span class="co"># for plotting results</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-label="3"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-label="4"></a>CairoMakie.<span class="fu">activate!</span>(<span class="kw">type</span> <span class="op">=</span> <span class="st">"svg"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="4" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1"></a>d <span class="op">=</span> <span class="fu">destroy</span>(<span class="fl">2</span>) <span class="co"># annihilation operator of the system electron</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a></span>
-<span id="cb2-3"><a href="#cb2-3"></a><span class="co"># The system Hamiltonian</span></span>
-<span id="cb2-4"><a href="#cb2-4"></a>ϵ <span class="op">=</span> <span class="fl">1.0</span> <span class="co"># site energy</span></span>
-<span id="cb2-5"><a href="#cb2-5"></a>Hsys <span class="op">=</span> ϵ <span class="op">*</span> d<span class="op">'</span> <span class="op">*</span> d</span>
-<span id="cb2-6"><a href="#cb2-6"></a></span>
-<span id="cb2-7"><a href="#cb2-7"></a><span class="co"># System initial state</span></span>
-<span id="cb2-8"><a href="#cb2-8"></a>ψ<span class="fl">0</span> <span class="op">=</span> <span class="fu">basis</span>(<span class="fl">2</span>, <span class="fl">0</span>);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-label="1"></a>d <span class="op">=</span> <span class="fu">destroy</span>(<span class="fl">2</span>) <span class="co"># annihilation operator of the system electron</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-label="2"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-label="3"></a><span class="co"># The system Hamiltonian</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-label="4"></a>ϵ <span class="op">=</span> <span class="fl">1.0</span> <span class="co"># site energy</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-label="5"></a>Hsys <span class="op">=</span> ϵ <span class="op">*</span> d<span class="op">'</span> <span class="op">*</span> d</span>
+<span id="cb2-6"><a href="#cb2-6" aria-label="6"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-label="7"></a><span class="co"># System initial state</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-label="8"></a>ψ<span class="fl">0</span> <span class="op">=</span> <span class="fu">basis</span>(<span class="fl">2</span>, <span class="fl">0</span>);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="construct-bath-objects" class="level2">
@@ -471,15 +483,15 @@ H_{\textrm{sf}} &amp;=\sum_{\alpha=\textrm{L},\textrm{R}}\sum_{k}g_{\alpha,k}c_{
 <li>the total number of exponentials for the reservoir <span class="math inline">\(2(N + 1)\)</span></li>
 </ul>
 <div id="6" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1"></a>Γ <span class="op">=</span> <span class="fl">0.01</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a>W <span class="op">=</span> <span class="fl">1</span></span>
-<span id="cb3-3"><a href="#cb3-3"></a>kT <span class="op">=</span> <span class="fl">0.025851991</span></span>
-<span id="cb3-4"><a href="#cb3-4"></a>μL <span class="op">=</span>  <span class="fl">1.0</span> <span class="co"># Left  bath</span></span>
-<span id="cb3-5"><a href="#cb3-5"></a>μR <span class="op">=</span> <span class="op">-</span><span class="fl">1.0</span> <span class="co"># Right bath</span></span>
-<span id="cb3-6"><a href="#cb3-6"></a>N <span class="op">=</span> <span class="fl">2</span></span>
-<span id="cb3-7"><a href="#cb3-7"></a>bath_L <span class="op">=</span> <span class="fu">Fermion_Lorentz_Pade</span>(d, Γ, μL, W, kT, N)</span>
-<span id="cb3-8"><a href="#cb3-8"></a>bath_R <span class="op">=</span> <span class="fu">Fermion_Lorentz_Pade</span>(d, Γ, μR, W, kT, N)</span>
-<span id="cb3-9"><a href="#cb3-9"></a>baths <span class="op">=</span> [bath_L, bath_R]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-label="1"></a>Γ <span class="op">=</span> <span class="fl">0.01</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-label="2"></a>W <span class="op">=</span> <span class="fl">1</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-label="3"></a>kT <span class="op">=</span> <span class="fl">0.025851991</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-label="4"></a>μL <span class="op">=</span>  <span class="fl">1.0</span> <span class="co"># Left  bath</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-label="5"></a>μR <span class="op">=</span> <span class="op">-</span><span class="fl">1.0</span> <span class="co"># Right bath</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-label="6"></a>N <span class="op">=</span> <span class="fl">2</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-label="7"></a>bath_L <span class="op">=</span> <span class="fu">Fermion_Lorentz_Pade</span>(d, Γ, μL, W, kT, N)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-label="8"></a>bath_R <span class="op">=</span> <span class="fu">Fermion_Lorentz_Pade</span>(d, Γ, μR, W, kT, N)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-label="9"></a>baths <span class="op">=</span> [bath_L, bath_R]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>2-element Vector{FermionBath}:
  HierarchicalEOM.FermionBath object with 6 terms.
@@ -491,14 +503,14 @@ H_{\textrm{sf}} &amp;=\sum_{\alpha=\textrm{L},\textrm{R}}\sum_{k}g_{\alpha,k}c_{
 <section id="construct-heomls-matrix" class="level2">
 <h2 class="anchored" data-anchor-id="construct-heomls-matrix">Construct HEOMLS matrix</h2>
 <div id="8" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1"></a>tier <span class="op">=</span> <span class="fl">5</span></span>
-<span id="cb5-2"><a href="#cb5-2"></a>M <span class="op">=</span> <span class="fu">M_Fermion</span>(Hsys, tier, baths)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-label="1"></a>tier <span class="op">=</span> <span class="fl">5</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-label="2"></a>M <span class="op">=</span> <span class="fu">M_Fermion</span>(Hsys, tier, baths)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
 <pre>Preparing HEOM Liouvillian sparsity structure...
 
-<span class="ansi-green-fg">[M_Fermion]   0%|                         |  ETA: 0:01:37 (61.05 ms/it)</span>
-<span class="ansi-green-fg">[M_Fermion] 100%|█████████████████████████| Time: 0:00:00 ( 0.27 ms/it)</span>
+<span class="ansi-green-fg">[M_Fermion]   0%|                         |  ETA: 0:06:24 ( 0.24  s/it)</span>
+<span class="ansi-green-fg">[M_Fermion] 100%|█████████████████████████| Time: 0:00:00 ( 0.40 ms/it)</span>
 [DONE]
 Combining terms...[DONE]
 Evaluating lazy operations...[DONE]
@@ -517,12 +529,12 @@ MatrixOperator(6344 × 6344)</code></pre>
 <section id="solve-time-evolution-of-ados" class="level2">
 <h2 class="anchored" data-anchor-id="solve-time-evolution-of-ados">Solve time evolution of ADOs</h2>
 <div id="10" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1"></a>tlist <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">0.5</span><span class="op">:</span><span class="fl">100</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a>ados_evolution <span class="op">=</span> <span class="fu">HEOMsolve</span>(M, ψ<span class="fl">0</span>, tlist).ados</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-label="1"></a>tlist <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">0.5</span><span class="op">:</span><span class="fl">100</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-label="2"></a>ados_evolution <span class="op">=</span> <span class="fu">HEOMsolve</span>(M, ψ<span class="fl">0</span>, tlist).ados</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[HEOMsolve (ODE)]  72%|█████████████▊     |  ETA: 0:00:00 ( 0.69 ms/it)</span>
-<span class="ansi-green-fg">[HEOMsolve (ODE)] 100%|███████████████████| Time: 0:00:00 ( 0.67 ms/it)</span>
+<pre><span class="ansi-green-fg">[HEOMsolve (ODE)]   1%|▎                  |  ETA: 0:03:26 ( 1.03  s/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)] 100%|███████████████████| Time: 0:00:02 (10.62 ms/it)</span>
 </pre>
 </div>
 </div>
@@ -572,7 +584,7 @@ MatrixOperator(6344 × 6344)</code></pre>
 <section id="solve-stationary-state-of-ados" class="level2">
 <h2 class="anchored" data-anchor-id="solve-stationary-state-of-ados">Solve stationary state of ADOs</h2>
 <div id="12" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1"></a>ados_steady <span class="op">=</span> <span class="fu">steadystate</span>(M)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-label="1"></a>ados_steady <span class="op">=</span> <span class="fu">steadystate</span>(M)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Solving steady state for ADOs by linear-solve method...[DONE]</code></pre>
 </div>
@@ -590,39 +602,39 @@ MatrixOperator(6344 × 6344)</code></pre>
 <p>where <span class="math inline">\(e\)</span> represents the value of the elementary charge, and <span class="math inline">\(\mathcal{N}_\alpha=\sum_k c^\dagger_{\alpha,k}c_{\alpha,k}\)</span> is the occupation number operator for the <span class="math inline">\(\alpha\)</span>-fermionic bath.</p>
 <p>Given an ADOs, we provide a function which calculates the current from the <span class="math inline">\(\alpha\)</span>-fermionic bath into the system with the help of <a href="https://qutip.org/HierarchicalEOM.jl/stable/hierarchy_dictionary/#doc-Hierarchy-Dictionary">Hierarchy Dictionary</a>.</p>
 <div id="14" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1"></a><span class="co"># `bathIdx`:  </span></span>
-<span id="cb12-2"><a href="#cb12-2"></a><span class="co"># - 1 means 1st bath (bath_L)</span></span>
-<span id="cb12-3"><a href="#cb12-3"></a><span class="co"># - 2 means 2nd bath (bath_R)</span></span>
-<span id="cb12-4"><a href="#cb12-4"></a><span class="kw">function</span> <span class="fu">Ic</span>(ados, M<span class="op">::</span><span class="dt">M_Fermion</span>, bathIdx<span class="op">::</span><span class="dt">Int</span>)</span>
-<span id="cb12-5"><a href="#cb12-5"></a>    <span class="co"># the hierarchy dictionary</span></span>
-<span id="cb12-6"><a href="#cb12-6"></a>    HDict <span class="op">=</span> M.hierarchy</span>
-<span id="cb12-7"><a href="#cb12-7"></a></span>
-<span id="cb12-8"><a href="#cb12-8"></a>    <span class="co"># we need all the indices of ADOs for the first level</span></span>
-<span id="cb12-9"><a href="#cb12-9"></a>    idx_list <span class="op">=</span> HDict.lvl2idx[<span class="fl">1</span>]</span>
-<span id="cb12-10"><a href="#cb12-10"></a>    I <span class="op">=</span> <span class="fl">0.0im</span></span>
-<span id="cb12-11"><a href="#cb12-11"></a>    <span class="cf">for</span> idx <span class="kw">in</span> idx_list</span>
-<span id="cb12-12"><a href="#cb12-12"></a>        ρ<span class="fl">1</span> <span class="op">=</span> ados[idx]  <span class="co"># 1st-level ADO</span></span>
-<span id="cb12-13"><a href="#cb12-13"></a></span>
-<span id="cb12-14"><a href="#cb12-14"></a>        <span class="co"># find the corresponding bath index (α) and exponent term index (k)</span></span>
-<span id="cb12-15"><a href="#cb12-15"></a>        nvec <span class="op">=</span> HDict.idx2nvec[idx]</span>
-<span id="cb12-16"><a href="#cb12-16"></a>        <span class="cf">for</span> (α, k, _) <span class="kw">in</span> <span class="fu">getIndexEnsemble</span>(nvec, HDict.bathPtr)</span>
-<span id="cb12-17"><a href="#cb12-17"></a>            <span class="cf">if</span> α <span class="op">==</span> bathIdx</span>
-<span id="cb12-18"><a href="#cb12-18"></a>                exponent <span class="op">=</span> M.bath[α][k]</span>
-<span id="cb12-19"><a href="#cb12-19"></a>                <span class="cf">if</span> exponent.types <span class="op">==</span> <span class="st">"fA"</span>     <span class="co"># fermion-absorption</span></span>
-<span id="cb12-20"><a href="#cb12-20"></a>                    I <span class="op">+=</span> <span class="fu">tr</span>(exponent.op<span class="op">'</span> <span class="op">*</span> ρ<span class="fl">1</span>)</span>
-<span id="cb12-21"><a href="#cb12-21"></a>                <span class="cf">elseif</span> exponent.types <span class="op">==</span> <span class="st">"fE"</span> <span class="co"># fermion-emission</span></span>
-<span id="cb12-22"><a href="#cb12-22"></a>                    I <span class="op">-=</span> <span class="fu">tr</span>(exponent.op<span class="op">'</span> <span class="op">*</span> ρ<span class="fl">1</span>)</span>
-<span id="cb12-23"><a href="#cb12-23"></a>                <span class="cf">end</span></span>
-<span id="cb12-24"><a href="#cb12-24"></a>                <span class="cf">break</span></span>
-<span id="cb12-25"><a href="#cb12-25"></a>            <span class="cf">end</span></span>
-<span id="cb12-26"><a href="#cb12-26"></a>        <span class="cf">end</span></span>
-<span id="cb12-27"><a href="#cb12-27"></a>    <span class="cf">end</span></span>
-<span id="cb12-28"><a href="#cb12-28"></a></span>
-<span id="cb12-29"><a href="#cb12-29"></a>    eV_to_Joule <span class="op">=</span> <span class="fl">1.60218E-19</span>  <span class="co"># unit conversion</span></span>
-<span id="cb12-30"><a href="#cb12-30"></a></span>
-<span id="cb12-31"><a href="#cb12-31"></a>    <span class="co"># (e / ħ) * I  [change unit to μA] </span></span>
-<span id="cb12-32"><a href="#cb12-32"></a>    <span class="cf">return</span> <span class="fl">1.519270639695384E15</span> <span class="op">*</span> <span class="fu">real</span>(<span class="fl">1im</span> <span class="op">*</span> I) <span class="op">*</span> eV_to_Joule <span class="op">*</span> <span class="fl">1E6</span></span>
-<span id="cb12-33"><a href="#cb12-33"></a><span class="kw">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-label="1"></a><span class="co"># `bathIdx`:  </span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-label="2"></a><span class="co"># - 1 means 1st bath (bath_L)</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-label="3"></a><span class="co"># - 2 means 2nd bath (bath_R)</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-label="4"></a><span class="kw">function</span> <span class="fu">Ic</span>(ados, M<span class="op">::</span><span class="dt">M_Fermion</span>, bathIdx<span class="op">::</span><span class="dt">Int</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-label="5"></a>    <span class="co"># the hierarchy dictionary</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-label="6"></a>    HDict <span class="op">=</span> M.hierarchy</span>
+<span id="cb12-7"><a href="#cb12-7" aria-label="7"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-label="8"></a>    <span class="co"># we need all the indices of ADOs for the first level</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-label="9"></a>    idx_list <span class="op">=</span> HDict.lvl2idx[<span class="fl">1</span>]</span>
+<span id="cb12-10"><a href="#cb12-10" aria-label="10"></a>    I <span class="op">=</span> <span class="fl">0.0im</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-label="11"></a>    <span class="cf">for</span> idx <span class="kw">in</span> idx_list</span>
+<span id="cb12-12"><a href="#cb12-12" aria-label="12"></a>        ρ<span class="fl">1</span> <span class="op">=</span> ados[idx]  <span class="co"># 1st-level ADO</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-label="13"></a></span>
+<span id="cb12-14"><a href="#cb12-14" aria-label="14"></a>        <span class="co"># find the corresponding bath index (α) and exponent term index (k)</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-label="15"></a>        nvec <span class="op">=</span> HDict.idx2nvec[idx]</span>
+<span id="cb12-16"><a href="#cb12-16" aria-label="16"></a>        <span class="cf">for</span> (α, k, _) <span class="kw">in</span> <span class="fu">getIndexEnsemble</span>(nvec, HDict.bathPtr)</span>
+<span id="cb12-17"><a href="#cb12-17" aria-label="17"></a>            <span class="cf">if</span> α <span class="op">==</span> bathIdx</span>
+<span id="cb12-18"><a href="#cb12-18" aria-label="18"></a>                exponent <span class="op">=</span> M.bath[α][k]</span>
+<span id="cb12-19"><a href="#cb12-19" aria-label="19"></a>                <span class="cf">if</span> exponent.types <span class="op">==</span> <span class="st">"fA"</span>     <span class="co"># fermion-absorption</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-label="20"></a>                    I <span class="op">+=</span> <span class="fu">tr</span>(exponent.op<span class="op">'</span> <span class="op">*</span> ρ<span class="fl">1</span>)</span>
+<span id="cb12-21"><a href="#cb12-21" aria-label="21"></a>                <span class="cf">elseif</span> exponent.types <span class="op">==</span> <span class="st">"fE"</span> <span class="co"># fermion-emission</span></span>
+<span id="cb12-22"><a href="#cb12-22" aria-label="22"></a>                    I <span class="op">-=</span> <span class="fu">tr</span>(exponent.op<span class="op">'</span> <span class="op">*</span> ρ<span class="fl">1</span>)</span>
+<span id="cb12-23"><a href="#cb12-23" aria-label="23"></a>                <span class="cf">end</span></span>
+<span id="cb12-24"><a href="#cb12-24" aria-label="24"></a>                <span class="cf">break</span></span>
+<span id="cb12-25"><a href="#cb12-25" aria-label="25"></a>            <span class="cf">end</span></span>
+<span id="cb12-26"><a href="#cb12-26" aria-label="26"></a>        <span class="cf">end</span></span>
+<span id="cb12-27"><a href="#cb12-27" aria-label="27"></a>    <span class="cf">end</span></span>
+<span id="cb12-28"><a href="#cb12-28" aria-label="28"></a></span>
+<span id="cb12-29"><a href="#cb12-29" aria-label="29"></a>    eV_to_Joule <span class="op">=</span> <span class="fl">1.60218E-19</span>  <span class="co"># unit conversion</span></span>
+<span id="cb12-30"><a href="#cb12-30" aria-label="30"></a></span>
+<span id="cb12-31"><a href="#cb12-31" aria-label="31"></a>    <span class="co"># (e / ħ) * I  [change unit to μA] </span></span>
+<span id="cb12-32"><a href="#cb12-32" aria-label="32"></a>    <span class="cf">return</span> <span class="fl">1.519270639695384E15</span> <span class="op">*</span> <span class="fu">real</span>(<span class="fl">1im</span> <span class="op">*</span> I) <span class="op">*</span> eV_to_Joule <span class="op">*</span> <span class="fl">1E6</span></span>
+<span id="cb12-33"><a href="#cb12-33" aria-label="33"></a><span class="kw">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>Ic (generic function with 1 method)</code></pre>
 </div>
@@ -631,55 +643,55 @@ MatrixOperator(6344 × 6344)</code></pre>
 <section id="steady-current" class="level2">
 <h2 class="anchored" data-anchor-id="steady-current">steady current</h2>
 <div id="16" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1"></a>Is_L <span class="op">=</span> <span class="fu">ones</span>(<span class="fu">length</span>(tlist)) <span class="op">.*</span> <span class="fu">Ic</span>(ados_steady, M, <span class="fl">1</span>)</span>
-<span id="cb14-2"><a href="#cb14-2"></a>Is_R <span class="op">=</span> <span class="fu">ones</span>(<span class="fu">length</span>(tlist)) <span class="op">.*</span> <span class="fu">Ic</span>(ados_steady, M, <span class="fl">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-label="1"></a>Is_L <span class="op">=</span> <span class="fu">ones</span>(<span class="fu">length</span>(tlist)) <span class="op">.*</span> <span class="fu">Ic</span>(ados_steady, M, <span class="fl">1</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-label="2"></a>Is_R <span class="op">=</span> <span class="fu">ones</span>(<span class="fu">length</span>(tlist)) <span class="op">.*</span> <span class="fu">Ic</span>(ados_steady, M, <span class="fl">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>201-element Vector{Float64}:
- -0.04632854328418656
- -0.04632854328418656
- -0.04632854328418656
- -0.04632854328418656
- -0.04632854328418656
- -0.04632854328418656
- -0.04632854328418656
- -0.04632854328418656
- -0.04632854328418656
- -0.04632854328418656
+ -0.046328543284186986
+ -0.046328543284186986
+ -0.046328543284186986
+ -0.046328543284186986
+ -0.046328543284186986
+ -0.046328543284186986
+ -0.046328543284186986
+ -0.046328543284186986
+ -0.046328543284186986
+ -0.046328543284186986
   ⋮
- -0.04632854328418656
- -0.04632854328418656
- -0.04632854328418656
- -0.04632854328418656
- -0.04632854328418656
- -0.04632854328418656
- -0.04632854328418656
- -0.04632854328418656
- -0.04632854328418656</code></pre>
+ -0.046328543284186986
+ -0.046328543284186986
+ -0.046328543284186986
+ -0.046328543284186986
+ -0.046328543284186986
+ -0.046328543284186986
+ -0.046328543284186986
+ -0.046328543284186986
+ -0.046328543284186986</code></pre>
 </div>
 </div>
 </section>
 <section id="time-evolution-current" class="level2">
 <h2 class="anchored" data-anchor-id="time-evolution-current">time evolution current</h2>
 <div id="18" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1"></a>Ie_L <span class="op">=</span> []</span>
-<span id="cb16-2"><a href="#cb16-2"></a>Ie_R <span class="op">=</span> []</span>
-<span id="cb16-3"><a href="#cb16-3"></a><span class="cf">for</span> ados <span class="kw">in</span> ados_evolution</span>
-<span id="cb16-4"><a href="#cb16-4"></a>    <span class="fu">push!</span>(Ie_L, <span class="fu">Ic</span>(ados, M, <span class="fl">1</span>))</span>
-<span id="cb16-5"><a href="#cb16-5"></a>    <span class="fu">push!</span>(Ie_R, <span class="fu">Ic</span>(ados, M, <span class="fl">2</span>))</span>
-<span id="cb16-6"><a href="#cb16-6"></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" aria-label="1"></a>Ie_L <span class="op">=</span> []</span>
+<span id="cb16-2"><a href="#cb16-2" aria-label="2"></a>Ie_R <span class="op">=</span> []</span>
+<span id="cb16-3"><a href="#cb16-3" aria-label="3"></a><span class="cf">for</span> ados <span class="kw">in</span> ados_evolution</span>
+<span id="cb16-4"><a href="#cb16-4" aria-label="4"></a>    <span class="fu">push!</span>(Ie_L, <span class="fu">Ic</span>(ados, M, <span class="fl">1</span>))</span>
+<span id="cb16-5"><a href="#cb16-5" aria-label="5"></a>    <span class="fu">push!</span>(Ie_R, <span class="fu">Ic</span>(ados, M, <span class="fl">2</span>))</span>
+<span id="cb16-6"><a href="#cb16-6" aria-label="6"></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>plot the result</p>
 <div id="20" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1"></a>fig <span class="op">=</span> <span class="fu">Figure</span>()</span>
-<span id="cb17-2"><a href="#cb17-2"></a>ax <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">1</span>, <span class="fl">1</span>], xlabel <span class="op">=</span> <span class="st">"time"</span>, ylabel <span class="op">=</span> <span class="st">"Current"</span>)</span>
-<span id="cb17-3"><a href="#cb17-3"></a><span class="fu">lines!</span>(ax, tlist, Ie_L, label <span class="op">=</span> <span class="st">"Bath L"</span>, color <span class="op">=</span> <span class="op">:</span>blue, linestyle <span class="op">=</span> <span class="op">:</span>solid)</span>
-<span id="cb17-4"><a href="#cb17-4"></a><span class="fu">lines!</span>(ax, tlist, Ie_R, label <span class="op">=</span> <span class="st">"Bath R"</span>, color <span class="op">=</span> <span class="op">:</span>red, linestyle <span class="op">=</span> <span class="op">:</span>solid)</span>
-<span id="cb17-5"><a href="#cb17-5"></a><span class="fu">lines!</span>(ax, tlist, Is_L, label <span class="op">=</span> <span class="st">"Bath L (Steady State)"</span>, color <span class="op">=</span> <span class="op">:</span>blue, linestyle <span class="op">=</span> <span class="op">:</span>dash)</span>
-<span id="cb17-6"><a href="#cb17-6"></a><span class="fu">lines!</span>(ax, tlist, Is_R, label <span class="op">=</span> <span class="st">"Bath R (Steady State)"</span>, color <span class="op">=</span> <span class="op">:</span>red, linestyle <span class="op">=</span> <span class="op">:</span>dash)</span>
-<span id="cb17-7"><a href="#cb17-7"></a></span>
-<span id="cb17-8"><a href="#cb17-8"></a><span class="fu">axislegend</span>(ax, position <span class="op">=</span> <span class="op">:</span>rt)</span>
-<span id="cb17-9"><a href="#cb17-9"></a></span>
-<span id="cb17-10"><a href="#cb17-10"></a>fig</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" aria-label="1"></a>fig <span class="op">=</span> <span class="fu">Figure</span>()</span>
+<span id="cb17-2"><a href="#cb17-2" aria-label="2"></a>ax <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">1</span>, <span class="fl">1</span>], xlabel <span class="op">=</span> <span class="st">"time"</span>, ylabel <span class="op">=</span> <span class="st">"Current"</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-label="3"></a><span class="fu">lines!</span>(ax, tlist, Ie_L, label <span class="op">=</span> <span class="st">"Bath L"</span>, color <span class="op">=</span> <span class="op">:</span>blue, linestyle <span class="op">=</span> <span class="op">:</span>solid)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-label="4"></a><span class="fu">lines!</span>(ax, tlist, Ie_R, label <span class="op">=</span> <span class="st">"Bath R"</span>, color <span class="op">=</span> <span class="op">:</span>red, linestyle <span class="op">=</span> <span class="op">:</span>solid)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-label="5"></a><span class="fu">lines!</span>(ax, tlist, Is_L, label <span class="op">=</span> <span class="st">"Bath L (Steady State)"</span>, color <span class="op">=</span> <span class="op">:</span>blue, linestyle <span class="op">=</span> <span class="op">:</span>dash)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-label="6"></a><span class="fu">lines!</span>(ax, tlist, Is_R, label <span class="op">=</span> <span class="st">"Bath R (Steady State)"</span>, color <span class="op">=</span> <span class="op">:</span>red, linestyle <span class="op">=</span> <span class="op">:</span>dash)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-label="7"></a></span>
+<span id="cb17-8"><a href="#cb17-8" aria-label="8"></a><span class="fu">axislegend</span>(ax, position <span class="op">=</span> <span class="op">:</span>rt)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-label="9"></a></span>
+<span id="cb17-10"><a href="#cb17-10" aria-label="10"></a>fig</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div>
 <figure class="figure">
@@ -692,7 +704,7 @@ MatrixOperator(6344 × 6344)</code></pre>
 <section id="version-information" class="level2">
 <h2 class="anchored" data-anchor-id="version-information">Version Information</h2>
 <div id="22" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1"></a>HierarchicalEOM.<span class="fu">versioninfo</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1" aria-label="1"></a>HierarchicalEOM.<span class="fu">versioninfo</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
 <pre><span style="font-weight:bold;color:rgb(0,135,0)">                                   __</span>
@@ -715,21 +727,21 @@ Other developers:
 
 Package information:
 ====================================
-Julia              Ver. 1.12.6
+Julia              Ver. 1.13.3
 HierarchicalEOM    Ver. 2.15.1
-QuantumToolbox     Ver. 0.47.2
-SciMLOperators     Ver. 1.24.3
+QuantumToolbox     Ver. 0.47.3
+SciMLOperators     Ver. 1.30.4
 LinearSolve        Ver. 3.87.0
-OrdinaryDiffEqCore Ver. 4.7.1
+OrdinaryDiffEqCore Ver. 4.14.1
 
 System information:
 ====================================
 OS       : Linux (x86_64-linux-gnu)
-CPU      : 4 × AMD EPYC 9V74 80-Core Processor
-Memory   : 15.615 GB
+CPU      : 4 × AMD EPYC 9V45 96-Core Processor
+Memory   : 15.609 GB
 WORD_SIZE: 64
 LIBM     : libopenlibm
-LLVM     : libLLVM-18.1.7 (ORCJIT, znver4)
+LLVM     : libLLVM-20.1.8 (ORCJIT, znver5)
 BLAS     : libopenblas64_.so (ilp64)
 Threads  : 4 (on 4 virtual cores)
 
@@ -756,15 +768,50 @@ Huang, Yi-Te, Po-Chen Kuo, Neill Lambert, et al. 2023. <span>“An Efficient <sp
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-      const a = window.document.createElement('a');
-      a.classList.add('top-right');
-      a.classList.add('quarto-color-scheme-toggle');
-      a.href = "";
-      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Toggle dark mode");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
       const i = window.document.createElement("i");
       i.classList.add('bi');
-      a.appendChild(i);
-      window.document.body.appendChild(a);
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Toggle dark mode");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
     }
     setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
@@ -843,7 +890,8 @@ Huang, Yi-Te, Po-Chen Kuo, Neill Lambert, et al. 2023. <span>“An Efficient <sp
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
       // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
       for (var i=0; i<links.length; i++) {
         const link = links[i];
         if (!isInternal(link.href)) {
@@ -852,8 +900,69 @@ Huang, Yi-Te, Po-Chen Kuo, Neill Lambert, et al. 2023. <span>“An Efficient <sp
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+          if (!link.classList.contains('no-external-icon')) {
+          }
         }
       }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
       const config = {
         allowHTML: true,
@@ -867,6 +976,7 @@ Huang, Yi-Te, Po-Chen Kuo, Neill Lambert, et al. 2023. <span>“An Efficient <sp
         interactiveBorder: 10,
         theme: 'quarto',
         placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
       };
       if (contentFn) {
         config.content = contentFn;
@@ -1029,44 +1139,54 @@ Huang, Yi-Te, Po-Chen Kuo, Neill Lambert, et al. 2023. <span>“An Efficient <sp
           const lineIds = lines.map((line) => {
             return targetCell + "-" + line;
           })
-          let top = null;
-          let height = null;
-          let parent = null;
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
           if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
             }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
             }
+            placeBand(gutterDiv, el, lastEl);
             selectedAnnoteEl = annoteEl;
           }
         };
@@ -1164,6 +1284,9 @@ Huang, Yi-Te, Po-Chen Kuo, Neill Lambert, et al. 2023. <span>“An Efficient <sp
       }
     }
   });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
   </script>
 </div> <!-- /content -->
 <footer class="footer">

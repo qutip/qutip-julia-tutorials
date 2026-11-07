@@ -2,22 +2,25 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.11.9">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Li-Xun Cai">
-<meta name="dcterms.date" content="2026-06-24">
+<meta name="dcterms.date" content="2026-11-07">
 
 <title>Resonance fluorescence – Tutorials for Quantum Toolbox in Julia</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -73,18 +76,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../assets/favicon.ico" rel="icon">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-6d40f8af7092f34acea1908532066003.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-cac0433bb97fa58dc0fc6599c25c149a.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-6d40f8af7092f34acea1908532066003.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-c2b08e7e9e4d0725d7c99c9a799ba6e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-b64bf133a05c9b35a1c1b0604a81005c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-c2b08e7e9e4d0725d7c99c9a799ba6e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-5bc65a31564587cedfeac77a5e781332.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-b90e5f4530b127d92965d84ef09e0c98.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-5bc65a31564587cedfeac77a5e781332.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-96f700e092a356b7f41d23e583bafb75.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-dcf742954d5ebb968173623917d7d889.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-96f700e092a356b7f41d23e583bafb75.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -114,7 +118,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -146,7 +150,7 @@ window.Quarto = {
 <link rel="stylesheet" href="../../styles.css">
 </head>
 
-<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-fixed quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -169,6 +173,7 @@ window.Quarto = {
       for (let i=0; i < toggles.length; i++) {
         const toggle = toggles[i];
         if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
           if (alternate) {
             toggle.classList.add("alternate");
           } else {
@@ -198,13 +203,19 @@ window.Quarto = {
       manageTransitions('#quarto-margin-sidebar .nav-link', true);
       // Switch the toggles
       setColorSchemeToggle(alternate)
-      // Hack to workaround the fact that safari doesn't
-      // properly recolor the scrollbar when toggling (#1455)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
       if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
         manageTransitions("body", false);
-        window.scrollTo(0, 1);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
         setTimeout(() => {
-          window.scrollTo(0, 0);
+          window.scrollTo(0, scrollY);
           manageTransitions("body", true);
         }, 40);
       }
@@ -298,6 +309,7 @@ window.Quarto = {
       // Read the current dark / light value
       let toAlternate = !hasAlternateSentinel();
       toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
       setStyleSentinel(toAlternate);
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
       window.dispatchEvent(new Event('resize'));
@@ -312,7 +324,7 @@ window.Quarto = {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark" aria-label="Site">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="../../index.html" class="navbar-brand navbar-brand-logo">
@@ -323,8 +335,7 @@ window.Quarto = {
     <span class="navbar-title">Tutorials for Quantum Toolbox in Julia</span>
     </a>
   </div>
-            <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -345,8 +356,9 @@ window.Quarto = {
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
     <a href="https://github.com/qutip/qutip-julia-tutorials" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode" aria-label="Toggle dark mode"><i class="bi"></i></button>
 </div>
+            <div id="quarto-search" class="" title="Search"></div>
       </div> <!-- /container-fluid -->
     </nav>
 </header>
@@ -355,7 +367,7 @@ window.Quarto = {
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
     <h2 id="toc-title">On this page</h2>
    
   <ul>
@@ -369,7 +381,7 @@ window.Quarto = {
 <div class="toc-actions"><ul><li><a href="https://github.com/qutip/qutip-julia-tutorials/edit/main/QuantumToolbox.jl/time_evolution/fluorescence.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/qutip/qutip-julia-tutorials/blob/main/QuantumToolbox.jl/time_evolution/fluorescence.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/qutip/qutip-julia-tutorials/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="fluorescence.ipynb" download="fluorescence.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div><div class="quarto-other-links"><h2>Other Links</h2><ul><li><a href="https://mybinder.org/v2/gh/qutip/qutip-julia-tutorials/notebooks/?urlpath=lab/tree/QuantumToolbox.jl/time_evolution/fluorescence.ipynb"><i class="bi bi-file-code"></i>Run notebook in Binder</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content" tabindex="-1">
 
 
 <header id="title-block-header" class="quarto-title-block default">
@@ -391,7 +403,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Last Update</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2026-06-24</p>
+      <p class="date">2026-11-07</p>
     </div>
   </div>
   
@@ -467,47 +479,47 @@ H^\text{rot} \simeq \frac{\omega_a}{2} \hat{\sigma}_z + \frac{\Omega}{2} \hat{\s
 <!-- import QuantumToolbox: QuantumObjectEvolution, n_thermal, liouvillian, sigmap, sigmam, sigmax, 
     sigmay, sigmaz, basis, mesolve, correlation_2op_1t, spectrum_correlation_fft -->
 <div id="2" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">using</span> <span class="bu">QuantumToolbox</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="im">using</span> <span class="bu">CairoMakie</span></span>
-<span id="cb1-3"><a href="#cb1-3"></a></span>
-<span id="cb1-4"><a href="#cb1-4"></a>CairoMakie.<span class="fu">activate!</span>(<span class="kw">type</span> <span class="op">=</span> <span class="st">"svg"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-label="1"></a><span class="im">using</span> <span class="bu">QuantumToolbox</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-label="2"></a><span class="im">using</span> <span class="bu">CairoMakie</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-label="3"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-label="4"></a>CairoMakie.<span class="fu">activate!</span>(<span class="kw">type</span> <span class="op">=</span> <span class="st">"svg"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="4" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1"></a>Ω <span class="op">=</span> <span class="fl">1</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a>γ<span class="fl">0</span> <span class="op">=</span> <span class="fl">0.05</span> <span class="op">*</span> Ω</span>
-<span id="cb2-3"><a href="#cb2-3"></a>KT <span class="op">=</span> <span class="fl">0</span> <span class="co"># thermal field at zero temperature  </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-label="1"></a>Ω <span class="op">=</span> <span class="fl">1</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-label="2"></a>γ<span class="fl">0</span> <span class="op">=</span> <span class="fl">0.05</span> <span class="op">*</span> Ω</span>
+<span id="cb2-3"><a href="#cb2-3" aria-label="3"></a>KT <span class="op">=</span> <span class="fl">0</span> <span class="co"># thermal field at zero temperature  </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>0</code></pre>
 </div>
 </div>
 <p>We define a function that returns the Liouvillian <code>SuperOperator</code> of the system.</p>
 <div id="6" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">function</span> <span class="fu">liouvillian_spec</span>(_Ω, _γ<span class="fl">0</span>, _KT)</span>
-<span id="cb4-2"><a href="#cb4-2"></a>    H <span class="op">=</span> _Ω<span class="op">/</span><span class="fl">2</span> <span class="op">*</span> <span class="fu">sigmax</span>()</span>
-<span id="cb4-3"><a href="#cb4-3"></a>    c_ops <span class="op">=</span> [</span>
-<span id="cb4-4"><a href="#cb4-4"></a>        <span class="fu">√</span>(_γ<span class="fl">0</span> <span class="op">*</span> <span class="fu">n_thermal</span>(_Ω, _KT)) <span class="op">*</span> <span class="fu">sigmap</span>(),</span>
-<span id="cb4-5"><a href="#cb4-5"></a>        <span class="fu">√</span>(_γ<span class="fl">0</span> <span class="op">*</span> (<span class="fl">1</span> <span class="op">+</span> <span class="fu">n_thermal</span>(_Ω, _KT))) <span class="op">*</span> <span class="fu">sigmam</span>(),</span>
-<span id="cb4-6"><a href="#cb4-6"></a>    ]</span>
-<span id="cb4-7"><a href="#cb4-7"></a>    <span class="cf">return</span> <span class="fu">liouvillian</span>(H, c_ops)    </span>
-<span id="cb4-8"><a href="#cb4-8"></a><span class="kw">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-label="1"></a><span class="kw">function</span> <span class="fu">liouvillian_spec</span>(_Ω, _γ<span class="fl">0</span>, _KT)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-label="2"></a>    H <span class="op">=</span> _Ω<span class="op">/</span><span class="fl">2</span> <span class="op">*</span> <span class="fu">sigmax</span>()</span>
+<span id="cb4-3"><a href="#cb4-3" aria-label="3"></a>    c_ops <span class="op">=</span> [</span>
+<span id="cb4-4"><a href="#cb4-4" aria-label="4"></a>        <span class="fu">√</span>(_γ<span class="fl">0</span> <span class="op">*</span> <span class="fu">n_thermal</span>(_Ω, _KT)) <span class="op">*</span> <span class="fu">sigmap</span>(),</span>
+<span id="cb4-5"><a href="#cb4-5" aria-label="5"></a>        <span class="fu">√</span>(_γ<span class="fl">0</span> <span class="op">*</span> (<span class="fl">1</span> <span class="op">+</span> <span class="fu">n_thermal</span>(_Ω, _KT))) <span class="op">*</span> <span class="fu">sigmam</span>(),</span>
+<span id="cb4-6"><a href="#cb4-6" aria-label="6"></a>    ]</span>
+<span id="cb4-7"><a href="#cb4-7" aria-label="7"></a>    <span class="cf">return</span> <span class="fu">liouvillian</span>(H, c_ops)    </span>
+<span id="cb4-8"><a href="#cb4-8" aria-label="8"></a><span class="kw">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>liouvillian_spec (generic function with 1 method)</code></pre>
 </div>
 </div>
 <p>We first use <a href="https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.mesolve"><code>mesolve</code></a> to solve the master equation with several observables given in <code>e_ops</code>.</p>
 <div id="8" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1"></a>e_ket <span class="op">=</span> <span class="fu">basis</span>(<span class="fl">2</span>,<span class="fl">0</span>)</span>
-<span id="cb6-2"><a href="#cb6-2"></a>e_ops <span class="op">=</span> [</span>
-<span id="cb6-3"><a href="#cb6-3"></a>    <span class="fu">sigmax</span>(),</span>
-<span id="cb6-4"><a href="#cb6-4"></a>    <span class="fu">sigmay</span>(),</span>
-<span id="cb6-5"><a href="#cb6-5"></a>    <span class="fu">sigmaz</span>(),</span>
-<span id="cb6-6"><a href="#cb6-6"></a>    <span class="fu">sigmam</span>(),</span>
-<span id="cb6-7"><a href="#cb6-7"></a>    <span class="fu">sigmap</span>(),</span>
-<span id="cb6-8"><a href="#cb6-8"></a>    e_ket <span class="op">*</span> e_ket<span class="op">'</span></span>
-<span id="cb6-9"><a href="#cb6-9"></a>]</span>
-<span id="cb6-10"><a href="#cb6-10"></a>ψ<span class="fl">0</span> <span class="op">=</span> e_ket <span class="co"># set initial state being purely excited to better observe the radiative behaviour</span></span>
-<span id="cb6-11"><a href="#cb6-11"></a>L <span class="op">=</span> <span class="fu">liouvillian_spec</span>(Ω, γ<span class="fl">0</span>, KT)</span>
-<span id="cb6-12"><a href="#cb6-12"></a>L</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-label="1"></a>e_ket <span class="op">=</span> <span class="fu">basis</span>(<span class="fl">2</span>,<span class="fl">0</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-label="2"></a>e_ops <span class="op">=</span> [</span>
+<span id="cb6-3"><a href="#cb6-3" aria-label="3"></a>    <span class="fu">sigmax</span>(),</span>
+<span id="cb6-4"><a href="#cb6-4" aria-label="4"></a>    <span class="fu">sigmay</span>(),</span>
+<span id="cb6-5"><a href="#cb6-5" aria-label="5"></a>    <span class="fu">sigmaz</span>(),</span>
+<span id="cb6-6"><a href="#cb6-6" aria-label="6"></a>    <span class="fu">sigmam</span>(),</span>
+<span id="cb6-7"><a href="#cb6-7" aria-label="7"></a>    <span class="fu">sigmap</span>(),</span>
+<span id="cb6-8"><a href="#cb6-8" aria-label="8"></a>    e_ket <span class="op">*</span> e_ket<span class="op">'</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-label="9"></a>]</span>
+<span id="cb6-10"><a href="#cb6-10" aria-label="10"></a>ψ<span class="fl">0</span> <span class="op">=</span> e_ket <span class="co"># set initial state being purely excited to better observe the radiative behaviour</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-label="11"></a>L <span class="op">=</span> <span class="fu">liouvillian_spec</span>(Ω, γ<span class="fl">0</span>, KT)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-label="12"></a>L</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>
 Quantum Object:   type=SuperOperator()   dims=(([2], [2]), ([2], [2]))   size=(4, 4)
@@ -520,12 +532,12 @@ Quantum Object:   type=SuperOperator()   dims=(([2], [2]), ([2], [2]))   size=(4
 </div>
 <p>We already generate the Liouvillian with <code>c_ops</code> included above. We don’t need to specify the <code>c_ops</code> again in <a href="https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.mesolve"><code>mesolve</code></a>:</p>
 <div id="10" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1"></a>tlist <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">0.1</span><span class="op">:</span><span class="fl">20</span>  </span>
-<span id="cb8-2"><a href="#cb8-2"></a>sol <span class="op">=</span> <span class="fu">mesolve</span>(L, ψ<span class="fl">0</span>, tlist, <span class="cn">nothing</span>, e_ops <span class="op">=</span> e_ops)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-label="1"></a>tlist <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">0.1</span><span class="op">:</span><span class="fl">20</span>  </span>
+<span id="cb8-2"><a href="#cb8-2" aria-label="2"></a>sol <span class="op">=</span> <span class="fu">mesolve</span>(L, ψ<span class="fl">0</span>, tlist, <span class="cn">nothing</span>, e_ops <span class="op">=</span> e_ops)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[mesolve]   1%|▎                          |  ETA: 0:05:36 ( 1.69  s/it)</span>
-<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:03 (18.01 ms/it)</span>
+<pre><span class="ansi-green-fg">[mesolve]   1%|▎                          |  ETA: 0:04:23 ( 1.32  s/it)</span>
+<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:02 (13.79 ms/it)</span>
 </pre>
 </div>
 </div>
@@ -542,26 +554,26 @@ reltol = 1.0e-6</code></pre>
 </div>
 <p>By observing the expectation values of the Pauli operators, we see that the Bloch vector <span class="math inline">\((\langle \hat{\sigma}_x \rangle, \langle \hat{\sigma}_y \rangle, \langle \hat{\sigma}_z \rangle)\)</span> becomes shorter over time, which is consistent with the dissipative behaviour. Also, the population of the excited state <span class="math inline">\(|e\rangle\)</span> has an oscillation amplitude decaying over time.</p>
 <div id="12" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1"></a>expect <span class="op">=</span> <span class="fu">real</span>.(sol.expect)</span>
-<span id="cb10-2"><a href="#cb10-2"></a>fig1 <span class="op">=</span> <span class="fu">Figure</span>(size <span class="op">=</span> (<span class="fl">900</span>,<span class="fl">400</span>))</span>
-<span id="cb10-3"><a href="#cb10-3"></a>ax11 <span class="op">=</span> <span class="fu">Axis</span>(</span>
-<span id="cb10-4"><a href="#cb10-4"></a>    fig1[<span class="fl">1</span>,<span class="fl">1</span>]</span>
-<span id="cb10-5"><a href="#cb10-5"></a>)</span>
-<span id="cb10-6"><a href="#cb10-6"></a><span class="fu">lines!</span>(ax11, tlist, expect[<span class="fl">1</span>,<span class="op">:</span>], label <span class="op">=</span> L<span class="st">"\langle \hat{\sigma}_x </span><span class="sc">\r</span><span class="st">angle"</span>)</span>
-<span id="cb10-7"><a href="#cb10-7"></a><span class="fu">lines!</span>(ax11, tlist, expect[<span class="fl">2</span>,<span class="op">:</span>], label <span class="op">=</span> L<span class="st">"\langle \hat{\sigma}_y </span><span class="sc">\r</span><span class="st">angle"</span>)</span>
-<span id="cb10-8"><a href="#cb10-8"></a><span class="fu">lines!</span>(ax11, tlist, expect[<span class="fl">3</span>,<span class="op">:</span>], label <span class="op">=</span> L<span class="st">"\langle \hat{\sigma}_z </span><span class="sc">\r</span><span class="st">angle"</span>)</span>
-<span id="cb10-9"><a href="#cb10-9"></a><span class="fu">axislegend</span>(ax11)</span>
-<span id="cb10-10"><a href="#cb10-10"></a><span class="fu">ylims!</span>(ax11, (<span class="op">-</span><span class="fl">1</span>,<span class="fl">1</span>))</span>
-<span id="cb10-11"><a href="#cb10-11"></a></span>
-<span id="cb10-12"><a href="#cb10-12"></a>ax12 <span class="op">=</span> <span class="fu">Axis</span>(</span>
-<span id="cb10-13"><a href="#cb10-13"></a>    fig1[<span class="fl">2</span>,<span class="fl">1</span>],</span>
-<span id="cb10-14"><a href="#cb10-14"></a>    xlabel <span class="op">=</span> L<span class="st">"time </span><span class="sc">$</span><span class="st">[1/\</span>Omega<span class="st">]</span><span class="sc">$</span><span class="st">"</span></span>
-<span id="cb10-15"><a href="#cb10-15"></a><span class="st">)</span></span>
-<span id="cb10-16"><a href="#cb10-16"></a>lines<span class="st">!(ax12, tlist, expect[6,:], label = L"</span>P_e<span class="st">")</span></span>
-<span id="cb10-17"><a href="#cb10-17"></a><span class="fu">axislegend</span>(ax12)</span>
-<span id="cb10-18"><a href="#cb10-18"></a><span class="fu">ylims!</span>(ax12, (<span class="fl">0</span>,<span class="fl">1</span>))</span>
-<span id="cb10-19"><a href="#cb10-19"></a></span>
-<span id="cb10-20"><a href="#cb10-20"></a>fig1</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-label="1"></a>expect <span class="op">=</span> <span class="fu">real</span>.(sol.expect)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-label="2"></a>fig1 <span class="op">=</span> <span class="fu">Figure</span>(size <span class="op">=</span> (<span class="fl">900</span>,<span class="fl">400</span>))</span>
+<span id="cb10-3"><a href="#cb10-3" aria-label="3"></a>ax11 <span class="op">=</span> <span class="fu">Axis</span>(</span>
+<span id="cb10-4"><a href="#cb10-4" aria-label="4"></a>    fig1[<span class="fl">1</span>,<span class="fl">1</span>]</span>
+<span id="cb10-5"><a href="#cb10-5" aria-label="5"></a>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-label="6"></a><span class="fu">lines!</span>(ax11, tlist, expect[<span class="fl">1</span>,<span class="op">:</span>], label <span class="op">=</span> L<span class="st">"\langle \hat{\sigma}_x </span><span class="sc">\r</span><span class="st">angle"</span>)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-label="7"></a><span class="fu">lines!</span>(ax11, tlist, expect[<span class="fl">2</span>,<span class="op">:</span>], label <span class="op">=</span> L<span class="st">"\langle \hat{\sigma}_y </span><span class="sc">\r</span><span class="st">angle"</span>)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-label="8"></a><span class="fu">lines!</span>(ax11, tlist, expect[<span class="fl">3</span>,<span class="op">:</span>], label <span class="op">=</span> L<span class="st">"\langle \hat{\sigma}_z </span><span class="sc">\r</span><span class="st">angle"</span>)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-label="9"></a><span class="fu">axislegend</span>(ax11)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-label="10"></a><span class="fu">ylims!</span>(ax11, (<span class="op">-</span><span class="fl">1</span>,<span class="fl">1</span>))</span>
+<span id="cb10-11"><a href="#cb10-11" aria-label="11"></a></span>
+<span id="cb10-12"><a href="#cb10-12" aria-label="12"></a>ax12 <span class="op">=</span> <span class="fu">Axis</span>(</span>
+<span id="cb10-13"><a href="#cb10-13" aria-label="13"></a>    fig1[<span class="fl">2</span>,<span class="fl">1</span>],</span>
+<span id="cb10-14"><a href="#cb10-14" aria-label="14"></a>    xlabel <span class="op">=</span> L<span class="st">"time </span><span class="sc">$</span><span class="st">[1/\</span>Omega<span class="st">]</span><span class="sc">$</span><span class="st">"</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-label="15"></a><span class="st">)</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-label="16"></a>lines<span class="st">!(ax12, tlist, expect[6,:], label = L"</span>P_e<span class="st">")</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-label="17"></a><span class="fu">axislegend</span>(ax12)</span>
+<span id="cb10-18"><a href="#cb10-18" aria-label="18"></a><span class="fu">ylims!</span>(ax12, (<span class="fl">0</span>,<span class="fl">1</span>))</span>
+<span id="cb10-19"><a href="#cb10-19" aria-label="19"></a></span>
+<span id="cb10-20"><a href="#cb10-20" aria-label="20"></a>fig1</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div>
 <figure class="figure">
@@ -572,39 +584,39 @@ reltol = 1.0e-6</code></pre>
 </div>
 <p>Further, we check the effect of different values of the damping rate. Note that despite these dissipation rates looked enormous at first glance, it is still to the order of the field strength and therefore considered dissipative for the system in the lab frame.</p>
 <div id="14" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1"></a>results <span class="op">=</span> []</span>
-<span id="cb11-2"><a href="#cb11-2"></a>γ<span class="fl">0</span>s <span class="op">=</span> Ω <span class="op">.*</span> [<span class="fl">0.1</span>, <span class="fl">0.5</span>, <span class="fl">1</span>]</span>
-<span id="cb11-3"><a href="#cb11-3"></a><span class="cf">for</span> γ<span class="fl">0</span> <span class="kw">in</span> γ<span class="fl">0</span>s</span>
-<span id="cb11-4"><a href="#cb11-4"></a>    result <span class="op">=</span> <span class="fu">mesolve</span>(<span class="fu">liouvillian_spec</span>(Ω, γ<span class="fl">0</span>, KT), ψ<span class="fl">0</span>, tlist, <span class="cn">nothing</span>, e_ops <span class="op">=</span> e_ops)</span>
-<span id="cb11-5"><a href="#cb11-5"></a></span>
-<span id="cb11-6"><a href="#cb11-6"></a>    <span class="fu">push!</span>(results, (γ<span class="fl">0</span> <span class="op">=</span> γ<span class="fl">0</span>, expect <span class="op">=</span> result.expect))</span>
-<span id="cb11-7"><a href="#cb11-7"></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-label="1"></a>results <span class="op">=</span> []</span>
+<span id="cb11-2"><a href="#cb11-2" aria-label="2"></a>γ<span class="fl">0</span>s <span class="op">=</span> Ω <span class="op">.*</span> [<span class="fl">0.1</span>, <span class="fl">0.5</span>, <span class="fl">1</span>]</span>
+<span id="cb11-3"><a href="#cb11-3" aria-label="3"></a><span class="cf">for</span> γ<span class="fl">0</span> <span class="kw">in</span> γ<span class="fl">0</span>s</span>
+<span id="cb11-4"><a href="#cb11-4" aria-label="4"></a>    result <span class="op">=</span> <span class="fu">mesolve</span>(<span class="fu">liouvillian_spec</span>(Ω, γ<span class="fl">0</span>, KT), ψ<span class="fl">0</span>, tlist, <span class="cn">nothing</span>, e_ops <span class="op">=</span> e_ops)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-label="5"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-label="6"></a>    <span class="fu">push!</span>(results, (γ<span class="fl">0</span> <span class="op">=</span> γ<span class="fl">0</span>, expect <span class="op">=</span> result.expect))</span>
+<span id="cb11-7"><a href="#cb11-7" aria-label="7"></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 1.12 μs/it)</span>
+<pre><span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.71 μs/it)</span>
 
-<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.78 μs/it)</span>
+<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.48 μs/it)</span>
 
-<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.51 μs/it)</span>
+<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.24 μs/it)</span>
 </pre>
 </div>
 </div>
 </div>
 <p>The expectation values dynamics of <span class="math inline">\(\hat{\sigma}^{+}\)</span> and <span class="math inline">\(\hat{\sigma}^{-}\)</span> shows the driving-field-induced dipole moment of the atom oscillates and persists.</p>
 <div id="16" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1"></a>fig2 <span class="op">=</span> <span class="fu">Figure</span>(size <span class="op">=</span> (<span class="fl">900</span>,<span class="fl">400</span>))</span>
-<span id="cb12-2"><a href="#cb12-2"></a>ax2 <span class="op">=</span> <span class="fu">Axis</span>(</span>
-<span id="cb12-3"><a href="#cb12-3"></a>    fig2[<span class="fl">1</span>,<span class="fl">1</span>],</span>
-<span id="cb12-4"><a href="#cb12-4"></a>    xlabel <span class="op">=</span> L<span class="st">"time </span><span class="sc">$</span><span class="st">[1/\</span>Omega<span class="st">]</span><span class="sc">$</span><span class="st">",</span></span>
-<span id="cb12-5"><a href="#cb12-5"></a><span class="st">    </span>title<span class="st"> = L"</span><span class="op">\</span>langle<span class="op">\</span>hat{<span class="op">\</span>sigma}_{<span class="op">+</span>}<span class="op">\</span>rangle<span class="st">"</span></span>
-<span id="cb12-6"><a href="#cb12-6"></a>)</span>
-<span id="cb12-7"><a href="#cb12-7"></a></span>
-<span id="cb12-8"><a href="#cb12-8"></a><span class="cf">for</span> (γ<span class="fl">0</span>, expect) <span class="kw">in</span> results</span>
-<span id="cb12-9"><a href="#cb12-9"></a>    <span class="fu">lines!</span>(ax2, tlist, <span class="fu">imag</span>(expect[<span class="fl">5</span>,<span class="op">:</span>]), label <span class="op">=</span> <span class="st">"γ0 = </span><span class="sc">$</span><span class="st">γ0")</span></span>
-<span id="cb12-10"><a href="#cb12-10"></a>end</span>
-<span id="cb12-11"><a href="#cb12-11"></a></span>
-<span id="cb12-12"><a href="#cb12-12"></a><span class="fu">axislegend</span>(ax2)</span>
-<span id="cb12-13"><a href="#cb12-13"></a>fig2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-label="1"></a>fig2 <span class="op">=</span> <span class="fu">Figure</span>(size <span class="op">=</span> (<span class="fl">900</span>,<span class="fl">400</span>))</span>
+<span id="cb12-2"><a href="#cb12-2" aria-label="2"></a>ax2 <span class="op">=</span> <span class="fu">Axis</span>(</span>
+<span id="cb12-3"><a href="#cb12-3" aria-label="3"></a>    fig2[<span class="fl">1</span>,<span class="fl">1</span>],</span>
+<span id="cb12-4"><a href="#cb12-4" aria-label="4"></a>    xlabel <span class="op">=</span> L<span class="st">"time </span><span class="sc">$</span><span class="st">[1/\</span>Omega<span class="st">]</span><span class="sc">$</span><span class="st">",</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-label="5"></a><span class="st">    </span>title<span class="st"> = L"</span><span class="op">\</span>langle<span class="op">\</span>hat{<span class="op">\</span>sigma}_{<span class="op">+</span>}<span class="op">\</span>rangle<span class="st">"</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-label="6"></a>)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-label="7"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-label="8"></a><span class="cf">for</span> (γ<span class="fl">0</span>, expect) <span class="kw">in</span> results</span>
+<span id="cb12-9"><a href="#cb12-9" aria-label="9"></a>    <span class="fu">lines!</span>(ax2, tlist, <span class="fu">imag</span>(expect[<span class="fl">5</span>,<span class="op">:</span>]), label <span class="op">=</span> <span class="st">"γ0 = </span><span class="sc">$</span><span class="st">γ0")</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-label="10"></a>end</span>
+<span id="cb12-11"><a href="#cb12-11" aria-label="11"></a></span>
+<span id="cb12-12"><a href="#cb12-12" aria-label="12"></a><span class="fu">axislegend</span>(ax2)</span>
+<span id="cb12-13"><a href="#cb12-13" aria-label="13"></a>fig2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div>
 <figure class="figure">
@@ -614,18 +626,18 @@ reltol = 1.0e-6</code></pre>
 </div>
 </div>
 <div id="18" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1"></a>fig3 <span class="op">=</span> <span class="fu">Figure</span>(size <span class="op">=</span> (<span class="fl">900</span>,<span class="fl">400</span>))</span>
-<span id="cb13-2"><a href="#cb13-2"></a>ax3 <span class="op">=</span> <span class="fu">Axis</span>(</span>
-<span id="cb13-3"><a href="#cb13-3"></a>    fig3[<span class="fl">1</span>,<span class="fl">1</span>],</span>
-<span id="cb13-4"><a href="#cb13-4"></a>    xlabel <span class="op">=</span> L<span class="st">"time </span><span class="sc">$</span><span class="st">[1/\</span>Omega<span class="st">]</span><span class="sc">$</span><span class="st">",</span></span>
-<span id="cb13-5"><a href="#cb13-5"></a><span class="st">    </span>title<span class="st"> = L"</span><span class="op">\</span>langle<span class="op">\</span>hat{<span class="op">\</span>sigma}_{<span class="op">-</span>}<span class="op">\</span>rangle<span class="st">"</span></span>
-<span id="cb13-6"><a href="#cb13-6"></a>)</span>
-<span id="cb13-7"><a href="#cb13-7"></a></span>
-<span id="cb13-8"><a href="#cb13-8"></a><span class="cf">for</span> (γ<span class="fl">0</span>, expect) <span class="kw">in</span> results</span>
-<span id="cb13-9"><a href="#cb13-9"></a>    <span class="fu">lines!</span>(ax3, tlist, <span class="fu">imag</span>(expect[<span class="fl">4</span>,<span class="op">:</span>]), label <span class="op">=</span> <span class="st">"γ0 = </span><span class="sc">$</span><span class="st">γ0")</span></span>
-<span id="cb13-10"><a href="#cb13-10"></a>end</span>
-<span id="cb13-11"><a href="#cb13-11"></a><span class="fu">axislegend</span>(ax3)</span>
-<span id="cb13-12"><a href="#cb13-12"></a>fig3</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-label="1"></a>fig3 <span class="op">=</span> <span class="fu">Figure</span>(size <span class="op">=</span> (<span class="fl">900</span>,<span class="fl">400</span>))</span>
+<span id="cb13-2"><a href="#cb13-2" aria-label="2"></a>ax3 <span class="op">=</span> <span class="fu">Axis</span>(</span>
+<span id="cb13-3"><a href="#cb13-3" aria-label="3"></a>    fig3[<span class="fl">1</span>,<span class="fl">1</span>],</span>
+<span id="cb13-4"><a href="#cb13-4" aria-label="4"></a>    xlabel <span class="op">=</span> L<span class="st">"time </span><span class="sc">$</span><span class="st">[1/\</span>Omega<span class="st">]</span><span class="sc">$</span><span class="st">",</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-label="5"></a><span class="st">    </span>title<span class="st"> = L"</span><span class="op">\</span>langle<span class="op">\</span>hat{<span class="op">\</span>sigma}_{<span class="op">-</span>}<span class="op">\</span>rangle<span class="st">"</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-label="6"></a>)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-label="7"></a></span>
+<span id="cb13-8"><a href="#cb13-8" aria-label="8"></a><span class="cf">for</span> (γ<span class="fl">0</span>, expect) <span class="kw">in</span> results</span>
+<span id="cb13-9"><a href="#cb13-9" aria-label="9"></a>    <span class="fu">lines!</span>(ax3, tlist, <span class="fu">imag</span>(expect[<span class="fl">4</span>,<span class="op">:</span>]), label <span class="op">=</span> <span class="st">"γ0 = </span><span class="sc">$</span><span class="st">γ0")</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-label="10"></a>end</span>
+<span id="cb13-11"><a href="#cb13-11" aria-label="11"></a><span class="fu">axislegend</span>(ax3)</span>
+<span id="cb13-12"><a href="#cb13-12" aria-label="12"></a>fig3</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div>
 <figure class="figure">
@@ -636,39 +648,40 @@ reltol = 1.0e-6</code></pre>
 </div>
 <p>We now move to the analysis of the correlation function <span class="math inline">\(C(\tau) = \langle \hat{\sigma}^{+}(\tau) \hat{\sigma}^{-}(0)\rangle\)</span>, which describes the radiative behaviour of the atom towards its surrounding environment. Using <a href="https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.correlation_2op_1t"><code>correlation_2op_1t</code></a>, we can obtain the correlation function as a function of <span class="math inline">\(\tau\)</span> and use <a href="https://qutip.org/QuantumToolbox.jl/stable/resources/api#QuantumToolbox.spectrum_correlation_fft"><code>spectrum_correlation_fft</code></a> to obtain the corresponding Fourier transform.</p>
 <div id="20" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1"></a>fig4 <span class="op">=</span> <span class="fu">Figure</span>(size <span class="op">=</span> (<span class="fl">900</span>,<span class="fl">400</span>))</span>
-<span id="cb14-2"><a href="#cb14-2"></a>ax41 <span class="op">=</span> <span class="fu">Axis</span>(</span>
-<span id="cb14-3"><a href="#cb14-3"></a>    fig4[<span class="fl">1</span>,<span class="fl">1</span>],</span>
-<span id="cb14-4"><a href="#cb14-4"></a>    xlabel <span class="op">=</span> L<span class="st">"</span><span class="sc">\t</span><span class="st">au"</span>,</span>
-<span id="cb14-5"><a href="#cb14-5"></a>    title <span class="op">=</span> L<span class="st">"C(</span><span class="sc">\t</span><span class="st">au)"</span></span>
-<span id="cb14-6"><a href="#cb14-6"></a>)</span>
-<span id="cb14-7"><a href="#cb14-7"></a></span>
-<span id="cb14-8"><a href="#cb14-8"></a>ax42 <span class="op">=</span> <span class="fu">Axis</span>(</span>
-<span id="cb14-9"><a href="#cb14-9"></a>    fig4[<span class="fl">1</span>,<span class="fl">2</span>],</span>
-<span id="cb14-10"><a href="#cb14-10"></a>    xlabel <span class="op">=</span> L<span class="st">"\omega"</span>,</span>
-<span id="cb14-11"><a href="#cb14-11"></a>    ylabel <span class="op">=</span> <span class="st">"fft amplitude"</span></span>
-<span id="cb14-12"><a href="#cb14-12"></a>)</span>
-<span id="cb14-13"><a href="#cb14-13"></a>τlist <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">0.1</span><span class="op">:</span><span class="fl">100</span></span>
-<span id="cb14-14"><a href="#cb14-14"></a><span class="cf">for</span> γ<span class="fl">0</span> <span class="kw">in</span> γ<span class="fl">0</span>s</span>
-<span id="cb14-15"><a href="#cb14-15"></a>    L <span class="op">=</span> <span class="fu">liouvillian_spec</span>(Ω, γ<span class="fl">0</span>, KT)    </span>
-<span id="cb14-16"><a href="#cb14-16"></a>    corr <span class="op">=</span> <span class="fu">correlation_2op_1t</span>(L, ψ<span class="fl">0</span>, τlist, <span class="cn">nothing</span>, <span class="fu">sigmap</span>(), <span class="fu">sigmam</span>())</span>
-<span id="cb14-17"><a href="#cb14-17"></a></span>
-<span id="cb14-18"><a href="#cb14-18"></a>    <span class="fu">lines!</span>(ax41, τlist, <span class="fu">real</span>(corr), label <span class="op">=</span> <span class="st">"γ0 = </span><span class="sc">$</span><span class="st">γ0")</span></span>
-<span id="cb14-19"><a href="#cb14-19"></a></span>
-<span id="cb14-20"><a href="#cb14-20"></a><span class="st">    </span>fft_<span class="st">ωlist, fft_spect = spectrum_correlation_fft(τlist, corr)</span></span>
-<span id="cb14-21"><a href="#cb14-21"></a>    <span class="fu">lines!</span>(ax42, fft_ωlist, fft_spect, label <span class="op">=</span> <span class="st">"γ0 = </span><span class="sc">$</span><span class="st">γ0")</span></span>
-<span id="cb14-22"><a href="#cb14-22"></a>end</span>
-<span id="cb14-23"><a href="#cb14-23"></a><span class="fu">xlims!</span>(ax42, (<span class="op">-</span><span class="fl">2</span>,<span class="fl">2</span>))</span>
-<span id="cb14-24"><a href="#cb14-24"></a><span class="fu">axislegend</span>(ax41)</span>
-<span id="cb14-25"><a href="#cb14-25"></a><span class="fu">axislegend</span>(ax42)</span>
-<span id="cb14-26"><a href="#cb14-26"></a>fig4</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-label="1"></a>fig4 <span class="op">=</span> <span class="fu">Figure</span>(size <span class="op">=</span> (<span class="fl">900</span>,<span class="fl">400</span>))</span>
+<span id="cb14-2"><a href="#cb14-2" aria-label="2"></a>ax41 <span class="op">=</span> <span class="fu">Axis</span>(</span>
+<span id="cb14-3"><a href="#cb14-3" aria-label="3"></a>    fig4[<span class="fl">1</span>,<span class="fl">1</span>],</span>
+<span id="cb14-4"><a href="#cb14-4" aria-label="4"></a>    xlabel <span class="op">=</span> L<span class="st">"</span><span class="sc">\t</span><span class="st">au"</span>,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-label="5"></a>    title <span class="op">=</span> L<span class="st">"C(</span><span class="sc">\t</span><span class="st">au)"</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-label="6"></a>)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-label="7"></a></span>
+<span id="cb14-8"><a href="#cb14-8" aria-label="8"></a>ax42 <span class="op">=</span> <span class="fu">Axis</span>(</span>
+<span id="cb14-9"><a href="#cb14-9" aria-label="9"></a>    fig4[<span class="fl">1</span>,<span class="fl">2</span>],</span>
+<span id="cb14-10"><a href="#cb14-10" aria-label="10"></a>    xlabel <span class="op">=</span> L<span class="st">"\omega"</span>,</span>
+<span id="cb14-11"><a href="#cb14-11" aria-label="11"></a>    ylabel <span class="op">=</span> <span class="st">"fft amplitude"</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-label="12"></a>)</span>
+<span id="cb14-13"><a href="#cb14-13" aria-label="13"></a>τlist <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">0.1</span><span class="op">:</span><span class="fl">100</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-label="14"></a><span class="cf">for</span> γ<span class="fl">0</span> <span class="kw">in</span> γ<span class="fl">0</span>s</span>
+<span id="cb14-15"><a href="#cb14-15" aria-label="15"></a>    L <span class="op">=</span> <span class="fu">liouvillian_spec</span>(Ω, γ<span class="fl">0</span>, KT)    </span>
+<span id="cb14-16"><a href="#cb14-16" aria-label="16"></a>    corr <span class="op">=</span> <span class="fu">correlation_2op_1t</span>(L, ψ<span class="fl">0</span>, τlist, <span class="cn">nothing</span>, <span class="fu">sigmap</span>(), <span class="fu">sigmam</span>())</span>
+<span id="cb14-17"><a href="#cb14-17" aria-label="17"></a></span>
+<span id="cb14-18"><a href="#cb14-18" aria-label="18"></a>    <span class="fu">lines!</span>(ax41, τlist, <span class="fu">real</span>(corr), label <span class="op">=</span> <span class="st">"γ0 = </span><span class="sc">$</span><span class="st">γ0")</span></span>
+<span id="cb14-19"><a href="#cb14-19" aria-label="19"></a></span>
+<span id="cb14-20"><a href="#cb14-20" aria-label="20"></a><span class="st">    </span>fft_<span class="st">ωlist, fft_spect = spectrum_correlation_fft(τlist, corr)</span></span>
+<span id="cb14-21"><a href="#cb14-21" aria-label="21"></a>    <span class="fu">lines!</span>(ax42, fft_ωlist, fft_spect, label <span class="op">=</span> <span class="st">"γ0 = </span><span class="sc">$</span><span class="st">γ0")</span></span>
+<span id="cb14-22"><a href="#cb14-22" aria-label="22"></a>end</span>
+<span id="cb14-23"><a href="#cb14-23" aria-label="23"></a><span class="fu">xlims!</span>(ax42, (<span class="op">-</span><span class="fl">2</span>,<span class="fl">2</span>))</span>
+<span id="cb14-24"><a href="#cb14-24" aria-label="24"></a><span class="fu">axislegend</span>(ax41)</span>
+<span id="cb14-25"><a href="#cb14-25" aria-label="25"></a><span class="fu">axislegend</span>(ax42)</span>
+<span id="cb14-26"><a href="#cb14-26" aria-label="26"></a>fig4</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.29 μs/it)</span>
+<pre><span class="ansi-green-fg">[mesolve]   0%|                           |  ETA: 0:06:43 ( 0.40  s/it)</span>
+<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.81 ms/it)</span>
 
-<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.18 μs/it)</span>
+<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.14 μs/it)</span>
 
-<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.15 μs/it)</span>
+<span class="ansi-green-fg">[mesolve] 100%|███████████████████████████| Time: 0:00:00 (83.84 ns/it)</span>
 </pre>
 </div>
 </div>
@@ -685,8 +698,8 @@ reltol = 1.0e-6</code></pre>
 <section id="version-information" class="level2">
 <h2 class="anchored" data-anchor-id="version-information">Version Information</h2>
 <div id="22" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1"></a><span class="im">import</span> <span class="bu">QuantumToolbox</span></span>
-<span id="cb15-2"><a href="#cb15-2"></a>QuantumToolbox.<span class="fu">versioninfo</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-label="1"></a><span class="im">import</span> <span class="bu">QuantumToolbox</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-label="2"></a>QuantumToolbox.<span class="fu">versioninfo</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
  QuantumToolbox.jl: Quantum Toolbox in Julia
@@ -697,20 +710,20 @@ Current admin team:
 
 Package information:
 ====================================
-Julia              Ver. 1.12.6
-QuantumToolbox     Ver. 0.47.2
-SciMLOperators     Ver. 1.24.3
+Julia              Ver. 1.13.3
+QuantumToolbox     Ver. 0.47.3
+SciMLOperators     Ver. 1.30.4
 LinearSolve        Ver. 3.87.0
-OrdinaryDiffEqCore Ver. 4.7.1
+OrdinaryDiffEqCore Ver. 4.14.1
 
 System information:
 ====================================
 OS       : Linux (x86_64-linux-gnu)
-CPU      : 4 × AMD EPYC 9V74 80-Core Processor
-Memory   : 15.615 GB
+CPU      : 4 × AMD EPYC 9V45 96-Core Processor
+Memory   : 15.609 GB
 WORD_SIZE: 64
 LIBM     : libopenlibm
-LLVM     : libLLVM-18.1.7 (ORCJIT, znver4)
+LLVM     : libLLVM-20.1.8 (ORCJIT, znver5)
 BLAS     : libopenblas64_.so (ilp64)
 Threads  : 4 (on 4 virtual cores)
 
@@ -730,15 +743,50 @@ For your convenience, a bibtex reference can be easily generated using `QuantumT
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-      const a = window.document.createElement('a');
-      a.classList.add('top-right');
-      a.classList.add('quarto-color-scheme-toggle');
-      a.href = "";
-      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Toggle dark mode");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
       const i = window.document.createElement("i");
       i.classList.add('bi');
-      a.appendChild(i);
-      window.document.body.appendChild(a);
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Toggle dark mode");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
     }
     setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
@@ -817,7 +865,8 @@ For your convenience, a bibtex reference can be easily generated using `QuantumT
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
       // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
       for (var i=0; i<links.length; i++) {
         const link = links[i];
         if (!isInternal(link.href)) {
@@ -826,8 +875,69 @@ For your convenience, a bibtex reference can be easily generated using `QuantumT
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+          if (!link.classList.contains('no-external-icon')) {
+          }
         }
       }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
       const config = {
         allowHTML: true,
@@ -841,6 +951,7 @@ For your convenience, a bibtex reference can be easily generated using `QuantumT
         interactiveBorder: 10,
         theme: 'quarto',
         placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
       };
       if (contentFn) {
         config.content = contentFn;
@@ -1003,44 +1114,54 @@ For your convenience, a bibtex reference can be easily generated using `QuantumT
           const lineIds = lines.map((line) => {
             return targetCell + "-" + line;
           })
-          let top = null;
-          let height = null;
-          let parent = null;
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
           if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
             }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
             }
+            placeBand(gutterDiv, el, lastEl);
             selectedAnnoteEl = annoteEl;
           }
         };
@@ -1138,6 +1259,9 @@ For your convenience, a bibtex reference can be easily generated using `QuantumT
       }
     }
   });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
   </script>
 </div> <!-- /content -->
 <footer class="footer">

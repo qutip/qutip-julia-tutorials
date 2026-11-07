@@ -2,22 +2,25 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.11.9">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Orjan Ameye">
-<meta name="dcterms.date" content="2026-06-24">
+<meta name="dcterms.date" content="2026-11-07">
 
 <title>Quantum Fisher Information – Tutorials for Quantum Toolbox in Julia</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -73,18 +76,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../assets/favicon.ico" rel="icon">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-6d40f8af7092f34acea1908532066003.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-cac0433bb97fa58dc0fc6599c25c149a.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-6d40f8af7092f34acea1908532066003.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-c2b08e7e9e4d0725d7c99c9a799ba6e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-b64bf133a05c9b35a1c1b0604a81005c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-c2b08e7e9e4d0725d7c99c9a799ba6e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-5bc65a31564587cedfeac77a5e781332.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-b90e5f4530b127d92965d84ef09e0c98.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-5bc65a31564587cedfeac77a5e781332.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-96f700e092a356b7f41d23e583bafb75.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-dcf742954d5ebb968173623917d7d889.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-96f700e092a356b7f41d23e583bafb75.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -114,7 +118,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -146,7 +150,7 @@ window.Quarto = {
 <link rel="stylesheet" href="../../styles.css">
 </head>
 
-<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-fixed quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -169,6 +173,7 @@ window.Quarto = {
       for (let i=0; i < toggles.length; i++) {
         const toggle = toggles[i];
         if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
           if (alternate) {
             toggle.classList.add("alternate");
           } else {
@@ -198,13 +203,19 @@ window.Quarto = {
       manageTransitions('#quarto-margin-sidebar .nav-link', true);
       // Switch the toggles
       setColorSchemeToggle(alternate)
-      // Hack to workaround the fact that safari doesn't
-      // properly recolor the scrollbar when toggling (#1455)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
       if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
         manageTransitions("body", false);
-        window.scrollTo(0, 1);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
         setTimeout(() => {
-          window.scrollTo(0, 0);
+          window.scrollTo(0, scrollY);
           manageTransitions("body", true);
         }, 40);
       }
@@ -298,6 +309,7 @@ window.Quarto = {
       // Read the current dark / light value
       let toAlternate = !hasAlternateSentinel();
       toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
       setStyleSentinel(toAlternate);
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
       window.dispatchEvent(new Event('resize'));
@@ -312,7 +324,7 @@ window.Quarto = {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark" aria-label="Site">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="../../index.html" class="navbar-brand navbar-brand-logo">
@@ -323,8 +335,7 @@ window.Quarto = {
     <span class="navbar-title">Tutorials for Quantum Toolbox in Julia</span>
     </a>
   </div>
-            <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -345,8 +356,9 @@ window.Quarto = {
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
     <a href="https://github.com/qutip/qutip-julia-tutorials" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode" aria-label="Toggle dark mode"><i class="bi"></i></button>
 </div>
+            <div id="quarto-search" class="" title="Search"></div>
       </div> <!-- /container-fluid -->
     </nav>
 </header>
@@ -355,7 +367,7 @@ window.Quarto = {
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
     <h2 id="toc-title">On this page</h2>
    
   <ul>
@@ -369,7 +381,7 @@ window.Quarto = {
 <div class="toc-actions"><ul><li><a href="https://github.com/qutip/qutip-julia-tutorials/edit/main/QuantumToolbox.jl/time_evolution/Quantum_Fisher_Information_with_automatic_differentiation.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/qutip/qutip-julia-tutorials/blob/main/QuantumToolbox.jl/time_evolution/Quantum_Fisher_Information_with_automatic_differentiation.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/qutip/qutip-julia-tutorials/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="Quantum_Fisher_Information_with_automatic_differentiation.ipynb" download="Quantum_Fisher_Information_with_automatic_differentiation.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content" tabindex="-1">
 
 
 <header id="title-block-header" class="quarto-title-block default">
@@ -391,7 +403,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Last Update</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2026-06-24</p>
+      <p class="date">2026-11-07</p>
     </div>
   </div>
   
@@ -406,11 +418,11 @@ window.Quarto = {
 <p>This notebook demonstrates the computation of Quantum Fisher Information (QFI) for a driven-dissipative Kerr Parametric Oscillator (KPO) using automatic differentiation. The QFI quantifies the ultimate precision limit for parameter estimation in quantum systems.</p>
 <p>We import the necessary packages for quantum simulations and automatic differentiation:</p>
 <div id="2" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">using</span> <span class="bu">QuantumToolbox</span>   <span class="co"># Quantum optics simulations</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="im">using</span> <span class="bu">ForwardDiff</span>      <span class="co"># For automatic differentiation</span></span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="im">using</span> <span class="bu">LinearAlgebra</span>    <span class="co"># Linear algebra operations</span></span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="im">using</span> <span class="bu">CairoMakie</span>       <span class="co"># Plotting</span></span>
-<span id="cb1-5"><a href="#cb1-5"></a>CairoMakie.<span class="fu">activate!</span>(<span class="kw">type</span> <span class="op">=</span> <span class="st">"svg"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-label="1"></a><span class="im">using</span> <span class="bu">QuantumToolbox</span>   <span class="co"># Quantum optics simulations</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-label="2"></a><span class="im">using</span> <span class="bu">ForwardDiff</span>      <span class="co"># For automatic differentiation</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-label="3"></a><span class="im">using</span> <span class="bu">LinearAlgebra</span>    <span class="co"># Linear algebra operations</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-label="4"></a><span class="im">using</span> <span class="bu">CairoMakie</span>       <span class="co"># Plotting</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-label="5"></a>CairoMakie.<span class="fu">activate!</span>(<span class="kw">type</span> <span class="op">=</span> <span class="st">"svg"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <section id="system-parameters-and-hamiltonian" class="level2">
 <h2 class="anchored" data-anchor-id="system-parameters-and-hamiltonian">System Parameters and Hamiltonian</h2>
@@ -423,25 +435,25 @@ window.Quarto = {
 <li><span class="math inline">\(\gamma\)</span> is the decay rate</li>
 </ul>
 <div id="4" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">const</span> G, K, γ <span class="op">=</span> <span class="fl">0.002</span>, <span class="fl">0.001</span>, <span class="fl">0.01</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a></span>
-<span id="cb2-3"><a href="#cb2-3"></a><span class="kw">const</span> N <span class="op">=</span> <span class="fl">20</span> <span class="co"># cutoff of the Hilbert space dimension</span></span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="kw">const</span> a <span class="op">=</span> <span class="fu">destroy</span>(N) <span class="co"># annihilation operator</span></span>
-<span id="cb2-5"><a href="#cb2-5"></a></span>
-<span id="cb2-6"><a href="#cb2-6"></a><span class="kw">const</span> c_ops <span class="op">=</span> [<span class="fu">sqrt</span>(γ)<span class="op">*</span>a]</span>
-<span id="cb2-7"><a href="#cb2-7"></a><span class="kw">const</span> ψ<span class="fl">0</span> <span class="op">=</span> <span class="fu">fock</span>(N, <span class="fl">0</span>) <span class="co"># initial state</span></span>
-<span id="cb2-8"><a href="#cb2-8"></a></span>
-<span id="cb2-9"><a href="#cb2-9"></a><span class="kw">const</span> tlist <span class="op">=</span> <span class="fu">range</span>(<span class="fl">0</span>, <span class="fl">2000</span>, <span class="fl">100</span>)</span>
-<span id="cb2-10"><a href="#cb2-10"></a></span>
-<span id="cb2-11"><a href="#cb2-11"></a><span class="kw">function</span> <span class="fu">final_state</span>(p, t)</span>
-<span id="cb2-12"><a href="#cb2-12"></a>    H <span class="op">=</span> <span class="op">-</span> p[<span class="fl">1</span>] <span class="op">*</span> a<span class="op">'</span> <span class="op">*</span> a <span class="op">+</span> K <span class="op">*</span> a<span class="op">'</span> <span class="op">*</span> a<span class="op">'</span> <span class="op">*</span> a <span class="op">*</span> a <span class="op">-</span> G <span class="op">*</span> (a<span class="op">'</span> <span class="op">*</span> a<span class="op">'</span> <span class="op">+</span> a <span class="op">*</span> a)</span>
-<span id="cb2-13"><a href="#cb2-13"></a></span>
-<span id="cb2-14"><a href="#cb2-14"></a>    sol <span class="op">=</span> <span class="fu">mesolve</span>(H, ψ<span class="fl">0</span>, tlist, c_ops; params <span class="op">=</span> p, progress_bar <span class="op">=</span> <span class="fu">Val</span>(<span class="cn">false</span>), saveat <span class="op">=</span> [t])</span>
-<span id="cb2-15"><a href="#cb2-15"></a>    ρ_vec <span class="op">=</span> <span class="fu">vec</span>(sol.states[<span class="kw">end</span>].data)</span>
-<span id="cb2-16"><a href="#cb2-16"></a></span>
-<span id="cb2-17"><a href="#cb2-17"></a>    <span class="co"># Split the real and imaginary parts of the density matrix to a real vector since ForwardDiff doesn't handle complex numbers directly</span></span>
-<span id="cb2-18"><a href="#cb2-18"></a>    <span class="cf">return</span> <span class="fu">vcat</span>(<span class="fu">real</span>.(ρ_vec), <span class="fu">imag</span>.(ρ_vec))</span>
-<span id="cb2-19"><a href="#cb2-19"></a><span class="kw">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-label="1"></a><span class="kw">const</span> G, K, γ <span class="op">=</span> <span class="fl">0.002</span>, <span class="fl">0.001</span>, <span class="fl">0.01</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-label="2"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-label="3"></a><span class="kw">const</span> N <span class="op">=</span> <span class="fl">20</span> <span class="co"># cutoff of the Hilbert space dimension</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-label="4"></a><span class="kw">const</span> a <span class="op">=</span> <span class="fu">destroy</span>(N) <span class="co"># annihilation operator</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-label="5"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-label="6"></a><span class="kw">const</span> c_ops <span class="op">=</span> [<span class="fu">sqrt</span>(γ)<span class="op">*</span>a]</span>
+<span id="cb2-7"><a href="#cb2-7" aria-label="7"></a><span class="kw">const</span> ψ<span class="fl">0</span> <span class="op">=</span> <span class="fu">fock</span>(N, <span class="fl">0</span>) <span class="co"># initial state</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-label="8"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-label="9"></a><span class="kw">const</span> tlist <span class="op">=</span> <span class="fu">range</span>(<span class="fl">0</span>, <span class="fl">2000</span>, <span class="fl">100</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-label="10"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-label="11"></a><span class="kw">function</span> <span class="fu">final_state</span>(p, t)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-label="12"></a>    H <span class="op">=</span> <span class="op">-</span> p[<span class="fl">1</span>] <span class="op">*</span> a<span class="op">'</span> <span class="op">*</span> a <span class="op">+</span> K <span class="op">*</span> a<span class="op">'</span> <span class="op">*</span> a<span class="op">'</span> <span class="op">*</span> a <span class="op">*</span> a <span class="op">-</span> G <span class="op">*</span> (a<span class="op">'</span> <span class="op">*</span> a<span class="op">'</span> <span class="op">+</span> a <span class="op">*</span> a)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-label="13"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-label="14"></a>    sol <span class="op">=</span> <span class="fu">mesolve</span>(H, ψ<span class="fl">0</span>, tlist, c_ops; params <span class="op">=</span> p, progress_bar <span class="op">=</span> <span class="fu">Val</span>(<span class="cn">false</span>), saveat <span class="op">=</span> [t])</span>
+<span id="cb2-15"><a href="#cb2-15" aria-label="15"></a>    ρ_vec <span class="op">=</span> <span class="fu">vec</span>(sol.states[<span class="kw">end</span>].data)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-label="16"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-label="17"></a>    <span class="co"># Split the real and imaginary parts of the density matrix to a real vector since ForwardDiff doesn't handle complex numbers directly</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-label="18"></a>    <span class="cf">return</span> <span class="fu">vcat</span>(<span class="fu">real</span>.(ρ_vec), <span class="fu">imag</span>.(ρ_vec))</span>
+<span id="cb2-19"><a href="#cb2-19" aria-label="19"></a><span class="kw">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>final_state (generic function with 1 method)</code></pre>
 </div>
@@ -453,21 +465,21 @@ window.Quarto = {
 <p><span class="math display">\[F_Q = \text{Tr}[\partial_\theta \rho \cdot L]\]</span></p>
 <p>where <span class="math inline">\(L\)</span> is the SLD satisfying: <span class="math inline">\(\partial_\theta \rho = \frac{1}{2}(\rho L + L \rho)\)</span></p>
 <div id="6" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">function</span> <span class="fu">compute_fisher_information</span>(ρ, dρ)</span>
-<span id="cb4-2"><a href="#cb4-2"></a>    <span class="co"># Add small regularization to avoid numerical issues with zero eigenvalues</span></span>
-<span id="cb4-3"><a href="#cb4-3"></a>    reg <span class="op">=</span> <span class="fl">1e-12</span> <span class="op">*</span> I</span>
-<span id="cb4-4"><a href="#cb4-4"></a>    ρ_reg <span class="op">=</span> ρ <span class="op">+</span> reg</span>
-<span id="cb4-5"><a href="#cb4-5"></a></span>
-<span id="cb4-6"><a href="#cb4-6"></a>    <span class="co"># Solve for the symmetric logarithmic derivative L</span></span>
-<span id="cb4-7"><a href="#cb4-7"></a>    <span class="co"># dρ = (1/2)(ρL + Lρ)</span></span>
-<span id="cb4-8"><a href="#cb4-8"></a>    <span class="co"># This is a Sylvester equation: ρL + Lρ = 2*dρ</span></span>
-<span id="cb4-9"><a href="#cb4-9"></a>    L <span class="op">=</span> <span class="fu">sylvester</span>(ρ_reg, ρ_reg, <span class="op">-</span><span class="fl">2</span><span class="op">*</span>dρ)</span>
-<span id="cb4-10"><a href="#cb4-10"></a></span>
-<span id="cb4-11"><a href="#cb4-11"></a>    <span class="co"># Fisher information F = Tr(dρ * L)</span></span>
-<span id="cb4-12"><a href="#cb4-12"></a>    F <span class="op">=</span> <span class="fu">real</span>(<span class="fu">tr</span>(dρ <span class="op">*</span> L))</span>
-<span id="cb4-13"><a href="#cb4-13"></a></span>
-<span id="cb4-14"><a href="#cb4-14"></a>    <span class="cf">return</span> F</span>
-<span id="cb4-15"><a href="#cb4-15"></a><span class="kw">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-label="1"></a><span class="kw">function</span> <span class="fu">compute_fisher_information</span>(ρ, dρ)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-label="2"></a>    <span class="co"># Add small regularization to avoid numerical issues with zero eigenvalues</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-label="3"></a>    reg <span class="op">=</span> <span class="fl">1e-12</span> <span class="op">*</span> I</span>
+<span id="cb4-4"><a href="#cb4-4" aria-label="4"></a>    ρ_reg <span class="op">=</span> ρ <span class="op">+</span> reg</span>
+<span id="cb4-5"><a href="#cb4-5" aria-label="5"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-label="6"></a>    <span class="co"># Solve for the symmetric logarithmic derivative L</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-label="7"></a>    <span class="co"># dρ = (1/2)(ρL + Lρ)</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-label="8"></a>    <span class="co"># This is a Sylvester equation: ρL + Lρ = 2*dρ</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-label="9"></a>    L <span class="op">=</span> <span class="fu">sylvester</span>(ρ_reg, ρ_reg, <span class="op">-</span><span class="fl">2</span><span class="op">*</span>dρ)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-label="10"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-label="11"></a>    <span class="co"># Fisher information F = Tr(dρ * L)</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-label="12"></a>    F <span class="op">=</span> <span class="fu">real</span>(<span class="fu">tr</span>(dρ <span class="op">*</span> L))</span>
+<span id="cb4-13"><a href="#cb4-13" aria-label="13"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-label="14"></a>    <span class="cf">return</span> F</span>
+<span id="cb4-15"><a href="#cb4-15" aria-label="15"></a><span class="kw">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>compute_fisher_information (generic function with 1 method)</code></pre>
 </div>
@@ -477,26 +489,26 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="automatic-differentiation-setup">Automatic Differentiation Setup</h2>
 <p>We use finite differences through DifferentiationInterface.jl to compute the derivative of the quantum state with respect to the parameter. This is a key step that enables efficient QFI computation without manual derivative calculations.</p>
 <div id="8" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># Test the system</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="fu">final_state</span>([<span class="fl">0</span>], <span class="fl">100</span>)</span>
-<span id="cb6-3"><a href="#cb6-3"></a></span>
-<span id="cb6-4"><a href="#cb6-4"></a><span class="co"># Define state function for automatic differentiation</span></span>
-<span id="cb6-5"><a href="#cb6-5"></a><span class="fu">state</span>(p) <span class="op">=</span> <span class="fu">final_state</span>(p, <span class="fl">2000</span>)</span>
-<span id="cb6-6"><a href="#cb6-6"></a></span>
-<span id="cb6-7"><a href="#cb6-7"></a><span class="co"># Compute both the state and its derivative</span></span>
-<span id="cb6-8"><a href="#cb6-8"></a>ρ, dρ <span class="op">=</span> <span class="fu">state</span>([<span class="fl">0.0</span>]), ForwardDiff.<span class="fu">jacobian</span>(state, [<span class="fl">0.0</span>])</span>
-<span id="cb6-9"><a href="#cb6-9"></a></span>
-<span id="cb6-10"><a href="#cb6-10"></a><span class="co"># Reshape back to complex matrix form</span></span>
-<span id="cb6-11"><a href="#cb6-11"></a>ρ <span class="op">=</span> <span class="fu">reshape</span>(ρ[<span class="fl">1</span><span class="op">:</span><span class="kw">end</span><span class="op">÷</span><span class="fl">2</span>] <span class="op">+</span> <span class="fl">1im</span> <span class="op">*</span> ρ[<span class="kw">end</span><span class="op">÷</span><span class="fl">2</span><span class="op">+</span><span class="fl">1</span><span class="op">:</span><span class="kw">end</span>], N, N)</span>
-<span id="cb6-12"><a href="#cb6-12"></a></span>
-<span id="cb6-13"><a href="#cb6-13"></a><span class="co"># Reshape the derivative back to matrix form</span></span>
-<span id="cb6-14"><a href="#cb6-14"></a>dρ <span class="op">=</span> <span class="fu">reshape</span>(dρ[<span class="fl">1</span><span class="op">:</span><span class="kw">end</span><span class="op">÷</span><span class="fl">2</span>] <span class="op">+</span> <span class="fl">1im</span> <span class="op">*</span> dρ[<span class="kw">end</span><span class="op">÷</span><span class="fl">2</span><span class="op">+</span><span class="fl">1</span><span class="op">:</span><span class="kw">end</span>], N, N)</span>
-<span id="cb6-15"><a href="#cb6-15"></a></span>
-<span id="cb6-16"><a href="#cb6-16"></a><span class="co"># Compute QFI at final time</span></span>
-<span id="cb6-17"><a href="#cb6-17"></a>qfi_final <span class="op">=</span> <span class="fu">compute_fisher_information</span>(ρ, dρ)</span>
-<span id="cb6-18"><a href="#cb6-18"></a><span class="fu">println</span>(<span class="st">"QFI at final time: "</span>, qfi_final)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-label="1"></a><span class="co"># Test the system</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-label="2"></a><span class="fu">final_state</span>([<span class="fl">0</span>], <span class="fl">100</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-label="3"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-label="4"></a><span class="co"># Define state function for automatic differentiation</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-label="5"></a><span class="fu">state</span>(p) <span class="op">=</span> <span class="fu">final_state</span>(p, <span class="fl">2000</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-label="6"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-label="7"></a><span class="co"># Compute both the state and its derivative</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-label="8"></a>ρ, dρ <span class="op">=</span> <span class="fu">state</span>([<span class="fl">0.0</span>]), ForwardDiff.<span class="fu">jacobian</span>(state, [<span class="fl">0.0</span>])</span>
+<span id="cb6-9"><a href="#cb6-9" aria-label="9"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-label="10"></a><span class="co"># Reshape back to complex matrix form</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-label="11"></a>ρ <span class="op">=</span> <span class="fu">reshape</span>(ρ[<span class="fl">1</span><span class="op">:</span><span class="kw">end</span><span class="op">÷</span><span class="fl">2</span>] <span class="op">+</span> <span class="fl">1im</span> <span class="op">*</span> ρ[<span class="kw">end</span><span class="op">÷</span><span class="fl">2</span><span class="op">+</span><span class="fl">1</span><span class="op">:</span><span class="kw">end</span>], N, N)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-label="12"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-label="13"></a><span class="co"># Reshape the derivative back to matrix form</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-label="14"></a>dρ <span class="op">=</span> <span class="fu">reshape</span>(dρ[<span class="fl">1</span><span class="op">:</span><span class="kw">end</span><span class="op">÷</span><span class="fl">2</span>] <span class="op">+</span> <span class="fl">1im</span> <span class="op">*</span> dρ[<span class="kw">end</span><span class="op">÷</span><span class="fl">2</span><span class="op">+</span><span class="fl">1</span><span class="op">:</span><span class="kw">end</span>], N, N)</span>
+<span id="cb6-15"><a href="#cb6-15" aria-label="15"></a></span>
+<span id="cb6-16"><a href="#cb6-16" aria-label="16"></a><span class="co"># Compute QFI at final time</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-label="17"></a>qfi_final <span class="op">=</span> <span class="fu">compute_fisher_information</span>(ρ, dρ)</span>
+<span id="cb6-18"><a href="#cb6-18" aria-label="18"></a><span class="fu">println</span>(<span class="st">"QFI at final time: "</span>, qfi_final)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>QFI at final time: 19795.718543242696</code></pre>
+<pre><code>QFI at final time: 19795.718543186675</code></pre>
 </div>
 </div>
 </section>
@@ -504,21 +516,21 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="time-evolution-of-quantum-fisher-information">Time Evolution of Quantum Fisher Information</h2>
 <p>Now we compute how the QFI evolves over time to understand the optimal measurement time for parameter estimation:</p>
 <div id="10" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1"></a>ts <span class="op">=</span> <span class="fu">range</span>(<span class="fl">0</span>, <span class="fl">2000</span>, <span class="fl">100</span>)</span>
-<span id="cb8-2"><a href="#cb8-2"></a></span>
-<span id="cb8-3"><a href="#cb8-3"></a><span class="pp">@time</span> QFI_t <span class="op">=</span> <span class="fu">map</span>(ts) <span class="cf">do</span> t</span>
-<span id="cb8-4"><a href="#cb8-4"></a>    <span class="fu">state</span>(p) <span class="op">=</span> <span class="fu">final_state</span>(p, t)</span>
-<span id="cb8-5"><a href="#cb8-5"></a>    ρ, dρ <span class="op">=</span> <span class="fu">state</span>([<span class="fl">0.0</span>]), ForwardDiff.<span class="fu">jacobian</span>(state, [<span class="fl">0.0</span>])</span>
-<span id="cb8-6"><a href="#cb8-6"></a></span>
-<span id="cb8-7"><a href="#cb8-7"></a>    ρ <span class="op">=</span> <span class="fu">reshape</span>(ρ[<span class="fl">1</span><span class="op">:</span><span class="kw">end</span><span class="op">÷</span><span class="fl">2</span>] <span class="op">+</span> <span class="fl">1im</span> <span class="op">*</span> ρ[<span class="kw">end</span><span class="op">÷</span><span class="fl">2</span><span class="op">+</span><span class="fl">1</span><span class="op">:</span><span class="kw">end</span>], N, N)</span>
-<span id="cb8-8"><a href="#cb8-8"></a>    dρ <span class="op">=</span> <span class="fu">reshape</span>(dρ[<span class="fl">1</span><span class="op">:</span><span class="kw">end</span><span class="op">÷</span><span class="fl">2</span>] <span class="op">+</span> <span class="fl">1im</span> <span class="op">*</span> dρ[<span class="kw">end</span><span class="op">÷</span><span class="fl">2</span><span class="op">+</span><span class="fl">1</span><span class="op">:</span><span class="kw">end</span>], N, N)</span>
-<span id="cb8-9"><a href="#cb8-9"></a></span>
-<span id="cb8-10"><a href="#cb8-10"></a>    <span class="fu">compute_fisher_information</span>(ρ, dρ)</span>
-<span id="cb8-11"><a href="#cb8-11"></a><span class="cf">end</span></span>
-<span id="cb8-12"><a href="#cb8-12"></a></span>
-<span id="cb8-13"><a href="#cb8-13"></a><span class="fu">println</span>(<span class="st">"QFI computed for "</span>, <span class="fu">length</span>(ts), <span class="st">" time points"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-label="1"></a>ts <span class="op">=</span> <span class="fu">range</span>(<span class="fl">0</span>, <span class="fl">2000</span>, <span class="fl">100</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-label="2"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-label="3"></a><span class="pp">@time</span> QFI_t <span class="op">=</span> <span class="fu">map</span>(ts) <span class="cf">do</span> t</span>
+<span id="cb8-4"><a href="#cb8-4" aria-label="4"></a>    <span class="fu">state</span>(p) <span class="op">=</span> <span class="fu">final_state</span>(p, t)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-label="5"></a>    ρ, dρ <span class="op">=</span> <span class="fu">state</span>([<span class="fl">0.0</span>]), ForwardDiff.<span class="fu">jacobian</span>(state, [<span class="fl">0.0</span>])</span>
+<span id="cb8-6"><a href="#cb8-6" aria-label="6"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-label="7"></a>    ρ <span class="op">=</span> <span class="fu">reshape</span>(ρ[<span class="fl">1</span><span class="op">:</span><span class="kw">end</span><span class="op">÷</span><span class="fl">2</span>] <span class="op">+</span> <span class="fl">1im</span> <span class="op">*</span> ρ[<span class="kw">end</span><span class="op">÷</span><span class="fl">2</span><span class="op">+</span><span class="fl">1</span><span class="op">:</span><span class="kw">end</span>], N, N)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-label="8"></a>    dρ <span class="op">=</span> <span class="fu">reshape</span>(dρ[<span class="fl">1</span><span class="op">:</span><span class="kw">end</span><span class="op">÷</span><span class="fl">2</span>] <span class="op">+</span> <span class="fl">1im</span> <span class="op">*</span> dρ[<span class="kw">end</span><span class="op">÷</span><span class="fl">2</span><span class="op">+</span><span class="fl">1</span><span class="op">:</span><span class="kw">end</span>], N, N)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-label="9"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-label="10"></a>    <span class="fu">compute_fisher_information</span>(ρ, dρ)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-label="11"></a><span class="cf">end</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-label="12"></a></span>
+<span id="cb8-13"><a href="#cb8-13" aria-label="13"></a><span class="fu">println</span>(<span class="st">"QFI computed for "</span>, <span class="fu">length</span>(ts), <span class="st">" time points"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> 11.087258 seconds (20.52 M allocations: 1.144 GiB, 1.09% gc time, 54.21% compilation time)
+<pre><code>  5.639930 seconds (12.59 M allocations: 843.800 MiB, 3.94% gc time, 78.43% compilation time)
 QFI computed for 100 time points</code></pre>
 </div>
 </div>
@@ -527,14 +539,14 @@ QFI computed for 100 time points</code></pre>
 <h2 class="anchored" data-anchor-id="visualization">Visualization</h2>
 <p>Plot the time evolution of the Quantum Fisher Information:</p>
 <div id="12" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1"></a>fig <span class="op">=</span> <span class="fu">Figure</span>()</span>
-<span id="cb10-2"><a href="#cb10-2"></a>ax <span class="op">=</span> <span class="fu">Axis</span>(</span>
-<span id="cb10-3"><a href="#cb10-3"></a> fig[<span class="fl">1</span>,<span class="fl">1</span>],</span>
-<span id="cb10-4"><a href="#cb10-4"></a> xlabel <span class="op">=</span> <span class="st">"Time"</span>,</span>
-<span id="cb10-5"><a href="#cb10-5"></a> ylabel <span class="op">=</span> <span class="st">"Quantum Fisher Information"</span></span>
-<span id="cb10-6"><a href="#cb10-6"></a>)</span>
-<span id="cb10-7"><a href="#cb10-7"></a><span class="fu">lines!</span>(ax, ts, QFI_t)</span>
-<span id="cb10-8"><a href="#cb10-8"></a>fig</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-label="1"></a>fig <span class="op">=</span> <span class="fu">Figure</span>()</span>
+<span id="cb10-2"><a href="#cb10-2" aria-label="2"></a>ax <span class="op">=</span> <span class="fu">Axis</span>(</span>
+<span id="cb10-3"><a href="#cb10-3" aria-label="3"></a> fig[<span class="fl">1</span>,<span class="fl">1</span>],</span>
+<span id="cb10-4"><a href="#cb10-4" aria-label="4"></a> xlabel <span class="op">=</span> <span class="st">"Time"</span>,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-label="5"></a> ylabel <span class="op">=</span> <span class="st">"Quantum Fisher Information"</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-label="6"></a>)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-label="7"></a><span class="fu">lines!</span>(ax, ts, QFI_t)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-label="8"></a>fig</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div>
 <figure class="figure">
@@ -547,7 +559,7 @@ QFI computed for 100 time points</code></pre>
 <section id="version-information" class="level2">
 <h2 class="anchored" data-anchor-id="version-information">Version Information</h2>
 <div id="14" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1"></a>QuantumToolbox.<span class="fu">versioninfo</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-label="1"></a>QuantumToolbox.<span class="fu">versioninfo</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
  QuantumToolbox.jl: Quantum Toolbox in Julia
@@ -558,20 +570,20 @@ Current admin team:
 
 Package information:
 ====================================
-Julia              Ver. 1.12.6
-QuantumToolbox     Ver. 0.47.2
-SciMLOperators     Ver. 1.24.3
+Julia              Ver. 1.13.3
+QuantumToolbox     Ver. 0.47.3
+SciMLOperators     Ver. 1.30.4
 LinearSolve        Ver. 3.87.0
-OrdinaryDiffEqCore Ver. 4.7.1
+OrdinaryDiffEqCore Ver. 4.14.1
 
 System information:
 ====================================
 OS       : Linux (x86_64-linux-gnu)
-CPU      : 4 × AMD EPYC 9V74 80-Core Processor
-Memory   : 15.615 GB
+CPU      : 4 × AMD EPYC 9V45 96-Core Processor
+Memory   : 15.609 GB
 WORD_SIZE: 64
 LIBM     : libopenlibm
-LLVM     : libLLVM-18.1.7 (ORCJIT, znver4)
+LLVM     : libLLVM-20.1.8 (ORCJIT, znver5)
 BLAS     : libopenblas64_.so (ilp64)
 Threads  : 4 (on 4 virtual cores)
 
@@ -583,16 +595,17 @@ For your convenience, a bibtex reference can be easily generated using `QuantumT
 </div>
 </div>
 <div id="16" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1"></a><span class="im">using</span> <span class="bu">Pkg</span></span>
-<span id="cb13-2"><a href="#cb13-2"></a><span class="bu">Pkg</span>.<span class="fu">status</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-label="1"></a><span class="im">using</span> <span class="bu">Pkg</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-label="2"></a><span class="bu">Pkg</span>.<span class="fu">status</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
 <pre><span class="ansi-green-fg ansi-bold">Status</span> `~/work/qutip-julia-tutorials/qutip-julia-tutorials/Project.toml`
-  <span class="ansi-bright-black-fg">[13f3f980] </span>CairoMakie v0.15.13
-  <span class="ansi-bright-black-fg">[f6369f11] </span>ForwardDiff v1.4.1
-  <span class="ansi-bright-black-fg">[a62dbcb7] </span>HierarchicalEOM v2.15.1
-  <span class="ansi-bright-black-fg">[6c2fb7c5] </span>QuantumToolbox v0.47.2
-  <span class="ansi-bright-black-fg">[4c0109c6] </span>QuartoNotebookRunner v0.18.1
+  <span class="ansi-bright-black-fg">[13f3f980] </span>CairoMakie v0.15.17
+  <span class="ansi-bright-black-fg">[f6369f11] </span>ForwardDiff v1.4.7
+<span class="ansi-green-fg">⌃</span> <span class="ansi-bright-black-fg">[a62dbcb7] </span>HierarchicalEOM v2.15.1
+<span class="ansi-yellow-fg">⌅</span> <span class="ansi-bright-black-fg">[6c2fb7c5] </span>QuantumToolbox v0.47.3
+  <span class="ansi-bright-black-fg">[4c0109c6] </span>QuartoNotebookRunner v0.18.7
+<span class="ansi-cyan-fg ansi-bold">Info</span> Packages marked with <span class="ansi-green-fg">⌃</span> and <span class="ansi-yellow-fg">⌅</span> have new versions available. Those with <span class="ansi-green-fg">⌃</span> may be upgradable, but those with <span class="ansi-yellow-fg">⌅</span> are restricted by compatibility constraints from upgrading. To see why use `status --outdated`
 </pre>
 </div>
 </div>
@@ -606,15 +619,50 @@ For your convenience, a bibtex reference can be easily generated using `QuantumT
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-      const a = window.document.createElement('a');
-      a.classList.add('top-right');
-      a.classList.add('quarto-color-scheme-toggle');
-      a.href = "";
-      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Toggle dark mode");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
       const i = window.document.createElement("i");
       i.classList.add('bi');
-      a.appendChild(i);
-      window.document.body.appendChild(a);
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Toggle dark mode");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
     }
     setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
@@ -693,7 +741,8 @@ For your convenience, a bibtex reference can be easily generated using `QuantumT
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
       // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
       for (var i=0; i<links.length; i++) {
         const link = links[i];
         if (!isInternal(link.href)) {
@@ -702,8 +751,69 @@ For your convenience, a bibtex reference can be easily generated using `QuantumT
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+          if (!link.classList.contains('no-external-icon')) {
+          }
         }
       }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
       const config = {
         allowHTML: true,
@@ -717,6 +827,7 @@ For your convenience, a bibtex reference can be easily generated using `QuantumT
         interactiveBorder: 10,
         theme: 'quarto',
         placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
       };
       if (contentFn) {
         config.content = contentFn;
@@ -879,44 +990,54 @@ For your convenience, a bibtex reference can be easily generated using `QuantumT
           const lineIds = lines.map((line) => {
             return targetCell + "-" + line;
           })
-          let top = null;
-          let height = null;
-          let parent = null;
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
           if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
             }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
             }
+            placeBand(gutterDiv, el, lastEl);
             selectedAnnoteEl = annoteEl;
           }
         };
@@ -1014,6 +1135,9 @@ For your convenience, a bibtex reference can be easily generated using `QuantumT
       }
     }
   });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
   </script>
 </div> <!-- /content -->
 <footer class="footer">

@@ -509,8 +509,8 @@ H_{\textrm{sf}} &amp;=\sum_{\alpha=\textrm{L},\textrm{R}}\sum_{k}g_{\alpha,k}c_{
 <div class="ansi-escaped-output">
 <pre>Preparing HEOM Liouvillian sparsity structure...
 
-<span class="ansi-green-fg">[M_Fermion]   0%|                         |  ETA: 0:07:32 ( 0.29  s/it)</span>
-<span class="ansi-green-fg">[M_Fermion] 100%|█████████████████████████| Time: 0:00:00 ( 0.46 ms/it)</span>
+<span class="ansi-green-fg">[M_Fermion]   0%|                         |  ETA: 0:06:01 ( 0.23  s/it)</span>
+<span class="ansi-green-fg">[M_Fermion] 100%|█████████████████████████| Time: 0:00:00 ( 0.38 ms/it)</span>
 [DONE]
 Combining terms...[DONE]
 Evaluating lazy operations...[DONE]
@@ -533,8 +533,8 @@ MatrixOperator(6344 × 6344)</code></pre>
 <span id="cb7-2"><a href="#cb7-2" aria-label="2"></a>ados_evolution <span class="op">=</span> <span class="fu">HEOMsolve</span>(M, ψ<span class="fl">0</span>, tlist).ados</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[HEOMsolve (ODE)]   1%|▎                  |  ETA: 0:03:48 ( 1.15  s/it)</span>
-<span class="ansi-green-fg">[HEOMsolve (ODE)] 100%|███████████████████| Time: 0:00:02 (11.96 ms/it)</span>
+<pre><span class="ansi-green-fg">[HEOMsolve (ODE)]   1%|▎                  |  ETA: 0:03:20 ( 1.00  s/it)</span>
+<span class="ansi-green-fg">[HEOMsolve (ODE)] 100%|███████████████████| Time: 0:00:02 (10.30 ms/it)</span>
 </pre>
 </div>
 </div>
@@ -737,11 +737,11 @@ OrdinaryDiffEqCore Ver. 4.14.1
 System information:
 ====================================
 OS       : Linux (x86_64-linux-gnu)
-CPU      : 4 × AMD EPYC 9V74 80-Core Processor
+CPU      : 4 × AMD EPYC 9V45 96-Core Processor
 Memory   : 15.609 GB
 WORD_SIZE: 64
 LIBM     : libopenlibm
-LLVM     : libLLVM-20.1.8 (ORCJIT, znver4)
+LLVM     : libLLVM-20.1.8 (ORCJIT, znver5)
 BLAS     : libopenblas64_.so (ilp64)
 Threads  : 4 (on 4 virtual cores)
 

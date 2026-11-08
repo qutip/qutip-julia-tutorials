@@ -447,13 +447,13 @@ window.Quarto = {
 <span id="cb2-4"><a href="#cb2-4" aria-label="4"></a>gs <span class="op">=</span> <span class="fu">rand</span>(N<span class="op">-</span><span class="fl">1</span>) <span class="co"># use rand function for the random interaction strengths</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>7-element Vector{Float64}:
- 0.022238791329816543
- 0.9948442057481693
- 0.5380536988132186
- 0.3103998692993044
- 0.42673112870428875
- 0.133339084466627
- 0.41333331321410716</code></pre>
+ 0.19492208313699355
+ 0.48399506821104576
+ 0.9547204281494911
+ 0.858581382330435
+ 0.6714994359469423
+ 0.74320969616608
+ 0.2149862884632614</code></pre>
 </div>
 </div>
 <div id="6" class="cell" data-execution_count="1">
@@ -548,22 +548,22 @@ Quantum Object Evo.:   type=Operator()   dims=([2, 2, 2, 2, 2, 2, 2, 2], [2, 2, 
 <pre><code>
 Quantum Object:   type=Ket()   dims=([2, 2, 2, 2, 2, 2, 2, 2], [1])   size=(256,)
 256-element SparseArrays.SparseVector{ComplexF64, Int64} with 128 stored entries:
-  [1  ]  =  0.00015393+0.0im
-  [4  ]  =  -0.000767591+0.0im
-  [6  ]  =  0.000120343+0.0im
-  [7  ]  =  -5.92934e-5+0.0im
-  [10 ]  =  -0.000257851+0.0im
-  [11 ]  =  0.000103482+0.0im
-  [13 ]  =  -0.000700183+0.0im
+  [1  ]  =  0.00176024+0.0im
+  [4  ]  =  -0.0129741+0.0im
+  [6  ]  =  0.00873433+0.0im
+  [7  ]  =  -0.00250405+0.0im
+  [10 ]  =  -0.0115441+0.0im
+  [11 ]  =  0.00276024+0.0im
+  [13 ]  =  -0.00384604+0.0im
          ⋮
-  [241]  =  0.0344651+0.0im
-  [244]  =  -0.172029+0.0im
-  [246]  =  0.0257218+0.0im
-  [247]  =  -0.012341+0.0im
-  [250]  =  -0.0593383+0.0im
-  [251]  =  0.0236555+0.0im
-  [253]  =  -0.162263+0.0im
-  [256]  =  0.813515+0.0im</code></pre>
+  [241]  =  0.0321716+0.0im
+  [244]  =  -0.23979+0.0im
+  [246]  =  0.15752+0.0im
+  [247]  =  -0.0443833+0.0im
+  [250]  =  -0.225337+0.0im
+  [251]  =  0.0533038+0.0im
+  [253]  =  -0.075473+0.0im
+  [256]  =  0.612419+0.0im</code></pre>
 </div>
 </div>
 <p>We can see that the truthful ground state we are preparing is indeed very complex.</p>
@@ -609,18 +609,18 @@ Quantum Object:   type=Ket()   dims=([2, 2, 2, 2, 2, 2, 2, 2], [1])   size=(256,
 <span id="cb14-7"><a href="#cb14-7" aria-label="7"></a><span class="cf">end</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">[sesolve]   2%|▌                          |  ETA: 0:03:00 ( 1.82  s/it)</span>
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:03 (37.22 ms/it)</span>
+<pre><span class="ansi-green-fg">[sesolve]   2%|▌                          |  ETA: 0:02:31 ( 1.52  s/it)</span>
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:03 (31.29 ms/it)</span>
 
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (64.71 μs/it)</span>
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (46.69 μs/it)</span>
 
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (64.73 μs/it)</span>
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (45.98 μs/it)</span>
 
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (63.95 μs/it)</span>
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (45.69 μs/it)</span>
+
+<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 (76.32 μs/it)</span>
 
 <span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.11 ms/it)</span>
-
-<span class="ansi-green-fg">[sesolve] 100%|███████████████████████████| Time: 0:00:00 ( 0.12 ms/it)</span>
 </pre>
 </div>
 </div>
@@ -676,11 +676,11 @@ OrdinaryDiffEqCore Ver. 4.14.1
 System information:
 ====================================
 OS       : Linux (x86_64-linux-gnu)
-CPU      : 4 × AMD EPYC 9V74 80-Core Processor
+CPU      : 4 × AMD EPYC 9V45 96-Core Processor
 Memory   : 15.609 GB
 WORD_SIZE: 64
 LIBM     : libopenlibm
-LLVM     : libLLVM-20.1.8 (ORCJIT, znver4)
+LLVM     : libLLVM-20.1.8 (ORCJIT, znver5)
 BLAS     : libopenblas64_.so (ilp64)
 Threads  : 4 (on 4 virtual cores)
 
